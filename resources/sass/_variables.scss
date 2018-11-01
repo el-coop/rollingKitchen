@@ -1,8 +1,19 @@
+@import "~bulma/sass/utilities/initial-variables";
+@import "~bulma/sass/utilities/functions";
+@import "~bulma/sass/utilities/derived-variables";
+
+$above-phone: "only screen and (min-width : 576px)";
+$above-tablet: "only screen and (min-width : #{$tablet})";
+$above-desktop: "only screen and (min-width : #{$desktop})";
+$above-wide-screen: "only screen and (min-width : #{$widescreen})";
 
 // Body
-$body-bg: #f8fafc;
+$body-bg: #f4f4f4;
+$contrast-bg: invert($body-bg);
+$gap: 32px;
 
 // Typography
+$contrast-text: $white-bis;
 $font-family-sans-serif: "Nunito", sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
@@ -18,3 +29,8 @@ $yellow: #ffed4a;
 $green: #38c172;
 $teal: #4dc0b5;
 $cyan: #6cb2eb;
+
+$menu-item-color: darken($contrast-text, 10);
+$menu-item-hover-color: $contrast-text;
+$menu-item-hover-background-color: lighten($contrast-bg, 10);
+$menu-item-active-background-color: lighten($contrast-bg, 10);
