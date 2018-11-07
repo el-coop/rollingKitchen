@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::post('/field', 'FieldController@create');
+Route::delete('/field/{field}', 'FieldController@delete');
+Route::patch('/field/{field}', 'FieldController@edit');
