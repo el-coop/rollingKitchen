@@ -1,7 +1,7 @@
 .dashboard {
 	display: grid;
 	grid-template-columns: auto;
-	height: 100%;
+	min-height: 100%;
 	@media #{$above-tablet}{
 		grid-template-columns: 200px auto;
 	}

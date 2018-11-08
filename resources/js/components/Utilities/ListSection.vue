@@ -17,6 +17,12 @@
 			label: {
 				required: true,
 				Type: String
+			},
+			startOpen: {
+				default() {
+					return false;
+				},
+				type: Boolean
 			}
 		},
 
@@ -29,7 +35,9 @@
 
 		mounted() {
 			this.height = this.$refs.list.scrollHeight;
-			this.open = false;
+			if (!this.startOpen) {
+				this.open = false;
+			}
 		},
 
 		computed: {
