@@ -16,7 +16,7 @@ class DashboardComposer {
     public $dashboardItems;
 
     public function __construct() {
-        $this->dashboardItems = config('navbar');
+        $this->dashboardItems = config('admin.navbar');
     }
 
     public function compose(View $view){

@@ -15,6 +15,8 @@ window.Vue = require('vue');
  */
 require('./Components/components');
 
+Vue.prototype.$bus = new Vue();
+
 const app = new Vue({
 	el: '#app'
 });

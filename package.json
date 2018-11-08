@@ -15,5 +15,9 @@
 		"cross-env": "^5.1",
 		"laravel-mix": "^2.0",
 		"vue": "^2.5.17"
+	},
+	"dependencies": {
+		"babel-preset-stage-2": "^6.24.1",
+		"vuetable-2": "^1.7.5"
 	}
 }
