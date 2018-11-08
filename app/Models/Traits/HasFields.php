@@ -12,8 +12,9 @@ namespace App\Models\Traits;
 use App\Models\Field;
 
 trait HasFields {
-    static function fields($type){
-        return Field::where('form',$type)->get();
+    static function fields(){
+        $form = strtolower(substr( static::class,11));
+        return Field::where('form',$form);
     }
 
 }
