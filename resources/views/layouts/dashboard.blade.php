@@ -2,8 +2,8 @@
 
 @section('body')
 	<div class="dashboard">
-		<drawer>
-			<div class="menu" v-cloak>
+		<drawer v-cloak>
+			<div class="menu">
 				@foreach($dashboardItems as $label => $items)
 					@component('components.dashboardListItem', [
 						'label' => $label,
@@ -13,8 +13,11 @@
 				@endforeach
 			</div>
 		</drawer>
-		<div class="container is-fluid">
-			@yield('content')
+		<div>
+			<navbar title="Motherlist"></navbar>
+			<div class="container is-fluid">
+				@yield('content')
+			</div>
 		</div>
 	</div>
 @endsection

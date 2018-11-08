@@ -1,11 +1,22 @@
 @extends('layouts.dashboard')
 
 @section('content')
-	<datatable :fields="[{
+	<div class="box">
+		<datatable :fields="[{
 		name: 'name',
-	  	sortField: 'name'
+	  	sortField: 'name',
+	  	filter: true
 	},{
-		name: 'place'
-	}
-	]"></datatable>
+		name: 'email',
+	  	sortField: 'email',
+	  	filter: true
+	},{
+		name: 'status',
+		filter: [
+			'new','motherlist'
+		]
+	}]"
+				   url="{{ action('Admin\KitchenController@list') }}"
+		></datatable>
+	</div>
 @endsection
