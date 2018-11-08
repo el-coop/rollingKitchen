@@ -16,6 +16,3 @@ Route::get('/', function () {
 });
 
 
-Route::post('/field', 'FieldController@create');
-Route::delete('/field/{field}', 'FieldController@delete');
-Route::patch('/field/{field}', 'FieldController@edit');
