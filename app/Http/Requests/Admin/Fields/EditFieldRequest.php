@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Fields;
+namespace App\Http\Requests\Admin\Fields;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -26,7 +26,7 @@ class EditFieldRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|unique:fields',
+            'name' => 'required|string',
             'type' => 'required|string|in:text,textarea,checkbox',
             'checkbox_options' => 'required_if:type,checkbox|json'
         ];
