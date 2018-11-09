@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h5 class="title is-5">Filters:</h5>
+		<h5 class="title is-5" v-text="`${filtersText}:`"></h5>
 		<div v-for="field in fields" class="field">
 			<label class="label" v-text="field.title || field.name"></label>
 			<div class="control">
@@ -14,8 +14,8 @@
 			</div>
 		</div>
 		<div class="buttons">
-			<button class="button is-primary" @click="filter">Filter</button>
-			<button class="button" @click="filters={}; filter()">Clear</button>
+			<button class="button is-primary" @click="filter" v-text="filterText"></button>
+			<button class="button" @click="filters={}; filter()" v-text="clearText"></button>
 		</div>
 	</div>
 </template>
@@ -27,7 +27,19 @@
 			tableFields: {
 				type: Array,
 				required: true
-			}
+			},
+			filtersText: {
+				type: String,
+				default: 'Filters'
+			},
+			filterText: {
+				type: String,
+				default: 'Filter'
+			},
+			clearText: {
+				type: String,
+				default: 'Clear'
+			},
 		},
 
 		data() {

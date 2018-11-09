@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Nunito);/*! bulma.io v0.7.2 | MIT License | github.com/jgthms/bulma */
+/*! bulma.io v0.7.2 | MIT License | github.com/jgthms/bulma */
 
 @-webkit-keyframes spinAround {
   from {
@@ -12152,7 +12152,7 @@ body,
 .dashboard {
   display: grid;
   grid-template-columns: auto;
-  height: 100%;
+  min-height: 100%;
 }
 
 @media only screen and (min-width: 769px) {
