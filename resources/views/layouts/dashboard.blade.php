@@ -1,8 +1,8 @@
 @extends('layouts.plain')
 
 @section('body')
-	<div class="dashboard">
-		<drawer v-cloak>
+	<div class="dashboard" v-cloak>
+		<drawer>
 			<div class="menu">
 				@foreach($dashboardItems as $label => $items)
 					@component('components.dashboardListItem', [
@@ -13,12 +13,12 @@
 				@endforeach
 			</div>
 		</drawer>
-		<div>
+		<main>
 			<navbar title="Motherlist"></navbar>
-			<div class="container is-fluid">
+			<div class="section">
 				@yield('content')
 			</div>
-		</div>
+		</main>
 	</div>
 @endsection
 

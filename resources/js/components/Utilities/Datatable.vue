@@ -17,17 +17,21 @@
 				</div>
 				<div class="level">
 					<div class="level-left">
-						<vuetable-pagination-info class="level-item" ref="paginationInfo">
+						<vuetable-pagination-info class="level-item" ref="paginationInfo"
+												  :info-template="labels.pagination"
+												  :no-data-template="labels.noPagination">
 						</vuetable-pagination-info>
 					</div>
 					<div class="level-right">
-						<vuetable-pagination ref="pagination" class="level-item"
+						<vuetable-pagination ref="pagination" class="level-item" :prev-text="labels.prev"
+											 :next-text="labels.next"
 											 @vuetable-pagination:change-page="changePage"></vuetable-pagination>
 					</div>
 				</div>
 			</div>
 			<div class="filter">
-				<datatable-filter :table-fields="fields" @filter="filter"></datatable-filter>
+				<datatable-filter :table-fields="fields" @filter="filter" :filter-text="labels.filter"
+								  :filters-text="labels.filters" :clear-text="labels.clear"></datatable-filter>
 			</div>
 		</div>
 	</div>
@@ -69,6 +73,11 @@
 					return {};
 				}
 			},
+
+			labels: {
+				type: Object,
+				required: true
+			}
 		},
 
 		data() {
