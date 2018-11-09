@@ -102,28 +102,10 @@ class KitchenController extends Controller {
 	}
 
 	public function fields(){
-        return view('admin.kitchens.fields');
+        $fields  = Kitchen::fields()->sortBy('name');
+        return view('admin.kitchens.fields', compact('fields'));
 
     }
 
-	public function getFields(Request $request){
-        $formFields  = Kitchen::fields();
-        if ($request->filled('sort')) {
-            $sort = explode('|', $request->input('sort'));
-            $formFields->orderBy($sort[0], $sort[1]);
-        } else {
-            $formFields->orderBy('fields.created_at','desc');
-        }
 
-        if ($request->filled('filter')) {
-            foreach (json_decode($request->input('filter')) as $field => $filter) {
-                if ($filter !== '') {
-                    $filterVal = "%{$filter}%";
-                    $formFields->where($field, 'like', $filterVal);
-                }
-            }
-        }
-
-        return $formFields->paginate($request->input('per_page'));
-    }
 }

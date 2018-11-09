@@ -26,5 +26,6 @@ class FieldController extends Controller {
 
     public function delete(Field $field, DeleteFieldRequest $request) {
         $request->delete();
+        return back();
     }
 }

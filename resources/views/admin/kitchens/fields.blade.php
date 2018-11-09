@@ -2,16 +2,26 @@
 
 @section('content')
     <div class="box">
-        <datatable :fields="[{
-		name: 'name',
-	  	sortField: 'Name',
-	  	filter: true
-	},{
-		name: 'type',
-	  	sortField: 'Type',
-	  	filter: true
-	}"
-                   url="{{ action('Admin\KitchenController@getFields') }}"
-        ></datatable>
+        <table class="table is-fullwidth">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Delete</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($fields as $field)
+                    @component('components.fieldListItem', ['field' => $field])
+                    @endcomponent
+                @endforeach
+            </tbody>
+        </table>
+        <edit-modal name="editField">
+            <div slot-scope="slotProps">
+                @{{slotProps.object}}
+            </div>
+        </edit-modal>
     </div>
 @endsection
