@@ -102,7 +102,7 @@ class KitchenController extends Controller {
 	}
 
 	public function fields(){
-        $fields  = Kitchen::fields()->sortBy('name');
+        $fields  = Kitchen::fields()->sortBy('order');
         return view('admin.kitchens.fields', compact('fields'));
 
     }

@@ -13,8 +13,7 @@ use App\Models\Field;
 
 trait HasFields {
     static function fields(){
-        $form = strtolower(substr( static::class,11));
-        return Field::where('form',$form)->get();
+        return Field::where('form',static::class)->get();
     }
 
 }

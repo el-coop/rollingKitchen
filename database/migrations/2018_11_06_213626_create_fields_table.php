@@ -18,7 +18,8 @@ class CreateFieldsTable extends Migration
             $table->string('name');
             $table->string('type');
             $table->string('form');
-            $table->json('checkbox_options')->nullable();
+            $table->integer('order')->default(0);
+            $table->json('options')->nullable();
             $table->timestamps();
         });
     }

@@ -30,7 +30,7 @@ class DeleteFieldRequest extends FormRequest
         ];
     }
 
-    public function delete(){
+    public function commit(){
         $this->field->delete();
     }
 }

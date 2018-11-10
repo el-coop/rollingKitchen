@@ -3,7 +3,9 @@
 namespace App\Http\Requests\Admin\Fields;
 
 use App\Models\Field;
+use App\Models\Kitchen;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateFieldRequest extends FormRequest {
     /**
@@ -24,17 +26,20 @@ class CreateFieldRequest extends FormRequest {
         return [
             'name' => 'required|string',
             'type' => 'required|string|in:text,textarea,checkbox',
-            'checkbox_options' => 'required_if:type,checkbox|json'
+            'order' => Rule::unique('fields')->where('order', $this->input('form')),
+            'form' => 'required|string|in:' . Kitchen::class,
+            'options' => 'required_if:type,checkbox|json'
 
         ];
     }
 
     public function commit(){
         $field = new Field;
+        $field->form = $this->input('form');
         $field->name = $this->input('name');
         $field->type = $this->input('type');
         if ($field->type == 'checkbox') {
-            $field->json = $this->input('checkbox_options');
+            $field->json = $this->input('options');
         }
         $field->save();
         return $field;

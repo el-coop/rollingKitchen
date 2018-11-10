@@ -21,11 +21,11 @@ class FieldController extends Controller {
     }
 
     public function edit(Field $field, EditFieldRequest $request) {
-        $field = $request->edit();
+        $field = $request->commit();
     }
 
     public function delete(Field $field, DeleteFieldRequest $request) {
-        $request->delete();
+        $request->commit();
         return back();
     }
 }
