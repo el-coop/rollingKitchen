@@ -9,47 +9,57 @@ class DatatableController extends Controller {
 	
 	public function list(Request $request) {
 		
-		$table = config($request->input('table'));
+		$queryConfig = config($request->input('table'));
 		
-		$query = DB::table($table['table']);
+		if ($queryConfig['table'] ?? false) {
+			$tableName = $queryConfig['table'];
+			$query = DB::table($queryConfig['table']);
+		} else {
+			$query = $queryConfig['model']::query();
+			$tableName = (new $queryConfig['model'])->getTable();
+			
+		}
 		
-		$this->addWhere($query, $table);
-		$this->addJoins($query, $table);
-		$this->addSelects($query, $table);
+		
+		$this->addWhere($query, $queryConfig);
+		$this->addJoins($query, $queryConfig);
+		$this->addSelects($query, $queryConfig);
+		
+		$query->groupBy("{$tableName}.id");
 		
 		if ($request->filled('sort')) {
 			$sort = explode('|', $request->input('sort'));
 			$query->orderBy($sort[0], $sort[1]);
 		} else {
-			$query->orderBy("{$table['table']}.created_at", 'desc');
+			$query->orderBy("{$tableName}.created_at", 'desc');
 		}
 		
 		if ($request->filled('filter')) {
-			foreach (json_decode($request->input('filter')) as $field => $filter) {
-				if ($filter !== '') {
-					$filterVal = "%{$filter}%";
-					$query->where($field, 'like', $filterVal);
-				}
-			}
+			$this->addFilter($query, $request, $queryConfig['fields']);
 		}
 		
 		return $query->paginate($request->input('per_page'));
 	}
 	
-	protected function addSelects($query, $table) {
+	protected function addSelects($query, $queryConfig) {
 		$selects = [];
-		foreach ($table['fields'] as $field) {
-			$selects[] = $field['name'];
+		foreach ($queryConfig['fields'] as $field) {
+			$fieldName = $field['name'];
+			if (strpos($fieldName, 'count') !== 0) {
+				$selects[] = $fieldName;
+			} else {
+				$selects[] = DB::raw("$fieldName");
+			}
 		}
 		
 		$query->select(...$selects);
 		return $query;
 	}
 	
-	protected function addJoins($query, $table) {
-		if ($joins = $table['joins'] ?? false) {
+	protected function addJoins($query, $queryConfig) {
+		if ($joins = $queryConfig['joins'] ?? false) {
 			foreach ($joins as $join) {
-				$query->join(...$join);
+				$query->leftJoin(...$join);
 			}
 			
 		}
@@ -57,11 +67,30 @@ class DatatableController extends Controller {
 	}
 	
 	
-	protected function addWhere($query, $table) {
-		if ($where = $table['where'] ?? false) {
+	protected function addWhere($query, $queryConfig) {
+		if ($where = $queryConfig['where'] ?? false) {
 			$query->where(...$where);
 		}
 		return $query;
+	}
+	
+	protected function addFilter($query, $request, $queryConfig) {
+		$filters = json_decode($request->input('filter'));
+		foreach ($filters as $field => $filter) {
+			if ($filter !== '') {
+				$filterConfig = collect($queryConfig)->first(function ($item) use ($field) {
+					return $item['name'] == $field;
+				});
+				if ($filterConfig['filterDefinitions'] ?? false) {
+					$filterConfig = $filterConfig['filterDefinitions'][$filter];
+					$query->having($field, $filterConfig[0], $filterConfig[1]);
+				} else {
+					$filterVal = "%{$filter}%";
+					$query->where($field, 'like', $filterVal);
+				}
+			}
+		}
+		
 	}
 	
 }

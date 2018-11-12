@@ -1,10 +1,11 @@
 <?php
 
 return [
-	'table' => 'users',
+	'model' => \App\Models\User::class,
 	'where' => ['user_type', \App\Models\Kitchen::class],
 	'joins' => [
-		['kitchens', 'users.user_id', 'kitchens.id']
+		['kitchens', 'users.user_id', 'kitchens.id'],
+		['photos', 'photos.kitchen_id', 'kitchens.id']
 	],
 	
 	'fields' => [[
@@ -19,7 +20,22 @@ return [
 		'name' => 'status',
 		'title' => 'misc.status',
 		'filter' => [
-			'new', 'motherlist'
-		]
+			'new' => 'datatable.new',
+			'motherlist' => 'datatable.motherlist'
+		],
+		'callback' => 'translate'
+	], [
+		'name' => 'count(kitchen_id)',
+		'sortField' => 'count(kitchen_id)',
+		'title' => 'misc.photos',
+		'filter' => [
+			'yes' => 'datatable.yes',
+			'no' => 'datatable.no'
+		],
+		'filterDefinitions' => [
+			'yes' => ['>', 0],
+			'no' => ['0', 0],
+		],
+		'callback' => 'numToBoolTag'
 	]]
 ];

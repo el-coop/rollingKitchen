@@ -5,5 +5,6 @@ return [
 	'name' => 'Name',
 	'email' => 'Email',
 	'status' => 'Status',
+	'photos' => 'Photos'
 
 ];

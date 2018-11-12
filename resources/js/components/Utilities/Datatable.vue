@@ -10,6 +10,8 @@
 							  :css="css"
 							  :append-params="params"
 							  :per-page="perPage"
+							  @vuetable:cell-clicked="cellClicked"
+							  @vuetable:row-clicked="rowClicked"
 							  @vuetable:pagination-data="paginationData"
 							  @vuetable:loading='tableLoading'
 							  @vuetable:loaded='tableLoaded'>
@@ -41,9 +43,12 @@
 	import Vuetable from 'vuetable-2/src/components/Vuetable.vue';
 	import VuetablePaginationInfo from 'vuetable-2/src/components/VuetablePaginationInfo.vue';
 	import VuetablePagination from './DatatablePagination';
-	import DatatableFilter from "./DatatableFilter";
+	import DatatableFilter from './DatatableFilter';
+	import DatatableFormatters from './DatatableFormatters';
 
 	export default {
+		name: 'Datatable',
+		mixins: [DatatableFormatters],
 		components: {
 			DatatableFilter,
 			Vuetable,
@@ -51,11 +56,18 @@
 			VuetablePagination
 		},
 		props: {
+			translations: {
+				type: Object,
+				required: false,
+				default() {
+					return {};
+				}
+			},
 			url: {
 				required: true,
 				type: String
 			},
-			fields: {
+			fieldSettings: {
 				type: Array,
 				default() {
 					return [];
@@ -82,6 +94,7 @@
 
 		data() {
 			return {
+				fields: [],
 				loading: false,
 				tableCss: 'table is-bordered is-striped is-fullwidth',
 				css: {
@@ -94,12 +107,19 @@
 			}
 		},
 
-		computed: {},
-
-		mounted() {
+		created() {
+			this.fields = this.calcFields(this.fieldSettings);
 		},
 
 		methods: {
+			calcFields(settings) {
+				return settings.map((field) => {
+					if (field.callback) {
+						field.callback = this[field.callback].bind(this)
+					}
+					return field;
+				});
+			},
 			paginationData(paginationData) {
 				this.$refs.pagination.setPaginationData(paginationData);
 				this.$refs.paginationInfo.setPaginationData(paginationData);
@@ -119,6 +139,16 @@
 				Vue.nextTick(() => {
 					this.$refs.table.refresh()
 				})
+			},
+			cellClicked(data, field, event) {
+				this.$bus.$emit('vuetable-cell-clicked', {
+					data, field, event
+				});
+			},
+			rowClicked(data, event) {
+				this.$bus.$emit('vuetable-row-clicked', {
+					data, event
+				});
 			}
 		},
 	}

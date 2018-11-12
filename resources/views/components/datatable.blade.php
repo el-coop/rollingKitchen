@@ -6,14 +6,25 @@ if (!isset($fields)) {
 		if (isset($field['title'])) {
 			$field['title'] = __($field['title']);
 		}
+		if (is_array($field['filter'] ?? false)) {
+			foreach ($field['filter'] as $key => $value) {
+				$field['filter'][$key] = __($value);
+			}
+		}
 		return $field;
 	});
-
 }
 ?>
-<datatable :fields="{{ $fields }}"
+<datatable :field-settings="{{ $fields }}"
 		   :extra-params="{
 		   		table: '{{$table}}'
+		   }"
+		   :translations="{
+		   		yes: '@lang('datatable.yes')',
+		   		no: '@lang('datatable.no')',
+				motherlist: '@lang('datatable.motherlist')',
+		   		new: '@lang('datatable.new')',
+
 		   }"
 		   url="{{ action('DatatableController@list') }}"
 		   :labels="{
