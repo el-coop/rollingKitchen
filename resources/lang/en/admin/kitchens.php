@@ -2,5 +2,6 @@
 
 return [
 	'kitchens' => 'Kitchens',
-	'motherlist' => 'Motherlist'
+	'motherlist' => 'Motherlist',
+    'fields' => 'Fields'
 ];

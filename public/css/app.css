@@ -12149,6 +12149,10 @@ body,
   width: 100%;
 }
 
+.navbar {
+  margin-bottom: 1rem;
+}
+
 .dashboard {
   display: grid;
   grid-template-columns: auto;
