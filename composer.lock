@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "66ca7343889332c2b8ecca11c251430c",
+    "content-hash": "0781bc284340d8f601f789c2ff75ca92",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -451,6 +451,49 @@
                 }
             ],
             "time": "2015-04-20T18:58:01+00:00"
+        },
+        {
+            "name": "justbetter/laravel-pagination-with-havings",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/justbetter/laravel-pagination-with-havings.git",
+                "reference": "49726a83399a8543c85dc1052763c11bb0d43509"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/justbetter/laravel-pagination-with-havings/zipball/49726a83399a8543c85dc1052763c11bb0d43509",
+                "reference": "49726a83399a8543c85dc1052763c11bb0d43509",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "~5.5.0|~5.6.0|~5.7.0",
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "JustBetter\\PaginationWithHavings\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Roy Duineveld",
+                    "email": "royduineveld@gmail.com"
+                }
+            ],
+            "description": "Makes it possible to use pagination with havings in queries.",
+            "homepage": "https://github.com/justbetter/laravel-pagination-with-havings",
+            "keywords": [
+                "having",
+                "laravel",
+                "pagination"
+            ],
+            "time": "2018-09-11T13:23:27+00:00"
         },
         {
             "name": "laravel/framework",

@@ -7,6 +7,9 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+import modal from 'vue-js-modal';
+
+Vue.use(modal);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

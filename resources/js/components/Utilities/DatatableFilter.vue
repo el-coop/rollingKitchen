@@ -4,10 +4,10 @@
 		<div v-for="field in fields" class="field">
 			<label class="label" v-text="field.title || field.name"></label>
 			<div class="control">
-				<div v-if="Array.isArray(field.filter)" class="select is-fullwidth">
+				<div v-if="typeof field.filter === 'object'" class="select is-fullwidth">
 					<select v-model="filters[field.name]">
 						<option></option>
-						<option v-for="option in field.filter" :valu="option" v-text="option"></option>
+						<option v-for="(option, key) in field.filter" :value="key" v-text="option"></option>
 					</select>
 				</div>
 				<input v-else v-model="filters[field.name]" class="input" type="text" placeholder="">
@@ -58,7 +58,3 @@
 		}
 	}
 </script>
-
-<style scoped>
-
-</style>
