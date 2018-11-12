@@ -7,6 +7,9 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+import VModal from 'vue-js-modal';
+Vue.use(VModal);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -17,6 +20,8 @@ require('./Components/components');
 
 Vue.prototype.$bus = new Vue();
 
+
 const app = new Vue({
 	el: '#app'
 });
+

@@ -73,4 +73,12 @@ class KitchenController extends Controller {
 	public function destroy(Kitchen $kitchen) {
 		//
 	}
+
+	public function fields(){
+        $fields  = Kitchen::fields()->sortBy('order');
+        return view('admin.kitchens.fields', compact('fields'));
+
+    }
+
+
 }

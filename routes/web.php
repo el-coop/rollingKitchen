@@ -12,10 +12,10 @@
 */
 
 
-Route::get('/', function () {
-	return view('welcome');
-});
 
+Route::get('/', function () {
+    return view('welcome');
+});
 foreach (\File::allFiles(__DIR__ . "/web") as $routeFile) {
-	include $routeFile;
+    include $routeFile;
 }
