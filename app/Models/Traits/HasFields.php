@@ -13,7 +13,7 @@ use App\Models\Field;
 
 trait HasFields {
     static function fields(){
-        return Field::where('form',static::class)->get();
+        return Field::where('form',static::class)->orderBy('order')->get();
     }
 
 }
