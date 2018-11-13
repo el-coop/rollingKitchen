@@ -5,3 +5,5 @@ Vue.component('Navbar', require('./Global/Navbar'));
 Vue.component('RightModal', require('./Utilities/RightModal'));
 Vue.component('ModalComponent', require('./Utilities/ModalComponent'));
 Vue.component('ModalForm', require('./Form/ModalForm'));
+Vue.component('FieldForm', require('./Form/FieldForm'));
+Vue.component('FieldListPage', require('./Pages/FieldListPage'));

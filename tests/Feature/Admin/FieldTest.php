@@ -37,4 +37,9 @@ class FieldTest extends TestCase {
         $this->assertDatabaseMissing('fields', ['name' => $field->name, 'type' => $field->type]);
         $this->assertDatabaseHas('fields', ['name' => 'new name', 'type' => 'text']);
     }
+
+    public function test_checkbox(){
+        $response = $this->post(action('Admin\FieldController@create'), ['name' => 'test', 'type' => 'checkbox', 'form' => Kitchen::class, 'order' =>  1]);
+
+    }
 }

@@ -1,0 +1,112 @@
+<template>
+    <form method="POST">
+        <slot name="csrf"></slot>
+        <slot name="method" v-if="editField !== null"></slot>
+        <div class="field">
+            <label class="label">Name</label>
+            <div class="control">
+                <input class="input" type="text" name="name" v-model="form.name" required>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Dutch Name</label>
+            <div class="control">
+                <input class="input" type="text" placeholder="name" name="dutch_name" v-model="form.dutch_name"
+                       required>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Type</label>
+            <div class="control">
+                <div class="select">
+                    <select name="type" v-model="form.type" required>
+                        <option :selected="isSelected(typename)" v-for="(typename, index) in types">{{typename}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div v-if="form.type == 'checkbox'" class="field">
+            <label class="label">Options</label>
+            <div v-for="(option, index) in options" class="field">
+                <div class="control ">
+                    <input type="text" class="input" name="options[]" :value="option" required/>
+                </div>
+            </div>
+            <div class="control">
+                <button v-on:click="addOption" type="button" class="button is-success">Add</button>
+                <button v-on:click="removeOption" type="button" class="button is-danger">Remove</button>
+            </div>
+        </div>
+        <input name="form" hidden :value="fieldForm"/>
+        <div class="field">
+            <div class="control">
+                <button type="submit" :formaction="isEdit" class="button is-info">
+                    {{this.btn}}
+                </button>
+            </div>
+        </div>
+    </form>
+</template>
+
+<script>
+    export default {
+        name: "field-form",
+        props: {
+            fieldForm: {
+                type: String,
+                required: true
+            },
+            editField: {
+                required: true
+            }
+        },
+        data() {
+            return {
+                type: '',
+                options: [''],
+                types: ['checkbox', 'text', 'textarea'],
+                form: {
+                    name: '',
+                    dutch_name: '',
+                    type: ''
+                },
+                btn: 'Create'
+            }
+        },
+        methods: {
+            addOption() {
+                this.options.push('');
+            },
+            removeOption() {
+                this.options.pop();
+            },
+            isSelected(typename) {
+                return this.type === typename;
+            }
+        },
+        computed: {
+            isEdit() {
+                if (this.editField) {
+                    this.btn = 'Edit';
+                    this.form.type = this.editField.type;
+                    this.form.name = this.editField.name;
+                    this.form.dutch_name = this.editField.dutch_name;
+                    if (this.editField.type === 'checkbox') {
+                        let options = this.editField.options.replace(/"/g, '');
+                        options = options.replace('[', '');
+                        options = options.replace(']', '');
+                        options = options.replace(/ /g, '');
+                        options = options.split(',');
+                        this.options.pop();
+                        options.forEach((option) => {
+                            this.options.push(option);
+                        })
+                    }
+                    return '/admin/field/' + this.editField.id
+                }
+                return '/admin/field';
+            }
+        }
+    }
+</script>

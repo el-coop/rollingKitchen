@@ -17,11 +17,12 @@ class FieldController extends Controller {
 
     public function create(CreateFieldRequest $request) {
         $field = $request->commit();
-        return $field;
+        return back();
     }
 
     public function edit(Field $field, EditFieldRequest $request) {
         $field = $request->commit();
+        return back();
     }
 
     public function delete(Field $field, DeleteFieldRequest $request) {

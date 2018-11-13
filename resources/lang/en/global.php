@@ -2,5 +2,6 @@
 
 return [
     'delete' => 'Delete',
-    'edit' => 'Edit'
+    'edit' => 'Edit',
+    'create' => 'Create'
 ];

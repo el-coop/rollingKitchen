@@ -8,12 +8,12 @@ use App\Models\User;
 use Illuminate\Http\Request;
 
 class KitchenController extends Controller {
-	
+
 	public function index() {
 		return view('admin.kitchens.index');
 	}
-	
-	
+
+
 	/**
 	 * Show the form for creating a new resource.
 	 *
@@ -22,7 +22,7 @@ class KitchenController extends Controller {
 	public function create() {
 		//
 	}
-	
+
 	/**
 	 * Store a newly created resource in storage.
 	 *
@@ -32,7 +32,7 @@ class KitchenController extends Controller {
 	public function store(Request $request) {
 		return true;
 	}
-	
+
 	/**
 	 * Display the specified resource.
 	 *
@@ -42,7 +42,7 @@ class KitchenController extends Controller {
 	public function show(Kitchen $kitchen) {
 		//
 	}
-	
+
 	/**
 	 * Show the form for editing the specified resource.
 	 *
@@ -52,7 +52,7 @@ class KitchenController extends Controller {
 	public function edit(Kitchen $kitchen) {
 		//
 	}
-	
+
 	/**
 	 * Update the specified resource in storage.
 	 *
@@ -63,7 +63,7 @@ class KitchenController extends Controller {
 	public function update(Request $request, Kitchen $kitchen) {
 		//
 	}
-	
+
 	/**
 	 * Remove the specified resource from storage.
 	 *
