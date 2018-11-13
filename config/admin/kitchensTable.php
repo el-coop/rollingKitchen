@@ -9,6 +9,11 @@ return [
 	],
 	
 	'fields' => [[
+		'name' => 'id',
+		'table' => 'users',
+		'title' => 'id',
+		'visible' => false
+	], [
 		'name' => 'name',
 		'title' => 'misc.name',
 		'sortField' => 'name',

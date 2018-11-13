@@ -36,4 +36,6 @@ if (!isset($fields)) {
 		   		filter: '@lang('datatable.filter')',
 		   		clear: '@lang('datatable.clear')',
 		   }"
-></datatable>
+>
+	{{ $slot }}
+</datatable>

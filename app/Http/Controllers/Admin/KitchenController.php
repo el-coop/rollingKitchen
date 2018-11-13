@@ -13,7 +13,6 @@ class KitchenController extends Controller {
 		return view('admin.kitchens.index');
 	}
 	
-	
 	/**
 	 * Show the form for creating a new resource.
 	 *
@@ -50,7 +49,8 @@ class KitchenController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function edit(Kitchen $kitchen) {
-		//
+		
+		return $kitchen->fullData;
 	}
 	
 	/**
@@ -73,12 +73,12 @@ class KitchenController extends Controller {
 	public function destroy(Kitchen $kitchen) {
 		//
 	}
-
-	public function fields(){
-        $fields  = Kitchen::fields()->sortBy('order');
-        return view('admin.kitchens.fields', compact('fields'));
-
-    }
-
-
+	
+	public function fields() {
+		$fields = Kitchen::fields()->sortBy('order');
+		return view('admin.kitchens.fields', compact('fields'));
+		
+	}
+	
+	
 }

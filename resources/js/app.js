@@ -8,7 +8,11 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 import VModal from 'vue-js-modal';
+import 'izitoast/dist/css/iziToast.css';
+import VueIziToast from 'vue-izitoast';
+
 Vue.use(VModal);
+Vue.use(VueIziToast);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

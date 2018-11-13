@@ -36,6 +36,9 @@
 								  :filters-text="labels.filters" :clear-text="labels.clear"></datatable-filter>
 			</div>
 		</div>
+		<datatable-row-display>
+			<slot :object="object"></slot>
+		</datatable-row-display>
 	</div>
 </template>
 
@@ -45,11 +48,13 @@
 	import VuetablePagination from './DatatablePagination';
 	import DatatableFilter from './DatatableFilter';
 	import DatatableFormatters from './DatatableFormatters';
+	import DatatableRowDisplay from "./DatatableRowDisplay";
 
 	export default {
 		name: 'Datatable',
 		mixins: [DatatableFormatters],
 		components: {
+			DatatableRowDisplay,
 			DatatableFilter,
 			Vuetable,
 			VuetablePaginationInfo,
@@ -103,7 +108,8 @@
 					descendingClass: 'column-sorted column-sorted-down',
 				},
 				perPage: 20,
-				params: this.extraParams
+				params: this.extraParams,
+				object: null
 			}
 		},
 
@@ -146,6 +152,8 @@
 				});
 			},
 			rowClicked(data, event) {
+				this.$modal.show('datatable-row');
+				this.object = data;
 				this.$bus.$emit('vuetable-row-clicked', {
 					data, event
 				});
@@ -209,7 +217,7 @@
 
 	.table-wrapper {
 		display: flex;
-		flex-direction: column-reverse;
+		flex-direction: column;
 
 		> .table-parent {
 			flex: 1;
