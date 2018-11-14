@@ -17,7 +17,7 @@ class Kitchen extends Model {
 	public function user() {
 		return $this->morphOne(User::class, 'user');
 	}
-
+	
 	public function photos() {
 		return $this->hasMany(Photo::class);
 	}
@@ -36,7 +36,11 @@ class Kitchen extends Model {
 		], [
 			'name' => 'status',
 			'label' => __('misc.status'),
-			'type' => 'text',
+			'type' => 'select',
+			'options' => [
+				'new' => __('datatable.new'),
+				'motherlist' => __('datatable.motherlist')
+			],
 			'value' => $this->status
 		]]);
 		
@@ -45,7 +49,7 @@ class Kitchen extends Model {
 				'name' => $item->name,
 				'label' => $item->name,
 				'type' => $item->type,
-				'value' => $this->data[$item->name]
+				'value' => $this->data[$item->name] ?? ''
 			];
 		});
 		

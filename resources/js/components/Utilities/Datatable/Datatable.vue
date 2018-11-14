@@ -37,7 +37,7 @@
 			</div>
 		</div>
 		<datatable-row-display>
-			<slot :object="object"></slot>
+			<slot :object="object" :on-update="updateObject"></slot>
 		</datatable-row-display>
 	</div>
 </template>
@@ -157,13 +157,22 @@
 				this.$bus.$emit('vuetable-row-clicked', {
 					data, event
 				});
+			},
+			updateObject(data) {
+				this.object = data;
+				const currentData = this.$refs.table.tableData;
+				const elementIndex = currentData.findIndex((row) => {
+					return row.id === data.id;
+				});
+				currentData[elementIndex] = data;
+				this.$refs.table.setData(currentData);
 			}
 		},
 	}
 </script>
 
 <style lang="scss">
-	@import "../../../sass/variables";
+	@import "../../../../sass/variables";
 
 	.table.is-loading {
 		opacity: 0.4;

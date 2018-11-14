@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Kitchen\UpdateKitchenRequest;
 use App\Models\Kitchen;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class KitchenController extends Controller {
-
+	
 	public function index() {
 		return view('admin.kitchens.index');
 	}
@@ -21,7 +22,7 @@ class KitchenController extends Controller {
 	public function create() {
 		//
 	}
-
+	
 	/**
 	 * Store a newly created resource in storage.
 	 *
@@ -31,7 +32,7 @@ class KitchenController extends Controller {
 	public function store(Request $request) {
 		return true;
 	}
-
+	
 	/**
 	 * Display the specified resource.
 	 *
@@ -41,7 +42,7 @@ class KitchenController extends Controller {
 	public function show(Kitchen $kitchen) {
 		//
 	}
-
+	
 	/**
 	 * Show the form for editing the specified resource.
 	 *
@@ -52,7 +53,7 @@ class KitchenController extends Controller {
 		
 		return $kitchen->fullData;
 	}
-
+	
 	/**
 	 * Update the specified resource in storage.
 	 *
@@ -60,10 +61,10 @@ class KitchenController extends Controller {
 	 * @param  \App\Models\Kitchen $kitchen
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(Request $request, Kitchen $kitchen) {
-		//
+	public function update(UpdateKitchenRequest $request, Kitchen $kitchen) {
+		return $request->commit();
 	}
-
+	
 	/**
 	 * Remove the specified resource from storage.
 	 *
@@ -73,12 +74,12 @@ class KitchenController extends Controller {
 	public function destroy(Kitchen $kitchen) {
 		//
 	}
-
-	public function fields(){
-        $fields  = Kitchen::fields();
-        return view('admin.kitchens.fields', compact('fields'));
-
-    }
-
-
+	
+	public function fields() {
+		$fields = Kitchen::fields();
+		return view('admin.kitchens.fields', compact('fields'));
+		
+	}
+	
+	
 }
