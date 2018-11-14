@@ -10,10 +10,14 @@ namespace App\Models\Traits;
 
 
 use App\Models\Field;
+use Illuminate\Support\Facades\DB;
 
 trait HasFields {
     static function fields(){
-        return Field::where('form',static::class)->get();
+        return Field::where('form',static::class)->orderBy('order')->get();
+    }
+    static function getLastFieldOrder(){
+        return DB::table('fields')->where('form', '=',static::class)->max('order');
     }
 
 }

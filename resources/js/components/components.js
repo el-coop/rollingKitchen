@@ -7,3 +7,4 @@ Vue.component('ModalComponent', require('./Utilities/ModalComponent'));
 Vue.component('ModalForm', require('./Form/ModalForm'));
 Vue.component('FieldForm', require('./Form/FieldForm'));
 Vue.component('FieldListPage', require('./Pages/FieldListPage'));
+Vue.component('DraggableFieldList', require('./Utilities/DraggableFieldList'));

@@ -29,7 +29,7 @@ class EditFieldRequest extends FormRequest
         return [
             'name' => 'required|string',
             'type' => 'required|string|in:text,textarea,checkbox',
-            'options' => 'required_if:type,checkbox|json'
+            'options' => 'required_if:type,checkbox|array'
         ];
     }
 
@@ -37,7 +37,11 @@ class EditFieldRequest extends FormRequest
         $this->field->name = $this->input('name');
         $this->field->type = $this->input('type');
         if ($this->field->type == 'checkbox') {
-            $this->field->json = $this->input('options');
+            $options = [];
+            foreach ($this->input('options') as $option){
+                $options[] = $option;
+            }
+            $this->field->options = json_encode($options);
         }
         $this->field->save();
         return $this->field;

@@ -3,5 +3,8 @@
 return [
     'delete' => 'Delete',
     'edit' => 'Edit',
-    'create' => 'Create'
+    'create' => 'Create',
+    'en' => 'English',
+    'nl' => 'Dutch',
+    'name' => 'Name'
 ];

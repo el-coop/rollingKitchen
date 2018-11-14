@@ -11,7 +11,7 @@
         <div class="field">
             <label class="label">Dutch Name</label>
             <div class="control">
-                <input class="input" type="text" placeholder="name" name="dutch_name" v-model="form.dutch_name"
+                <input class="input" type="text" placeholder="name" name="name_nl" v-model="form.name_nl"
                        required>
             </div>
         </div>
@@ -28,20 +28,20 @@
         </div>
         <div v-if="form.type == 'checkbox'" class="field">
             <label class="label">Options</label>
-            <div v-for="(option, index) in options" class="field">
+            <div v-for="option in options" class="field">
                 <div class="control ">
-                    <input type="text" class="input" name="options[]" :value="option" required/>
+                    <input type="text" class="input" name="options[]" v-model="option.value" required/>
                 </div>
             </div>
             <div class="control">
                 <button v-on:click="addOption" type="button" class="button is-success">Add</button>
-                <button v-on:click="removeOption" type="button" class="button is-danger">Remove</button>
+                <button v-if="options.length > 1" v-on:click="removeOption" type="button" class="button is-danger">Remove</button>
             </div>
         </div>
         <input name="form" hidden :value="fieldForm"/>
         <div class="field">
             <div class="control">
-                <button type="submit" :formaction="isEdit" class="button is-info">
+                <button type="submit" :formaction="action" class="button is-info">
                     {{this.btn}}
                 </button>
             </div>
@@ -64,19 +64,20 @@
         data() {
             return {
                 type: '',
-                options: [''],
+                options: [{value: ''}],
                 types: ['checkbox', 'text', 'textarea'],
                 form: {
                     name: '',
-                    dutch_name: '',
+                    name_nl: '',
                     type: ''
                 },
-                btn: 'Create'
+                btn: 'Create',
+                action: '/admin/field'
             }
         },
         methods: {
             addOption() {
-                this.options.push('');
+                this.options.push({ value: '' })
             },
             removeOption() {
                 this.options.pop();
@@ -85,27 +86,18 @@
                 return this.type === typename;
             }
         },
-        computed: {
-            isEdit() {
-                if (this.editField) {
-                    this.btn = 'Edit';
-                    this.form.type = this.editField.type;
-                    this.form.name = this.editField.name;
-                    this.form.dutch_name = this.editField.dutch_name;
-                    if (this.editField.type === 'checkbox') {
-                        let options = this.editField.options.replace(/"/g, '');
-                        options = options.replace('[', '');
-                        options = options.replace(']', '');
-                        options = options.replace(/ /g, '');
-                        options = options.split(',');
-                        this.options.pop();
-                        options.forEach((option) => {
-                            this.options.push(option);
-                        })
-                    }
-                    return '/admin/field/' + this.editField.id
+        mounted() {
+            if (this.editField) {
+                this.action = '/admin/field/' + this.editField.id;
+                this.btn = 'Edit';
+                this.form = this.editField;
+                if (this.editField.type === 'checkbox') {
+                    this.options.pop();
+                    let options = JSON.parse(this.editField.options);
+                    options.forEach((option) => {
+                        this.options.push({value: option});
+                    });
                 }
-                return '/admin/field';
             }
         }
     }

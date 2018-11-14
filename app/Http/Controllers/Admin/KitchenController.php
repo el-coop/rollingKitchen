@@ -75,7 +75,7 @@ class KitchenController extends Controller {
 	}
 
 	public function fields(){
-        $fields  = Kitchen::fields()->sortBy('order');
+        $fields  = json_encode(Kitchen::fields());
         return view('admin.kitchens.fields', compact('fields'));
 
     }
