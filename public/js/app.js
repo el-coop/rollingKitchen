@@ -20326,8 +20326,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.form = this.editField;
             if (this.editField.type === 'checkbox') {
                 this.options.pop();
-                var options = JSON.parse(this.editField.options);
-                options.forEach(function (option) {
+                this.editField.options.forEach(function (option) {
                     _this.options.push({ value: option });
                 });
             }

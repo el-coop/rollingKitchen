@@ -43,7 +43,7 @@ class CreateFieldRequest extends FormRequest {
         // maybe we implement some kind of switch case or a function that will do that when we have more model fields
         $field->order = Kitchen::getLastFieldOrder() + 1;
         if ($field->type == 'checkbox') {
-            $field->options = json_encode($this->input('options'));
+            $field->options = $this->input('options');
         }
         $field->save();
         return $field;

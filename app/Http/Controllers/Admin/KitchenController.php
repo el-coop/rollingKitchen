@@ -75,7 +75,7 @@ class KitchenController extends Controller {
 	}
 
 	public function fields(){
-        $fields  = json_encode(Kitchen::fields());
+        $fields  = Kitchen::fields();
         return view('admin.kitchens.fields', compact('fields'));
 
     }

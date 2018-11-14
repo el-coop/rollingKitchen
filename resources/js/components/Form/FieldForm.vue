@@ -93,8 +93,7 @@
                 this.form = this.editField;
                 if (this.editField.type === 'checkbox') {
                     this.options.pop();
-                    let options = JSON.parse(this.editField.options);
-                    options.forEach((option) => {
+                    this.editField.options.forEach((option) => {
                         this.options.push({value: option});
                     });
                 }

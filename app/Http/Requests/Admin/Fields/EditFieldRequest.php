@@ -41,7 +41,7 @@ class EditFieldRequest extends FormRequest
             foreach ($this->input('options') as $option){
                 $options[] = $option;
             }
-            $this->field->options = json_encode($options);
+            $this->field->options = $options;
         }
         $this->field->save();
         return $this->field;
