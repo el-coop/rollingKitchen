@@ -10,7 +10,7 @@ return [
 	
 	'fields' => [[
 		'name' => 'id',
-		'table' => 'users',
+		'table' => 'kitchens',
 		'title' => 'id',
 		'visible' => false
 	], [

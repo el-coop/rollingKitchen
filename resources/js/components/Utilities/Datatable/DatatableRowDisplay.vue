@@ -15,7 +15,7 @@
 </script>
 
 <style lang="scss">
-	@import "../../../sass/variables";
+	@import "../../../../sass/variables";
 
 	.modal-body {
 		height: 100vh;

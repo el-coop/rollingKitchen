@@ -8,8 +8,9 @@ Route::group(['prefix' => 'admin'], function () {
 	Route::group(['namespace' => 'Admin'], function () {
 		Route::group(['prefix' => 'kitchens'], function () {
 			Route::get('/', 'KitchenController@index');
-			Route::get('/{kitchen}', 'KitchenController@edit');
 			Route::get('/fields', 'KitchenController@fields');
+			Route::get('/{kitchen}', 'KitchenController@edit');
+			Route::patch('/{kitchen}', 'KitchenController@update');
 			Route::get('/fields/list', 'KitchenController@getFields');
 		});
 		
