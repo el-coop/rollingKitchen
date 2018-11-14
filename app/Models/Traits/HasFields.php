@@ -15,5 +15,8 @@ trait HasFields {
     static function fields(){
         return Field::where('form',static::class)->orderBy('order')->get();
     }
+    static function getLastFieldOrder(){
+        return Field::where('form', '=',static::class)->max('order');
+    }
 
 }

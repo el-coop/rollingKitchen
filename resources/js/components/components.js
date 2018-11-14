@@ -5,3 +5,6 @@ Vue.component('Navbar', require('./Global/Navbar'));
 Vue.component('ModalComponent', require('./Utilities/ModalComponent'));
 Vue.component('ModalForm', require('./Form/ModalForm'));
 Vue.component('DynamicForm', require('./Form/DynamicForm'));
+Vue.component('FieldForm', require('./Form/FieldForm'));
+Vue.component('FieldListPage', require('./Pages/FieldListPage'));
+Vue.component('DraggableFieldList', require('./Utilities/DraggableFieldList'));

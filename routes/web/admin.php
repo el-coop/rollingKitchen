@@ -17,6 +17,7 @@ Route::group(['prefix' => 'admin'], function () {
 			Route::post('/', 'FieldController@create');
 			Route::delete('/{field}', 'FieldController@delete');
 			Route::patch('/{field}', 'FieldController@edit');
+			Route::post('/saveOrder', 'FieldController@saveOrder');
 		});
 	});
 });

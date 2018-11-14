@@ -2,5 +2,9 @@
 
 return [
     'delete' => 'Delete',
-    'edit' => 'Edit'
+    'edit' => 'Edit',
+    'create' => 'Create',
+    'en' => 'English',
+    'nl' => 'Dutch',
+    'name' => 'Name'
 ];

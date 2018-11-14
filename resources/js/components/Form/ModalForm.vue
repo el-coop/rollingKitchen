@@ -1,6 +1,6 @@
 <template>
     <modal-component  :name="name">
-        <slot :object="object"/>
+        <slot></slot>
     </modal-component>
 </template>
 
@@ -12,18 +12,6 @@
                 type: String,
                 required: true
             },
-        },
-
-        data(){
-            return {
-                object: null
-            }
-        },
-
-        mounted(){
-            this.$bus.$on('open-edit-modal', (object) => {
-                this.object = object;
-            })
         }
     }
 </script>

@@ -26,20 +26,24 @@ class CreateFieldRequest extends FormRequest {
         return [
             'name' => 'required|string',
             'type' => 'required|string|in:text,textarea,checkbox',
-            'order' => Rule::unique('fields')->where('order', $this->input('form')),
             'form' => 'required|string|in:' . Kitchen::class,
-            'options' => 'required_if:type,checkbox|json'
+            'options' => 'required_if:type,checkbox|array',
+            'name_nl' => 'required:string'
 
         ];
     }
 
     public function commit(){
+
         $field = new Field;
         $field->form = $this->input('form');
         $field->name = $this->input('name');
         $field->type = $this->input('type');
+        $field->name_nl = $this->input('name_nl');
+        // maybe we implement some kind of switch case or a function that will do that when we have more model fields
+        $field->order = Kitchen::getLastFieldOrder() + 1;
         if ($field->type == 'checkbox') {
-            $field->json = $this->input('options');
+            $field->options = $this->input('options');
         }
         $field->save();
         return $field;
