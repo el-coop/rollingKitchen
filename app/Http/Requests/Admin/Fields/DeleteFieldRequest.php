@@ -4,18 +4,18 @@ namespace App\Http\Requests\Admin\Fields;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DeleteFieldRequest extends FormRequest
-{
+class DeleteFieldRequest extends FormRequest {
     protected $field;
+
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
-    {
+    public function authorize() {
         $this->field = $this->route('field');
-        return true;
+
+        return $this->user()->can('delete', $this->field);
     }
 
     /**
@@ -23,14 +23,13 @@ class DeleteFieldRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             //
         ];
     }
 
-    public function commit(){
+    public function commit() {
         $this->field->delete();
     }
 }

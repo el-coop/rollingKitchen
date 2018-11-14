@@ -1,10 +1,12 @@
 <?php
 
 return [
-	
+
 	'name' => 'Name',
 	'email' => 'Email',
 	'status' => 'Status',
-	'photos' => 'Photos'
+	'photos' => 'Photos',
+    'password' => 'Password',
+    'login' => 'Login'
 
 ];
