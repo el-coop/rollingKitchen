@@ -19,3 +19,5 @@ Route::get('/', function () {
 foreach (\File::allFiles(__DIR__ . "/web") as $routeFile) {
     include $routeFile;
 }
+
+Auth::routes();

@@ -14,7 +14,7 @@ class CreateFieldRequest extends FormRequest {
      * @return bool
      */
     public function authorize() {
-        return true;
+        return $this->user()->can('create', Field::class);
     }
 
     /**

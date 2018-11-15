@@ -6,5 +6,6 @@ return [
     'create' => 'Create',
     'en' => 'English',
     'nl' => 'Dutch',
-    'name' => 'Name'
+    'name' => 'Name',
+    'title' => 'Rolling Kitchen'
 ];

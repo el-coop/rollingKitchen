@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class EditFieldRequest extends FormRequest {
 	protected $field;
-	
+
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
@@ -15,9 +15,9 @@ class EditFieldRequest extends FormRequest {
 	 */
 	public function authorize() {
 		$this->field = $this->route('field');
-		return true;
+        return $this->user()->can('update', $this->field);
 	}
-	
+
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -30,7 +30,7 @@ class EditFieldRequest extends FormRequest {
 			'options' => 'required_if:type,checkbox|array'
 		];
 	}
-	
+
 	public function commit() {
 		$this->field->name = $this->input('name');
 		$this->field->type = $this->input('type');
