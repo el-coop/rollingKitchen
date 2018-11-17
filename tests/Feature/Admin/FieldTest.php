@@ -7,7 +7,6 @@ use App\Models\Field;
 use App\Models\Kitchen;
 use App\Models\User;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class FieldTest extends TestCase {

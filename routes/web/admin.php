@@ -1,24 +1,24 @@
 <?php
 
 
-Route::group(['prefix' => 'admin', 'middleware' => ['auth'] ], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\Models\Admin::class]], function () {
 	Route::get('kitchens/list', 'DatatableController@list');
-
-
+	
+	
 	Route::group(['namespace' => 'Admin'], function () {
 		Route::group(['prefix' => 'kitchens'], function () {
 			Route::get('/', 'KitchenController@index');
-			Route::get('/fields', 'KitchenController@fields')->middleware('can:view,' . \App\Models\Field::class);
+			Route::get('/fields', 'KitchenController@fields');
 			Route::get('/{kitchen}', 'KitchenController@edit');
 			Route::patch('/{kitchen}', 'KitchenController@update');
 			Route::get('/fields/list', 'KitchenController@getFields');
 		});
-
+		
 		Route::group(['prefix' => 'field'], function () {
-			Route::post('/', 'FieldController@create')->middleware('can:create,' . \App\Models\Field::class);
-			Route::delete('/{field}', 'FieldController@delete')->middleware('can:delete,field');
-			Route::patch('/{field}', 'FieldController@edit')->middleware('can:update,field');
-			Route::post('/saveOrder', 'FieldController@saveOrder')->middleware('can:view,' . \App\Models\Field::class);
+			Route::post('/', 'FieldController@create');
+			Route::delete('/{field}', 'FieldController@delete');
+			Route::patch('/{field}', 'FieldController@edit');
+			Route::post('/saveOrder', 'FieldController@saveOrder');
 		});
 	});
 });

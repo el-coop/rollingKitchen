@@ -46,8 +46,8 @@ class DatatableController extends Controller {
 		foreach ($queryConfig['fields'] as $field) {
 			$fieldName = $field['name'];
 			if (strpos($fieldName, 'count') !== 0) {
-				$tableName = $field['table'] ?? '';
-				$selects[] = "{$tableName}.{$fieldName}";
+				$tableName = isset($field['table']) ? "{$field['table']}." :  '';
+				$selects[] = "{$tableName}{$fieldName}";
 			} else {
 				$selects[] = DB::raw("$fieldName");
 			}
