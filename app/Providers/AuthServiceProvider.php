@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Field;
+use App\Models\Kitchen;
 use App\Policies\FieldPolicy;
+use App\Policies\KitchenPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -14,8 +16,8 @@ class AuthServiceProvider extends ServiceProvider {
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
         Field::class => FieldPolicy::class,
+		Kitchen::class => KitchenPolicy::class
     ];
 
     /**
