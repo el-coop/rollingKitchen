@@ -2,7 +2,7 @@
 
 @section('content')
 	<div>
-		@component('components.datatable',['url' => '/admin/kitchens'])
+		@component('components.datatable')
 			<template slot-scope="{object, onUpdate}" v-if="object">
 				<div class="title is-size-3 has-text-centered" v-text="object.name"></div>
 				<dynamic-form :url="`/admin/kitchens/${object.id}`" :on-data-update="onUpdate"></dynamic-form>

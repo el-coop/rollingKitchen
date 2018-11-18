@@ -1,7 +1,7 @@
 <?php
 
 return [
-	
+
 	'pagination' => 'Displaying {from} to {to} of {total} items',
 	'noPagination' => 'No relevant data',
 	'next' => 'Next',
@@ -12,6 +12,9 @@ return [
 	'yes' => 'Yes',
 	'no' => 'No',
 	'new' => 'New',
-	'motherlist' => 'Motherlist'
+	'motherlist' => 'Motherlist',
+    'accepted' => 'Accepted',
+    'pending' => 'Pending',
+    'rejected' => 'Rejected'
 
 ];
