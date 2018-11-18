@@ -3,6 +3,7 @@
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\Models\Admin::class]], function () {
 	Route::get('kitchens/list', 'DatatableController@list');
+	Route::get('kitchens/export', 'DatatableController@export');
 	
 	
 	Route::group(['namespace' => 'Admin'], function () {
