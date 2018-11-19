@@ -113,9 +113,9 @@ class DatatableService implements FromCollection, WithHeadings {
 	}
 	
 	public function headings(): array {
-		return collect($this->queryConfig['fields'])->filter(function($item){
+		return collect($this->queryConfig['fields'])->filter(function ($item) {
 			return $item['visible'] ?? true;
-		})->map(function($item){
+		})->map(function ($item) {
 			return __($item['title'] ?? $item['name']);
 		})->toArray();
 	}
@@ -124,9 +124,23 @@ class DatatableService implements FromCollection, WithHeadings {
 	 * @return Collection
 	 */
 	public function collection() {
-		return $this->query()->get()->each(function($item){
-			unset($item->id);
-			$item->status = __("datatable.{$item->status}");
+		return $this->query()->get()->map(function ($item) {
+			return $this->formatField($item);
 		});
+	}
+	
+	protected function formatField($field) {
+		$formatted = $field;
+		$config = collect($this->queryConfig['fields']);
+		foreach ($config as $columnConfig) {
+			$column = $columnConfig['name'];
+			if (!($columnConfig['visible'] ?? true)) {
+				unset($formatted->$column);
+			} else if (($columnConfig['callback'] ?? false) == 'translate') {
+				$formatted->$column = __("datatable.{$formatted->$column}");
+			}
+		}
+		
+		return $formatted;
 	}
 }
