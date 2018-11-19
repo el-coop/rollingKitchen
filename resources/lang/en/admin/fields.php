@@ -1,5 +1,8 @@
 <?php
 
 return [
-    'type' => 'Type'
+    'type' => 'Type',
+	'Kitchen' => 'Kitchens',
+	'Application' => 'Applications'
+
 ];

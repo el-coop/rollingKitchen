@@ -12,8 +12,11 @@ class Kitchen extends Model {
     protected $casts = [
         'data' => 'array'
     ];
-
-
+    
+	static function indexPage(){
+		return action('Admin\KitchenController@index',[],false);
+	}
+    
     public function user() {
         return $this->morphOne(User::class, 'user');
     }
@@ -50,15 +53,6 @@ class Kitchen extends Model {
             ]
         ]);
 
-        $data = static::fields()->map(function ($item) {
-            return [
-                'name' => $item->name,
-                'label' => $item->name,
-                'type' => $item->type,
-                'value' => $this->data[$item->name] ?? ''
-            ];
-        });
-
-        return $fullData->concat($data);
+        return $fullData->concat($this->getFieldsData());
     }
 }

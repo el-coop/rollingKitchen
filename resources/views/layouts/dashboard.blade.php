@@ -7,7 +7,8 @@
 				@foreach($dashboardItems as $label => $items)
 					@component('components.dashboardListItem', [
 						'label' => $label,
-						'items' => collect($items)
+						'items' => collect($items),
+						'indexLink' => $indexLink ?? false
 					])
 					@endcomponent
 				@endforeach

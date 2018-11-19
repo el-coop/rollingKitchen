@@ -8,31 +8,33 @@ use App\Http\Requests\Admin\Fields\DeleteFieldRequest;
 use App\Http\Requests\Admin\Fields\EditFieldRequest;
 use App\Http\Requests\Admin\Fields\OrderFieldRequest;
 use App\Models\Field;
-use Illuminate\Http\Request;
 
 class FieldController extends Controller {
-
-    public function index(){
-
-    }
-
-    public function create(CreateFieldRequest $request) {
-        $field = $request->commit();
-        return back();
-    }
-
-    public function edit(Field $field, EditFieldRequest $request) {
-        $field = $request->commit();
-        return back();
-    }
-
-    public function delete(Field $field, DeleteFieldRequest $request) {
-        $request->commit();
-        return back();
-    }
-
-    public function saveOrder(OrderFieldRequest $request){
-        $request->commit();
-        return back();
-    }
+	
+	public function index($type) {
+		$class = "App\\Models\\{$type}";
+		$indexLink = $class::indexPage();
+		$fields = $class::fields();
+		return view('admin.fields', compact('fields','class','type','indexLink'));
+	}
+	
+	public function create(CreateFieldRequest $request) {
+		$request->commit();
+		return back();
+	}
+	
+	public function edit(Field $field, EditFieldRequest $request) {
+		$request->commit();
+		return back();
+	}
+	
+	public function delete(Field $field, DeleteFieldRequest $request) {
+		$request->commit();
+		return back();
+	}
+	
+	public function saveOrder(OrderFieldRequest $request) {
+		$request->commit();
+		return back();
+	}
 }
