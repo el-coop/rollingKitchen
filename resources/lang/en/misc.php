@@ -7,6 +7,7 @@ return [
 	'status' => 'Status',
 	'photos' => 'Photos',
     'password' => 'Password',
-    'login' => 'Login'
+    'login' => 'Login',
+    'year' => 'Year'
 
 ];

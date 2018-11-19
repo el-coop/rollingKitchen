@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Application;
 use App\Models\Kitchen;
 use App\Models\Photo;
 use App\Models\User;
@@ -22,9 +23,9 @@ class KitchenSeeder extends Seeder {
 					} else {
 						$value = $faker->paragraph;
 					}
-					
+
 					return [$field->name => $value];
-					
+
 				});
 			}
 		])->each(function ($kitchen) use ($faker) {
@@ -33,8 +34,10 @@ class KitchenSeeder extends Seeder {
 			]);
 			$kitchen->user()->save($user);
 			$imagesNumber = rand(0, 4);
+
 			for ($i = 0; $i < $imagesNumber; $i++) {
 				$kitchen->photos()->save(factory(Photo::class)->make());
+				$kitchen->applications()->save(factory(Application::class)->make(['year' => 2015+$i]));
 			}
 		});
 	}
