@@ -15,7 +15,7 @@ class KitchenSeeder extends Seeder {
 	 * @return void
 	 */
 	public function run(Faker $faker) {
-		factory(Kitchen::class, 100)->create([
+		factory(Kitchen::class, 25)->create([
 			'data' => function() use ($faker){
 				return Kitchen::fields()->mapWithKeys(function ($field) use ($faker) {
 					if($field->type === 'text'){

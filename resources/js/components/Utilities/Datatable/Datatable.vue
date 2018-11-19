@@ -1,11 +1,16 @@
 <template>
 	<div>
+		<div class="box">
+			<a :href="`${this.url}/export?${exportOptions}`">
+				<button class="button is-dark">Download</button>
+			</a>
+		</div>
 		<div class="table-wrapper">
 			<div class="table-parent">
 				<div class="table-container">
 					<vuetable ref="table"
 							  pagination-path=""
-							  :api-url="url"
+							  :api-url="`${url}/list`"
 							  :fields="fields"
 							  :css="css"
 							  :append-params="params"
@@ -109,7 +114,8 @@
 				},
 				perPage: 20,
 				params: this.extraParams,
-				object: null
+				object: null,
+				exportOptions: ''
 			}
 		},
 
@@ -135,6 +141,17 @@
 			},
 			tableLoaded() {
 				this.css.tableClass = this.tableCss;
+
+				const name = window.location.pathname.split('/').slice(-1).pop();
+				this.exportOptions = `name=${name}`;
+				const params = this.$refs.table.httpOptions.params;
+				for (let option in params) {
+					let paramValue = params[option];
+					if (typeof paramValue !== 'string') {
+						paramValue = JSON.stringify(paramValue);
+					}
+					this.exportOptions += `&${option}=${paramValue}`;
+				}
 			},
 
 			changePage(page) {
@@ -168,6 +185,7 @@
 				this.$refs.table.setData(currentData);
 			}
 		},
+
 	}
 </script>
 

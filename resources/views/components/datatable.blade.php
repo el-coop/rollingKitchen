@@ -26,7 +26,7 @@ if (!isset($fields)) {
 		   		new: '@lang('datatable.new')',
 
 		   }"
-		   url="\admin\datatable\list"
+		   url="\admin\datatable"
 		   :labels="{
 		   		pagination: '@lang('datatable.pagination')',
 		   		noPagination: '@lang('datatable.noPagination')',
