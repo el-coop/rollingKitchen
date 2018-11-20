@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin\Fields;
 
+use App\Models\Application;
 use App\Models\Field;
 use App\Models\Kitchen;
 use Illuminate\Foundation\Http\FormRequest;
@@ -26,7 +27,7 @@ class CreateFieldRequest extends FormRequest {
         return [
             'name' => 'required|string',
             'type' => 'required|string|in:text,textarea,checkbox',
-            'form' => 'required|string|in:' . Kitchen::class,
+            'form' => 'required|string|in:' . Kitchen::class . ',' . Application::class,
             'options' => 'required_if:type,checkbox|array',
             'name_nl' => 'required:string'
 

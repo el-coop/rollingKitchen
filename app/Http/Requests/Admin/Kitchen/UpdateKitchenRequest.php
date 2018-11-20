@@ -5,13 +5,17 @@ namespace App\Http\Requests\Admin\Kitchen;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateKitchenRequest extends FormRequest {
+	private $kitchen;
+	
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
 	 * @return bool
 	 */
 	public function authorize() {
-		return true;
+		
+		$this->kitchen = $this->route('kitchen');
+		return $this->user()->can('update', $this->kitchen);
 	}
 	
 	/**
@@ -28,19 +32,18 @@ class UpdateKitchenRequest extends FormRequest {
 	}
 	
 	public function commit() {
-		$kitchen = $this->route('kitchen');
 		
-		$kitchen->user->name = $this->input('name');
-		$kitchen->user->email = $this->input('email');
-		$kitchen->status = $this->input('status');
+		$this->kitchen->user->name = $this->input('name');
+		$this->kitchen->user->email = $this->input('email');
+		$this->kitchen->status = $this->input('status');
 		
-		$kitchen->data = $this->except(['name', 'email', 'status']);
+		$this->kitchen->data = $this->except(['name', 'email', 'status']);
 		
-		$kitchen->user->save();
-		$kitchen->save();
+		$this->kitchen->user->save();
+		$this->kitchen->save();
 		
 		return [
-			'id' => $kitchen->id,
+			'id' => $this->kitchen->id,
 			'name' => $this->input('name'),
 			'email' => $this->input('email'),
 			'status' => $this->input('status')

@@ -33,12 +33,19 @@ return [
 
     'connections' => [
 
-        'sqlite' => [
-            'driver' => 'sqlite',
-            'database' => env('DB_DATABASE', database_path('database.sqlite')),
-            'prefix' => '',
-            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
-        ],
+		'sqlite' => [
+			'driver' => 'sqlite',
+			'database' => env('DB_DATABASE', database_path('database.sqlite')),
+			'prefix' => '',
+			'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
+		],
+
+		'testing' => [
+			'driver' => 'sqlite',
+			'database' => env('DB__TEST_DATABASE', database_path('database.sqlite')),
+			'prefix' => '',
+			'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
+		],
 
         'mysql' => [
             'driver' => 'mysql',
@@ -52,7 +59,7 @@ return [
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
             'prefix_indexes' => true,
-            'strict' => true,
+            'strict' => false,
 			'engine' => 'InnoDB',
         ],
 

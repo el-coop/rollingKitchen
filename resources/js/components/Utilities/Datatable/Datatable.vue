@@ -1,11 +1,19 @@
 <template>
 	<div>
+		<div class="box">
+			<div class="field is-grouped">
+				<div class="buttons">
+					<slot name="buttons"></slot>
+					<a :href="`${this.url}/export?${exportOptions}`" class="button is-dark">Download</a>
+				</div>
+			</div>
+		</div>
 		<div class="table-wrapper">
 			<div class="table-parent">
 				<div class="table-container">
 					<vuetable ref="table"
 							  pagination-path=""
-							  :api-url="url"
+							  :api-url="`${url}/list`"
 							  :fields="fields"
 							  :css="css"
 							  :append-params="params"
@@ -109,7 +117,8 @@
 				},
 				perPage: 20,
 				params: this.extraParams,
-				object: null
+				object: null,
+				exportOptions: ''
 			}
 		},
 
@@ -135,6 +144,17 @@
 			},
 			tableLoaded() {
 				this.css.tableClass = this.tableCss;
+
+				const name = window.location.pathname.split('/').slice(-1).pop();
+				this.exportOptions = `name=${name}`;
+				const params = this.$refs.table.httpOptions.params;
+				for (let option in params) {
+					let paramValue = params[option];
+					if (typeof paramValue !== 'string') {
+						paramValue = JSON.stringify(paramValue);
+					}
+					this.exportOptions += `&${option}=${paramValue}`;
+				}
 			},
 
 			changePage(page) {
@@ -159,15 +179,16 @@
 				});
 			},
 			updateObject(data) {
-				this.object = data;
+				this.object = {...this.object, ...data};
 				const currentData = this.$refs.table.tableData;
 				const elementIndex = currentData.findIndex((row) => {
 					return row.id === data.id;
 				});
-				currentData[elementIndex] = data;
+				currentData[elementIndex] = this.object;
 				this.$refs.table.setData(currentData);
 			}
 		},
+
 	}
 </script>
 
