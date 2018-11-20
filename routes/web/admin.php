@@ -1,7 +1,7 @@
 <?php
 
 
-Route::group(['prefix' => 'admin', 'middleware' => ['auth'] ], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
 	Route::get('kitchens/list', 'DatatableController@list');
 
 
@@ -12,6 +12,16 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth'] ], function () {
 			Route::get('/{kitchen}', 'KitchenController@edit');
 			Route::patch('/{kitchen}', 'KitchenController@update');
 			Route::get('/fields/list', 'KitchenController@getFields');
+
+		});
+
+		Route::group(['prefix' => 'services'], function () {
+
+			Route::get('/', 'ServiceController@index');
+			Route::get('/{service}', 'ServiceController@edit');
+			Route::patch('/{service}', 'ServiceController@update');
+
+
 		});
 
 		Route::group(['prefix' => 'field'], function () {
