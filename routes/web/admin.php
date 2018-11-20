@@ -1,11 +1,5 @@
 <?php
 
-
-Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
-	Route::get('kitchens/list', 'DatatableController@list');
-
-
-
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\Models\Admin::class]], function () {
 	Route::get('datatable/list', 'DatatableController@list');
 	Route::get('datatable/export', 'DatatableController@export');
