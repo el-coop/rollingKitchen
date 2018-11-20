@@ -11,7 +11,8 @@ use Illuminate\Http\Request;
 class KitchenController extends Controller {
 	
 	public function index() {
-		return view('admin.kitchens.index');
+		$fieldType = 'Kitchen';
+		return view('admin.datatableDefault', compact('fieldType'));
 	}
 	
 	/**
@@ -74,12 +75,5 @@ class KitchenController extends Controller {
 	public function destroy(Kitchen $kitchen) {
 		//
 	}
-	
-	public function fields() {
-		$fields = Kitchen::fields();
-		return view('admin.kitchens.fields', compact('fields'));
-		
-	}
-	
 	
 }

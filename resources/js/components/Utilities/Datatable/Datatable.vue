@@ -1,9 +1,12 @@
 <template>
 	<div>
 		<div class="box">
-			<a :href="`${this.url}/export?${exportOptions}`">
-				<button class="button is-dark">Download</button>
-			</a>
+			<div class="field is-grouped">
+				<div class="buttons">
+					<slot name="buttons"></slot>
+					<a :href="`${this.url}/export?${exportOptions}`" class="button is-dark">Download</a>
+				</div>
+			</div>
 		</div>
 		<div class="table-wrapper">
 			<div class="table-parent">
@@ -176,12 +179,12 @@
 				});
 			},
 			updateObject(data) {
-				this.object = data;
+				this.object = {...this.object, ...data};
 				const currentData = this.$refs.table.tableData;
 				const elementIndex = currentData.findIndex((row) => {
 					return row.id === data.id;
 				});
-				currentData[elementIndex] = data;
+				currentData[elementIndex] = this.object;
 				this.$refs.table.setData(currentData);
 			}
 		},

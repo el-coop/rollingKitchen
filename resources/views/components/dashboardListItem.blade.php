@@ -1,6 +1,6 @@
-<list-section label="{{__($label)}}" :start-open="{{ $items->first(function($link){
+<list-section label="{{__($label)}}" :start-open="{{ $items->first(function($link) use ($indexLink){
 	$link = action($link,[],false);
-	return Request::is(trim($link,'/'));
+	return Request::is(trim($link,'/')) || $link == $indexLink;
 }) ? 'true' : 'false'}}">
 	@foreach($items as $linkLabel => $link)
 		@php
@@ -8,7 +8,7 @@
 		@endphp
 		<li>
 			<a href="{{$link }}"
-			   class="{{Request::is(trim($link,'/')) ? 'is-active' : '' }}"
+			   class="{{Request::is(trim($link,'/')) ||  $link == $indexLink ? 'is-active' : '' }}"
 			>{{__($linkLabel)}}</a>
 		</li>
 	@endforeach

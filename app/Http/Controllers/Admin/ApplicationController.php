@@ -14,7 +14,8 @@ class ApplicationController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        return view('admin.kitchens.applications');
+		$fieldType = 'Application';
+		return view('admin.datatableDefault',compact('fieldType'));
     }
 
     /**
