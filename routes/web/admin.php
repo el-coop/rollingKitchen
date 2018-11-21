@@ -1,17 +1,24 @@
 <?php
 
-
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\Models\Admin::class]], function () {
 	Route::get('datatable/list', 'DatatableController@list');
 	Route::get('datatable/export', 'DatatableController@export');
 	
-	
+
 	Route::group(['namespace' => 'Admin'], function () {
 		Route::group(['prefix' => 'kitchens'], function () {
 			Route::get('/', 'KitchenController@index');
 			Route::get('/{kitchen}', 'KitchenController@show');
 			Route::get('/edit/{kitchen}', 'KitchenController@edit');
 			Route::patch('/edit/{kitchen}', 'KitchenController@update');
+		});
+
+		Route::group(['prefix' => 'services'], function () {
+
+			Route::get('/', 'ServiceController@index');
+			Route::get('/{service}', 'ServiceController@edit');
+			Route::patch('/{service}', 'ServiceController@update');
+
 		});
 		
 		Route::group(['prefix' => 'field'], function () {

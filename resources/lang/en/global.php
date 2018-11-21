@@ -7,5 +7,5 @@ return [
     'en' => 'English',
     'nl' => 'Dutch',
     'name' => 'Name',
-    'title' => 'Rolling Kitchen'
+    'title' => 'Rollende Keukens'
 ];
