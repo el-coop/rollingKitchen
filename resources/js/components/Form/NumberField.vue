@@ -2,7 +2,7 @@
 	<div class="field">
 		<label class="label"  v-text="field.label"></label>
 		<div class="control">
-			<textarea class="textarea" :class="{'is-danger': error}" v-model="value" :name="field.name"></textarea>
+			<input class="input" :class="{'is-danger': error}" type="number" step="any" v-model="value" :name="field.name">
 		</div>
 		<p v-if="error" class="help is-danger" v-text="error[0]"></p>
 	</div>
@@ -10,11 +10,9 @@
 
 <script>
 	import FieldMixin from './FieldMixin';
-
 	export default {
-		name: "TextareaField",
+		name: "TextField",
 		mixins: [FieldMixin]
-
 	}
 </script>
 

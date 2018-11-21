@@ -6,6 +6,9 @@
 				<span></span>
 				<span></span>
 			</a>
+			<div class="navbar-item" v-text="title">
+
+			</div>
 		</div>
 		<div class="navbar-menu">
 			<div class="navbar-start">

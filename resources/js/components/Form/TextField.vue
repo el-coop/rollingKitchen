@@ -1,6 +1,6 @@
 <template>
 	<div class="field">
-		<label v-text="field.label"></label>
+		<label class="label"  v-text="field.label"></label>
 		<div class="control">
 			<input class="input" :class="{'is-danger': error}" type="text" v-model="value" :name="field.name">
 		</div>

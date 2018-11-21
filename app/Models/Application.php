@@ -6,17 +6,27 @@ use App\Models\Traits\HasFields;
 use Illuminate\Database\Eloquent\Model;
 
 class Application extends Model {
+	
 	use HasFields;
 	
-	static function indexPage(){
-		return action('Admin\ApplicationController@index',[],false);
+	protected $casts = [
+		'data' => 'array'
+	];
+	
+	
+	static function indexPage() {
+		return action('Admin\ApplicationController@index', [], false);
 	}
 	
 	public function kitchen() {
 		return $this->belongsTo(Kitchen::class);
 	}
 	
-	public function getEditData() {
+	public function products() {
+		return $this->hasMany(Product::class);
+	}
+	
+	public function getFullDataAttribute() {
 		$editData = collect([
 			[
 				'name' => 'year',
