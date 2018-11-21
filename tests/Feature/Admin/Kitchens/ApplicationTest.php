@@ -193,7 +193,14 @@ class ApplicationTest extends TestCase {
 
     public function test_admin_can_see_application_page(){
         $application = $this->applications->random();
-        $this->actingAs($this->admin->user)->get(action('Admin\ApplicationController@show', $application))->assertRedirect(action('Admin\KitchenController@show'));
+        $applicationIndex = $application->kitchen->applications()->orderBy('year', 'desc')->get()->search(function ($item) use ($application) {
+            return $application->year == $item->year;
+        });
+        $this->actingAs($this->admin->user)->get(action('Admin\ApplicationController@show', $application))->assertRedirect(action('Admin\KitchenController@show', [
+            'kitchen' => $application->kitchen,
+            'tab' => __('admin/kitchens.applications'),
+            'application' => $applicationIndex
+        ]));
     }
 
 
