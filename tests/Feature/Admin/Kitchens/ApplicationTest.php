@@ -120,7 +120,7 @@ class ApplicationTest extends TestCase {
             ->get(action('Admin\ApplicationController@edit', $application))->assertForbidden();
     }
 
-    public function test_can_get_kitchen_fields_with_values() {
+    public function test_admin_can_get_kitchen_fields_with_values() {
         $application = $this->applications->random();
         $this->actingAs($this->admin->user)
             ->get(action('Admin\ApplicationController@edit', $application))
@@ -146,7 +146,7 @@ class ApplicationTest extends TestCase {
         $this->actingAs($this->kitchens->first()->user)->patch(action('Admin\ApplicationController@updateDimensions', $application))->assertForbidden();
     }
 
-    public function test_can_update_application() {
+    public function test_admin_can_update_application() {
         $application = $this->applications->random();
         $this->actingAs($this->admin->user)
             ->patch(action('Admin\ApplicationController@update', $application), [
@@ -161,7 +161,7 @@ class ApplicationTest extends TestCase {
         ]);
     }
 
-    public function test_can_update_application_dimensions() {
+    public function test_admin_can_update_application_dimensions() {
         $application = $this->applications->first();
         $this->actingAs($this->admin->user)
             ->patch(action('Admin\ApplicationController@updateDimensions', $application), [
@@ -179,6 +179,21 @@ class ApplicationTest extends TestCase {
             'terrace_width' => '20',
             'seats' => null
         ]);
+    }
+
+    public function test_guest_cant_see_application_page(){
+        $application = $this->applications->random();
+        $this->get(action('Admin\ApplicationController@show', $application))->assertRedirect(action('Auth\LoginController@login'));
+    }
+
+    public function test_kitchen_cant_see_application_page(){
+        $application = $this->applications->random();
+        $this->actingAs($this->kitchens->first()->user)->get(action('Admin\ApplicationController@show', $application))->assertForbidden();
+    }
+
+    public function test_admin_can_see_application_page(){
+        $application = $this->applications->random();
+        $this->actingAs($this->admin->user)->get(action('Admin\ApplicationController@show', $application))->assertRedirect(action('Admin\KitchenController@show'));
     }
 
 
