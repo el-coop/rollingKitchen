@@ -4,11 +4,11 @@
 		<div v-if="loading" class="has-text-centered">
 			<a class="button is-loading"></a>
 		</div>
-		<component :error="errors[field.name] || null" v-for="(field,key) in fields" :is="`${field.type}-field`"
+		<component v-if="hide.indexOf(field.name) === -1" :error="errors[field.name] || null"
+				   v-for="(field,key) in fields" :is="`${field.type}-field`"
 				   :field="field" :key="key">
-
 		</component>
-		<button v-if="!loading" class="button is-success is-fullwidth" :class="{'is-loading': submitting}"
+		<button v-if="!loading" class="button is-fullwidth" :class="[submitting ? 'is-loading' : '', buttonClass]"
 				type="submit">Save
 		</button>
 	</ajax-form>
@@ -18,13 +18,15 @@
 	import TextField from './TextField';
 	import SelectField from './SelectField';
 	import TextareaField from './TextareatField';
+	import NumberField from './NumberField';
 
 	export default {
 		name: "DynamicForm",
 		components: {
 			TextField,
 			TextareaField,
-			SelectField
+			SelectField,
+			NumberField
 		},
 
 		props: {
@@ -33,7 +35,7 @@
 				default: ''
 			},
 			initFields: {
-				type: Object,
+				type: Array,
 				default() {
 					return null;
 				}
@@ -44,7 +46,19 @@
 			},
 			onDataUpdate: {
 				type: Function,
-				default: this.onUpdate
+				default(data) {
+					this.$emit('object-update', data);
+				}
+			},
+			hide: {
+				type: Array,
+				default() {
+					return [];
+				}
+			},
+			buttonClass: {
+				type: String,
+				default: 'is-success'
 			}
 		},
 
@@ -83,15 +97,12 @@
 
 			submitted(response) {
 				this.submitting = false;
-				if (response.status === 200) {
+				if (response.status === 200 || response.status === 201) {
 					this.$toast.success('Update successful');
 					this.onDataUpdate(response.data);
 				}
 			},
 
-			onUpdate(data) {
-				this.$emit('object-update', data);
-			}
-		}
+		},
 	}
 </script>

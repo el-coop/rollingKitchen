@@ -31,7 +31,7 @@
 			action: {
 				type: String,
 				default: window.location
-			}
+			},
 		},
 
 		data() {
@@ -89,3 +89,9 @@
 		},
 	}
 </script>
+
+<style scoped lang="scss">
+	form.is-fullwidth {
+		width: 100%;
+	}
+</style>

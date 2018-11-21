@@ -11,13 +11,15 @@
 |
 */
 
-
-
 Route::get('/', function () {
-    return view('welcome');
+	return view('welcome');
 });
+
+Auth::routes();
+
+Route::get('/images/{photo}','PhotoController@show');
+
 foreach (\File::allFiles(__DIR__ . "/web") as $routeFile) {
     include $routeFile;
 }
 
-Auth::routes();

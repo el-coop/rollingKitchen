@@ -10,6 +10,10 @@ window.Vue = require('vue');
 import VModal from 'vue-js-modal';
 import 'izitoast/dist/css/iziToast.css';
 import VueIziToast from 'vue-izitoast';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faLink } from '@fortawesome/free-solid-svg-icons'
+
+library.add(faLink)
 
 Vue.use(VModal);
 Vue.use(VueIziToast);

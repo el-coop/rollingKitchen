@@ -16,16 +16,16 @@ class KitchenSeeder extends Seeder {
 	 */
 	public function run(Faker $faker) {
 		factory(Kitchen::class, 25)->create([
-			'data' => function() use ($faker){
+			'data' => function () use ($faker) {
 				return Kitchen::fields()->mapWithKeys(function ($field) use ($faker) {
-					if($field->type === 'text'){
+					if ($field->type === 'text') {
 						$value = $faker->name;
 					} else {
 						$value = $faker->paragraph;
 					}
-
+					
 					return [$field->name => $value];
-
+					
 				});
 			}
 		])->each(function ($kitchen) use ($faker) {
@@ -34,11 +34,31 @@ class KitchenSeeder extends Seeder {
 			]);
 			$kitchen->user()->save($user);
 			$imagesNumber = rand(0, 4);
-
+			
 			for ($i = 0; $i < $imagesNumber; $i++) {
 				$kitchen->photos()->save(factory(Photo::class)->make());
-				$kitchen->applications()->save(factory(Application::class)->make(['year' => 2015+$i]));
+				$kitchen->applications()->save(factory(Application::class)->make(['year' => 2015 + $i]));
 			}
+			
+			$kitchen->applications->each(function ($application) use ($faker) {
+				$application->data = Application::fields()->mapWithKeys(function ($field) use ($faker) {
+					if ($field->type === 'text') {
+						$value = $faker->name;
+					} else {
+						$value = $faker->paragraph;
+					}
+					
+					return [$field->name => $value];
+					
+				});
+				$application->save();
+				
+				$products = rand(1, 4);
+				for ($j = 0; $j < $products; $j++) {
+					$application->products()->save(factory(\App\Models\Product::class)->make());
+				}
+			});
+			
 		});
 	}
 }
