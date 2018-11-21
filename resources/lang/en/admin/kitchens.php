@@ -2,7 +2,7 @@
 
 return [
 	'kitchens' => 'Kitchens',
-	'motherlist' => 'Motherlist',
+	'motherlist' => 'Kitchens',
     'fields' => 'Fields',
     'applications' => 'Applications',
 	'length' => 'Kitchen Length',
