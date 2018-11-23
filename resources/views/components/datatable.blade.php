@@ -38,7 +38,7 @@ if (!isset($fields)) {
 		   }"
 >
 	@isset($buttons)
-	<template slot="buttons">{{$buttons}}</template>
+	<template slot="buttons" slot-scope="{actions}">{{$buttons}}</template>
 	@endisset
 	@if(trim($slot) !== '')
 		{{ $slot }}

@@ -1,11 +1,5 @@
 <?php
 
-
-Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
-	Route::get('kitchens/list', 'DatatableController@list');
-
-
-
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\Models\Admin::class]], function () {
 	Route::get('datatable/list', 'DatatableController@list');
 	Route::get('datatable/export', 'DatatableController@export');
@@ -24,8 +18,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		Route::group(['prefix' => 'services'], function () {
 
 			Route::get('/', 'ServiceController@index');
-			Route::get('/{service}', 'ServiceController@edit');
-			Route::patch('/{service}', 'ServiceController@update');
+			Route::get('/edit', 'ServiceController@show');
+			Route::post('/edit', 'ServiceController@create');
+			Route::patch('/edit/{service}', 'ServiceController@update');
+			Route::get('/edit/{service}', 'ServiceController@edit');
+
 
 		});
 		

@@ -146,7 +146,7 @@ class MotherlistTest extends TestCase {
 			->patch(action('Admin\KitchenController@update', $kitchen))->assertForbidden();
 	}
 	
-	public function test_can_update_kitchen() {
+	public function test_admin_can_update_kitchen() {
 		$kitchen = $this->kitchens->random();
 		$this->actingAs($this->admin->user)
 			->patch(action('Admin\KitchenController@update', $kitchen), [
