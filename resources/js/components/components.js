@@ -22,7 +22,7 @@ Vue.component('SelectView', require('./Utilities/SelectChooser/SelectView'));
 Vue.component('DynamicTable', require('./Utilities/DynamicTable'));
 Vue.component('StepsForm', require('./Utilities/StepsForm/StepsForm'));
 Vue.component('FromStep', require('./Utilities/StepsForm/FormStep'));
-Vue.component('PhotoUpload', require('./Utilities/PhotoUpload'));
+Vue.component('ImageManager', require('./Utilities/ImageManager/ImageManager'));
 
 
 // form

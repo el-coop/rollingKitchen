@@ -7,6 +7,7 @@ use App\Http\Requests\Kitchen\Photo\UploadPhotoRequest;
 use App\Http\Requests\Kitchen\UpdateKitchenRequest;
 use App\Models\Application;
 use App\Models\Kitchen;
+use App\Models\Photo;
 use App\Models\Service;
 use Auth;
 use Illuminate\Http\Request;
@@ -84,5 +85,12 @@ class KitchenController extends Controller {
 	 */
 	public function destroy(Kitchen $kitchen) {
 		//
+	}
+	
+	public function destroyPhoto(Kitchen $kitchen, Photo $photo) {
+		$photo->delete();
+		return [
+			'success' => true
+		];
 	}
 }

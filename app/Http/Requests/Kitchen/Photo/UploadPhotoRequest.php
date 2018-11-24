@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Kitchen\Photo;
 
+use App\Models\Photo;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UploadPhotoRequest extends FormRequest {
@@ -28,5 +29,12 @@ class UploadPhotoRequest extends FormRequest {
 	
 	public function commit() {
 		$path = $this->file('photo')->store('public/photos');
+		$photo = new Photo;
+		
+		$photo->file = basename($path);
+		
+		$this->kitchen->photos()->save($photo);
+		
+		return $photo;
 	}
 }

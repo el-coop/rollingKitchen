@@ -14,6 +14,7 @@ Route::group(['prefix' => 'kitchen', 'namespace' => 'Kitchen'], function () {
 		Route::post('/{kitchen}', 'KitchenController@update');
 		
 		Route::post('/{kitchen}/photo', 'KitchenController@storePhoto');
+		Route::delete('/{kitchen}/photo/{photo}', 'KitchenController@destroyPhoto');
 		
 		
 		Route::get('/review/{kitchen}', 'KitchenController@show');

@@ -10,6 +10,9 @@
 	</div>
 	<div class="column">
 		<p class="title is-4"></p>
-		<photo-upload></photo-upload>
+		<image-manager url="{{ action('Kitchen\KitchenController@storePhoto', $kitchen) }}" :data="{
+			_token: '{{csrf_token()}}'
+		}" :init-images="{{ $kitchen->photos }}" delete-url="/kitchen/{{ $kitchen->id }}/photo">
+		</image-manager>
 	</div>
 </div>

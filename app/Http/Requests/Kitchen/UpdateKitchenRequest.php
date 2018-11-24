@@ -30,6 +30,11 @@ class UpdateKitchenRequest extends FormRequest {
 			'application' => 'required|array',
 			'services' => 'array',
 			'socket' => 'required|numeric',
+			'length' => 'required|numeric',
+			'width' => 'required|numeric',
+			'terrace_length' => 'numeric|nullable',
+			'terrace_width' => 'numeric|nullable',
+			'seats' => 'numeric|nullable'
 		];
 	}
 	
@@ -45,6 +50,11 @@ class UpdateKitchenRequest extends FormRequest {
 		$application = $this->kitchen->getCurrentApplication();
 		$application->data = $this->input('application');
 		$application->socket = $this->input('socket');
+		$application->length = $this->input('length');
+		$application->width = $this->input('width');
+		$application->terrace_length = $this->input('terrace_length');
+		$application->terrace_width = $this->input('terrace_width');
+		$application->seats = $this->input('seats');
 		$application->save();
 		
 		$application->services()->sync(collect($this->input('services'))->keys());

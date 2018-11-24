@@ -7,8 +7,8 @@
 		@csrf
 		<tabs>
 			<tab label="Business Information">@include('kitchen.kitchen')</tab>
-			<tab label="Services">@include('kitchen.services')</tab>
 			<tab label="Kitchen Information">@include('kitchen.application')</tab>
+			<tab label="Services">@include('kitchen.services')</tab>
 		</tabs>
 		<div class="buttons mt-1 has-content-justified-center">
 			<button class="button is-link"
