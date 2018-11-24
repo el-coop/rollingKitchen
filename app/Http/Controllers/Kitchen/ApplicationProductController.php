@@ -28,8 +28,6 @@ class ApplicationProductController extends Controller {
 	 */
 	public function create(Application $application, CreateProductRequest $request) {
 		return $request->commit();
-		
-		
 	}
 	
 	/**

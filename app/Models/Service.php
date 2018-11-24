@@ -27,7 +27,11 @@ class Service extends Model {
 			'type' => 'text',
 			'value' => $this->price,
 		]]);
-
+		
 		return $fullData;
+	}
+	
+	public function applications() {
+		return $this->belongsToMany(Application::class);
 	}
 }

@@ -1,0 +1,31 @@
+.h-100 {
+	height: 100%;
+}
+
+.has-content-justified-center {
+	justify-content: center;
+}
+
+.has-items-aligned-center {
+	align-items: center;
+}
+
+.is-column {
+	flex-direction: column;
+}
+
+.fill-parent {
+	flex: 1;
+}
+
+.is-row-reverse {
+	flex-direction: row-reverse;
+}
+
+.ml-auto {
+	margin-left: auto;
+}
+
+.mt-1 {
+	margin-top: 1rem;
+}

@@ -1,64 +1,41 @@
-@extends('layouts.guest')
+@extends('layouts.site')
+
+@section('title',__('misc.login'))
 
 @section('content')
-    <div class="card">
-        <header class="card-header ">
-            <p class="card-header-title">@lang('misc.login')</p>
-        </header>
-        <div class="card-content">
-            <div class="content">
-                <form method="POST" action="{{ route('login') }}">
-                    @csrf
-                    <div class="field is-horizontal">
-                        <div class="field-label is-normal">
-                            <label class="label">@lang('misc.email')</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field">
-                                <div class="control">
-                                    <input class="input" type="text" placeholder="e.g. Partnership opportunity" name="email" value="{{ old('email') }}">
-                                </div>
-                                @if ($errors->has('email'))
-                                    <p class="help is-danger">
-                                        {{ $errors->first('email') }}
-                                    </p>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                    <div class="field is-horizontal">
-                        <div class="field-label is-normal">
-                            <label class="label">@lang('misc.password')</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field">
-                                <div class="control">
-                                    <input class="input" type="password" placeholder="e.g. Partnership opportunity" name="password">
-                                </div>
-                                @if ($errors->has('password'))
-                                    <p class="help is-danger">
-                                        {{ $errors->first('password') }}
-                                    </p>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                    <div class="field is-horizontal">
-                        <div class="field-label">
-                            <!-- Left empty for spacing -->
-                        </div>
-                        <div class="field-body">
-                            <div class="field">
-                                <div class="control">
-                                    <button class="button is-primary">
-                                        @lang('misc.login')
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+	<div class="section">
+		<div class="columns">
+			<div class="column is-8">
+				@component('components.card',[
+					'class' => 'h-100'
+				])
+					@slot('title')
+						<p class="title is-4">
+							@lang('misc.login')
+						</p>
+					@endslot
+					<form method="post" action="{{ action('Auth\LoginController@login') }}">
+						@csrf
+						<text-field
+								:field="{label: '@lang('misc.email')',name: 'email', subType: 'email'}"
+								:error="{{ $errors->count() ? collect(["The credentials don't match our records"]): 'null'}}"></text-field>
+						<text-field
+								:field="{label: '@lang('misc.password')',name: 'password', subType: 'passwrod'}"></text-field>
+						<div class="buttons">
+							<button class="button is-primary">
+								@lang('misc.login')
+							</button>
+							<a href="{{ action('Auth\ForgotPasswordController@showLinkRequestForm') }}"
+							   class="button is-dark">I forgot my password</a>
+							<a href="{{ action('Kitchen\KitchenController@create') }}" class="button">New Kitchen?</a>
+						</div>
+
+					</form>
+				@endcomponent
+			</div>
+			<div class="column">
+				@include('logoCard')
+			</div>
+		</div>
+	</div>
 @endsection
