@@ -2,7 +2,12 @@
 
 return [
 	'kitchens' => 'Kitchens',
-	'motherlist' => 'Motherlist',
+	'motherlist' => 'Kitchens',
     'fields' => 'Fields',
-    'applications' => 'Application'
+    'applications' => 'Applications',
+	'length' => 'Kitchen Length',
+	'width' => 'Kitchen Width',
+	'terraceLength' => 'Terrace Length',
+	'terraceWidth' => 'Terrace Width',
+	'terraceSeats' => 'Terrace Seats',
 ];

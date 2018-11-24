@@ -44,8 +44,13 @@ if (!isset($fields)) {
 		{{ $slot }}
 	@else
 		<template slot-scope="{object, onUpdate}" v-if="object">
-			<div class="title is-size-3 has-text-centered" v-text="object.name"></div>
-			<dynamic-form :url="`{{Request::url() }}/${object.id}`" :on-data-update="onUpdate"></dynamic-form>
+			<div class="title is-7 has-text-centered">
+				<a :href="`{{Request::url() }}/${object.id}`">
+					<span class="is-size-3" v-text="object.name"></span>
+					<font-awesome-icon icon="link"></font-awesome-icon>
+				</a>
+			</div>
+			<dynamic-form :url="`{{Request::url() }}/edit/${object.id}`" :on-data-update="onUpdate"></dynamic-form>
 		</template>
 	@endif
 </datatable>

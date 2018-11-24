@@ -15,8 +15,8 @@
 			</div>
 		</drawer>
 		<main>
-			<navbar title="Motherlist"></navbar>
-			<div class="section">
+			<navbar title="@yield('title')"></navbar>
+			<div class="container is-fluid" style="margin-top: 1rem">
 				@yield('content')
 			</div>
 		</main>

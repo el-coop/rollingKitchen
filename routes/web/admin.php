@@ -8,11 +8,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 	Route::group(['namespace' => 'Admin'], function () {
 		Route::group(['prefix' => 'kitchens'], function () {
 			Route::get('/', 'KitchenController@index');
-			Route::get('/{kitchen}', 'KitchenController@edit');
-			Route::patch('/{kitchen}', 'KitchenController@update');
-
-			Route::get('/fields/list', 'KitchenController@getFields');
-
+			Route::get('/{kitchen}', 'KitchenController@show');
+			Route::get('/edit/{kitchen}', 'KitchenController@edit');
+			Route::patch('/edit/{kitchen}', 'KitchenController@update');
 		});
 
 		Route::group(['prefix' => 'services'], function () {
@@ -35,8 +33,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		});
 		Route::group(['prefix' => 'applications'], function () {
 			Route::get('/', 'ApplicationController@index');
-			Route::get('/{application}', 'ApplicationController@edit');
-			Route::patch('/{application}', 'ApplicationController@update');
+			Route::get('/{application}', 'ApplicationController@show');
+			Route::get('/edit/{application}', 'ApplicationController@edit');
+			Route::patch('/edit/{application}', 'ApplicationController@update');
+			Route::patch('/dimensions/{application}', 'ApplicationController@updateDimensions');
 		});
 	});
 });
