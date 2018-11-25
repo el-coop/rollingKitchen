@@ -29,10 +29,10 @@
 								}, value: '{{  old('language',App::getLocale()) }}'}"
 									  :error="{{ $errors->has('language') ? collect($errors->get('language')): 'null'}}"></select-field>
 						<text-field
-								:field="{label: '@lang('misc.password')',name: 'password', subType: 'passwrod'}"
+								:field="{label: '@lang('misc.password')',name: 'password', subType: 'password'}"
 								:error="{{ $errors->has('password') ? collect($errors->get('password')): 'null'}}"></text-field>
 						<text-field
-								:field="{label: '@lang('misc.password_confirm')',name: 'password_confirmation', subType: 'passwrod'}"></text-field>
+								:field="{label: '@lang('misc.password_confirm')',name: 'password_confirmation', subType: 'password'}"></text-field>
 						<div class="buttons">
 							<button class="button is-primary">
 								@lang('misc.register')

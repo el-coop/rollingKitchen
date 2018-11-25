@@ -22,10 +22,10 @@
                                 :field="{label: '@lang('misc.email')',name: 'email', subType: 'email', value: '{{ old('email') }}'}"
                                 :error="{{ $errors->has('email') ? collect($errors->get('email')): 'null'}}"></text-field>
                         <text-field
-                                :field="{label: '@lang('misc.password')',name: 'password', subType: 'passwrod'}"
+                                :field="{label: '@lang('misc.password')',name: 'password', subType: 'password'}"
                                 :error="{{ $errors->has('password') ? collect($errors->get('password')): 'null'}}"></text-field>
                         <text-field
-                                :field="{label: '@lang('misc.password_confirm')',name: 'password_confirmation', subType: 'passwrod'}"></text-field>
+                                :field="{label: '@lang('misc.password_confirm')',name: 'password_confirmation', subType: 'password'}"></text-field>
                         <div class="buttons">
                             <button class="button is-primary">
                                 @lang('misc.resetPassword')

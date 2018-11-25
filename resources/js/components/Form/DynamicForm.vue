@@ -1,5 +1,5 @@
 <template>
-	<ajax-form @errors="handleErrors" :method="method" :action="url" @submitting="submitting = true"
+	<ajax-form :headers="headers" @errors="handleErrors" :method="method" :action="url" @submitting="submitting = true"
 			   @submitted="submitted" :extraData="extraData">
 		<div v-if="loading" class="has-text-centered">
 			<a class="button is-loading"></a>
@@ -64,7 +64,13 @@
 				default() {
 					return {};
 				}
-			}
+			},
+            headers: {
+                type: Object,
+                default() {
+                    return {};
+                }
+            }
 		},
 
 		data() {
