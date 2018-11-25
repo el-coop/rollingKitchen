@@ -81,7 +81,7 @@ class MotherlistTest extends TestCase {
 	public function test_datatable_get_table_data_sorted() {
 		$response = $this->actingAs($this->admin->user)->get(action('DatatableController@list', ['table' => 'admin.kitchensTable', 'per_page' => 20, 'sort' => 'name|asc']));
 		
-		$kitchens = array_values($this->kitchens->map(function ($kitchen) {
+		$kitchens = array_values(Kitchen::all()->map(function ($kitchen) {
 			return [
 				'count(kitchen_id)' => 0,
 				'id' => $kitchen->id,
@@ -146,13 +146,17 @@ class MotherlistTest extends TestCase {
 			->patch(action('Admin\KitchenController@update', $kitchen))->assertForbidden();
 	}
 	
-	public function test_can_update_kitchen() {
+	public function test_admin_can_update_kitchen() {
 		$kitchen = $this->kitchens->random();
 		$this->actingAs($this->admin->user)
 			->patch(action('Admin\KitchenController@update', $kitchen), [
 				'name' => 'testname',
 				'email' => 'bla@gla.gla',
-				'status' => 'motherlist'
+				'status' => 'motherlist',
+				'kitchen' => [
+					'test' => 'best',
+					'jest' => 'rest'
+				]
 			])->assertSuccessful();
 		
 		$this->assertDatabaseHas('users', [
@@ -166,6 +170,10 @@ class MotherlistTest extends TestCase {
 		$this->assertDatabaseHas('kitchens', [
 			'id' => $kitchen->id,
 			'status' => 'motherlist',
+			'data' => json_encode([
+				'test' => 'best',
+				'jest' => 'rest'
+			])
 		]);
 		
 	}

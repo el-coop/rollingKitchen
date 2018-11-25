@@ -18,6 +18,7 @@ class CreateApplicationsTable extends Migration {
 			$table->string('status');
 			$table->year('year');
 			$table->json('data');
+			$table->integer('socket')->default(0);
 			$table->decimal('length', 10, 4);
 			$table->decimal('width', 10, 4);
 			$table->decimal('terrace_length', 10, 4)->nullable();

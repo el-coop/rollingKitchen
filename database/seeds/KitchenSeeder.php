@@ -27,38 +27,12 @@ class KitchenSeeder extends Seeder {
 					return [$field->name => $value];
 					
 				});
-			}
+			},
 		])->each(function ($kitchen) use ($faker) {
 			$user = factory(User::class)->make([
 				'name' => $faker->company
 			]);
 			$kitchen->user()->save($user);
-			$imagesNumber = rand(0, 4);
-			
-			for ($i = 0; $i < $imagesNumber; $i++) {
-				$kitchen->photos()->save(factory(Photo::class)->make());
-				$kitchen->applications()->save(factory(Application::class)->make(['year' => 2015 + $i]));
-			}
-			
-			$kitchen->applications->each(function ($application) use ($faker) {
-				$application->data = Application::fields()->mapWithKeys(function ($field) use ($faker) {
-					if ($field->type === 'text') {
-						$value = $faker->name;
-					} else {
-						$value = $faker->paragraph;
-					}
-					
-					return [$field->name => $value];
-					
-				});
-				$application->save();
-				
-				$products = rand(1, 4);
-				for ($j = 0; $j < $products; $j++) {
-					$application->products()->save(factory(\App\Models\Product::class)->make());
-				}
-			});
-			
 		});
 	}
 }

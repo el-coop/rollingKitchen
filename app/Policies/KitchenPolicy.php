@@ -39,6 +39,9 @@ class KitchenPolicy {
 	 * @return mixed
 	 */
 	public function update(User $user, Kitchen $kitchen) {
+		if ($user->user_type == Kitchen::class && $user->user_id == $kitchen->id) {
+			return true;
+		}
 		return $user->user_type == Admin::class;
 	}
 	

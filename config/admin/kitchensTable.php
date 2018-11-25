@@ -2,7 +2,7 @@
 
 return [
 	'model' => \App\Models\User::class,
-	'where' => ['user_type', \App\Models\Kitchen::class],
+	'where' => [['user_type', \App\Models\Kitchen::class]],
 	'joins' => [
 		['kitchens', 'users.user_id', 'kitchens.id'],
 		['photos', 'photos.kitchen_id', 'kitchens.id']

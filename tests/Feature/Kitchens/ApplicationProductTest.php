@@ -52,21 +52,24 @@ class ApplicationProductTest extends TestCase {
 	public function test_admin_can_create_product() {
 		$this->actingAs($this->admin)->post(action('Kitchen\ApplicationProductController@create', $this->application), [
 			'name' => 'test',
-			'price' => 2.5
+			'price' => 2.5,
+			'category' => 'drinks'
 		])->assertSuccessful();
 		
 		$this->assertDatabaseHas('products', [
 			'application_id' => $this->application->id,
 			'name' => 'test',
-			'price' => 2.5
+			'price' => 2.5,
+			'category' => 'drinks'
 		]);
 	}
 	
 	public function test_product_name_price_validation() {
 		$this->actingAs($this->admin)->post(action('Kitchen\ApplicationProductController@create', $this->application), [
 			'name' => '',
-			'price' => 'blaa'
-		])->assertSessionHasErrors('name', 'price');
+			'price' => 'blaa',
+			'category' => 'dr'
+		])->assertSessionHasErrors(['name', 'price','category']);
 		
 		$this->assertDatabaseMissing('products', [
 			'application_id' => $this->application->id,
@@ -109,7 +112,7 @@ class ApplicationProductTest extends TestCase {
 		$this->actingAs($this->admin)->patch(action('Kitchen\ApplicationProductController@update', ['application' => $this->application, 'product' => $this->product]), [
 			'name' => '',
 			'price' => 'gla'
-		])->assertSessionHasErrors('name', 'price');
+		])->assertSessionHasErrors(['name', 'price']);
 		
 		$this->assertDatabaseMissing('products', [
 			'id' => $this->product->id,

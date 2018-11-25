@@ -17,13 +17,14 @@ class CreateUsersTable extends Migration {
 			$table->string('email')->unique();
 			$table->timestamp('email_verified_at')->nullable();
 			$table->string('password');
+			$table->string('language', 2);
 			$table->string('user_type');
 			$table->integer('user_id')->unsigned();
 			$table->rememberToken();
 			$table->timestamps();
 		});
 	}
-
+	
 	/**
 	 * Reverse the migrations.
 	 *

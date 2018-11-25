@@ -5,14 +5,13 @@
 </template>
 
 <script>
+	import PaginationPartialMixin from '../PaginationPartialMixin';
+
 	export default {
 		name: "Tab",
+		mixins: [PaginationPartialMixin],
 
 		props: {
-			label: {
-				type: String,
-				required: true
-			},
 			icon: {
 				type: String,
 				default: ''
@@ -23,37 +22,10 @@
 			}
 		},
 
-		created() {
-			this.$parent.tabs.push(this);
-		},
-
-		data() {
-			return {
-				active: false
-			}
-		},
-
 		mounted() {
 			if (this.startOpen) {
 				this.$parent.selected = this.index();
 			}
-			this.active = this.$parent.selected == this.index;
 		},
-
-		computed: {
-			index() {
-				return this.$parent.tabs.indexOf(this)
-			}
-		},
-
-		watch: {
-			'$parent.selected'(index) {
-				this.active = index == this.index;
-			}
-		}
 	}
 </script>
-
-<style scoped>
-
-</style>

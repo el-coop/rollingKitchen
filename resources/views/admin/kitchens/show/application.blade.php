@@ -11,10 +11,11 @@
 			<label class="label"></label>
 			<select-chooser>
 				<select-view label="Products">
-					@component('admin.kitchens.show.application.products', compact('application'))
+					@component('kitchen.application.products', compact('application'))
 					@endcomponent
 				</select-view>
 				<select-view label="Dimensions">
+					<hr>
 					@component('admin.kitchens.show.application.dimensions', compact('application'))
 					@endcomponent
 				</select-view>

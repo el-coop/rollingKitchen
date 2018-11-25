@@ -2,9 +2,9 @@
 	<div>
 		<div class="tabs" :class="tabsStyle">
 			<ul>
-				<li v-for="(tab, index) in tabs" :class="{'is-active': index == selected}" :key="index"
+				<li v-for="(tab, index) in views" :class="{'is-active': index == selected}" :key="index"
 					@click="show(index)">
-					<a :href="`#${tab.label}`">
+					<a>
 						<font-awesome-icon v-if="tab.icon" :icon="tab.icon"></font-awesome-icon>
 						<span v-text="tab.label"></span>
 					</a>
@@ -24,7 +24,7 @@
 
 		data() {
 			return {
-				tabs: [],
+				views: [],
 				selected: 0
 			}
 		},
@@ -35,7 +35,7 @@
 				tab = (new URL(window.location.href)).searchParams.get('tab');
 			}
 			if (tab) {
-				this.selected = this.tabs.findIndex((item) => {
+				this.selected = this.views.findIndex((item) => {
 					return item.label === tab;
 				}) || 0;
 			}

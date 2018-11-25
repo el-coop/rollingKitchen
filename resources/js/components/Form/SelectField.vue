@@ -7,7 +7,7 @@
 					<option v-for="(option, val) in field.options" :value="val" v-text="option"></option>
 				</select>
 			</div>
-			<p v-if="error" class="help is-danger" v-text="error[0]"></p>
+			<p v-if="error" class="help is-danger" v-text="errorText"></p>
 		</div>
 	</div>
 </template>

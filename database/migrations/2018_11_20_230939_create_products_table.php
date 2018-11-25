@@ -16,8 +16,8 @@ class CreateProductsTable extends Migration {
 			$table->integer('application_id')->unsigned();
 			$table->string('name');
 			$table->decimal('price');
+			$table->string('category');
 			$table->timestamps();
-			
 			
 			$table->foreign('application_id')
 				->references('id')->on('applications')

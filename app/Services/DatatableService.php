@@ -89,7 +89,7 @@ class DatatableService implements FromCollection, WithHeadings {
 	
 	protected function addWhere($query, $queryConfig) {
 		if ($where = $queryConfig['where'] ?? false) {
-			$query->where(...$where);
+			$query->where($where);
 		}
 		return $query;
 	}

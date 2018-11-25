@@ -27,13 +27,14 @@ class UpdateApplicationRequest extends FormRequest {
 		return [
 			'status' => 'required|in:accepted,pending,rejected',
 			'year' => 'required|digits:4|integer|min:2014|max:' . (date('Y')),
+			'application' => 'required|array',
 		];
 	}
 	
 	public function commit() {
 		$this->application->status = $this->input('status');
 		$this->application->year = $this->input('year');
-		$this->application->data = $this->except(['status', 'year']);
+		$this->application->data = $this->input('application');
 		
 		$this->application->save();
 		

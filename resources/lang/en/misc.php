@@ -6,10 +6,17 @@ return [
 	'email' => 'Email',
 	'status' => 'Status',
 	'photos' => 'Photos',
-    'password' => 'Password',
-    'login' => 'Login',
-    'year' => 'Year',
     'settings' => 'Settings',
-    'admin' => 'Admin'
+    'admin' => 'Admin',
+	'password' => 'Password',
+	'password_confirm' => 'Confirm Password',
+	'login' => 'Login',
+	'register' => 'Register',
+	'language' => 'Language',
+    'year' => 'Year',
+	'en' => 'English',
+	'nl' => 'Nederlands',
+	'resetPassword' => 'Reset Password',
+	'sendResetPasswordLink' => 'Send Password Reset Link',
 
 ];

@@ -5,7 +5,8 @@ use Faker\Generator as Faker;
 $factory->define(App\Models\Service::class, function (Faker $faker) {
     return [
 		'name' => $faker->unique()->name,
-		'type' => $faker->randomElement(['overige;','elektra','veiligheid']),
+		'category' => $faker->randomElement(['misc','electrical','safety']),
+		'type' => $faker->randomElement([0, 1]),
 		'price' => $faker->randomNumber(3)
     ];
 });
