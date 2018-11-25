@@ -7,5 +7,6 @@ return [
     'en' => 'English',
     'nl' => 'Dutch',
     'name' => 'Name',
-    'title' => 'Rollende Keukens'
+    'title' => 'Rollende Keukens',
+	'save' => 'Save',
 ];

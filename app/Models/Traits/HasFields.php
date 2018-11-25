@@ -21,9 +21,12 @@ trait HasFields {
 	}
 	
 	public function getFieldsData() {
-		return static::fields()->map(function ($item) {
+		
+		$dataName = strtolower(substr(static::class, strrpos(static::class, '\\') + 1));
+		
+		return static::fields()->map(function ($item) use ($dataName) {
 			return [
-				'name' => $item->name,
+				'name' => "{$dataName}[{$item->name}]",
 				'label' => $item->name,
 				'type' => $item->type,
 				'value' => $this->data[$item->name] ?? ''

@@ -1,10 +1,11 @@
 <template>
 	<ajax-form @errors="handleErrors" :method="method" :action="url" @submitting="submitting = true"
-			   @submitted="submitted">
+			   @submitted="submitted" :extraData="extraData">
 		<div v-if="loading" class="has-text-centered">
 			<a class="button is-loading"></a>
 		</div>
-		<component v-if="hide.indexOf(field.name) === -1" :error="errors[field.name] || null"
+		<component v-if="hide.indexOf(field.name) === -1"
+				   :error="errors[field.name.replace('[','.').replace(']','')] || null"
 				   v-for="(field,key) in fields" :is="`${field.type}-field`"
 				   :field="field" :key="key">
 		</component>
@@ -18,7 +19,6 @@
 	import TextField from './TextField';
 	import SelectField from './SelectField';
 	import TextareaField from './TextareatField';
-	import NumberField from './NumberField';
 
 	export default {
 		name: "DynamicForm",
@@ -26,7 +26,6 @@
 			TextField,
 			TextareaField,
 			SelectField,
-			NumberField
 		},
 
 		props: {
@@ -59,6 +58,12 @@
 			buttonClass: {
 				type: String,
 				default: 'is-success'
+			},
+			extraData: {
+				type: Object,
+				default() {
+					return {};
+				}
 			}
 		},
 

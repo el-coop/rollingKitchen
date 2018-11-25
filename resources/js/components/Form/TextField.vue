@@ -2,9 +2,9 @@
 	<div class="field">
 		<label class="label"  v-text="field.label"></label>
 		<div class="control">
-			<input class="input" :class="{'is-danger': error}" type="text" v-model="value" :name="field.name">
+			<input class="input" :class="{'is-danger': error}" :type="field.subType || 'text'" v-model="value" :name="field.name" step="any">
 		</div>
-		<p v-if="error" class="help is-danger" v-text="error[0]"></p>
+		<p v-if="error" class="help is-danger" v-text="errorText"></p>
 	</div>
 </template>
 

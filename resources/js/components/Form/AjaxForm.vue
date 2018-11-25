@@ -56,7 +56,17 @@
 			jsonify(formData) {
 				let data = {};
 				formData.forEach((value, key) => {
-					data[key] = value;
+					if (key.indexOf('[') > -1 && key.indexOf(']') > key.indexOf('[')) {
+						const keyStart = key.indexOf('[');
+						const keyArrayName = key.substr(0, keyStart);
+						const keyName = key.substr(keyStart + 1, key.indexOf(']') - keyStart-1);
+						if (!data[keyArrayName]) {
+							data[keyArrayName] = {};
+						}
+						data[keyArrayName][keyName] = value;
+					} else {
+						data[key] = value;
+					}
 				});
 				return data;
 			},
@@ -77,6 +87,7 @@
 			},
 
 			formatErrors(errors) {
+				console.log(errors);
 				this.errors = errors;
 				this.$emit('errors', this.errors);
 			},

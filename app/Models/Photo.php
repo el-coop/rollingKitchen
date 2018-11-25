@@ -7,8 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Photo extends Model {
 	
 	public $appends = [
-		'url'
+		'url',
 	];
+	
+	protected static function boot() {
+		parent::boot();
+		static::deleted(function ($photo) {
+			\Storage::delete("public/photos/{$photo->file}");
+		});
+	}
 	
 	public function kitchen() {
 		return $this->belongsTo(Kitchen::class);

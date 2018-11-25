@@ -4,7 +4,7 @@
 		<div class="control">
 			<textarea class="textarea" :class="{'is-danger': error}" v-model="value" :name="field.name"></textarea>
 		</div>
-		<p v-if="error" class="help is-danger" v-text="error[0]"></p>
+		<p v-if="error" class="help is-danger" v-text="errorText"></p>
 	</div>
 </template>
 

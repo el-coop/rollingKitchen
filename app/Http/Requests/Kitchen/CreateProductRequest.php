@@ -25,6 +25,7 @@ class CreateProductRequest extends FormRequest {
 		return [
 			'name' => 'required|min:2',
 			'price' => 'required|numeric',
+			'category' => 'required|in:food,drinks,other'
 		];
 	}
 	
@@ -32,6 +33,7 @@ class CreateProductRequest extends FormRequest {
 		$product = new Product;
 		$product->name = $this->input('name');
 		$product->price = $this->input('price');
+		$product->category = $this->input('category');
 		
 		$this->application->products()->save($product);
 		

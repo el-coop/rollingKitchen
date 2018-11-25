@@ -15,8 +15,11 @@ Route::get('/', function () {
 	return view('welcome');
 });
 
-Auth::routes();
+Auth::routes([
+	'register' => false
+]);
 
+Route::get('/language/{language}','LocaleController@set');
 Route::get('/images/{photo}','PhotoController@show');
 
 foreach (\File::allFiles(__DIR__ . "/web") as $routeFile) {

@@ -21,6 +21,10 @@ class Kitchen extends Model {
 		return action('Admin\KitchenController@view', $this);
 	}
 	
+	public function homePage() {
+		return action('Kitchen\KitchenController@show', $this);
+	}
+	
 	public function user() {
 		return $this->morphOne(User::class, 'user');
 	}
@@ -58,5 +62,16 @@ class Kitchen extends Model {
 		]);
 		
 		return $fullData->concat($this->getFieldsData());
+	}
+	
+	public function getCurrentApplication() {
+		$application = $this->applications()->where('year', '2018')->first();
+		if (!$application) {
+			$application = new Application;
+			$application->status = 'new';
+			$application->year = 2018;
+			$this->applications()->save($application);
+		}
+		return $application;
 	}
 }
