@@ -8,6 +8,8 @@ return [
 	'photos' => 'Photos',
     'password' => 'Password',
     'login' => 'Login',
-    'year' => 'Year'
+    'year' => 'Year',
+    'settings' => 'Settings',
+    'admin' => 'Admin'
 
 ];

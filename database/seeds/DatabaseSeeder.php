@@ -14,6 +14,6 @@ class DatabaseSeeder extends Seeder {
 		$this->call(FieldSeeder::class);
 		$this->call(KitchenSeeder::class);
 		$this->call(ServiceSeeder::class);
-
+		$this->call(SettingsSeeder::class);
 	}
 }
