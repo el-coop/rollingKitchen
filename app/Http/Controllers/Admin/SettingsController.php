@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 class SettingsController extends Controller {
 
     public function show(){
-        $settings = Setting::all()->sortBy('name');
+        $settings = Setting::all();
         return view('admin.settings.show', compact('settings'));
     }
 

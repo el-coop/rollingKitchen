@@ -26,23 +26,21 @@ class UpdateSettingsRequest extends FormRequest {
     public function rules() {
             return [
                 'accountant' => 'required|email',
-//                'application_text_en' => 'required|text',
-//                'application_text_nl' => 'required|text'
+                'application_text_en' => 'required|string',
+                'application_text_nl' => 'required|string'
             ];
     }
 
     public function commit(){
-        $accountant = Setting::where('name', 'accountant')->first();
-        $accountant->value = $this->input('accountant');
-        $accountant->save();
-        $applicationTextEn = Setting::where('name', 'application_text_en')->first();
-        $applicationTextEn->value =  $this->input('application_text_en');
-        $applicationTextEn->save();
-        $applicationTextNl = Setting::where('name', 'application_text_nl')->first();
-        $applicationTextNl->value = $this->input('application_text_nl');
-        $applicationTextNl->save();
-        $registration_status = Setting::where('name', 'registration_status')->first();
-        $registration_status->value = $this->has('registration_status');
-        $registration_status->save();
+        $names = DB::table('settings')->select('name')->get();
+        foreach ($names as $name){
+            $setting = Setting::where('name', $name->name)->first();
+            if ($name->name === 'registration_status'){
+                $setting->value = $this->has($name->name);
+            } else {
+                $setting->value = $this->input($name->name);
+            }
+            $setting->save();
+        }
     }
 }
