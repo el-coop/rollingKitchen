@@ -3,7 +3,7 @@
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\Models\Admin::class]], function () {
 	Route::get('datatable/list', 'DatatableController@list');
 	Route::get('datatable/export', 'DatatableController@export');
-	
+
 
 	Route::group(['namespace' => 'Admin'], function () {
 		Route::group(['prefix' => 'kitchens'], function () {
@@ -23,7 +23,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 
 
 		});
-		
+
 		Route::group(['prefix' => 'field'], function () {
 			Route::post('/', 'FieldController@create');
 			Route::get('/{type}', 'FieldController@index');
@@ -38,5 +38,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 			Route::patch('/edit/{application}', 'ApplicationController@update');
 			Route::patch('/dimensions/{application}', 'ApplicationController@updateDimensions');
 		});
+
+		Route::group(['prefix' => 'settings'], function () {
+		   Route::get('/', 'SettingsController@show');
+		   Route::patch('/', 'SettingsController@update');
+        });
 	});
 });

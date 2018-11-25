@@ -6,6 +6,8 @@ return [
 	'email' => 'Email',
 	'status' => 'Status',
 	'photos' => 'Photos',
+    'settings' => 'Settings',
+    'admin' => 'Admin',
 	'password' => 'Password',
 	'password_confirm' => 'Confirm Password',
 	'login' => 'Login',
