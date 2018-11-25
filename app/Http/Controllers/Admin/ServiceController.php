@@ -15,35 +15,14 @@ class ServiceController extends Controller {
 
 	}
 
-	public function show (){
+	public function create() {
 
-		return collect([[
-			'name' => 'name',
-			'label' => __('misc.name'),
-			'type' => 'text',
-			'value' => '',
-		], [
-			'name' => 'type',
-			'label' => __('misc.type'),
-			'type' => 'select',
-			'options' => [
-				'safety' => __('services.safety'),
-				'electrical' => __('services.electrical'),
-				'misc' => __('services.misc'),
-			],
-			'value' => '',
-		], [
-			'name' => 'price',
-			'label' => __('misc.price'),
-			'type' => 'text',
-			'value' => '',
-		]]);
+		return (new Service)->fulldata;
 	}
 
-	public function create (CreateServiceRequest $request){
+	public function store(CreateServiceRequest $request) {
 
 		return $request->commit();
-
 
 	}
 

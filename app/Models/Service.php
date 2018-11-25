@@ -12,13 +12,22 @@ class Service extends Model {
 			'type' => 'text',
 			'value' => $this->name,
 		], [
-			'name' => 'type',
-			'label' => __('misc.type'),
+			'name' => 'category',
+			'label' => __('misc.category'),
 			'type' => 'select',
 			'options' => [
 				'safety' => __('services.safety'),
 				'electrical' => __('services.electrical'),
 				'misc' => __('services.misc'),
+			],
+			'value' => $this->category,
+		], [
+			'name' => 'type',
+			'label' => __('misc.type'),
+			'type' => 'select',
+			'options' => [
+				  __('services.amount'),
+				  __('services.select'),
 			],
 			'value' => $this->type,
 		], [
@@ -30,7 +39,7 @@ class Service extends Model {
 		
 		return $fullData;
 	}
-	
+
 	public function applications() {
 		return $this->belongsToMany(Application::class);
 	}

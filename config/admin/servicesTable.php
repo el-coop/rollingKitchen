@@ -12,9 +12,9 @@ return [
 		'title' => 'misc.name',
 		'sortField' => 'name',
 	], [
-		'name' => 'type',
-		'title' => 'misc.type',
-		'sortField' => 'type',
+		'name' => 'category',
+		'title' => 'misc.category',
+		'sortField' => 'category',
 	], [
 		'name' => 'price',
 		'title' => 'misc.price',
