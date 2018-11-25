@@ -64,17 +64,17 @@ class TableTest extends TestCase {
 
 	public function test_datatable_get_table_data_filtered() {
 		$response = $this->actingAs($this->admin->user)
-			->get(action('DatatableController@list', ['table' => 'admin.servicesTable', 'per_page' => 20, 'filter' => '{"type":"safety"}']));
+			->get(action('DatatableController@list', ['table' => 'admin.servicesTable', 'per_page' => 20, 'filter' => '{"category":"safety"}']));
 
 		$services = $this->services->filter(function ($service) {
-			return $service->type == 'safety';
+			return $service->category == 'safety';
 		});
 
 		foreach ($services as $service) {
 			$response->assertJsonFragment([
 				'id' => $service->id,
 				'name' => $service->name,
-				'type' => $service->type,
+				'category' => $service->category,
 				'price' => (string)$service->price,
 			]);
 		}
@@ -108,14 +108,16 @@ class TableTest extends TestCase {
 		$this->actingAs($this->admin->user)
 			->patch(action('Admin\ServiceController@update', $service), [
 				'name' => 'testname',
-				'type' => 'safety',
+				'category' => 'safety',
+				'type' => 0,
 				'price' => '25.00'
 			])->assertSuccessful();
 
 		$this->assertDatabaseHas('services', [
 			'id' => $service->id,
 			'name' => 'testname',
-			'type' => 'safety',
+			'category' => 'safety',
+			'type' => 0,
 			'price' => 25.00
 		]);
 	}
@@ -126,9 +128,10 @@ class TableTest extends TestCase {
 		$this->actingAs($this->admin->user)
 			->patch(action('Admin\ServiceController@update', $service), [
 				'name' => '',
-				'type' => 'bla',
+				'category' => 'bla',
+				'type' => '',
 				'price' => 'zla'
-			])->assertRedirect()->assertSessionHasErrors(['name', 'type', 'price']);
+			])->assertRedirect()->assertSessionHasErrors(['name', 'category', 'type', 'price']);
 	}
 
 	public function test_can_admin_create_service() {
@@ -136,13 +139,15 @@ class TableTest extends TestCase {
 		$this->actingAs($this->admin->user)
 			->post(action('Admin\ServiceController@create'), [
 				'name' => 'testname',
-				'type' => 'safety',
+				'category' => 'safety',
+				'type' => 0,
 				'price' => '25.00'
 			])->assertSuccessful();
 
 		$this->assertDatabaseHas('services', [
 			'name' => 'testname',
-			'type' => 'safety',
+			'category' => 'safety',
+			'type' => 0,
 			'price' => 25.00
 		]);
 	}
@@ -161,7 +166,8 @@ class TableTest extends TestCase {
 		$this->actingAs($this->kitchen->user)
 			->post(action('Admin\ServiceController@create'), [
 				'name' => 'testname',
-				'type' => 'safety',
+				'category' => 'safety',
+				'type' => 0,
 				'price' => '25.00'
 			])->assertForbidden();
 
@@ -172,9 +178,10 @@ class TableTest extends TestCase {
 		$this->actingAs($this->admin->user)
 			->post(action('Admin\ServiceController@create'), [
 				'name' => '',
-				'type' => 'bla',
+				'category' => 'bla',
+				'type' => '',
 				'price' => 'zla'
-			])->assertRedirect()->assertSessionHasErrors(['name', 'type', 'price']);
+			])->assertRedirect()->assertSessionHasErrors(['name', 'category',  'type', 'price']);
 	}
 
 }

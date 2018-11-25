@@ -16,8 +16,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		Route::group(['prefix' => 'services'], function () {
 
 			Route::get('/', 'ServiceController@index');
-			Route::get('/edit', 'ServiceController@show');
-			Route::post('/edit', 'ServiceController@create');
+			Route::get('/edit', 'ServiceController@create');
+			Route::post('/edit', 'ServiceController@store');
 			Route::patch('/edit/{service}', 'ServiceController@update');
 			Route::get('/edit/{service}', 'ServiceController@edit');
 

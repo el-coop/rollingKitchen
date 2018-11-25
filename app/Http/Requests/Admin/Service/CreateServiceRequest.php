@@ -26,8 +26,9 @@ class CreateServiceRequest extends FormRequest
     {
         return [
 			'name' => 'required|min:2',
-			'type' => 'required|in:safety,electrical,misc',
-			'price' => 'required|numeric',
+			'category' => 'required|in:safety,electrical,misc',
+			'type' => 'required|in:0,1',
+				'price' => 'required|numeric',
         ];
     }
 
@@ -35,6 +36,7 @@ class CreateServiceRequest extends FormRequest
 		$service = new Service;
 
 		$service->name = $this->input('name');
+		$service->category = $this->input('category');
 		$service->type = $this->input('type');
 		$service->price = $this->input('price');
 
@@ -45,7 +47,7 @@ class CreateServiceRequest extends FormRequest
 		return [
 			'id' => $service->id,
 			'name' => $this->input('name'),
-			'type' => $this->input('type'),
+			'category' => $this->input('category'),
 			'price' => $this->input('price')
 		];
 	}
