@@ -1,15 +1,16 @@
 <template>
     <div class="field">
-        <div class="file">
+        <div class="file has-name">
             <label class="file-label">
-                <input class="file-input" type="file" :name="field.name">
+                <input class="file-input" type="file" :name="field.name" v-on:change='changefile'>
                 <span class="file-cta">
                     <span class="file-icon">
                         <font-awesome-icon icon="file-upload"></font-awesome-icon>
                     </span>
                     <span class="file-label" v-text="field.label">
-
                     </span>
+                </span>
+                <span class="file-name" v-text="filename">
                 </span>
             </label>
         </div>
@@ -22,7 +23,17 @@
 
     export default {
         name: "FileField",
-        mixins: [FieldMixin]
+        mixins: [FieldMixin],
+        data(){
+            return {
+                filename: ''
+            }
+        },
+        methods: {
+            changefile(e) {
+                this.filename = e.target.files[0].name;
+            }
+        }
     }
 </script>
 
