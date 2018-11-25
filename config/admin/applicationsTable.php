@@ -1,7 +1,7 @@
 <?php
 return [
     'model' => \App\Models\Application::class,
-    'where' => ['users.user_type', \App\Models\Kitchen::class],
+    'where' => [['users.user_type', \App\Models\Kitchen::class],['status','!=','new']],
     'joins' => [['users', 'users.user_id', 'applications.kitchen_id']],
     'fields' => [
         [

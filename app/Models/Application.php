@@ -49,4 +49,16 @@ class Application extends Model {
 		
 		return $editData->concat($this->getFieldsData());
 	}
+	
+	public function services() {
+		return $this->belongsToMany(Service::class);
+	}
+	
+	public function hasService(Service $service) {
+		return $this->services()->where('service_id', $service->id)->exists();
+	}
+	
+	public function electricDevices() {
+		return $this->hasMany(ElectricDevice::class);
+	}
 }

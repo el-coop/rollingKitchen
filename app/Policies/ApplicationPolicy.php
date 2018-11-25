@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Admin;
+use App\Models\Kitchen;
 use App\Models\User;
 use App\Models\Application;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -39,6 +40,9 @@ class ApplicationPolicy {
      * @return mixed
      */
     public function update(User $user, Application $application) {
+		if ($user->user_type == Kitchen::class && $user->user_id == $application->kitchen_id) {
+			return true;
+		}
         return $user->user_type == Admin::class;
     }
 

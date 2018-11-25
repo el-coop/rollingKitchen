@@ -1,65 +1,43 @@
-@extends('layouts.app')
+@extends('layouts.site')
+
+@section('title',__('misc.resetPassword'));
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
+    <div class="section">
+        <div class="columns">
+            <div class="column is-8">
+                @component('components.card',[
+					'class' => 'h-100'
+				])
+                    @slot('title')
+                        <p class="title is-4">
+                            @lang('misc.resetPassword')
+                        </p>
+                    @endslot
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('password.update') }}">
+                    <form method="post" action="{{ action('Auth\ResetPasswordController@reset') }}">
                         @csrf
-
                         <input type="hidden" name="token" value="{{ $token }}">
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ $email ?? old('email') }}" required autofocus>
-
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Reset Password') }}
-                                </button>
-                            </div>
+                        <text-field
+                                :field="{label: '@lang('misc.email')',name: 'email', subType: 'email', value: '{{ old('email') }}'}"
+                                :error="{{ $errors->has('email') ? collect($errors->get('email')): 'null'}}"></text-field>
+                        <text-field
+                                :field="{label: '@lang('misc.password')',name: 'password', subType: 'passwrod'}"
+                                :error="{{ $errors->has('password') ? collect($errors->get('password')): 'null'}}"></text-field>
+                        <text-field
+                                :field="{label: '@lang('misc.password_confirm')',name: 'password_confirmation', subType: 'passwrod'}"></text-field>
+                        <div class="buttons">
+                            <button class="button is-primary">
+                                @lang('misc.resetPassword')
+                            </button>
                         </div>
                     </form>
-                </div>
+                @endcomponent
             </div>
+            <div class="column">
+                @include('logoCard')
+            </div>
+
         </div>
     </div>
-</div>
 @endsection

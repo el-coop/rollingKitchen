@@ -12,7 +12,7 @@
 				<td v-for="(column,colIndex) in columns" :key="`${index}_${colIndex}`"
 					v-text="field[column.name]" @click="editObject(field)"></td>
 				<td>
-					<button class="button is-danger" :class="{'is-loading' : deleteing === field.id}"
+					<button class="button is-danger" type="button" :class="{'is-loading' : deleteing === field.id}"
 							@click="destroy(field)">Delete
 					</button>
 				</td>
@@ -20,11 +20,11 @@
 			</tbody>
 		</table>
 		<div class="buttons" v-if="action">
-			<div class="button is-success" @click="editObject({})">Create</div>
+			<div class="button is-success" @click="editObject({})">Add</div>
 		</div>
 		<modal-component :name="`${_uid}modal`" v-if="action">
 			<dynamic-form :init-fields="formFields" :method="method" :url="url"
-						  @object-update="updateObject">
+						  @object-update="updateObject" :extra-data="extraData">
 
 			</dynamic-form>
 		</modal-component>
@@ -50,6 +50,13 @@
 				type: String,
 				default: ''
 			},
+
+			extraData: {
+				type: Object,
+				default() {
+					return {};
+				}
+			}
 
 		},
 
@@ -101,7 +108,8 @@
 						name: column.name,
 						label: column.label,
 						value: this.object[column.name] || '',
-						type: (column.type || 'text')
+						type: column.type || 'text',
+						subType: column.subType || ''
 					});
 				}
 

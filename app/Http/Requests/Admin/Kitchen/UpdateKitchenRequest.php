@@ -28,6 +28,8 @@ class UpdateKitchenRequest extends FormRequest {
 			'status' => 'required|in:new,motherlist',
 			'name' => 'required|min:2',
 			'email' => 'required|email',
+			'kitchen' => 'required|array',
+			'kitchen.*' => 'required',
 		];
 	}
 	
@@ -37,7 +39,7 @@ class UpdateKitchenRequest extends FormRequest {
 		$this->kitchen->user->email = $this->input('email');
 		$this->kitchen->status = $this->input('status');
 		
-		$this->kitchen->data = $this->except(['name', 'email', 'status']);
+		$this->kitchen->data = $this->input('kitchen');
 		
 		$this->kitchen->user->save();
 		$this->kitchen->save();
