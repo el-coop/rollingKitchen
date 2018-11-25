@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model {
@@ -14,6 +15,11 @@ class Setting extends Model {
     }
 
     public static function registrationYear(){
-        return  new Setting(['name' => 'registration_year', 'value' => date('Y' ) + 1]);
+        if (today() > Carbon::create(date('Y'), 12,15)){
+            $year = date('Y') + 1;
+        } else {
+            $year = date('Y');
+        }
+        return  new Setting(['name' => 'registration_year', 'value' => $year]);
     }
 }
