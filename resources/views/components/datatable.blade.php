@@ -36,9 +36,10 @@ if (!isset($fields)) {
 		   		filter: '@lang('datatable.filter')',
 		   		clear: '@lang('datatable.clear')',
 		   }"
+		   :init-filters="{{ $filters ?? '{}' }}"
 >
 	@isset($buttons)
-	<template slot="buttons" slot-scope="{actions}">{{$buttons}}</template>
+		<template slot="buttons" slot-scope="{actions}">{{$buttons}}</template>
 	@endisset
 	@if(trim($slot) !== '')
 		{{ $slot }}

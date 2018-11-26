@@ -15,9 +15,6 @@ Route::group(['prefix' => 'kitchen', 'namespace' => 'Kitchen'], function () {
 		
 		Route::post('/{kitchen}/photo', 'KitchenController@storePhoto');
 		Route::delete('/{kitchen}/photo/{photo}', 'KitchenController@destroyPhoto');
-		
-		
-		Route::get('/review/{kitchen}', 'KitchenController@show');
 	});
 	
 	Route::group(['prefix' => 'applications/{application}/products', 'middleware' => ['auth', 'can:update,application']], function () {

@@ -12,7 +12,7 @@
 					subType: 'number',
 					type: 'text',
 				}]" :init-fields="{{ $application->electricDevices }}"
-						   action="/kitchen/applications/{{$application->id}}/devices"></dynamic-table>
+						   @if($application->isOpen())action="/kitchen/applications/{{$application->id}}/devices" @endif></dynamic-table>
 		</p>
 		<hr>
 		@include('kitchen.services.sockets')

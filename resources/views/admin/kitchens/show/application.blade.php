@@ -19,7 +19,12 @@
 					@component('admin.kitchens.show.application.dimensions', compact('application'))
 					@endcomponent
 				</select-view>
-				<select-view label="Services"></select-view>
+				<select-view label="Electricity">
+					@include('admin.kitchens.show.application.electrity')
+				</select-view>
+				<select-view label="Services">
+					@include('admin.kitchens.show.application.services')
+				</select-view>
 			</select-chooser>
 		</div>
 	</div>

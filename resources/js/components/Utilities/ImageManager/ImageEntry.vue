@@ -3,15 +3,13 @@
 		<div class="level is-mobile">
 			<div class="level-left">
 				<div class="level-item">
-					<figure class="image is-max37-max64">
-						<img :src="image.url">
-					</figure>
+					<img class="image is-max37-max64" :src="image.url">
 				</div>
 			</div>
 			<div class="level-right h-100">
 				<div class="level-item">
 					<button class="button is-danger is-inverted" :class="{'is-loading': deleting}" type="button"
-						@click="deleteImage">
+							@click="deleteImage">
 						<font-awesome-icon
 								icon="times-circle">
 						</font-awesome-icon>
@@ -43,11 +41,11 @@
 		},
 
 		methods: {
-			async deleteImage(){
+			async deleteImage() {
 				this.deleting = true;
 				try {
 					axios.delete(`${this.deleteUrl}/${this.image.id}`);
-					this.$emit('deleted',this.image);
+					this.$emit('deleted', this.image);
 				} catch (error) {
 					console.log(error);
 					this.$toast.error('Please try again later', 'Operation failed');

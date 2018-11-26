@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Kitchen;
 
+use App;
 use App\Http\Requests\Kitchen\CreateKitchenRequest;
 use App\Http\Requests\Kitchen\Photo\UploadPhotoRequest;
 use App\Http\Requests\Kitchen\UpdateKitchenRequest;
@@ -9,6 +10,7 @@ use App\Models\Application;
 use App\Models\Kitchen;
 use App\Models\Photo;
 use App\Models\Service;
+use App\Models\Setting;
 use Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -47,7 +49,6 @@ class KitchenController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function show(Kitchen $kitchen) {
-		return view('kitchen.edit', compact('kitchen'));
 	}
 	
 	/**
@@ -59,10 +60,12 @@ class KitchenController extends Controller {
 	public function edit(Kitchen $kitchen) {
 		$services = Service::all();
 		$application = $kitchen->getCurrentApplication();
-		if ($application->status != 'new') {
-			return redirect()->action('Kitchen\KitchenController@show', $kitchen);
+		$message = false;
+		if(! $application->isOpen()){
+			$locale = App::getLocale();
+			$message = Setting::where('name',"application_text_{$locale}")->first()->value;
 		}
-		return view('kitchen.edit', compact('kitchen', 'application', 'application', 'services'));
+		return view('kitchen.edit', compact('kitchen', 'application', 'application', 'services','message'));
 	}
 	
 	/**

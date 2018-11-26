@@ -1,6 +1,6 @@
 <template>
 	<div class="list">
-		<image-entry v-for="image in images" :image="image" :delete-url="deleteUrl"
+		<image-entry v-for="image in images" :image="image" :delete-url="deleteUrl" :key="images.id"
 					 @deleted="deleteImage"></image-entry>
 	</div>
 </template>
