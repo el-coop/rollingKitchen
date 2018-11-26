@@ -9,4 +9,5 @@ return [
     'name' => 'Name',
     'title' => 'Rollende Keukens',
 	'save' => 'Save',
+    'file' => 'File'
 ];

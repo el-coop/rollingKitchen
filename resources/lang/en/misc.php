@@ -18,5 +18,7 @@ return [
 	'nl' => 'Nederlands',
 	'resetPassword' => 'Reset Password',
 	'sendResetPasswordLink' => 'Send Password Reset Link',
+    'filesystem' => 'File System',
+    'pdfs' => 'PDFs'
 
 ];

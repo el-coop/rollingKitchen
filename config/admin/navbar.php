@@ -7,6 +7,7 @@ return [
 		'admin/services.index' => 'Admin\ServiceController@index',
 	],
     'misc.admin' => [
-        'misc.settings' => 'Admin\SettingsController@show'
+        'misc.settings' => 'Admin\SettingsController@show',
+        'misc.filesystem' => 'Admin\PDFController@index'
     ]
 ];
