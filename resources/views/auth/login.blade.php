@@ -20,8 +20,8 @@
 								:field="{label: '@lang('misc.email')',name: 'email', subType: 'email'}"
 								:error="{{ $errors->count() ? collect(["The credentials don't match our records"]): 'null'}}"></text-field>
 						<text-field
-								:field="{label: '@lang('misc.password')',name: 'password', subType: 'passwrod'}"></text-field>
-						<div class="field">
+								:field="{label: '@lang('misc.password')',name: 'password', subType: 'password'}"></text-field>
+            <div class="field">
 							<label class="checkbox">
 								<input type="checkbox" name="remember">
 								Remember me

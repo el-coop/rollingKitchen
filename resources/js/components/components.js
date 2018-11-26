@@ -34,3 +34,4 @@ Vue.component('FieldForm', require('./Form/FieldForm'));
 Vue.component('TextField', require('./Form/TextField'));
 Vue.component('TextareaField', require('./Form/TextareatField'));
 Vue.component('SelectField', require('./Form/SelectField'));
+Vue.component('FileField', require('./Form/FileField'));

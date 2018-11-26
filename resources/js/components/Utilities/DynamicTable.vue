@@ -3,13 +3,13 @@
 		<table class="table is-fullwidth">
 			<thead>
 			<tr>
-				<th v-for="(column,index) in columns" v-text="column.label" :key="index"></th>
+				<th  v-for="(column,index) in columns" v-text="column.label" :key="index" v-if="!column.invisible"></th>
 				<th></th>
 			</tr>
 			</thead>
 			<tbody>
 			<tr v-for="(field, index) in fields" :key="`${index}${field.id}`">
-				<td v-for="(column,colIndex) in columns" :key="`${index}_${colIndex}`"
+				<td v-if="!column.invisible" v-for="(column,colIndex) in columns" :key="`${index}_${colIndex}`"
 					v-text="field[column.name]" @click="editObject(field)"></td>
 				<td>
 					<button class="button is-danger" type="button" :class="{'is-loading' : deleteing === field.id}"
@@ -23,7 +23,7 @@
 			<div class="button is-success" @click="editObject({})">Add</div>
 		</div>
 		<modal-component :name="`${_uid}modal`" v-if="action">
-			<dynamic-form :init-fields="formFields" :method="method" :url="url"
+			<dynamic-form :headers="headers" :init-fields="formFields" :method="method" :url="url"
 						  @object-update="updateObject" :extra-data="extraData">
 
 			</dynamic-form>
@@ -56,6 +56,18 @@
 				default() {
 					return {};
 				}
+			},
+			headers: {
+                type: Object,
+                default() {
+                    return {
+                        'Content-type': 'application/json'
+					};
+                }
+			},
+			edit: {
+			    type: Boolean,
+				default: true
 			}
 
 		},
@@ -70,6 +82,9 @@
 
 		methods: {
 			editObject(field) {
+			    if (field.id && !this.edit){
+			        return;
+				}
 				this.object = field;
 				this.$modal.show(`${this._uid}modal`);
 			},
