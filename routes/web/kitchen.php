@@ -11,7 +11,7 @@ Route::group(['prefix' => 'kitchen', 'namespace' => 'Kitchen'], function () {
 	Route::group(['middleware' => ['auth', 'can:update,kitchen']], function () {
 		
 		Route::get('/{kitchen}', 'KitchenController@edit');
-		Route::post('/{kitchen}', 'KitchenController@update');
+		Route::patch('/{kitchen}', 'KitchenController@update');
 		
 		Route::post('/{kitchen}/photo', 'KitchenController@storePhoto');
 		Route::delete('/{kitchen}/photo/{photo}', 'KitchenController@destroyPhoto');

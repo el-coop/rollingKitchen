@@ -10,6 +10,7 @@
 	@endif
 	<form method="post" action="{{ action('Kitchen\KitchenController@update', $kitchen) }}" ref="form">
 		@csrf
+		@method('patch')
 		<input name="review" type="hidden" value="0" ref="review">
 		<tabs>
 			<tab label="Business Information">@include('kitchen.kitchen')</tab>
@@ -30,7 +31,7 @@
 					['<button>NO</button>', (instance, toast) => {
 						instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
 					},]
-				],})" name="review"
+				],})" id="reviewButton"
 						title="You will not be able to change your data once this is done">@lang('kitchen/kitchen.submit')
 				</button>
 			@endif
