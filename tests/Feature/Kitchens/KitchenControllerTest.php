@@ -44,6 +44,7 @@ class KitchenControllerTest extends TestCase {
 	}
 	
 	public function test_registers_new_kitchen() {
+		$kitchenCount = Kitchen::count();
 		$this->post(action('Kitchen\KitchenController@store'), [
 			'name' => 'test kitchen',
 			'email' => 'test@best.rest',
@@ -61,7 +62,7 @@ class KitchenControllerTest extends TestCase {
 		]);
 		
 		
-		$this->assertCount(3, Kitchen::All());
+		$this->assertCount($kitchenCount + 1, Kitchen::All());
 	}
 	
 	public function test_validates_kitchen_registartion() {
@@ -76,6 +77,8 @@ class KitchenControllerTest extends TestCase {
 	
 	
 	public function test_kitchen_cant_reregister() {
+		$kitchenCount = Kitchen::count();
+		
 		$this->actingAs($this->user)->post(action('Kitchen\KitchenController@store'), [
 			'name' => 'test kitchen',
 			'email' => 'test@best.rest',
@@ -84,7 +87,7 @@ class KitchenControllerTest extends TestCase {
 			'password_confirmation' => '123456',
 		])->assertRedirect(action('Kitchen\KitchenController@edit', $this->user->user));
 		
-		$this->assertCount(2, Kitchen::All());
+		$this->assertCount($kitchenCount, Kitchen::All());
 	}
 	
 	public function test_kitchen_can_upload_photo() {
