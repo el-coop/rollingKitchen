@@ -9,7 +9,6 @@ class LocaleController extends Controller {
 		if (array_key_exists($language, config('app.locales'))) {
 			$request->session()->put('appLocale', $language);
 		}
-		
 		return back();
 	}
 }
