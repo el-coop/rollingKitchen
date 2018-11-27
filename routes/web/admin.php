@@ -47,7 +47,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		Route::group(['prefix' => 'fielsystem'], function (){
 		   Route::get('/', 'PDFController@index');
 		   Route::post('/', 'PDFController@upload');
-		   Route::delete('/{pdf}', 'PDFCOntroller@destroy');
+		   Route::delete('/{pdf}', 'PDFController@destroy');
         });
 	});
 });
