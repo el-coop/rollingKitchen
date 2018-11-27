@@ -40,6 +40,12 @@
 				type: String,
 				default: 'Clear'
 			},
+			initFilters: {
+				type: Object,
+				default() {
+
+				}
+			}
 		},
 
 		data() {
@@ -47,7 +53,7 @@
 				fields: this.tableFields.filter((field) => {
 					return typeof field.filter === "undefined" || field.filter
 				}),
-				filters: {}
+				filters: this.initFilters
 			};
 		},
 

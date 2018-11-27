@@ -4,6 +4,7 @@
 	<div class="field">
 		<label class="radio">
 			<input type="radio"
+				   @if(!$application->isOpen() && $application->socket != $key ) disabled @endif
 				   name="socket" value="{{$key}}" {{ $application->socket == $key ? 'checked' : '' }}>
 			{{ $value }}
 		</label>

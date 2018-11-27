@@ -22,7 +22,7 @@ class Kitchen extends Model {
 	}
 	
 	public function homePage() {
-		return action('Kitchen\KitchenController@show', $this);
+		return action('Kitchen\KitchenController@edit', $this);
 	}
 	
 	public function user() {
@@ -65,11 +65,15 @@ class Kitchen extends Model {
 	}
 	
 	public function getCurrentApplication() {
-		$application = $this->applications()->where('year', '2018')->first();
+		$applicationYear = Setting::registrationYear();
+		$application = $this->applications()->where('year', $applicationYear->value)->first();
 		if (!$application) {
 			$application = new Application;
 			$application->status = 'new';
-			$application->year = 2018;
+			$application->year = $applicationYear->value;
+			$application->data = [];
+			$application->length = 0;
+			$application->width = 0;
 			$this->applications()->save($application);
 		}
 		return $application;

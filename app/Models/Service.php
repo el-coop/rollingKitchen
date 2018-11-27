@@ -26,8 +26,8 @@ class Service extends Model {
 			'label' => __('misc.type'),
 			'type' => 'select',
 			'options' => [
-				  __('services.amount'),
-				  __('services.select'),
+				__('services.amount'),
+				__('services.select'),
 			],
 			'value' => $this->type,
 		], [
@@ -39,8 +39,8 @@ class Service extends Model {
 		
 		return $fullData;
 	}
-
+	
 	public function applications() {
-		return $this->belongsToMany(Application::class);
+		return $this->belongsToMany(Application::class)->withPivot('quantity');
 	}
 }

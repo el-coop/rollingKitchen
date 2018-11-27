@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\Admin\Application\UpdateApplicationRequest;
 use App\Http\Requests\Kitchen\CreateProductRequest;
 use App\Http\Requests\Kitchen\UpdateDimensionsRequest;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Application;
@@ -17,7 +18,10 @@ class ApplicationController extends Controller {
 	 */
 	public function index() {
 		$fieldType = 'Application';
-		return view('admin.datatableDefault', compact('fieldType'));
+		$filters = collect([
+			'year' => Setting::registrationYear()->value
+		]);
+		return view('admin.datatableDefault', compact('fieldType','filters'));
 	}
 	
 	/**

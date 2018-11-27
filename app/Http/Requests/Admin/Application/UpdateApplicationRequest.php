@@ -25,7 +25,7 @@ class UpdateApplicationRequest extends FormRequest {
 	 */
 	public function rules() {
 		return [
-			'status' => 'required|in:accepted,pending,rejected',
+			'status' => 'required|in:accepted,pending,rejected,reopened',
 			'year' => 'required|digits:4|integer|min:2014|max:' . (date('Y')),
 			'application' => 'required|array',
 		];

@@ -12,7 +12,7 @@
 	subType: 'number',
 	type: 'text',
 }]" :init-fields="{{ $application->products()->where('category',$category)->get() }}"
-					   action="/kitchen/applications/{{$application->id}}/products"
+					   @if($application->isOpen()) action="/kitchen/applications/{{$application->id}}/products" @endif
 					   :extra-data="{category: '{{$category}}'}">
 		</dynamic-table>
 

@@ -40,7 +40,7 @@ class ApplicationPolicy {
      * @return mixed
      */
     public function update(User $user, Application $application) {
-		if ($user->user_type == Kitchen::class && $user->user_id == $application->kitchen_id) {
+		if ($user->user_type == Kitchen::class && $user->user_id == $application->kitchen_id && $application->isOpen()) {
 			return true;
 		}
         return $user->user_type == Admin::class;

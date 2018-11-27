@@ -15,6 +15,7 @@ class CreateApplicationServiceTable extends Migration {
 			$table->increments('id');
 			$table->integer('application_id')->unsigned();
 			$table->integer('service_id')->unsigned();
+			$table->integer('quantity')->unsigned();
 			$table->timestamps();
 			
 			$table->foreign('application_id')

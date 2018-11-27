@@ -40,6 +40,7 @@ class Application extends Model {
 				'type' => 'select',
 				'options' => [
 					'pending' => __('datatable.pending'),
+					'reopened' => __('datatable.reopened'),
 					'accepted' => __('datatable.accepted'),
 					'rejected' => __('datatable.rejected')
 				],
@@ -51,14 +52,22 @@ class Application extends Model {
 	}
 	
 	public function services() {
-		return $this->belongsToMany(Service::class);
+		return $this->belongsToMany(Service::class)->withPivot('quantity');
 	}
 	
 	public function hasService(Service $service) {
-		return $this->services()->where('service_id', $service->id)->exists();
+		return $this->services()->where('service_id', $service->id)->where('quantity', '>', 0)->exists();
+	}
+	
+	public function serviceQuantity(Service $service) {
+		return $this->services()->where('service_id', $service->id)->first()->pivot->quantity;
 	}
 	
 	public function electricDevices() {
 		return $this->hasMany(ElectricDevice::class);
+	}
+	
+	public function isOpen() {
+		return $this->status == 'new' || $this->status == 'reopened';
 	}
 }

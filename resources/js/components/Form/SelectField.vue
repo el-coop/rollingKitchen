@@ -3,7 +3,7 @@
 		<label class="label" v-text="field.label"></label>
 		<div class="control">
 			<div class="select is-fullwidth" :class="{'is-danger': error}">
-				<select v-model="value" :name="field.name">
+				<select v-model="value" :name="field.name" :readonly="field.readonly">
 					<option v-for="(option, val) in field.options" :value="val" v-text="option"></option>
 				</select>
 			</div>

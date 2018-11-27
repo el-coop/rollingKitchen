@@ -60,12 +60,3 @@
 		}
 	}
 </script>
-
-<style scoped>
-	.image.is-max37-max64 {
-		width: auto;
-		height: auto;
-		max-width: 64px;
-		max-height: 37px;
-	}
-</style>

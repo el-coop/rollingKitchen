@@ -21,6 +21,12 @@
 								:error="{{ $errors->count() ? collect(["The credentials don't match our records"]): 'null'}}"></text-field>
 						<text-field
 								:field="{label: '@lang('misc.password')',name: 'password', subType: 'password'}"></text-field>
+            <div class="field">
+							<label class="checkbox">
+								<input type="checkbox" name="remember">
+								Remember me
+							</label>
+						</div>
 						<div class="buttons">
 							<button class="button is-primary">
 								@lang('misc.login')
@@ -29,7 +35,6 @@
 							   class="button is-dark">I forgot my password</a>
 							<a href="{{ action('Kitchen\KitchenController@create') }}" class="button">New Kitchen?</a>
 						</div>
-
 					</form>
 				@endcomponent
 			</div>
