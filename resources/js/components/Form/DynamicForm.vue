@@ -1,18 +1,18 @@
 <template>
-	<ajax-form :headers="headers" @errors="handleErrors" :method="method" :action="url" @submitting="submitting = true"
-			   @submitted="submitted" :extraData="extraData">
-		<div v-if="loading" class="has-text-centered">
-			<a class="button is-loading"></a>
-		</div>
-		<component v-if="hide.indexOf(field.name) === -1"
-				   :error="errors[field.name.replace('[','.').replace(']','')] || null"
-				   v-for="(field,key) in fields" :is="`${field.type}-field`"
-				   :field="field" :key="key">
-		</component>
-		<button v-if="!loading" class="button is-fullwidth" :class="[submitting ? 'is-loading' : '', buttonClass]"
-				type="submit">Save
-		</button>
-	</ajax-form>
+    <ajax-form :headers="headers" @errors="handleErrors" :method="method" :action="url" @submitting="submitting = true"
+               @submitted="submitted" :extraData="extraData">
+        <div v-if="loading" class="has-text-centered">
+            <a class="button is-loading"></a>
+        </div>
+        <component v-if="hide.indexOf(field.name) === -1"
+                   :error="errors[field.name.replace('[','.').replace(']','')] || null"
+                   v-for="(field,key) in fields" :is="`${field.type}-field`"
+                   :field="field" :key="key">
+        </component>
+        <button v-if="!loading" class="button is-fullwidth" :class="[submitting ? 'is-loading' : '', buttonClass]"
+                type="submit">Save
+        </button>
+    </ajax-form>
 </template>
 
 <script>
@@ -65,12 +65,14 @@
 					return {};
 				}
 			},
-            headers: {
-                type: Object,
-                default() {
-                    return {};
-                }
-            }
+			headers: {
+				type: Object,
+				default() {
+					return {
+						'Content-type': 'application/json'
+					};
+				}
+			}
 		},
 
 		data() {

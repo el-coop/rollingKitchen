@@ -183,7 +183,7 @@
 			},
 			rowClicked(data, event) {
 				this.$modal.show('datatable-row');
-				this.object = data ;
+				this.object = data;
 				this.$bus.$emit('vuetable-row-clicked', {
 					data, event
 				});
@@ -194,7 +194,11 @@
 				const elementIndex = currentData.findIndex((row) => {
 					return row.id === data.id;
 				});
-				currentData[elementIndex] = this.object;
+				if (elementIndex > -1) {
+					currentData[elementIndex] = this.object;
+				} else {
+					currentData.push(this.object);
+				}
 				this.$refs.table.setData(currentData);
 			}
 		},

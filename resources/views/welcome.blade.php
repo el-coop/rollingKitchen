@@ -8,20 +8,20 @@
         <div class="columns">
             <div class="column">
 
-                <div class="card is-flex" style="flex-direction: column; height: 100%">
-                    <div class="card-content" style="flex: 1">
+                <div class="card is-flex is-column h-100">
+                    <div class="card-content fill-parent">
                         <p class="title">
-                            Klik op aanmelden als je in 2017 niet hebt meegedaan aan Het Weekend van de Rollende keukens.
+                        {{$registrationText}}
                         </p>
 
                     </div>
 
                     <footer class="card-footer">
-                        <button class="card-footer-item button is-dark is-size-3">
+                        <a href="{{action('Kitchen\KitchenController@create')}}" class="card-footer-item button is-dark is-size-3">
 
                             Aanmelden
 
-                        </button>
+                        </a>
                     </footer>
                 </div>
             </div>
@@ -31,17 +31,18 @@
                 <div class="card is-flex" style="flex-direction: column; height: 100%">
                     <div class="card-content" style="flex: 1">
                         <p class="title">
-                            Klik op inloggen als je in 2017 ook al hebt meegedaan aan Het Weekend van de Rollende Keukens.
+                            {{$loginText}}
+
                         </p>
 
                     </div>
 
                     <footer class="card-footer">
-                        <button class="card-footer-item button is-dark is-size-3">
+                        <a href="{{action('Auth\LoginController@showLoginForm')}}" class="card-footer-item button is-dark is-size-3">
 
                             Inloggen
 
-                        </button>
+                        </a>
                     </footer>
                 </div>
             </div>
@@ -49,7 +50,7 @@
 
                 <figure class="image is-square">
 
-                    <img src="/images/kreeft.png" alt="kreeft">
+                    <img src="/images/logo.png" alt="kreeft">
 
 
                 </figure>

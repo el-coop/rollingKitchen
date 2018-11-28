@@ -7,10 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Service extends Model {
 	public function getFullDataAttribute() {
 		$fullData = collect([[
-			'name' => 'name',
-			'label' => __('misc.name'),
+			'name' => 'name_nl',
+			'label' => __('misc.nameNl'),
 			'type' => 'text',
-			'value' => $this->name,
+			'value' => $this->nameNl,
+		],[
+			'name' => 'name_en',
+			'label' => __('misc.nameEn'),
+			'type' => 'text',
+			'value' => $this->nameEn,
 		], [
 			'name' => 'category',
 			'label' => __('misc.category'),
