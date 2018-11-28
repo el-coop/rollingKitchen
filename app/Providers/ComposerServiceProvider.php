@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-use App\Http\ViewComposers\DashboardComposer;
+use App\Http\View\Composers\DashboardComposer;
+use App\Http\View\Composers\NumberFormatComposer;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -15,9 +16,12 @@ class ComposerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer(
-            'layouts.dashboard', DashboardComposer::class
-        );
+		View::composer(
+			'layouts.dashboard', DashboardComposer::class
+		);
+		View::composer(
+			'*', NumberFormatComposer::class
+		);
     }
 
     /**

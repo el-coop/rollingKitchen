@@ -12,7 +12,8 @@ class KitchenController extends Controller {
 	
 	public function index() {
 		$fieldType = 'Kitchen';
-		return view('admin.datatableDefault', compact('fieldType'));
+		$title = __('admin/kitchens.kitchens');
+		return view('admin.datatableDefault', compact('fieldType','title'));
 	}
 	
 	/**

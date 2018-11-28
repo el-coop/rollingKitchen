@@ -9,12 +9,4 @@ return [
 	'filters' => 'Filters',
 	'filter' => 'Filter',
 	'clear' => 'Clear',
-	'yes' => 'Yes',
-	'no' => 'No',
-	'new' => 'New',
-	'motherlist' => 'Motherlist',
-    'accepted' => 'Accepted',
-    'pending' => 'Pending',
-    'rejected' => 'Rejected'
-
 ];

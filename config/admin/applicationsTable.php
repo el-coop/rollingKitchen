@@ -14,18 +14,26 @@ return [
         [
             'name' => 'name',
             'table' => 'users',
-            'title' => 'misc.name',
+            'title' => 'global.name',
             'sortField' => 'name'
         ],
         [
             'name' => 'year',
-            'title' => 'Year',
+            'title' => 'global.year',
             'sortField' => 'year'
         ],
         [
             'name' => 'status',
-            'title' => 'status',
-            'sortField' => 'status'
+            'title' => 'global.status',
+            'sortField' => 'status',
+			'filter' => [
+				'pending' => 'vue.pending',
+				'accepted' => 'vue.accepted',
+				'reopened' => 'vue.reopened',
+				'rejected' => 'vue.rejected',
+				'backup' => 'vue.backup'
+			],
+			'callback' => 'translate'
         ],
     ]
 

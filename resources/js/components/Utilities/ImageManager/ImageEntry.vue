@@ -47,8 +47,7 @@
 					axios.delete(`${this.deleteUrl}/${this.image.id}`);
 					this.$emit('deleted', this.image);
 				} catch (error) {
-					console.log(error);
-					this.$toast.error('Please try again later', 'Operation failed');
+					this.$toast.error(this.$translations.tryLater, this.$translations.operationFiled);
 				}
 				this.deleting = false;
 			}

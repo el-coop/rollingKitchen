@@ -3,13 +3,19 @@
 		methods: {
 			numToBoolTag(value) {
 				if (value > 0) {
-					return `<span class="tag is-success">${this.translations.yes}</span>`;
+					return `<span class="tag is-success">${this.$translations.yes}</span>`;
 				}
-				return `<span class="tag is-danger">${this.translations.no}</span>`;
+				return `<span class="tag is-danger">${this.$translations.no}</span>`;
 			},
 
 			translate(value) {
-				return this.translations[value];
+				return this.$translations[value];
+			},
+
+			localNumber(value) {
+				return new Intl.NumberFormat(document.documentElement.lang, {
+					minimumFractionDigits: 2
+				}).format(value);
 			}
 		}
 	}

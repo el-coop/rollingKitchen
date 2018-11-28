@@ -8,7 +8,7 @@
 	<div class="tile is-parent is-vertical">
 		<div class="tile is-child">
 			<p class="title">
-				@lang('misc.photos')
+				@lang('global.photos')
 			</p>
 			<carousel :photos="{{ $kitchen->photos }}">
 

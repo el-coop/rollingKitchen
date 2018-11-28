@@ -41,21 +41,21 @@ class Kitchen extends Model {
 		$fullData = collect([
 			[
 				'name' => 'name',
-				'label' => __('misc.name'),
+				'label' => __('global.name'),
 				'type' => 'text',
 				'value' => $this->user->name
 			], [
 				'name' => 'email',
-				'label' => __('misc.email'),
+				'label' => __('global.email'),
 				'type' => 'text',
 				'value' => $this->user->email
 			], [
 				'name' => 'status',
-				'label' => __('misc.status'),
+				'label' => __('global.status'),
 				'type' => 'select',
 				'options' => [
-					'new' => __('datatable.new'),
-					'motherlist' => __('datatable.motherlist')
+					'new' => __('admin/kitchens.new'),
+					'motherlist' => __('admin/kitchens.motherlist')
 				],
 				'value' => $this->status
 			]
@@ -78,4 +78,5 @@ class Kitchen extends Model {
 		}
 		return $application;
 	}
+	
 }

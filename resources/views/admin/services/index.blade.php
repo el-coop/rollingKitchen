@@ -1,12 +1,13 @@
 @extends('layouts.dashboard')
 
+@section('title',__('kitchen/kitchen.services'))
 
 @section('content')
 
     <div>
         @component('components.datatable')
             @slot('buttons')
-                <button class="button is-light" @click="actions.newObjectForm">Add service</button>
+                <button class="button is-light" @click="actions.newObjectForm">@lang('admin/services.add')</button>
             @endslot
             <template slot-scope="{object, onUpdate}" v-if="object">
                 <div class="title is-size-3 has-text-centered" v-text="object.name || 'Create service'"></div>

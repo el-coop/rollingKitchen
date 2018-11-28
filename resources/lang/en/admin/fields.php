@@ -1,8 +1,12 @@
 <?php
 
 return [
-    'type' => 'Type',
-	'Kitchen' => 'Kitchens',
-	'Application' => 'Applications'
-
+	'Kitchen' => 'Business information fields',
+	'Application' => 'Kitchen information fields',
+	'back' => 'Back to list',
+	'name_nl' => 'Dutch Name',
+	'name_en' => 'English Name',
+	'type' => 'Type',
+	'text' => 'Text',
+	'textarea' => 'Textarea'
 ];

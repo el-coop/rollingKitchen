@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('title',__('misc.login'))
+@section('title',__('global.login'))
 
 @section('content')
 	<div class="section">
@@ -11,29 +11,29 @@
 				])
 					@slot('title')
 						<p class="title is-4">
-							@lang('misc.login')
+							@lang('global.login')
 						</p>
 					@endslot
 					<form method="post" action="{{ action('Auth\LoginController@login') }}">
 						@csrf
 						<text-field
-								:field="{label: '@lang('misc.email')',name: 'email', subType: 'email'}"
+								:field="{label: '@lang('global.email')',name: 'email', subType: 'email'}"
 								:error="{{ $errors->count() ? collect(["The credentials don't match our records"]): 'null'}}"></text-field>
 						<text-field
-								:field="{label: '@lang('misc.password')',name: 'password', subType: 'password'}"></text-field>
+								:field="{label: '@lang('global.password')',name: 'password', subType: 'password'}"></text-field>
             <div class="field">
 							<label class="checkbox">
 								<input type="checkbox" name="remember">
-								Remember me
+								@lang('auth.rememberMe')
 							</label>
 						</div>
 						<div class="buttons">
 							<button class="button is-primary">
-								@lang('misc.login')
+								@lang('global.login')
 							</button>
 							<a href="{{ action('Auth\ForgotPasswordController@showLinkRequestForm') }}"
-							   class="button is-dark">I forgot my password</a>
-							<a href="{{ action('Kitchen\KitchenController@create') }}" class="button">New Kitchen?</a>
+							   class="button is-dark">@lang('auth.forgot')</a>
+							<a href="{{ action('Kitchen\KitchenController@create') }}" class="button">@lang('auth.new')</a>
 						</div>
 					</form>
 				@endcomponent

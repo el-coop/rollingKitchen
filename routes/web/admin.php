@@ -27,9 +27,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		Route::group(['prefix' => 'field'], function () {
 			Route::post('/', 'FieldController@create');
 			Route::get('/{type}', 'FieldController@index');
-			Route::delete('/{field}', 'FieldController@delete');
+			Route::delete('/{field}', 'FieldController@destroy');
+			Route::patch('/order', 'FieldController@saveOrder');
 			Route::patch('/{field}', 'FieldController@edit');
-			Route::post('/saveOrder', 'FieldController@saveOrder');
 		});
 		Route::group(['prefix' => 'applications'], function () {
 			Route::get('/', 'ApplicationController@index');

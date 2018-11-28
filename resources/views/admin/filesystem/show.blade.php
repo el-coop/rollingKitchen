@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title',__('misc.pdfs'))
+@section('title',__('admin/settings.files'))
 
 @section('content')
     <div class="box">
@@ -10,7 +10,7 @@
 },
 {
     name: 'file',
-    label: '@lang('global.file')',
+    label: '@lang('admin/settings.chooseFile')',
     type: 'file',
     invisible: true
 }

@@ -9,6 +9,7 @@
 namespace App\Models\Traits;
 
 
+use App;
 use App\Models\Field;
 
 trait HasFields {
@@ -26,10 +27,10 @@ trait HasFields {
 		
 		return static::fields()->map(function ($item) use ($dataName) {
 			return [
-				'name' => "{$dataName}[{$item->name}]",
-				'label' => $item->name,
+				'name' => "{$dataName}[{$item->name_en}]",
+				'label' => $item->{'name_' . App::getLocale()},
 				'type' => $item->type,
-				'value' => $this->data[$item->name] ?? ''
+				'value' => $this->data[$item->name_en] ?? ''
 			];
 		});
 	}

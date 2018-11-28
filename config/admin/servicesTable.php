@@ -9,15 +9,23 @@ return [
 		'visible' => false
 	], [
 		'name' => 'name',
-		'title' => 'misc.name',
+		'title' => 'global.name',
 		'sortField' => 'name',
 	], [
 		'name' => 'category',
-		'title' => 'misc.category',
+		'title' => 'admin/services.category',
 		'sortField' => 'category',
+		'filter' => [
+			'safety' => 'vue.safety',
+			'electrical' => 'vue.electrical',
+			'misc' => 'vue.misc',
+		],
+		'callback' => 'translate'
 	], [
 		'name' => 'price',
-		'title' => 'misc.price',
+		'title' => 'kitchen/products.price',
 		'filter' => false,
+		'sortField' => 'price',
+		'callback' => 'localNumber'
 	]]
 ];

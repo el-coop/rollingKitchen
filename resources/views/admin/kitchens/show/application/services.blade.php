@@ -9,7 +9,7 @@
 							   value="{{ $service->pivot->quantity }}">
 					</div>
 					<label class="label level-item">
-						{{ $service->name }} - € {{ number_format($service->price,2) }}
+						<b>{{ $service->name }} - € {{ number_format($service->price,2,$decimalPoint,$thousandSeparator) }}</b>
 					</label>
 				</div>
 			</div>
@@ -17,7 +17,7 @@
 			<label class="checkbox">
 				<input type="checkbox" value="1"
 					   name="services[{{$service->id}}]" checked>
-				{{ $service->name }} - € {{ number_format($service->price,2) }}
+				<b>{{ $service->name }} - € {{ number_format($service->price,2,$decimalPoint,$thousandSeparator) }}</b>
 			</label>
 		@endif
 	</div>

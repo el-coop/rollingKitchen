@@ -205,9 +205,10 @@ class ApplicationTest extends TestCase {
 		$applicationIndex = $application->kitchen->applications()->orderBy('year', 'desc')->get()->search(function ($item) use ($application) {
 			return $application->year == $item->year;
 		});
+		
 		$this->actingAs($this->admin->user)->get(action('Admin\ApplicationController@show', $application))->assertRedirect(action('Admin\KitchenController@show', [
 			'kitchen' => $application->kitchen,
-			'tab' => __('admin/kitchens.applications'),
+			'tab' => __('admin/applications.applications'),
 			'application' => $applicationIndex
 		]));
 	}

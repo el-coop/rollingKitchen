@@ -47,7 +47,7 @@ class FileSystemTest extends TestCase {
     public function test_admin_can_see_page() {
         $this->actingAs($this->admin->user)->get(action('Admin\PDFController@index'))
             ->assertStatus(200)
-            ->assertSee(__('misc.pdfs'));
+            ->assertSee(__('admin/settings.files'));
     }
 
     public function test_guest_cant_upload_pdf() {
