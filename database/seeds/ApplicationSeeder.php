@@ -22,13 +22,12 @@ class ApplicationSeeder extends Seeder {
 					} else {
 						$value = $faker->paragraph;
 					}
-					return [$field->name => $value];
+					return [$field->name_en => $value];
 				});
 				$kitchen->applications()->save($application);
                 \App\Models\Service::inRandomOrder()->limit(3)->get()->each(function ($service) use ($application) {
                    $application->services()->save($service, ['quantity' => random_int(1,5)]);
                 });
-//				$application->services()->sync(\App\Models\Service::inRandomOrder()->limit(3)->get());
 			}
 		});
 	}

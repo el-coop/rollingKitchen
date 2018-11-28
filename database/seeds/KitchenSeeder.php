@@ -24,7 +24,7 @@ class KitchenSeeder extends Seeder {
 						$value = $faker->paragraph;
 					}
 					
-					return [$field->name => $value];
+					return [$field->name_en => $value];
 					
 				});
 			},

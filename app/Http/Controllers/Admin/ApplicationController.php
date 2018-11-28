@@ -21,7 +21,7 @@ class ApplicationController extends Controller {
 		$filters = collect([
 			'year' => Setting::registrationYear()->value
 		]);
-		$title = __('admin/kitchens.applications');
+		$title = __('admin/applications.applications');
  		return view('admin.datatableDefault', compact('fieldType','filters','title'));
 	}
 	

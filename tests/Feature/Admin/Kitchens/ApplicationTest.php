@@ -36,7 +36,7 @@ class ApplicationTest extends TestCase {
 						$value = $faker->paragraph;
 					}
 					
-					return [$field->name => $value];
+					return [$field->name_en => $value];
 					
 				});
 			}
