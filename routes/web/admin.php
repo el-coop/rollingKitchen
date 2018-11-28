@@ -20,6 +20,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 			Route::post('/edit', 'ServiceController@store');
 			Route::patch('/edit/{service}', 'ServiceController@update');
 			Route::get('/edit/{service}', 'ServiceController@edit');
+			Route::get('/export', 'ServiceController@export');
 
 
 		});

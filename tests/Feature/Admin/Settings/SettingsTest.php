@@ -41,6 +41,26 @@ class SettingsTest extends TestCase {
             'name' => 'application_text_nl',
             'value' => $faker->text
         ]);
+
+        factory(Setting::class)->create([
+            'name' => 'registration_text_nl',
+            'value' => $faker->text
+        ]);
+
+        factory(Setting::class)->create([
+            'name' => 'registration_text_en',
+            'value' => $faker->text
+        ]);
+
+        factory(Setting::class)->create([
+            'name' => 'login_text_nl',
+            'value' => $faker->text
+        ]);
+
+        factory(Setting::class)->create([
+            'name' => 'login_text_en',
+            'value' => $faker->text
+        ]);
     }
 
     public function test_guest_cant_see_page() {
@@ -58,14 +78,39 @@ class SettingsTest extends TestCase {
     }
 
     public function test_guest_cant_update_settings() {
-        $this->patch(action('Admin\SettingsController@show'), ['accountant' => 'test@test.com', 'application_text_en' => 'test', 'application_text_nl' => 'testtest'])->assertRedirect(action('Auth\LoginController@login'));
+        $this->patch(action('Admin\SettingsController@update'), [
+            'accountant' => 'test@test.com',
+            'application_text_en' => 'test',
+            'application_text_nl' => 'testtest',
+            'registration_text_en' => 'regtest',
+            'registration_text_nl' => 'regtestnl',
+            'login_text_en' => 'logintest',
+            'login_text_nl' => 'logintestnl'
+        ])->assertRedirect(action('Auth\LoginController@login'));
     }
 
     public function test_kitchen_cant_update_settings() {
-        $this->actingAs($this->kitchen->user)->patch(action('Admin\SettingsController@show'), ['accountant' => 'test@test.com', 'application_text_en' => 'test', 'application_text_nl' => 'testtest'])->assertForbidden();
+        $this->actingAs($this->kitchen->user)->patch(action('Admin\SettingsController@update'), [
+            'accountant' => 'test@test.com',
+            'application_text_en' => 'test',
+            'application_text_nl' => 'testtest',
+            'registration_text_en' => 'regtest',
+            'registration_text_nl' => 'regtestnl',
+            'login_text_en' => 'logintest',
+            'login_text_nl' => 'logintestnl'
+        ])->assertForbidden();
     }
+
     public function test_admin_can_update_settings() {
-        $this->actingAs($this->admin->user)->patch(action('Admin\SettingsController@show'), ['accountant' => 'test@test.com', 'application_text_en' => 'test', 'application_text_nl' => 'testtest']);
+        $this->actingAs($this->admin->user)->patch(action('Admin\SettingsController@update'), [
+            'accountant' => 'test@test.com',
+            'application_text_en' => 'test',
+            'application_text_nl' => 'testtest',
+            'registration_text_en' => 'regtest',
+            'registration_text_nl' => 'regtestnl',
+            'login_text_en' => 'logintest',
+            'login_text_nl' => 'logintestnl'
+        ]);
         $this->assertDatabaseHas('settings', [
             'name' => 'accountant', 'value' => 'test@test.com',
         ]);
@@ -77,6 +122,15 @@ class SettingsTest extends TestCase {
         ]);
         $this->assertDatabaseHas('settings', [
             'name' => 'registration_status', 'value' => false,
+        ]);
+        $this->assertDatabaseHas('settings', [
+            'name' => 'registration_text_en', 'value' => 'regtest',
+        ]);
+        $this->assertDatabaseHas('settings', [
+            'name' => 'login_text_en', 'value' => 'logintest',
+        ]);
+        $this->assertDatabaseHas('settings', [
+            'name' => 'login_text_nl', 'value' => 'logintestnl',
         ]);
     }
 }

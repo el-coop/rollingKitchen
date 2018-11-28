@@ -13,7 +13,7 @@ class ApplicationSeeder extends Seeder {
 	public function run(Faker $faker) {
 		\App\Models\Kitchen::all()->each(function ($kitchen) use ($faker) {
 			$applicationNumber = rand(0, 4);
-			
+
 			for ($i = 0; $i < $applicationNumber; $i++) {
 				$application = factory(Application::class)->make(['year' => 2015 + $i]);
 				$application->data = Application::fields()->mapWithKeys(function ($field) use ($faker) {
@@ -25,8 +25,10 @@ class ApplicationSeeder extends Seeder {
 					return [$field->name => $value];
 				});
 				$kitchen->applications()->save($application);
-				
-				$application->services()->sync(\App\Models\Service::inRandomOrder()->limit(3)->get());
+                \App\Models\Service::inRandomOrder()->limit(3)->get()->each(function ($service) use ($application) {
+                   $application->services()->save($service, ['quantity' => random_int(1,5)]);
+                });
+//				$application->services()->sync(\App\Models\Service::inRandomOrder()->limit(3)->get());
 			}
 		});
 	}
