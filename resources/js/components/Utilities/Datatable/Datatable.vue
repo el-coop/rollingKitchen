@@ -203,7 +203,11 @@
 				const elementIndex = currentData.findIndex((row) => {
 					return row.id === data.id;
 				});
-				currentData[elementIndex] = this.object;
+				if (elementIndex > -1) {
+					currentData[elementIndex] = this.object;
+				} else {
+					currentData.push(this.object);
+				}
 				this.$refs.table.setData(currentData);
 			}
 		},
