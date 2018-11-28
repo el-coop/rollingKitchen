@@ -2,7 +2,6 @@
 	'name': 'length',
 	'label': '@lang('admin/kitchens.length')',
 	'value': '{{ $application->length }}',
-
 	type: 'text',
 	subType: 'number'
 },{

@@ -25,14 +25,16 @@ class EditFieldRequest extends FormRequest {
 	 */
 	public function rules() {
 		return [
-			'name' => 'required|string',
+			'name_en' => 'required|string',
+			'name_nl' => 'required|string',
 			'type' => 'required|string|in:text,textarea,checkbox',
 			'options' => 'required_if:type,checkbox|array'
 		];
 	}
 
 	public function commit() {
-		$this->field->name = $this->input('name');
+		$this->field->name_en = $this->input('name_en');
+		$this->field->name_nl = $this->input('name_nl');
 		$this->field->type = $this->input('type');
 		if ($this->field->type == 'checkbox') {
 			$this->field->options = $this->input('options');

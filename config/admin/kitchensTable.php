@@ -15,27 +15,27 @@ return [
 		'visible' => false
 	], [
 		'name' => 'name',
-		'title' => 'misc.name',
+		'title' => 'global.name',
 		'sortField' => 'name',
 	], [
 		'name' => 'email',
-		'title' => 'misc.email',
+		'title' => 'global.email',
 		'sortField' => 'email',
 	], [
 		'name' => 'status',
-		'title' => 'misc.status',
+		'title' => 'global.status',
 		'filter' => [
-			'new' => 'datatable.new',
-			'motherlist' => 'datatable.motherlist'
+			'new' => 'admin/kitchens.new',
+			'motherlist' => 'admin/kitchens.motherlist'
 		],
 		'callback' => 'translate'
 	], [
 		'name' => 'count(kitchen_id)',
 		'sortField' => 'count(kitchen_id)',
-		'title' => 'misc.photos',
+		'title' => 'global.photos',
 		'filter' => [
-			'yes' => 'datatable.yes',
-			'no' => 'datatable.no'
+			'yes' => 'global.yes',
+			'no' => 'global.no'
 		],
 		'filterDefinitions' => [
 			'yes' => ['>', 0],

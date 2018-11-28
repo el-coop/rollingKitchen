@@ -30,19 +30,21 @@ class Application extends Model {
 		$editData = collect([
 			[
 				'name' => 'year',
-				'label' => __('misc.year'),
+				'label' => __('global.year'),
 				'type' => 'text',
 				'value' => $this->year
 			],
 			[
 				'name' => 'status',
-				'label' => __('misc.status'),
+				'label' => __('global.status'),
 				'type' => 'select',
 				'options' => [
-					'pending' => __('datatable.pending'),
-					'reopened' => __('datatable.reopened'),
-					'accepted' => __('datatable.accepted'),
-					'rejected' => __('datatable.rejected')
+					
+					'pending' => __('vue.pending'),
+					'accepted' => __('vue.accepted'),
+					'reopened' => __('vue.reopened'),
+					'rejected' => __('vue.rejected'),
+					'backup' => __('vue.backup')
 				],
 				'value' => $this->status
 			]

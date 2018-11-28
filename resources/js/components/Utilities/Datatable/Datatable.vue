@@ -4,7 +4,7 @@
 			<div class="field is-grouped">
 				<div class="buttons">
 					<slot name="buttons" :actions="buttonActions"></slot>
-					<a :href="`${this.url}/export?${exportOptions}`" class="button is-dark">Download</a>
+					<a :href="`${this.url}/export?${exportOptions}`" class="button is-dark" v-text="$translations.download"></a>
 				</div>
 			</div>
 		</div>
@@ -70,13 +70,6 @@
 			VuetablePagination
 		},
 		props: {
-			translations: {
-				type: Object,
-				required: false,
-				default() {
-					return {};
-				}
-			},
 			url: {
 				required: true,
 				type: String

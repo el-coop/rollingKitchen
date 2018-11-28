@@ -19,13 +19,6 @@ if (!isset($fields)) {
 		   :extra-params="{
 		   		table: '{{$table}}'
 		   }"
-		   :translations="{
-		   		yes: '@lang('datatable.yes')',
-		   		no: '@lang('datatable.no')',
-				motherlist: '@lang('datatable.motherlist')',
-		   		new: '@lang('datatable.new')',
-
-		   }"
 		   url="\admin\datatable"
 		   :labels="{
 		   		pagination: '@lang('datatable.pagination')',

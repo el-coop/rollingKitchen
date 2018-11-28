@@ -3,24 +3,26 @@
 		<table class="table is-fullwidth">
 			<thead>
 			<tr>
-				<th  v-for="(column,index) in columns" v-text="column.label" :key="index" v-if="!column.invisible"></th>
-				<th></th>
+				<th v-for="(column,index) in columns" v-text="column.label" :key="index" v-if="!column.invisible"></th>
+				<th v-if="action"></th>
 			</tr>
 			</thead>
-			<tbody>
-			<tr v-for="(field, index) in fields" :key="`${index}${field.id}`">
-				<td v-if="!column.invisible" v-for="(column,colIndex) in columns" :key="`${index}_${colIndex}`"
-					v-text="field[column.name]" @click="editObject(field)"></td>
-				<td>
-					<button class="button is-danger" type="button" :class="{'is-loading' : deleteing === field.id}"
-							@click="destroy(field)">Delete
-					</button>
-				</td>
-			</tr>
-			</tbody>
+			<draggable element="tbody" :list="fields" :options="draggable">
+				<tr v-for="(field, index) in fields" :key="`${index}${field.id}`">
+					<td v-if="!column.invisible" v-for="(column,colIndex) in columns" :key="`${index}_${colIndex}`"
+						v-text="valueDisplay(column,field[column.name])" @click="editObject(field)"></td>
+					<td v-if="action">
+						<button class="button is-danger" type="button" :class="{'is-loading' : deleteing === field.id}"
+								@click="destroy(field)" v-text="$translations.delete">
+						</button>
+					</td>
+				</tr>
+			</draggable>
 		</table>
 		<div class="buttons" v-if="action">
-			<div class="button is-success" @click="editObject({})">Add</div>
+			<div class="button is-success" @click="editObject({})" v-text="$translations.add">Add</div>
+			<div v-if="sortable" class="button is-primary" :class="{'is-loading': savingOrder}" @click="saveOrder"
+				 v-text="$translations.saveOrder"></div>
 		</div>
 		<modal-component :name="`${_uid}modal`" v-if="action">
 			<dynamic-form :headers="headers" :init-fields="formFields" :method="method" :url="url"
@@ -32,8 +34,15 @@
 </template>
 
 <script>
+	import draggable from 'vuedraggable'
+	import DatatableFormatters from "./Datatable/DatatableFormatters";
+
 	export default {
 		name: "DynamicTable",
+		components: {
+			draggable
+		},
+		mixins: [DatatableFormatters],
 
 		props: {
 			initFields: {
@@ -58,16 +67,20 @@
 				}
 			},
 			headers: {
-                type: Object,
-                default() {
-                    return {
-                        'Content-type': 'application/json'
+				type: Object,
+				default() {
+					return {
+						'Content-type': 'application/json'
 					};
-                }
+				}
 			},
 			edit: {
-			    type: Boolean,
+				type: Boolean,
 				default: true
+			},
+			sortable: {
+				type: Boolean,
+				default: false
 			}
 
 		},
@@ -76,17 +89,29 @@
 			return {
 				fields: this.initFields,
 				object: {},
-				deleteing: null
+				deleteing: null,
+				order: [],
+				savingOrder: false
 			}
 		},
 
 		methods: {
 			editObject(field) {
-			    if (field.id && !this.edit){
-			        return;
+				if (field.id && !this.edit) {
+					return;
 				}
 				this.object = field;
 				this.$modal.show(`${this._uid}modal`);
+			},
+
+			valueDisplay(column, value) {
+				if (column.translate) {
+					return this.$translations[value];
+				}
+				if (column.callback) {
+					return this[column.callback](value);
+				}
+				return value;
 			},
 
 			updateObject(object) {
@@ -105,15 +130,38 @@
 				try {
 					await axios.delete(`${this.action}/${field.id}`);
 					this.fields.splice(this.fields.indexOf(field), 1);
-					this.$toast.success('Delete successful');
+					this.$toast.success(this.$translations.deleteSuccess);
 				} catch (error) {
-					this.$toast.error('Please try again later', 'Operation failed');
+					this.$toast.error(this.$translations.tryLater, this.$translations.operationFiled);
 				}
 				this.deleteing = null;
+			},
+
+			async saveOrder() {
+				this.savingOrder = true;
+				const order = [];
+				this.fields.forEach((item) => {
+					order.push(item.id);
+				});
+				try {
+					await axios.patch(`${this.action}/order`, {
+						order
+					});
+					this.$toast.success(this.$translations.updateSuccess);
+				} catch (error) {
+					this.$toast.error(this.$translations.tryLater, this.$translations.operationFiled);
+				}
+				this.savingOrder = false;
 			}
 		},
 
 		computed: {
+			draggable() {
+				return {
+					disabled: !this.sortable
+				}
+			},
+
 			formFields() {
 				const fields = [];
 
@@ -124,7 +172,8 @@
 						label: column.label,
 						value: this.object[column.name] || '',
 						type: column.type || 'text',
-						subType: column.subType || ''
+						subType: column.subType || '',
+						options: column.options || {}
 					});
 				}
 
@@ -145,7 +194,8 @@
 				}
 
 				return 'patch';
-			}
+			},
+
 		},
 	}
 </script>

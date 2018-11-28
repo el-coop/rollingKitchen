@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('title',__('misc.resetPassword'));
+@section('title',__('auth.resetPassword'));
 
 @section('content')
 	<div class="section">
@@ -11,7 +11,7 @@
 				])
 					@slot('title')
 						<p class="title is-4">
-							@lang('misc.resetPassword')
+							@lang('auth.resetPassword')
 						</p>
 					@endslot
 					@if (session('status'))
@@ -23,12 +23,12 @@
 					<form method="post" action="{{ action('Auth\ForgotPasswordController@sendResetLinkEmail') }}">
 						@csrf
 						<text-field
-								:field="{label: '@lang('misc.email')',name: 'email', subType: 'email', value: '{{ old('email') }}'}"
+								:field="{label: '@lang('global.email')',name: 'email', subType: 'email', value: '{{ old('email') }}'}"
 								:error="{{ $errors->has('email') ? collect($errors->get('email')): 'null'}}"></text-field>
 
 						<div class="buttons">
 							<button class="button is-primary">
-								@lang('misc.sendResetPasswordLink')
+								@lang('auth.sendResetPasswordLink')
 							</button>
 						</div>
 					</form>

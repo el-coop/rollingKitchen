@@ -4,7 +4,7 @@
 			<div class="control">
 				<div class="select is-fullwidth">
 					<select v-model="selected">
-						<option v-for="(view, index) in views" :value="index">{{ view.label }}</option>
+						<option v-for="(view, index) in views" :value="index" v-text="view.label"></option>
 					</select>
 				</div>
 			</div>

@@ -1,46 +1,37 @@
 @extends('layouts.dashboard')
 
 @section('content')
-	<field-list-page :fields="{{$fields}}" inline-template form="{{$class}}">
-		<div class="box">
+	<div class="card">
+		<div class="card-content">
 			<h4 class="title is-4">
-				<a href="{{$indexLink}}">@lang("admin/fields.{$type}")</a>
+				@lang("admin/fields.{$type}")
 			</h4>
-			<table class="table is-fullwidth">
-				<thead>
-				<tr>
-					<th>@lang('global.en') @lang('global.name')</th>
-					<th>@lang('global.nl') @lang('global.name')</th>
-					<th>@lang('admin\fields.type')</th>
-					<th>@lang('global.delete')</th>
-					<th>@lang('global.edit')</th>
-				</tr>
-				</thead>
-				<tbody is="draggable-field-list" :given-fields="{{$fields}}" delete-btn="@lang('global.delete')"
-					   edit-btn="@lang('global.edit')">
-				</tbody>
-			</table>
-			<div>
-
-				<button @click="$bus.$emit('open-create-modal')"
-						class="button is-success">@lang('global.create')</button>
-				<form v-if="order !== []" method="POST" id="orderForm" class="is-inline-block"
-					  action="{{action('Admin\FieldController@saveOrder')}}">
-					<button type="submit" class="button is-info">Save Order</button>
-					@csrf
-					<input v-for="id in order" name="order[]" :value="id" hidden>
-				</form>
+			<div class="subtitle">
+				<a href="{{ $indexLink }}">@lang('admin/fields.back')</a>
 			</div>
-			<modal-form name="fieldForm">
-				<field-form :field-form="form" :edit-field="object">
-					<template slot="csrf">
-						@csrf
-					</template>
-					<template slot="method">
-						@method('PATCH')
-					</template>
-				</field-form>
-			</modal-form>
+			<hr>
 		</div>
-	</field-list-page>
+		<div class="card-content">
+			<dynamic-table :init-fields="{{ $fields }}" :columns="[{
+					name: 'name_nl',
+					label: '@lang('admin/fields.name_nl')'
+				},{
+					name: 'name_en',
+					label: '@lang('admin/fields.name_en')'
+				},{
+					name: 'type',
+					label: '@lang('admin/fields.type')',
+					type: 'select',
+					options: {
+						text: '@lang('admin/fields.text')',
+						textarea: '@lang('admin/fields.textarea')',
+					},
+					translate: true
+				}]" action="{{ action('Admin\FieldController@create') }}" :extra-data="{
+					form: '{{ str_replace('\\','\\\\',$class) }}',
+				}" :sortable="true">
+
+			</dynamic-table>
+		</div>
+	</div>
 @endsection

@@ -13,10 +13,11 @@ import VueIziToast from 'vue-izitoast';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faLink, faSignOutAlt, faBars, faFileUpload, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faLink,faSignOutAlt,faBars, faFileUpload, faTimesCircle);
+library.add(faLink, faSignOutAlt, faBars, faFileUpload, faTimesCircle);
 
 Vue.use(VModal);
 Vue.use(VueIziToast);
+Vue.prototype.$translations = window.translations;
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

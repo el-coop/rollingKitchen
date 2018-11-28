@@ -137,7 +137,7 @@ class DatatableService implements FromCollection, WithHeadings {
 			if (!($columnConfig['visible'] ?? true)) {
 				unset($formatted->$column);
 			} else if (($columnConfig['callback'] ?? false) == 'translate') {
-				$formatted->$column = __("datatable.{$formatted->$column}");
+				$formatted->$column = __("vue.{$formatted->$column}");
 			}
 		}
 		

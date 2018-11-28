@@ -25,7 +25,7 @@ class CreateFieldRequest extends FormRequest {
      */
     public function rules() {
         return [
-            'name' => 'required|string',
+            'name_en' => 'required|string',
             'type' => 'required|string|in:text,textarea,checkbox',
             'form' => 'required|string|in:' . Kitchen::class . ',' . Application::class,
             'options' => 'required_if:type,checkbox|array',
@@ -38,7 +38,7 @@ class CreateFieldRequest extends FormRequest {
 
         $field = new Field;
         $field->form = $this->input('form');
-        $field->name = $this->input('name');
+        $field->name_en = $this->input('name_en');
         $field->type = $this->input('type');
         $field->name_nl = $this->input('name_nl');
         // maybe we implement some kind of switch case or a function that will do that when we have more model fields

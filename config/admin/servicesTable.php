@@ -9,19 +9,27 @@ return [
 		'visible' => false
 	], [
 		'name' => 'name_nl',
-		'title' => 'misc.nameNl',
+		'title' => 'admin/fields.name_nl',
 		'sortField' => 'name',
 	], [
 		'name' => 'name_en',
-		'title' => 'misc.nameEn',
+		'title' => 'admin/fields.name_en',
 		'sortField' => 'name',
 	],[
 		'name' => 'category',
-		'title' => 'misc.category',
+		'title' => 'admin/services.category',
 		'sortField' => 'category',
+		'filter' => [
+			'safety' => 'vue.safety',
+			'electrical' => 'vue.electrical',
+			'misc' => 'vue.misc',
+		],
+		'callback' => 'translate'
 	], [
 		'name' => 'price',
-		'title' => 'misc.price',
+		'title' => 'kitchen/products.price',
 		'filter' => false,
+		'sortField' => 'price',
+		'callback' => 'localNumber'
 	]]
 ];

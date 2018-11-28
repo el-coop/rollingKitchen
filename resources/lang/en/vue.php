@@ -1,0 +1,32 @@
+<?php
+
+return [
+	'uploadPhotos' => 'Upload Photos',
+	'upload' => 'Upload',
+	'delete' => 'Delete',
+	'add' => 'Add',
+	'save' => 'Save',
+	'updateSuccess' => 'Update successful',
+	'tryLater' => 'Please try again later',
+	'operationFiled' => 'Operation failed',
+	'pleaseCorrect' => 'Please correct them',
+	'formErrors' => "There are some errors in your form",
+	'deleteSuccess' => 'Delete successful',
+	'new' => 'New',
+	'motherlist' => 'Motherlist',
+	'yes' => 'Yes',
+	'no' => 'No',
+	'filters' => 'Filters',
+	'download' => 'Download',
+	'text' => 'Text',
+	'textarea' => 'Textarea',
+	'saveOrder' => 'Save Order',
+	'pending' => 'Pending',
+	'reopened' => 'Reopened',
+	'accepted' => 'Accepted',
+	'rejected' => 'Rejected',
+	'backup' => 'Backup',
+	'safety' => 'Safety',
+	'electrical' => 'Electrical',
+	'misc' => 'Misc'
+];

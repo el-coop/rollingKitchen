@@ -4,10 +4,10 @@
 
 @section('content')
 	<tabs>
-		<tab label="Kitchen">
+		<tab label="@lang('kitchen/kitchen.businessInformation')">
 			@include('admin.kitchens.show.kitchen')
 		</tab>
-		<tab label="Applications">
+		<tab label="@lang('admin/applications.applications')">
 			@include('admin.kitchens.show.applications')
 		</tab>
 	</tabs>

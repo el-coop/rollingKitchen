@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Field extends Model{
-
-    protected $casts = [
-      'options' => 'array'
-    ];
-
+class Field extends Model {
+	
+	protected $casts = [
+		'options' => 'array'
+	];
+	
 }

@@ -8,37 +8,38 @@ class Service extends Model {
 	public function getFullDataAttribute() {
 		$fullData = collect([[
 			'name' => 'name_nl',
-			'label' => __('misc.nameNl'),
+			'label' => __('admin/fields.name_nl'),
 			'type' => 'text',
 			'value' => $this->nameNl,
 		],[
 			'name' => 'name_en',
-			'label' => __('misc.nameEn'),
+			'label' => __('admin/fields.name_en'),
 			'type' => 'text',
 			'value' => $this->nameEn,
 		], [
 			'name' => 'category',
-			'label' => __('misc.category'),
+			'label' => __('admin/services.category'),
 			'type' => 'select',
 			'options' => [
-				'safety' => __('services.safety'),
-				'electrical' => __('services.electrical'),
-				'misc' => __('services.misc'),
+				'safety' => __('vue.safety'),
+				'electrical' => __('vue.electrical'),
+				'misc' => __('vue.misc'),
 			],
 			'value' => $this->category,
 		], [
 			'name' => 'type',
-			'label' => __('misc.type'),
+			'label' => __('admin/fields.type'),
 			'type' => 'select',
 			'options' => [
-				__('services.amount'),
-				__('services.select'),
+				__('admin/services.amount'),
+				__('admin/services.select'),
 			],
 			'value' => $this->type,
 		], [
 			'name' => 'price',
-			'label' => __('misc.price'),
+			'label' => __('admin/applications.price'),
 			'type' => 'text',
+			'subType' => 'number',
 			'value' => $this->price,
 		]]);
 		

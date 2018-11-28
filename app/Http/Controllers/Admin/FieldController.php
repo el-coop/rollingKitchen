@@ -15,26 +15,28 @@ class FieldController extends Controller {
 		$class = "App\\Models\\{$type}";
 		$indexLink = $class::indexPage();
 		$fields = $class::fields();
-		return view('admin.fields', compact('fields','class','type','indexLink'));
+		return view('admin.fields', compact('fields', 'class', 'type', 'indexLink'));
 	}
 	
 	public function create(CreateFieldRequest $request) {
-		$request->commit();
-		return back();
+		return $request->commit();
 	}
 	
 	public function edit(Field $field, EditFieldRequest $request) {
-		$request->commit();
-		return back();
+		return $request->commit();
 	}
 	
-	public function delete(Field $field, DeleteFieldRequest $request) {
+	public function destroy(Field $field, DeleteFieldRequest $request) {
 		$request->commit();
-		return back();
+		return [
+			'success' => true
+		];
 	}
 	
 	public function saveOrder(OrderFieldRequest $request) {
 		$request->commit();
-		return back();
+		return [
+			'success' => true
+		];
 	}
 }

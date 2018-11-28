@@ -9,8 +9,7 @@
 					<span class="file-icon">
 						<font-awesome-icon icon="file-upload"></font-awesome-icon>
 					</span>
-					<span class="file-label has-text-centered">
-					Add files
+					<span class="file-label has-text-centered" v-text="$translations.uploadPhotos">
 					</span>
 				</span>
 				<span class="file-name" v-for="file in files">
@@ -38,7 +37,7 @@
 			</label>
 		</div>
 		<button type="button" class="button is-primary is-fullwidth" v-if="files.length" :disabled="$refs.upload.active"
-				@click.prevent="$refs.upload.active = true">Upload
+				@click.prevent="$refs.upload.active = true" v-text="$translations.upload">
 		</button>
 	</div>
 </template>
@@ -83,11 +82,11 @@
 					return;
 				}
 				if (newFile.error && !oldFile.error) {
-					return this.$toast.error('Please try again later', 'Operation failed');
+					this.$toast.error(this.$translations.tryLater, this.$translations.operationFiled);
 				}
 				if (newFile.success && !oldFile.success) {
 					if (typeof newFile.response === "string") {
-						return this.$toast.error('Please try again later', 'Operation failed');
+						this.$toast.error(this.$translations.tryLater, this.$translations.operationFiled);
 					}
 					this.$emit('uploaded', newFile.response);
 					this.$refs.upload.remove(newFile);

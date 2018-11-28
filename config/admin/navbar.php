@@ -2,12 +2,12 @@
 
 return [
 	'admin/kitchens.kitchens' => [
-		'admin/kitchens.motherlist' => 'Admin\KitchenController@index',
-        'admin/kitchens.applications' => 'Admin\ApplicationController@index',
-		'admin/services.index' => 'Admin\ServiceController@index',
+		'admin/kitchens.kitchens' => 'Admin\KitchenController@index',
+        'admin/applications.applications' => 'Admin\ApplicationController@index',
+		'kitchen/kitchen.services' => 'Admin\ServiceController@index',
 	],
-    'misc.admin' => [
-        'misc.settings' => 'Admin\SettingsController@show',
-        'misc.filesystem' => 'Admin\PDFController@index'
+    'admin/settings.title' => [
+        'admin/settings.settings' => 'Admin\SettingsController@show',
+        'admin/settings.files' => 'Admin\PDFController@index'
     ]
 ];

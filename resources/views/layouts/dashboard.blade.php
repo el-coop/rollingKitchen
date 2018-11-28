@@ -16,14 +16,8 @@
 		</drawer>
 		<main>
 			<navbar title="@yield('title')">
-				<div class="navbar-item">
-					<form action="{{ action('Auth\LoginController@logout') }}" method="post">
-						@csrf
-						<button type="submit" class="button is-danger is-inverted">
-							<font-awesome-icon icon="sign-out-alt" class="icon" fixed-width></font-awesome-icon>
-						</button>
-					</form>
-				</div>
+				@component('components.logout')
+				@endcomponent
 				<div class="navbar-item">
 					<img src="{{ asset('images/logo.png') }}">
 				</div>

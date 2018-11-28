@@ -1,17 +1,19 @@
 <div class="columns">
 	<div class="column">
-		<p class="title is-4">Electric Devices</p>
-		<p class="subtitle">Please inform us of ALL electrical equipment you intend to plug in during the festival. </p>
+		<p class="title is-4">@lang('kitchen/services.electrictyTitle')</p>
+		<p class="subtitle">@lang('kitchen/services.electrictySubtitle')</p>
 		<p>
 			<dynamic-table :columns="[{
 					name: 'name',
-					label: '@lang('misc.name')'
+					label: '@lang('global.name')'
 				},{
 					name: 'watts',
-					label: '@lang('watts')',
+					label: '@lang('kitchen/services.watts')',
 					subType: 'number',
 					type: 'text',
+					callback: 'localNumber'
 				}]" :init-fields="{{ $application->electricDevices }}"
+
 						   @if($application->isOpen())action="/kitchen/applications/{{$application->id}}/devices" @endif></dynamic-table>
 		</p>
 		<hr>

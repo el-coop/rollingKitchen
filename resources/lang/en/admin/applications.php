@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'year' => 'Year',
+	'applications' => 'Applications',
 	'product' => 'Product',
 	'price' => 'Price'
 ];

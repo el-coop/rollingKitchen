@@ -1,4 +1,4 @@
-<p class="title is-4">Services</p>
+<p class="title is-4">@lang('kitchen/kitchen.services')</p>
 @foreach($services as $service)
 	<div class="field">
 		@if(!$service->type)
@@ -11,7 +11,7 @@
 							   value="{{ $application->hasService($service) ? $application->serviceQuantity($service) : '0' }}">
 					</div>
 					<label class="label level-item">
-						{{ $service->name }} - € {{ number_format($service->price,2) }}
+						{{ $service->name }} - € {{ number_format($service->price,2,$decimalPoint,$thousandSeparator) }}
 					</label>
 				</div>
 			</div>
@@ -20,7 +20,7 @@
 				<input type="checkbox" value="1"
 					   @if(! $application->isOpen())  onclick="return false;" @endif
 					   name="services[{{$service->id}}]" {{ $application->hasService($service) ? 'checked' : '' }}>
-				{{ $service->name }} - € {{ number_format($service->price,2) }}
+				<b>{{ $service->name }} - € {{ number_format($service->price,2,$decimalPoint,$thousandSeparator) }}</b>
 			</label>
 		@endif
 	</div>

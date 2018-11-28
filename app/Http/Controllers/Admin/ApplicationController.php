@@ -21,7 +21,8 @@ class ApplicationController extends Controller {
 		$filters = collect([
 			'year' => Setting::registrationYear()->value
 		]);
-		return view('admin.datatableDefault', compact('fieldType','filters'));
+		$title = __('admin/kitchens.applications');
+ 		return view('admin.datatableDefault', compact('fieldType','filters','title'));
 	}
 	
 	/**
@@ -57,7 +58,7 @@ class ApplicationController extends Controller {
 		
 		return redirect()->action('Admin\KitchenController@show', [
 			'kitchen' => $application->kitchen,
-			'tab' => __('admin/kitchens.applications'),
+			'tab' => __('admin/applications.applications'),
 			'application' => $applicationIndex
 		]);
 	}

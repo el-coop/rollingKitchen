@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title',__('misc.settings'))
+@section('title',__('admin/settings.settings'))
 
 @section('content')
     <div class="box">
@@ -41,7 +41,7 @@
             </div>
             <div class="field">
                 <div class="control">
-                    <button class="button is-success">@lang('global.edit')</button>
+                    <button class="button is-success">@lang('global.save')</button>
                 </div>
             </div>
         </form>

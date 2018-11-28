@@ -25,15 +25,15 @@ class UpdateApplicationRequest extends FormRequest {
 	 */
 	public function rules() {
 		return [
-			'status' => 'required|in:accepted,pending,rejected,reopened',
-			'year' => 'required|digits:4|integer|min:2014|max:' . (date('Y')),
+			'status' => 'required|in:accepted,pending,rejected,reopened,backup',
+			'year' => 'digits:4|integer|min:2014|max:' . (date('Y')),
 			'application' => 'required|array',
 		];
 	}
 	
 	public function commit() {
 		$this->application->status = $this->input('status');
-		$this->application->year = $this->input('year');
+		$this->application->year = $this->input('year', $this->application->year);
 		$this->application->data = $this->input('application');
 		
 		$this->application->save();
@@ -41,7 +41,7 @@ class UpdateApplicationRequest extends FormRequest {
 		
 		return [
 			'id' => $this->application->id,
-			'year' => $this->input('year'),
+			'year' => $this->input('year', $this->application->year),
 			'status' => $this->input('status')
 		];
 	}
