@@ -28,5 +28,25 @@ class SettingsSeeder extends Seeder {
             'name' => 'application_text_nl',
             'value' => $faker->text
         ]);
+
+		factory(Setting::class)->create([
+			'name' => 'registration_text_nl',
+			'value' => $faker->text
+		]);
+
+		factory(Setting::class)->create([
+			'name' => 'registration_text_en',
+			'value' => $faker->text
+		]);
+
+		factory(Setting::class)->create([
+			'name' => 'login_text_nl',
+			'value' => $faker->text
+		]);
+
+		factory(Setting::class)->create([
+			'name' => 'login_text_en',
+			'value' => $faker->text
+		]);
     }
 }

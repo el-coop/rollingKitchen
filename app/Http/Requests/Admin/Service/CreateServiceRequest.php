@@ -25,7 +25,8 @@ class CreateServiceRequest extends FormRequest
     public function rules()
     {
         return [
-			'name' => 'required|min:2',
+			'name_nl' => 'required|min:2',
+			'name_en' => 'required|min:2',
 			'category' => 'required|in:safety,electrical,misc',
 			'type' => 'required|in:0,1',
 				'price' => 'required|numeric',
@@ -35,7 +36,8 @@ class CreateServiceRequest extends FormRequest
 	public function commit() {
 		$service = new Service;
 
-		$service->name = $this->input('name');
+		$service->name_nl = $this->input('name_nl');
+		$service->name_en = $this->input('name_en');
 		$service->category = $this->input('category');
 		$service->type = $this->input('type');
 		$service->price = $this->input('price');
@@ -46,7 +48,8 @@ class CreateServiceRequest extends FormRequest
 
 		return [
 			'id' => $service->id,
-			'name' => $this->input('name'),
+			'name_nl' => $this->input('name_nl'),
+			'name_en' => $this->input('name_en'),
 			'category' => $this->input('category'),
 			'price' => $this->input('price')
 		];

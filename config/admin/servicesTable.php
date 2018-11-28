@@ -8,10 +8,14 @@ return [
 		'name' => 'id',
 		'visible' => false
 	], [
-		'name' => 'name',
-		'title' => 'global.name',
+		'name' => 'name_nl',
+		'title' => 'admin/fields.name_nl',
 		'sortField' => 'name',
 	], [
+		'name' => 'name_en',
+		'title' => 'admin/fields.name_en',
+		'sortField' => 'name',
+	],[
 		'name' => 'category',
 		'title' => 'admin/services.category',
 		'sortField' => 'category',
