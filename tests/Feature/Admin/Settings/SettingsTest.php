@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Kitchen;
 use App\Models\Setting;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -23,44 +24,6 @@ class SettingsTest extends TestCase {
         $this->admin->user()->save(factory(User::class)->make());
         $this->kitchen = factory(Kitchen::class)->create();
         $this->kitchen->user()->save(factory(User::class)->make());
-
-        $faker = $this->faker();
-        factory(Setting::class)->create([
-            'name' => 'accountant',
-            'value' => $faker->email
-        ]);
-        factory(Setting::class)->create([
-            'name' => 'registration_status',
-            'value' => 0
-        ]);
-        factory(Setting::class)->create([
-            'name' => 'application_text_en',
-            'value' => $faker->text
-        ]);
-        factory(Setting::class)->create([
-            'name' => 'application_text_nl',
-            'value' => $faker->text
-        ]);
-
-        factory(Setting::class)->create([
-            'name' => 'registration_text_nl',
-            'value' => $faker->text
-        ]);
-
-        factory(Setting::class)->create([
-            'name' => 'registration_text_en',
-            'value' => $faker->text
-        ]);
-
-        factory(Setting::class)->create([
-            'name' => 'login_text_nl',
-            'value' => $faker->text
-        ]);
-
-        factory(Setting::class)->create([
-            'name' => 'login_text_en',
-            'value' => $faker->text
-        ]);
     }
 
     public function test_guest_cant_see_page() {
@@ -110,27 +73,6 @@ class SettingsTest extends TestCase {
             'registration_text_nl' => 'regtestnl',
             'login_text_en' => 'logintest',
             'login_text_nl' => 'logintestnl'
-        ]);
-        $this->assertDatabaseHas('settings', [
-            'name' => 'accountant', 'value' => 'test@test.com',
-        ]);
-        $this->assertDatabaseHas('settings', [
-            'name' => 'application_text_en', 'value' => 'test',
-        ]);
-        $this->assertDatabaseHas('settings', [
-            'name' => 'application_text_nl', 'value' => 'testtest',
-        ]);
-        $this->assertDatabaseHas('settings', [
-            'name' => 'registration_status', 'value' => false,
-        ]);
-        $this->assertDatabaseHas('settings', [
-            'name' => 'registration_text_en', 'value' => 'regtest',
-        ]);
-        $this->assertDatabaseHas('settings', [
-            'name' => 'login_text_en', 'value' => 'logintest',
-        ]);
-        $this->assertDatabaseHas('settings', [
-            'name' => 'login_text_nl', 'value' => 'logintestnl',
-        ]);
+        ])->assertSuccessful();
     }
 }
