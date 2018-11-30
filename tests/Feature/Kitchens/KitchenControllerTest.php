@@ -27,6 +27,7 @@ class KitchenControllerTest extends TestCase {
 		$this->user1 = factory(User::class)->make();
 		factory(Kitchen::class)->create()->user()->save($this->user1);
 		$this->settings = $this->app->settings;
+
 	}
 
 	public function test_guest_can_view_registration_form() {
@@ -211,7 +212,7 @@ class KitchenControllerTest extends TestCase {
 
 	public function test_kitchen_can_see_its_own_edit_page_with_unsubmitted_application() {
 		$application = factory(Application::class)->make([
-			'year' => $this->settings->get('registration_year'),
+			'year' => intval($this->settings->get('registration_year')),
 			'status' => 'new',
 		]);
 		$this->user->user->applications()->save($application);
@@ -252,7 +253,7 @@ class KitchenControllerTest extends TestCase {
 			->assertViewHas('kitchen', $this->user->user)
 			->assertViewHas('application', $application)
 			->assertSee("value: '{$application->length}'")
-			->assertSee($appliedText->value)
+			->assertSee($appliedText)
 			->assertDontSee('id="reviewButton"');
 	}
 

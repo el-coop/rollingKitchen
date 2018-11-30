@@ -66,11 +66,11 @@ class Kitchen extends Model {
 
 	public function getCurrentApplication() {
 		$applicationYear = app('settings')->get('registration_year');
-		$application = $this->applications()->where('year', $applicationYear->value)->first();
+		$application = $this->applications()->where('year', $applicationYear)->first();
 		if (!$application) {
 			$application = new Application;
 			$application->status = 'new';
-			$application->year = $applicationYear->value;
+			$application->year = $applicationYear;
 			$application->data = [];
 			$application->length = 0;
 			$application->width = 0;
