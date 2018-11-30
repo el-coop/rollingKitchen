@@ -44,7 +44,7 @@ class ServiceController extends Controller {
     }
 
     public function export(Excel $excel, KitchenServicesService $kitchenServicesService){
-        return $excel->download($kitchenServicesService, __('admin\service.kitchenServices') . '.xls');
+        return $excel->download($kitchenServicesService, __('admin\services.kitchenServices') . '.xls');
     }
 
 }
