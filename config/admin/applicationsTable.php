@@ -11,6 +11,11 @@ return [
             'visible' => false
 
         ],
+		[
+			'name' => 'number',
+			'title' => 'admin/applications.number',
+			'sortField' => 'number'
+		],
         [
             'name' => 'name',
             'table' => 'users',
