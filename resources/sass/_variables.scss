@@ -7,6 +7,9 @@ $above-tablet: "only screen and (min-width : #{$tablet})";
 $above-desktop: "only screen and (min-width : #{$desktop})";
 $above-wide-screen: "only screen and (min-width : #{$widescreen})";
 
+$under-tablet: "only screen and (max-width : 576px)";
+
+
 // Body
 $body-bg: #f4f4f4;
 $contrast-bg: invert($body-bg);

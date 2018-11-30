@@ -11,7 +11,7 @@
 			@else
 				<div class="navbar-item has-dropdown is-hoverable">
 					<a class="navbar-link">
-						<figure class="image is-autoX32 is-inline">
+						<figure class="image is-autoX32 is-inline is-hidden-touch">
 							<img src="{{ asset('images/' . App::getLocale() . '.svg') }}">
 						</figure>&nbsp;
 						{{ __('global.' . config('app.locales')[App::getLocale()]) }}
