@@ -46,9 +46,9 @@ class UploadPhotoRequest extends FormRequest {
         if ($height > 800 || $width > 500){
             $proportion = $height / $width ;
             if ($proportion > 1){
-                $image->resize(800 * $proportion, 800 );
+                $image->resize(round(500 * $proportion), 500 );
             } else {
-                $image->resize(500, $proportion * 500);
+                $image->resize(800, round(800 * $proportion));
             }
         }
         $mime = $image->mime();
