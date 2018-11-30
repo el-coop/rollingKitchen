@@ -19,8 +19,10 @@
 
 					<div class="navbar-dropdown">
 						@foreach (config('app.locales') as $language)
-							<a href="{{action ('LocaleController@set', $language) }}"
-							   class="navbar-item">@lang("global.$language")</a>
+							@if($language != App::getLocale())
+								<a href="{{action ('LocaleController@set', $language) }}"
+								   class="navbar-item">@lang("global.$language")</a>
+							@endif
 						@endforeach
 					</div>
 				</div>
