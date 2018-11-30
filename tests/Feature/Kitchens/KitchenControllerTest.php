@@ -7,6 +7,7 @@ use App\Models\Kitchen;
 use App\Models\Photo;
 use App\Models\Service;
 use App\Models\User;
+use Intervention\Image\Facades\Image;
 use Illuminate\Http\UploadedFile;
 use Storage;
 use Tests\TestCase;
@@ -455,4 +456,18 @@ class KitchenControllerTest extends TestCase {
 			'service_id' => $services->get(1)->id,
 		]);
 	}
+
+    public function test_kitchen_uploaded_photo_gets_processed() {
+        Storage::fake('local');
+        $file = UploadedFile::fake()->image('photo.png', 1000, 500 );
+        $this->actingAs($this->user)->post(action('Kitchen\KitchenController@storePhoto', $this->user->user), [
+            'photo' => $file
+        ]);
+        $photo = $this->user->user->photos->first();
+        $path = $photo->file;
+        $processedImage = Image::make(Storage::disk('local')->get('public/photos/' . $path));
+        $this->assertEquals(800, $processedImage->width());
+        $this->assertEquals(400, $processedImage->height());
+        $this->assertEquals('image/jpeg', $processedImage->mime());
+    }
 }
