@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Setting;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Faker\Generator as Faker;
@@ -12,41 +11,14 @@ class SettingsSeeder extends Seeder {
      * @return void
      */
     public function run(Faker $faker) {
-        factory(Setting::class)->create([
-            'name' => 'accountant',
-            'value' => $faker->email
-        ]);
-        factory(Setting::class)->create([
-            'name' => 'registration_status',
-            'value' => 0
-        ]);
-        factory(Setting::class)->create([
-            'name' => 'application_text_en',
-            'value' => $faker->text
-        ]);
-        factory(Setting::class)->create([
-            'name' => 'application_text_nl',
-            'value' => $faker->text
-        ]);
-
-		factory(Setting::class)->create([
-			'name' => 'registration_text_nl',
-			'value' => $faker->text
-		]);
-
-		factory(Setting::class)->create([
-			'name' => 'registration_text_en',
-			'value' => $faker->text
-		]);
-
-		factory(Setting::class)->create([
-			'name' => 'login_text_nl',
-			'value' => $faker->text
-		]);
-
-		factory(Setting::class)->create([
-			'name' => 'login_text_en',
-			'value' => $faker->text
-		]);
+        $settings = app('settings');
+        $settings->put('accountant', $faker->email);
+        $settings->put('registration_status', false);
+        $settings->put('application_text_en', $faker->text);
+        $settings->put('application_text_nl', $faker->text);
+		$settings->put('registration_text_nl', $faker->text);
+        $settings->put('registration_text_en', $faker->text);
+        $settings->put('login_text_en', $faker->text);
+        $settings->put('login_text_nl', $faker->text);
     }
 }

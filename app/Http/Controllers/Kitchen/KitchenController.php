@@ -10,13 +10,12 @@ use App\Models\Application;
 use App\Models\Kitchen;
 use App\Models\Photo;
 use App\Models\Service;
-use App\Models\Setting;
 use Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class KitchenController extends Controller {
-	
+
 	/**
 	 * Show the form for creating a new resource.
 	 *
@@ -25,7 +24,7 @@ class KitchenController extends Controller {
 	public function create() {
 		return view('auth.register');
 	}
-	
+
 	/**
 	 * Store a newly created resource in storage.
 	 *
@@ -37,11 +36,11 @@ class KitchenController extends Controller {
 		Auth::login($kitchen->user, true);
 		return redirect()->action('Kitchen\KitchenController@edit', $kitchen);
 	}
-	
+
 	public function storePhoto(Kitchen $kitchen, UploadPhotoRequest $request) {
 		return $request->commit();
 	}
-	
+
 	/**
 	 * Display the specified resource.
 	 *
@@ -50,7 +49,7 @@ class KitchenController extends Controller {
 	 */
 	public function show(Kitchen $kitchen) {
 	}
-	
+
 	/**
 	 * Show the form for editing the specified resource.
 	 *
@@ -63,11 +62,11 @@ class KitchenController extends Controller {
 		$message = false;
 		if(! $application->isOpen()){
 			$locale = App::getLocale();
-			$message = Setting::where('name',"application_text_{$locale}")->first()->value;
+			$message = app('settings')->get("application_text_{$locale}");
 		}
 		return view('kitchen.edit', compact('kitchen', 'application', 'application', 'services','message'));
 	}
-	
+
 	/**
 	 * Update the specified resource in storage.
 	 *
@@ -79,7 +78,7 @@ class KitchenController extends Controller {
 		$request->commit();
 		return back()->with('success', true);
 	}
-	
+
 	/**
 	 * Remove the specified resource from storage.
 	 *
@@ -89,7 +88,7 @@ class KitchenController extends Controller {
 	public function destroy(Kitchen $kitchen) {
 		//
 	}
-	
+
 	public function destroyPhoto(Kitchen $kitchen, Photo $photo) {
 		$photo->delete();
 		return [
