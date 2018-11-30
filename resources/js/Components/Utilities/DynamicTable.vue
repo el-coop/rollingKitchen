@@ -1,24 +1,28 @@
 <template>
 	<div>
-		<table class="table is-fullwidth">
-			<thead>
-			<tr>
-				<th v-for="(column,index) in columns" v-text="column.label" :key="index" v-if="!column.invisible"></th>
-				<th v-if="action"></th>
-			</tr>
-			</thead>
-			<draggable element="tbody" :list="fields" :options="draggable">
-				<tr v-for="(field, index) in fields" :key="`${index}${field.id}`">
-					<td v-if="!column.invisible" v-for="(column,colIndex) in columns" :key="`${index}_${colIndex}`"
-						v-text="valueDisplay(column,field[column.name])" @click="editObject(field)"></td>
-					<td v-if="action">
-						<button class="button is-danger" type="button" :class="{'is-loading' : deleteing === field.id}"
-								@click="destroy(field)" v-text="$translations.delete">
-						</button>
-					</td>
+		<div class="table-container">
+			<table class="table is-fullwidth">
+				<thead>
+				<tr>
+					<th v-for="(column,index) in columns" v-text="column.label" :key="index"
+						v-if="!column.invisible"></th>
+					<th v-if="action"></th>
 				</tr>
-			</draggable>
-		</table>
+				</thead>
+				<draggable element="tbody" :list="fields" :options="draggable">
+					<tr v-for="(field, index) in fields" :key="`${index}${field.id}`">
+						<td v-if="!column.invisible" v-for="(column,colIndex) in columns" :key="`${index}_${colIndex}`"
+							v-text="valueDisplay(column,field[column.name])" @click="editObject(field)"></td>
+						<td v-if="action">
+							<button class="button is-danger" type="button"
+									:class="{'is-loading' : deleteing === field.id}"
+									@click="destroy(field)" v-text="$translations.delete">
+							</button>
+						</td>
+					</tr>
+				</draggable>
+			</table>
+		</div>
 		<div class="buttons" v-if="action">
 			<div class="button is-success" @click="editObject({})" v-text="$translations.add">Add</div>
 			<div v-if="sortable" class="button is-primary" :class="{'is-loading': savingOrder}" @click="saveOrder"
