@@ -4,6 +4,7 @@ return [
 	'en' => 'English',
 	'nl' => 'Nederlands',
 	'title' => 'Rollende Keukens',
+	'welcome' => 'Home',
 	
 	'save' => 'Save',
 	'yes' => 'Yes',

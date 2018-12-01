@@ -11,7 +11,7 @@
 							   value="{{ $application->hasService($service) ? $application->serviceQuantity($service) : '0' }}">
 					</div>
 					<label class="label level-item">
-						{{ $service->name }} - € {{ number_format($service->price,2,$decimalPoint,$thousandSeparator) }}
+						{{ $service->{ 'name_' . App::getLocale()} }} - € {{ number_format($service->price,2,$decimalPoint,$thousandSeparator) }}
 					</label>
 				</div>
 			</div>
@@ -20,7 +20,7 @@
 				<input type="checkbox" value="1"
 					   @if(! $application->isOpen())  onclick="return false;" @endif
 					   name="services[{{$service->id}}]" {{ $application->hasService($service) ? 'checked' : '' }}>
-				<b>{{ $service->name }} - € {{ number_format($service->price,2,$decimalPoint,$thousandSeparator) }}</b>
+				<b>{{ $service->{ 'name_' . App::getLocale()} }} - € {{ number_format($service->price,2,$decimalPoint,$thousandSeparator) }}</b>
 			</label>
 		@endif
 	</div>

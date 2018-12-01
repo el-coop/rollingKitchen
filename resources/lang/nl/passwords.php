@@ -13,7 +13,7 @@ return [
 	|
 	*/
 
-	'password' => 'Uw wachtwoord moet minimaal 6 tekens bevatten en match the confirmation.',
+	'password' => 'Uw wachtwoord moet minimaal 6 tekens bevatten.',
 	'reset' => 'Je wachtwoord is gereset!',
 	'sent' => 'We hebben je zojuist een link voor een nieuw wachtwoord gemaild !',
 	'token' => 'This password reset token is invalid.',

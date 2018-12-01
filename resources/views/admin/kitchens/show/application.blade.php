@@ -10,19 +10,19 @@
 		<div class="tile is-child box">
 			<label class="label"></label>
 			<select-chooser>
-				<select-view label="Products">
+				<select-view label="@lang('admin/applications.products')">
 					@component('kitchen.application.products', compact('application'))
 					@endcomponent
 				</select-view>
-				<select-view label="Dimensions">
+				<select-view label="@lang('kitchen/dimensions.dimensions')">
 					<hr>
 					@component('admin.kitchens.show.application.dimensions', compact('application'))
 					@endcomponent
 				</select-view>
-				<select-view label="Electricity">
-					@include('admin.kitchens.show.application.electrity')
+				<select-view label="@lang('kitchen/services.electricity')">
+					@include('admin.kitchens.show.application.electricity')
 				</select-view>
-				<select-view label="Services">
+				<select-view label="@lang('admin/services.services')">
 					@include('admin.kitchens.show.application.services')
 				</select-view>
 			</select-chooser>

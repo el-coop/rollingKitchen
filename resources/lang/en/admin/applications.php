@@ -3,6 +3,7 @@
 return [
 	'applications' => 'Applications',
 	'product' => 'Product',
-	'price' => 'Price',
+	'products' => 'Products',
+	'price' => 'Price'
 	'number' => 'Number'
 ];

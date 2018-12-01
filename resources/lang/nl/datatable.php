@@ -9,9 +9,4 @@ return [
 	'filters' => 'Filters',
 	'filter' => 'Filter',
 	'clear' => 'Clear',
-	'yes' => 'Ja',
-	'no' => 'Nee',
-	'new' => 'Nieuw',
-	'motherlist' => 'Moederlijst'
-
 ];

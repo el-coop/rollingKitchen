@@ -1,5 +1,8 @@
 @extends('layouts.site')
 
+@section('title',__('kitchen/kitchen.services'))
+
+
 @section('content')
 
     <section class="section">
@@ -19,7 +22,7 @@
                     <footer class="card-footer">
                         <a href="{{action('Kitchen\KitchenController@create')}}" class="card-footer-item button is-dark is-size-3">
 
-                            Aanmelden
+                            @lang('global.register')
 
                         </a>
                     </footer>
@@ -40,7 +43,7 @@
                     <footer class="card-footer">
                         <a href="{{action('Auth\LoginController@showLoginForm')}}" class="card-footer-item button is-dark is-size-3">
 
-                            Inloggen
+                            @lang('global.login')
 
                         </a>
                     </footer>
