@@ -2,6 +2,7 @@
 
 return [
 	'kitchens' => 'Keukens',
-	'motherlist' => 'Rollende Keukens',
+	'motherlist' => 'Moederlijst',
+	'new' => 'Nieuw',
 	'fields' => 'Velden'
 ];

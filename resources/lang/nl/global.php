@@ -1,20 +1,29 @@
 <?php
 
 return [
-	'delete' => 'Delete',
-	'edit' => 'Bewerken',
-	'create' => 'Toevoegen',
-	
-	'decimalPoint' => ',',
-	'thousandSeparator' => '.',
-	
 	'en' => 'English',
 	'nl' => 'Nederlands',
-	'name' => 'Naam',
 	'title' => 'Rollende Keukens',
-	'email' => 'Email',
+	'welcome' => 'Home',
+
+
+	'save' => 'Opslaan',
+	'yes' => 'Ja',
+	'no' => 'Nee',
+
+	'decimalPoint' => '.',
+	'thousandSeparator' => ',',
+
 	'status' => 'Status',
-	'photos' => 'Afbeeldingen',
+	'photos' => "Foto's",
+
+	'name' => 'Naam',
+	'email' => 'Email',
 	'password' => 'Wachtwoord',
-	'login' => 'Login'
+	'password_confirm' => 'Wachtwoord bevestigen',
+	'login' => 'Inloggen',
+	'register' => 'Aanmelden',
+	'language' => 'Language',
+	'year' => 'Jaar',
+	'pdfs' => 'PDFs'
 ];

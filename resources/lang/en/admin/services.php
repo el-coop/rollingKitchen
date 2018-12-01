@@ -6,5 +6,6 @@ return [
 	'amount' => 'Quantity',
 	'select' => 'Yes/No',
     'service' => 'Service',
-    'download_application_services' => 'Download Application Services'
+	'services' => 'Services',
+	'download_application_services' => 'Download Application Services'
 ];

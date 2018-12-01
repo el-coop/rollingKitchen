@@ -1,0 +1,32 @@
+<?php
+
+return [
+	'uploadPhotos' => "Foto's uploaden",
+	'upload' => 'Upload',
+	'delete' => 'Verwijderen',
+	'add' => 'Toevoegen',
+	'save' => 'Opslaan',
+	'updateSuccess' => 'Update succesvol',
+	'tryLater' => 'Probeer het later opnieuw',
+	'operationFiled' => 'Operation failed',
+	'pleaseCorrect' => 'Please correct them',
+	'formErrors' => "De volgende velden zijn incorrect",
+	'deleteSuccess' => 'Successvol verwijderd',
+	'new' => 'Nieuw',
+	'motherlist' => 'Moederlijst',
+	'yes' => 'Yes',
+	'no' => 'No',
+	'filters' => 'Filters',
+	'download' => 'Download',
+	'text' => 'Tekst',
+	'textarea' => 'Tekstveld',
+	'saveOrder' => 'Opslaan',
+	'pending' => 'Pending',
+	'reopened' => 'Heropened',
+	'accepted' => 'Toegewezen',
+	'rejected' => 'Afgewezen',
+	'backup' => 'Backup',
+	'safety' => 'Safety',
+	'electrical' => 'Electrisch',
+	'misc' => 'Diverse'
+];
