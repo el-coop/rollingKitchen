@@ -10,8 +10,8 @@ return [
 	'registration_text_en' => 'Aanmelden Tekst EN',
 	'login_text_en' => 'Inloggen Tekst EN',
 	'accountant' => "Accountant's Email",
-	'application_text_en' => 'Engelse tekst na verzending aanmelding',
-	'application_text_nl' => 'Nederlandse tekst na verzending aanmelding',
+	'application_text_en' => 'Tekst mbt bewerking na verzending aamelding EN',
+	'application_text_nl' => 'Tekst mbt bewerking na verzending aanmelding NL',
 	'chooseFile' => 'Selecteer een document'
 
 ];

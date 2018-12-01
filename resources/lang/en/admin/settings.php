@@ -10,8 +10,8 @@ return [
 	'registration_text_nl' => 'Registration Text NL',
 	'login_text_nl' => 'Login Text NL',
 	'accountant' => "Accountant's Email",
-    'application_text_en' => 'English text when application submitted',
-    'application_text_nl' => 'Dutch text when application submitted',
+    'application_text_en' => 'Text concerning editing application EN',
+    'application_text_nl' => 'Text concerning editing application NL',
 	'chooseFile' => 'Choose a file'
 
 ];
