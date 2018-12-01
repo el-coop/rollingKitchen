@@ -4,8 +4,8 @@ namespace App\Http\Requests\Kitchen\Photo;
 
 use App\Models\Photo;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Facades\Image;
+use Storage;
+use Image;
 
 class UploadPhotoRequest extends FormRequest {
 	/**
@@ -46,7 +46,7 @@ class UploadPhotoRequest extends FormRequest {
         if ($height > 800 || $width > 500){
             $proportion = $height / $width ;
             if ($proportion > 1){
-                $image->resize(round(500 * $proportion), 500 );
+                $image->resize(round(500 / $proportion), 500 );
             } else {
                 $image->resize(800, round(800 * $proportion));
             }
