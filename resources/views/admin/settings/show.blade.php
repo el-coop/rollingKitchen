@@ -8,29 +8,28 @@
             @csrf
             @method('PATCH')
             <div class="columns">
-                @foreach($settings as $setting)
+                @foreach($settings as $key => $setting)
                     @if($loop->first || ($loop->iteration >= (1+$loop->count/2) && $loop->iteration < (2+$loop->count/2)) )
                         <div class="column">
                             @endif
-
-                            @component('admin.settings.componenets.setting', ['name' => $setting->name])
-                                @switch($setting->name)
+                            @component('admin.settings.componenets.setting', ['name' => $key])
+                                @switch($key)
                                     @case('registration_year')
                                     <input class="input" type="text" name="registration_year" readonly
-                                           value="{{$setting->value}}">
+                                           value="{{$setting}}">
                                     @break
                                     @case('registration_status')
                                     <label class="switch">
                                         <input type="checkbox"
-                                               name="registration_status" {{$setting->value ? 'checked' : ''}}>
+                                               name="registration_status" {{$setting ? 'checked' : ''}}>
                                         <span class="slider"></span>
                                     </label>
                                     @break
                                     @case('accountant')
-                                    <input type="email" name="accountant" class="input" value="{{$setting->value}}">
+                                    <input type="email" name="accountant" class="input" value="{{$setting}}">
                                     @break
                                     @default
-                                    <textarea name="{{$setting->name}}" class="textarea">{{$setting->value}}</textarea>
+                                    <textarea name="{{$key}}" class="textarea">{{$setting}}</textarea>
                                 @endswitch
                             @endcomponent
                             @if(($loop->iteration >= $loop->count/2) && ($loop->iteration < (1+$loop->count/2)) || $loop->last)

@@ -5,4 +5,5 @@ return [
 	'product' => 'Product',
 	'products' => 'Products',
 	'price' => 'Price'
+	'number' => 'Number'
 ];

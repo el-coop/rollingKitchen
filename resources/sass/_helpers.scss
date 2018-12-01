@@ -34,3 +34,16 @@
 	height: auto;
 	width: 32px;
 }
+
+@media #{$under-tablet} {
+	main > .container {
+		margin-left: 5px;
+		margin-right: 5px;
+		margin-bottom: 5px;
+		max-width: calc(100vw - 5px);
+
+		& > .card {
+			max-width: calc(100% - 5px);
+		}
+	}
+}

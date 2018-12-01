@@ -5,7 +5,7 @@
 				<li v-for="(tab, index) in views" :class="{'is-active': index == selected}" :key="index"
 					@click="show(index)">
 					<a>
-						<font-awesome-icon v-if="tab.icon" :icon="tab.icon"></font-awesome-icon>
+						<font-awesome-icon v-if="tab.icon" :icon="tab.icon" class="icon"></font-awesome-icon>
 						<span v-text="tab.label"></span>
 					</a>
 				</li>
@@ -31,7 +31,7 @@
 
 		mounted() {
 			let tab = window.location.href.split('#')[1];
-			if(!tab){
+			if (!tab) {
 				tab = (new URL(window.location.href)).searchParams.get('tab');
 			}
 			if (tab) {
@@ -62,6 +62,14 @@
 	}
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+	@media screen and (max-width: 768px) {
+		.tabs ul {
+			flex-direction: column;
 
+			li {
+				width: 100%;
+			}
+		}
+	}
 </style>

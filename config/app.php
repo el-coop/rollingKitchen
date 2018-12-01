@@ -77,7 +77,7 @@ return [
     | to any of the locales which will be supported by the application.
     |
     */
-	
+
 	'locale' => 'en',
 	'locales' => ['en' => 'en','nl' => 'nl'],
 
@@ -173,7 +173,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        \App\Providers\ComposerServiceProvider::class
+        \App\Providers\ComposerServiceProvider::class,
+        \App\Providers\SettingsServiceProvider::class
 
     ],
 

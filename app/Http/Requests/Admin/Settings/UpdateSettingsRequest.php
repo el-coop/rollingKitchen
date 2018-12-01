@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Admin\Settings;
 
-use App\Models\Setting;
 use Dotenv\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +14,7 @@ class UpdateSettingsRequest extends FormRequest {
 	 * @return bool
 	 */
 	public function authorize() {
-		return $this->user()->can('update', Setting::class);
+		return Gate::allows('update-settings');
 	}
 
 	/**
@@ -36,15 +35,15 @@ class UpdateSettingsRequest extends FormRequest {
 	}
 
 	public function commit() {
-		$names = DB::table('settings')->select('name')->get();
+	    $settings = app('settings');
+		$names = array_keys($settings->all());
 		foreach ($names as $name) {
-			$setting = Setting::where('name', $name->name)->first();
-			if ($name->name === 'registration_status') {
-				$setting->value = $this->has($name->name);
+			if ($name === 'registration_status') {
+				$value = $this->has($name);
 			} else {
-				$setting->value = $this->input($name->name);
+				$value = $this->input($name);
 			}
-			$setting->save();
+			$settings->put($name,$value);
 		}
 	}
 }

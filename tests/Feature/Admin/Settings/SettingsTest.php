@@ -4,14 +4,14 @@ namespace Tests\Feature\Admin\Settings;
 
 use App\Models\Admin;
 use App\Models\Kitchen;
-use App\Models\Setting;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
+use Spatie\Valuestore\Valuestore;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SettingsTest extends TestCase {
-
     use RefreshDatabase;
     use WithFaker;
     protected $admin;
@@ -23,44 +23,23 @@ class SettingsTest extends TestCase {
         $this->admin->user()->save(factory(User::class)->make());
         $this->kitchen = factory(Kitchen::class)->create();
         $this->kitchen->user()->save(factory(User::class)->make());
+        Storage::fake('local');
+        Storage::disk('local')->put('test.valuestore','');
+        $path = Storage::path('test.valuestore');
+        $this->app->singleton('settings', function ($app) use ($path) {
+            return Valuestore::make($path . '.json');
+        });
+        $faker = $this->faker;
+        $settings = app('settings');
+        $settings->put('accountant', $faker->email);
+        $settings->put('registration_status', false);
+        $settings->put('application_text_en', $faker->text);
+        $settings->put('application_text_nl', $faker->text);
+        $settings->put('registration_text_nl', $faker->text);
+        $settings->put('registration_text_en', $faker->text);
+        $settings->put('login_text_en', $faker->text);
+        $settings->put('login_text_nl', $faker->text);
 
-        $faker = $this->faker();
-        factory(Setting::class)->create([
-            'name' => 'accountant',
-            'value' => $faker->email
-        ]);
-        factory(Setting::class)->create([
-            'name' => 'registration_status',
-            'value' => 0
-        ]);
-        factory(Setting::class)->create([
-            'name' => 'application_text_en',
-            'value' => $faker->text
-        ]);
-        factory(Setting::class)->create([
-            'name' => 'application_text_nl',
-            'value' => $faker->text
-        ]);
-
-        factory(Setting::class)->create([
-            'name' => 'registration_text_nl',
-            'value' => $faker->text
-        ]);
-
-        factory(Setting::class)->create([
-            'name' => 'registration_text_en',
-            'value' => $faker->text
-        ]);
-
-        factory(Setting::class)->create([
-            'name' => 'login_text_nl',
-            'value' => $faker->text
-        ]);
-
-        factory(Setting::class)->create([
-            'name' => 'login_text_en',
-            'value' => $faker->text
-        ]);
     }
 
     public function test_guest_cant_see_page() {
@@ -102,35 +81,17 @@ class SettingsTest extends TestCase {
     }
 
     public function test_admin_can_update_settings() {
-        $this->actingAs($this->admin->user)->patch(action('Admin\SettingsController@update'), [
+        $settings = [
             'accountant' => 'test@test.com',
             'application_text_en' => 'test',
             'application_text_nl' => 'testtest',
             'registration_text_en' => 'regtest',
             'registration_text_nl' => 'regtestnl',
             'login_text_en' => 'logintest',
-            'login_text_nl' => 'logintestnl'
-        ]);
-        $this->assertDatabaseHas('settings', [
-            'name' => 'accountant', 'value' => 'test@test.com',
-        ]);
-        $this->assertDatabaseHas('settings', [
-            'name' => 'application_text_en', 'value' => 'test',
-        ]);
-        $this->assertDatabaseHas('settings', [
-            'name' => 'application_text_nl', 'value' => 'testtest',
-        ]);
-        $this->assertDatabaseHas('settings', [
-            'name' => 'registration_status', 'value' => false,
-        ]);
-        $this->assertDatabaseHas('settings', [
-            'name' => 'registration_text_en', 'value' => 'regtest',
-        ]);
-        $this->assertDatabaseHas('settings', [
-            'name' => 'login_text_en', 'value' => 'logintest',
-        ]);
-        $this->assertDatabaseHas('settings', [
-            'name' => 'login_text_nl', 'value' => 'logintestnl',
-        ]);
+            'login_text_nl' => 'logintestnl',
+        ];
+        $this->actingAs($this->admin->user)->patch(action('Admin\SettingsController@update'), $settings)->assertRedirect();
+        $settings['registration_status'] = false;
+        $this->assertEquals($settings, $this->app->settings->all());
     }
 }

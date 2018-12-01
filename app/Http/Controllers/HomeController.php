@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     public function show(){
-
+        $settings = app('settings');
     	$locale = \App::getLocale();
-    	$registrationText = Setting::where('name', "registration_text_{$locale}")->first()->value;
-		$loginText = Setting::where('name', "login_text_{$locale}")->first()->value;
+    	$registrationText = $settings->get("registration_text_{$locale}");
+        $loginText = $settings->get("login_text_{$locale}");
 
     	return view ('welcome', compact('registrationText', 'loginText'));
 	}
