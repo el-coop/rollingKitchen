@@ -55,41 +55,26 @@
 
 			jsonify(formData) {
 				const data = {};
-				formData.forEach((value, key) => {
-					// Check if property already exist
-					if (Object.prototype.hasOwnProperty.call(data, key)) {
-						let current = data[key];
-						if (!Array.isArray(current)) {
-							// If it's not an array, convert it to an array.
-							current = data[key] = [current];
-						}
-						current.push(value); // Add the new value to the array.
-					} else {
-						data[key] = value;
-					}
-				});
-				return data;
-				console.log(data);
 
 				formData.forEach((value, key) => {
-					console.log(key, formData.get(key), formData.getAll(key), value);
-					return;
-					if (key.indexOf('[') > -1 && key.indexOf(']') > key.indexOf('[')) {
-						const keyStart = key.indexOf('[');
-						const keyArrayName = key.substr(0, keyStart);
-						const keyName = key.substr(keyStart + 1, key.indexOf(']') - keyStart - 1);
-						if (!data[keyArrayName]) {
-							data[keyArrayName] = {};
+					const keyVals = key.replace(/\]/g, '').split('[');
+					let lastUpdated = data;
+					let lastKey;
+					keyVals.forEach((keyName, index) => {
+						if (!lastUpdated[keyName]) {
+							lastUpdated[keyName] = {};
 						}
-						data[keyArrayName][keyName] = value;
-					} else {
-						data[key] = value;
-					}
+						if (index < keyVals.length - 1) {
+							lastUpdated = lastUpdated[keyName];
+						}
+						lastKey = keyName;
+					});
+					lastUpdated[lastKey] = value;
 				});
 				return data;
 			},
 
-			async submit(event) {
+			async submit() {
 				this.clearErrors();
 				let response;
 				const data = this.getData();

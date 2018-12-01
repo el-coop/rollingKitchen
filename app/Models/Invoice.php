@@ -9,7 +9,14 @@ class Invoice extends Model {
 	static function getNumber() {
 		$year = app('settings')->get('registration_year');
 		$number = static::where('prefix', $year)->count() + 1;
-		return "{$year}-{$number}";
+		$padding = '';
+		if ($number < 100) {
+			$padding .= 0;
+		}
+		if ($number < 10) {
+			$padding .= 0;
+		}
+		return "{$year}-{$padding}{$number}";
 	}
 	
 	public function getFullDataAttribute() {

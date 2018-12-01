@@ -7,21 +7,22 @@
 			</div>
 			<div class="column is-2"></div>
 		</div>
-		<invoice-line v-for="(entry, index) in values" :key="index" :name="field.name" :data="entry"
+		<invoice-line v-for="(entry, index) in values" :key="`${entry.item}_${entry.quantity}_${index}`" :index="index" :name="field.name"
+					  v-model="values[index]"
 					  :options="field.options"
 					  @total="updateTotal(index,$event)"
 					  @remove="remove(index)"></invoice-line>
 		<div class="columns is-mobile">
 			<div class="column" :class="{'is-2' : header !== 'item'}" v-for="header in headers">
 				<span v-if="header === 'item'">BTW 21%</span>
-				<span v-if="header === 'total'" v-text="totalSum * 0.21"></span>
+				<span v-if="header === 'total'" v-text="localNumber(totalSum * 0.21)"></span>
 			</div>
 			<div class="column is-2"></div>
 		</div>
 		<div class="columns is-mobile">
 			<div class="column" :class="{'is-2' : header !== 'item'}" v-for="header in headers">
 				<span v-if="header === 'item'" v-text="$translations.total"></span>
-				<span v-if="header === 'total'" v-text="totalSum * 1.21"></span>
+				<span v-if="header === 'total'" v-text="localNumber(totalSum * 1.21)"></span>
 			</div>
 			<div class="column is-2"></div>
 		</div>
@@ -34,11 +35,12 @@
 <script>
 	import FieldMixin from './FieldMixin';
 	import InvoiceLine from "./Invoice/InvoiceLine";
+	import DatatableFormatters from "../Utilities/Datatable/DatatableFormatters";
 
 	export default {
 		name: "InvoiceField",
 		components: {InvoiceLine},
-		mixins: [FieldMixin],
+		mixins: [FieldMixin,DatatableFormatters],
 
 		data() {
 			return {

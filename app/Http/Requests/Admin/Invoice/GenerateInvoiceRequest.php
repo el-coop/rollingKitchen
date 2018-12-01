@@ -28,7 +28,6 @@ class GenerateInvoiceRequest extends FormRequest {
 	}
 	
 	public function commit() {
-		dd($this->all());
 		if ($this->input('file_download', false)) {
 			return $this->preview();
 		}
@@ -45,14 +44,14 @@ class GenerateInvoiceRequest extends FormRequest {
 			->customer([
 				'name' => $kitchen->user->name,
 				'phone' => $kitchen->data['Phone Number'],
-				'location' => 'Billing Address',
-				'zip' => 'Zip Code',
+				'location' => $kitchen->data['Billing Address'],
+				'zip' => $kitchen->data['Zip Code'],
 				'city' => $kitchen->data['City'],
 			]);
 		
 		foreach ($this->input('items') as $item) {
-			$invoice->addItem($item['item'], $item['price'], $item['amount']);
+			$invoice->addItem($item['item'], $item['unitPrice'], $item['quantity']);
 		}
-		return $invoice->download($number);
+		return $invoice->show($number);
 	}
 }
