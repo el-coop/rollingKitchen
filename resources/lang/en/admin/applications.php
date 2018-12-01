@@ -4,6 +4,6 @@ return [
 	'applications' => 'Applications',
 	'product' => 'Product',
 	'products' => 'Products',
-	'price' => 'Price'
+	'price' => 'Price',
 	'number' => 'Number'
 ];
