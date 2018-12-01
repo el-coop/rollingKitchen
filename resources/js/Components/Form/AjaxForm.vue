@@ -87,7 +87,6 @@
 			},
 
 			formatErrors(errors) {
-				console.log(errors);
 				this.errors = errors;
 				this.$emit('errors', this.errors);
 			},

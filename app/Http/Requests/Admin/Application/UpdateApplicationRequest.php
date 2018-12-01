@@ -28,6 +28,7 @@ class UpdateApplicationRequest extends FormRequest {
 			'status' => 'required|in:accepted,pending,rejected,reopened,backup',
 			'year' => 'digits:4|integer|min:2014|max:' . (date('Y')),
 			'application' => 'required|array',
+			'application.*' => 'required',
 		];
 	}
 	

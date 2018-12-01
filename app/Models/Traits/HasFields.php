@@ -27,7 +27,7 @@ trait HasFields {
 
 		return static::fields()->map(function ($item) use ($dataName) {
 			return [
-                'name' => "$item->id",
+                'name' => "{$dataName}[{$item->id}]",
                 'label' => $item->{'name_' . App::getLocale()},
                 'type' => $item->type,
                 'value' => $this->data[$item->id] ?? ''
