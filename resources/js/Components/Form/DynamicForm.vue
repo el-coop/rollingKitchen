@@ -1,16 +1,16 @@
 <template>
 	<ajax-form :headers="headers" @errors="handleErrors" :method="method" :action="url" @submitting="submitting = true"
-			   @submitted="submitted" :extraData="extraData">
+			   @submitted="submitted" :extraData="extraData" @alternative-submitting="alternativeSubmitting=true">
 		<div v-if="loading" class="has-text-centered">
 			<a class="button is-loading"></a>
 		</div>
 		<component v-if="hide.indexOf(field.name) === -1"
 				   :error="errors[field.name.replace('[','.').replace(']','')] || null"
 				   v-for="(field,key) in fields" :is="`${field.type}-field`"
-				   :field="field" :key="key">
+				   :field="field" :loading="alternativeSubmitting" :key="key">
 		</component>
 		<button v-if="!loading" class="button is-fullwidth" :class="[submitting ? 'is-loading' : '', buttonClass]"
-				type="submit" v-text="$translations.save">
+				type="submit" v-text="buttonText">
 		</button>
 	</ajax-form>
 </template>
@@ -29,6 +29,14 @@
 		},
 
 		props: {
+			buttonText: {
+				type: String,
+				default() {
+					return this.$translations.save;
+				}
+
+			},
+
 			url: {
 				type: String,
 				default: ''
@@ -80,6 +88,7 @@
 				fields: [],
 				loading: false,
 				submitting: false,
+				alternativeSubmitting: false,
 				errors: {}
 			};
 		},
@@ -110,11 +119,40 @@
 
 			submitted(response) {
 				this.submitting = false;
+				this.alternativeSubmitting = false;
 				if (response.status === 200 || response.status === 201) {
+					if (response.headers['content-disposition'] && response.headers['content-disposition'].indexOf('attachment') === 0) {
+						this.download(response.data, 'test.pdf', response.headers['content-type']);
+						return;
+					}
 					this.$toast.success(this.$translations.updateSuccess);
 					this.onDataUpdate(response.data);
 				}
 			},
+
+			download(data, filename, mime) {
+				const blob = new Blob([data], {type: mime || 'application/pdf'});
+				console.log(blob);
+				const blobURL = window.URL.createObjectURL(blob);
+				const tempLink = document.createElement('a');
+				tempLink.style.display = 'none';
+				tempLink.href = blobURL;
+				tempLink.setAttribute('download', filename);
+
+				// Safari thinks _blank anchor are pop ups. We only want to set _blank
+				// target if the browser does not support the HTML5 download attribute.
+				// This allows you to download files in desktop safari if pop up blocking
+				// is enabled.
+				if (typeof tempLink.download === 'undefined') {
+					tempLink.setAttribute('target', '_blank');
+				}
+
+				document.body.appendChild(tempLink);
+				tempLink.click();
+				document.body.removeChild(tempLink);
+				window.URL.revokeObjectURL(blobURL);
+
+			}
 
 		},
 	}

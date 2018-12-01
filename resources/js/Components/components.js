@@ -31,3 +31,6 @@ Vue.component('TextField', require('./Form/TextField'));
 Vue.component('TextareaField', require('./Form/TextareatField'));
 Vue.component('SelectField', require('./Form/SelectField'));
 Vue.component('FileField', require('./Form/FileField'));
+Vue.component('CheckboxField', require('./Form/CheckboxField'));
+Vue.component('InvoiceField', require('./Form/InvoiceField'));
+Vue.component('AlternativeSubmitField', require('./Form/AlternativeSubmitField'));

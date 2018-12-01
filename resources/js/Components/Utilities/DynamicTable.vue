@@ -28,9 +28,10 @@
 			<div v-if="sortable" class="button is-primary" :class="{'is-loading': savingOrder}" @click="saveOrder"
 				 v-text="$translations.saveOrder"></div>
 		</div>
-		<modal-component :name="`${_uid}modal`" v-if="action">
-			<dynamic-form :headers="headers" :init-fields="formFields" :method="method" :url="url"
-						  @object-update="updateObject" :extra-data="extraData">
+		<modal-component :name="`${_uid}modal`" v-if="action" :width="modal.width" :height="modal.height"
+						 :pivotX="modal.pivotX" :pivotY="modal.pivotY">
+			<dynamic-form :headers="headers" :init-fields="!formFromUrl ? formFields : null" :method="method" :url="url"
+						  @object-update="updateObject" :extra-data="extraData" :button-text="formButtonText">
 
 			</dynamic-form>
 		</modal-component>
@@ -49,6 +50,31 @@
 		mixins: [DatatableFormatters],
 
 		props: {
+			formButtonText: {
+				type: String,
+				default() {
+					return this.$translations.save;
+				}
+
+			},
+
+			modal: {
+				type: Object,
+				default() {
+					return {
+						height: 'auto',
+						width: 600,
+						pivotX: 0.5,
+						pivotY: 0.5,
+					}
+				}
+			},
+
+			formFromUrl: {
+				type: Boolean,
+				default: false
+			},
+
 			initFields: {
 				required: true,
 				type: Array

@@ -47,7 +47,11 @@ class Service extends Model {
 	}
 
 	public function applications() {
-		return $this->belongsToMany(Application::class)->withPivot('quantity');
+		return $this->belongsToMany(Application::class)->withPivot('quantity')->withTimestamps();
+	}
+	
+	public function invoices() {
+		return $this->belongsToMany(Invoice::class)->withPivot('quantity')->withTimestamps();
 	}
 
 }

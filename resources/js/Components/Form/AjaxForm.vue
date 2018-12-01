@@ -54,12 +54,30 @@
 			},
 
 			jsonify(formData) {
-				let data = {};
+				const data = {};
 				formData.forEach((value, key) => {
+					// Check if property already exist
+					if (Object.prototype.hasOwnProperty.call(data, key)) {
+						let current = data[key];
+						if (!Array.isArray(current)) {
+							// If it's not an array, convert it to an array.
+							current = data[key] = [current];
+						}
+						current.push(value); // Add the new value to the array.
+					} else {
+						data[key] = value;
+					}
+				});
+				return data;
+				console.log(data);
+
+				formData.forEach((value, key) => {
+					console.log(key, formData.get(key), formData.getAll(key), value);
+					return;
 					if (key.indexOf('[') > -1 && key.indexOf(']') > key.indexOf('[')) {
 						const keyStart = key.indexOf('[');
 						const keyArrayName = key.substr(0, keyStart);
-						const keyName = key.substr(keyStart + 1, key.indexOf(']') - keyStart-1);
+						const keyName = key.substr(keyStart + 1, key.indexOf(']') - keyStart - 1);
 						if (!data[keyArrayName]) {
 							data[keyArrayName] = {};
 						}
@@ -71,12 +89,24 @@
 				return data;
 			},
 
-			async submit() {
+			async submit(event) {
 				this.clearErrors();
-				this.$emit('submitting');
 				let response;
+				const data = this.getData();
+				const options = {
+					headers: this.headers,
+				};
+
+				if (data.file_download) {
+					options.responseType = 'blob';
+					this.$emit('alternative-submitting');
+				} else {
+					this.$emit('submitting');
+				}
+
+
 				try {
-					response = await axios[this.method](this.action, this.getData(), this.headers);
+					response = await axios[this.method](this.action, data, options);
 				} catch (error) {
 					response = error.response;
 					if (response.data.errors) {

@@ -10,6 +10,9 @@
 		<div class="tile is-child box">
 			<label class="label"></label>
 			<select-chooser>
+				<select-view label="@lang('admin/invoices.invoices')">
+					@include('admin.kitchens.show.application.invoices')
+				</select-view>
 				<select-view label="@lang('admin/applications.products')">
 					@component('kitchen.application.products', compact('application'))
 					@endcomponent

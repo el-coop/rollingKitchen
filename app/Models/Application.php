@@ -54,7 +54,15 @@ class Application extends Model {
 	}
 	
 	public function services() {
-		return $this->belongsToMany(Service::class)->withPivot('quantity');
+		return $this->belongsToMany(Service::class)->withPivot('quantity')->withTimestamps();
+	}
+	
+	public function invoices() {
+		return $this->hasMany(Invoice::class);
+	}
+	
+	public function invoicedServices() {
+		return $this->invoices()->with('services')->get()->groupBy('service_id');
 	}
 	
 	public function hasService(Service $service) {
