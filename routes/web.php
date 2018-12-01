@@ -11,8 +11,8 @@
 |
 */
 
-Route::get('/','HomeController@show');
 
+Route::get('/','HomeController@show');
 
 Auth::routes([
 	'register' => false
