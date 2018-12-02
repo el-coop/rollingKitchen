@@ -12,5 +12,5 @@ return [
 	'1x400-16' => 'Electric 1 x 400V 16A Red (3 Fase, CEE, 5 pole) € 350',
 	'1x400-32' => 'Electric 1 x 400V 32A Red (3 Fase, CEE, 5 pole) € 350',
 	'2x400' => 'Electric 2 x 400V 32A Rood (3 Fase, CEE, 5 pole) € 650',
-	'trash' => 'Waste processing contribution € 50'
+	'trash' => 'Waste processing contribution'
 ];
