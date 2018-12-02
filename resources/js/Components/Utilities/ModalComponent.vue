@@ -1,11 +1,10 @@
 <template>
 	<modal :name="name" transition="slide-up-opacity" :height="height" :adaptive="true"
 		   :width="width"
-		   :scrollable="true"
 		   :pivotY="pivotY"
 		   :pivotX="pivotX"
 		   ref="modal">
-		<div class="box h-100">
+		<div class="box h-100 modal-body">
 			<slot/>
 		</div>
 	</modal>
@@ -41,4 +40,10 @@
 		}
 	}
 </script>
+
+<style scoped>
+	.modal-body{
+		overflow-y: auto;
+	}
+</style>
 

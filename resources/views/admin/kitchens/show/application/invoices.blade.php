@@ -1,5 +1,5 @@
 <dynamic-table :columns="[{
-					name: 'number',
+					name: 'formattedNumber',
 					label: '@lang('admin/applications.number')',
 				},{
 					name: 'total',

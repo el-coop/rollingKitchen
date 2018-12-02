@@ -5,8 +5,8 @@ namespace App\Http\Requests\Admin\Invoice;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\Service;
+use App\Services\InvoiceService;
 use Illuminate\Foundation\Http\FormRequest;
-use ConsoleTVs\Invoices\Classes\Invoice as InvoiceFile;
 
 class GenerateInvoiceRequest extends FormRequest {
 	/**
@@ -31,7 +31,7 @@ class GenerateInvoiceRequest extends FormRequest {
 		if (!$this->input('file_download', false)) {
 			$rules = $rules->merge([
 				'recipient' => 'required|email',
-				'bcc' => 'email',
+				'bcc' => 'nullable|email',
 				'message' => 'required|string'
 			]);
 		}
@@ -39,17 +39,19 @@ class GenerateInvoiceRequest extends FormRequest {
 	}
 	
 	public function commit() {
+		$application = $this->route('application');
 		$number = Invoice::getNumber();
 		$prefix = app('settings')->get('registration_year');
+		
 		if ($this->input('file_download', false)) {
-			$invoice = $this->generateInvoice($number);
+			$invoiceService = new InvoiceService($application);
+			$invoice = $invoiceService->generate("{$prefix}-{$number}", $this->input('tax'), $this->input('items'));
 			return $invoice->download("{$prefix}-{$number}");
 		}
 		$invoice = new Invoice;
 		$invoice->prefix = $prefix;
 		$invoice->number = $number;
 		$invoice->tax = $this->input('tax');
-		$application = $this->route('application');
 		$application->invoices()->save($invoice);
 		$total = 0;
 		foreach ($this->input('items') as $item) {
@@ -69,27 +71,6 @@ class GenerateInvoiceRequest extends FormRequest {
 		$invoice->save();
 		
 		
-		return $invoice;
-	}
-	
-	protected function generateInvoice($number) {
-		$kitchen = $this->route('application')->kitchen;
-		$invoice = InvoiceFile::make()
-			->logo(asset('/images/logo.png'))
-			->number($number)
-			->tax($this->input('tax'))
-			->notes('Lrem ipsum dolor sit amet, consectetur adipiscing elit.')
-			->customer([
-				'name' => $kitchen->user->name,
-				'phone' => $kitchen->data[5],
-				'location' => $kitchen->data[2],
-				'zip' => $kitchen->data[3],
-				'city' => $kitchen->data[4],
-			]);
-		
-		foreach ($this->input('items') as $item) {
-			$invoice->addItem($item['item'], $item['unitPrice'], $item['quantity']);
-		}
 		return $invoice;
 	}
 }

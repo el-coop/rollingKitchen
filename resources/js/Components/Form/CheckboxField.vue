@@ -1,5 +1,5 @@
 <template>
-	<div class="field">
+	<div class="field" v-if="field.options.length">
 		<label class="label" v-text="field.label" v-if="field.label"></label>
 		<label class="checkbox" v-for="(option, index) in field.options" :key="index">
 			<input type="checkbox" :name="`${field.name}[]`" :value="index" :checked="field.checked || false">

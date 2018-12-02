@@ -1,7 +1,7 @@
 <template>
 	<div class="columns is-mobile">
 		<div class="column is-2">
-			<input v-model="quantity" required type="number" min="0"
+			<input v-model="quantity" required type="number" min="1"
 				   :name="`${name}[${index}][quantity]`" class="input">
 		</div>
 		<div class="column is-2">
@@ -16,7 +16,7 @@
 				</div>
 				<div class="dropdown-menu">
 					<div class="dropdown-content">
-						<a class="dropdown-item" v-for="(option, index) in options" :key="index" v-text="option.name"
+						<a class="dropdown-item" v-for="(option, index) in options" :key="index" v-text="option.item"
 						   @click="updateValue(option)"></a>
 					</div>
 				</div>
@@ -73,7 +73,7 @@
 		methods: {
 			updateValue(option) {
 				this.unitPrice = option.unitPrice;
-				this.item = option.name;
+				this.item = option.item;
 			},
 
 			remove() {
@@ -98,8 +98,8 @@
 
 		watch: {
 			quantity(value) {
-				if (value < 0) {
-					this.quantity = 0;
+				if (value < 1) {
+					this.quantity = 1;
 				}
 				this.$emit('input', {
 					quantity: this.quantity,
@@ -130,8 +130,16 @@
 	}
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 	.w-100 {
 		width: 100%;
+	}
+
+	.column {
+		min-width: 150px;
+
+		&.is-2 {
+			min-width: 75px;
+		}
 	}
 </style>
