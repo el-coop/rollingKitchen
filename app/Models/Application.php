@@ -61,8 +61,8 @@ class Application extends Model {
 		return $this->hasMany(Invoice::class);
 	}
 	
-	public function invoicedServices() {
-		return $this->invoices()->with('services')->get()->groupBy('service_id');
+	public function invoicedItems() {
+		return $this->hasManyThrough(InvoiceItem::class, Invoice::class);
 	}
 	
 	public function hasService(Service $service) {

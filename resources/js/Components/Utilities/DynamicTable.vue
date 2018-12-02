@@ -12,8 +12,8 @@
 				<draggable element="tbody" :list="fields" :options="draggable">
 					<tr v-for="(field, index) in fields" :key="`${index}${field.id}`">
 						<td v-if="!column.invisible" v-for="(column,colIndex) in columns" :key="`${index}_${colIndex}`"
-							v-text="valueDisplay(column,field[column.name])" @click="editObject(field)"></td>
-						<td v-if="action">
+							v-html="valueDisplay(column,field[column.name])" @click="editObject(field)"></td>
+						<td v-if="action && deleteAllowed">
 							<button class="button is-danger" type="button"
 									:class="{'is-loading' : deleteing === field.id}"
 									@click="destroy(field)" v-text="$translations.delete">
@@ -95,6 +95,10 @@
 				default() {
 					return {};
 				}
+			},
+			deleteAllowed: {
+				type: Boolean,
+				default: true
 			},
 			headers: {
 				type: Object,

@@ -1,11 +1,11 @@
 <template>
 	<div class="columns is-mobile">
 		<div class="column is-2">
-			<input v-model="quantity" required
+			<input v-model="quantity" required type="number" min="0"
 				   :name="`${name}[${index}][quantity]`" class="input">
 		</div>
 		<div class="column is-2">
-			<input v-model="unitPrice" required type="number"
+			<input v-model="unitPrice" required type="number" min="0"
 				   :name="`${name}[${index}][unitPrice]`" class="input">
 		</div>
 		<div class="column">
@@ -36,7 +36,7 @@
 
 	export default {
 		name: "InvoiceLine",
-		mixins:[DatatableFormatters],
+		mixins: [DatatableFormatters],
 		props: {
 			name: {
 				type: String,
@@ -97,7 +97,10 @@
 		},
 
 		watch: {
-			quantity() {
+			quantity(value) {
+				if (value < 0) {
+					this.quantity = 0;
+				}
 				this.$emit('input', {
 					quantity: this.quantity,
 					unitPrice: this.unitPrice,
@@ -111,14 +114,16 @@
 					item: this.item,
 				});
 			},
-			unitPrice() {
+			unitPrice(value) {
+				if (value < 0) {
+					this.unitPrice = 0;
+				}
 				this.$emit('input', {
 					quantity: this.quantity,
 					unitPrice: this.unitPrice,
 					item: this.item,
 				});
 			}
-
 
 		}
 

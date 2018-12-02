@@ -33,5 +33,7 @@ return [
 	'quantity' => 'Quantity',
 	'item' => 'Item',
 	'unitPrice' => 'Unit Price',
-
+	'vat' => 'VAT',
+	'paid' => 'Paid',
+	'unpaid' => 'Unpaid',
 ];

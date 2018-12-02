@@ -2,7 +2,7 @@
 	<div class="field">
 		<label class="label" v-text="field.label" v-if="field.label"></label>
 		<label class="checkbox" v-for="(option, index) in field.options" :key="index">
-			<input type="checkbox" :name="`${field.name}[]`" :value="index">
+			<input type="checkbox" :name="`${field.name}[]`" :value="index" :checked="field.checked || false">
 			<span v-text="option"></span>&nbsp;&nbsp;
 		</label>
 	</div>

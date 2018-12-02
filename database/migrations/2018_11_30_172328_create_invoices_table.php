@@ -16,7 +16,8 @@ class CreateInvoicesTable extends Migration {
 			$table->integer('application_id')->unsigned();
 			$table->string('prefix');
 			$table->integer('number');
-			$table->decimal('amount', 12, 2);
+			$table->integer('amount')->default(0);
+			$table->integer('tax');
 			
 			$table->boolean('paid')->default(false);
 			$table->timestamps();

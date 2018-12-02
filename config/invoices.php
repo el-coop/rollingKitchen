@@ -58,7 +58,7 @@ return [
 	| You can change it on each invoice individually.
 	*/
 	
-	'logo' => url('/images/logo.png'),
+	'logo' => '',
 	
 	/*
 	|--------------------------------------------------------------------------

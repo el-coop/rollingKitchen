@@ -122,7 +122,8 @@
 				this.alternativeSubmitting = false;
 				if (response.status === 200 || response.status === 201) {
 					if (response.headers['content-disposition'] && response.headers['content-disposition'].indexOf('attachment') === 0) {
-						this.download(response.data, 'test.pdf', response.headers['content-type']);
+						const filename = response.headers['content-disposition'].split('filename="').pop().split('"')[0];
+						this.download(response.data, filename, response.headers['content-type']);
 						return;
 					}
 					this.$toast.success(this.$translations.updateSuccess);
@@ -132,7 +133,6 @@
 
 			download(data, filename, mime) {
 				const blob = new Blob([data], {type: mime || 'application/pdf'});
-				console.log(blob);
 				const blobURL = window.URL.createObjectURL(blob);
 				const tempLink = document.createElement('a');
 				tempLink.style.display = 'none';
