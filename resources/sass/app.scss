@@ -1,11 +1,10 @@
 // Variables
 @import 'variables';
-
 // Bulma
 @import '~bulma';
-
 //site
 @import './init';
 @import "./helpers";
 @import './dashboard';
 @import './switch';
+@import "./addonLabels";

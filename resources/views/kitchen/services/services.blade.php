@@ -1,6 +1,6 @@
 <p class="title is-4">@lang('kitchen/kitchen.services')</p>
 @foreach($services as $service)
-	<div class="field has-addons">
+	<div class="field has-addons are-labels">
 		@if(!$service->type)
 			<div class="control">
 				<input type="number" class="input is-short-numeric" min="0"
@@ -33,7 +33,7 @@
 	</div>
 @endforeach
 
-<div class="field has-addons">
+<div class="field has-addons are-labels">
 	<div class="control">
 		<label class="button is-static">
 			<input type="checkbox" value="1" checked>
