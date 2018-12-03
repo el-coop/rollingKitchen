@@ -7,5 +7,6 @@ return [
 	'submitReview' => 'Submit for review',
 	'businessInformation' => 'Business Information',
 	'kitchenInformation' => 'Kitchen Information',
-	'services' => 'Services'
+	'services' => 'Services',
+	'pastApplications' => 'Past Applications'
 ];
