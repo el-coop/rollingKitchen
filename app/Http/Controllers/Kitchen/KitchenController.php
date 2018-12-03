@@ -57,14 +57,15 @@ class KitchenController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function edit(Kitchen $kitchen) {
-		$services = Service::all();
+		$services = Service::orderBy('type','asc')->get();
 		$application = $kitchen->getCurrentApplication();
+		$pastApplications = $kitchen->applications()->where('year', '!=', app('settings')->get('registration_year'))->get();
 		$message = false;
 		if(! $application->isOpen()){
 			$locale = App::getLocale();
 			$message = app('settings')->get("general_application_text_{$locale}");
 		}
-		return view('kitchen.edit', compact('kitchen', 'application', 'application', 'services','message'));
+		return view('kitchen.edit', compact('kitchen', 'application', 'application', 'services','message', 'pastApplications'));
 	}
 
 	/**

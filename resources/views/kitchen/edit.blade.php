@@ -16,6 +16,9 @@
 			<tab label="@lang('kitchen/kitchen.businessInformation')">@include('kitchen.kitchen')</tab>
 			<tab label="@lang('kitchen/kitchen.kitchenInformation')">@include('kitchen.application')</tab>
 			<tab label="@lang('kitchen/kitchen.services')">@include('kitchen.services')</tab>
+			@if(!$pastApplications->isEmpty())
+				<tab label="@lang('kitchen/kitchen.pastApplications')">@include('kitchen.application.pastApplications')</tab>
+			@endif
 		</tabs>
 		<div class="buttons mt-1 has-content-justified-center">
 			<button class="button is-link">

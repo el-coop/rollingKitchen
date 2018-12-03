@@ -12,4 +12,5 @@ return [
 	'1x400-16' => 'Stroom 1 x 400V 16A Rood (3 Fase, CEE, 5 polig) € 350 ',
 	'1x400-32' => 'Stroom 1 x 400V 32A Rood (3 Fase, CEE, 5 polig) € 350 ',
 	'2x400' => 'Stroom 2 x 400V 32A Rood (3 Fase, CEE, 5 polig) € 650 ',
+	'trash' => 'Bijdrage afvalverwerking'
 ];

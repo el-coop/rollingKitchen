@@ -31,6 +31,4 @@ return [
 	'invoices_default_resend_subject_en' => 'Invoice resent default subject EN',
 	'invoices_default_resend_email_nl' => 'Invoice resend default email NL',
 	'invoices_default_resend_email_en' => 'Invoice resend default email en',
-
-
 ];
