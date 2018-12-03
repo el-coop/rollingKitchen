@@ -57,7 +57,7 @@ class KitchenController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function edit(Kitchen $kitchen) {
-		$services = Service::all();
+		$services = Service::orderBy('type','asc')->get();
 		$application = $kitchen->getCurrentApplication();
 		$message = false;
 		if(! $application->isOpen()){
