@@ -62,7 +62,7 @@ class KitchenController extends Controller {
 		$message = false;
 		if(! $application->isOpen()){
 			$locale = App::getLocale();
-			$message = app('settings')->get("application_text_{$locale}");
+			$message = app('settings')->get("general_application_text_{$locale}");
 		}
 		return view('kitchen.edit', compact('kitchen', 'application', 'application', 'services','message'));
 	}

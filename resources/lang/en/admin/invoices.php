@@ -19,4 +19,7 @@ return [
 	'customerDetails' => 'Customer Details',
 	'businessDetails' => 'Business Details',
 	'date' => 'Date',
+	'togglePaid' => 'Mark as paid',
+	'toggleUnpaid' => 'Mark as unpaid',
+	'number' => 'Number'
 ];

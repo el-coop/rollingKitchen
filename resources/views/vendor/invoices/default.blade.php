@@ -31,12 +31,7 @@
 		<h4>@lang('admin/invoices.businessDetails'):</h4>
 		<div class="panel panel-default">
 			<div class="panel-body">
-				{!! $invoice->business_details->count() == 0 ? '<i>No business details</i><br />' : '' !!}
-				{{ $invoice->business_details->get('name') }}<br/>
-				{{ $invoice->business_details->get('phone') }}<br/>
-				{{ $invoice->business_details->get('location') }}<br/>
-				{{ $invoice->business_details->get('zip') }} {{ $invoice->business_details->get('city') }}
-				{{ $invoice->business_details->get('country') }}<br/>
+				{!! $invoice->business_details->first() !!}
 			</div>
 		</div>
 	</div>
@@ -83,7 +78,7 @@
 			<h4>Notes:</h4>
 			<div class="panel panel-default">
 				<div class="panel-body">
-					{{ $invoice->notes }}
+					{!!  $invoice->notes  !!}
 				</div>
 			</div>
 		</div>
@@ -114,8 +109,8 @@
 </div>
 @if ($invoice->footnote)
 	<br/><br/>
-	<div class="well">
-		{{ $invoice->footnote }}
+	<div class="well text-center">
+		{!!  $invoice->footnote  !!}
 	</div>
 @endif
 </body>

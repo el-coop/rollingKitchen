@@ -25,12 +25,17 @@ class InvoiceService {
 	
 	
 	public function generate($number, $tax, $items) {
+		$settings = app('settings');
 		$kitchen = $this->application->kitchen;
+		$language = $kitchen->user->language;
 		$invoice = InvoiceFile::make()
 			->logo(asset('/images/logo.png'))
 			->number($number)
 			->tax($tax)
-			->notes('Lrem ipsum dolor sit amet, consectetur adipiscing elit.')
+			->notes($settings->get("invoices_notes_{$language}"))
+			->business(str_replace(PHP_EOL, '<br>', $settings->get("invoices_business_details")))
+			->notes(str_replace(PHP_EOL, '<br>', $settings->get("invoices_notes_{$language}")))
+			->footnote(str_replace(PHP_EOL, '<br>', $settings->get("invoices_footer_{$language}")))
 			->customer([
 				'name' => $kitchen->user->name,
 				'phone' => $kitchen->data[5],

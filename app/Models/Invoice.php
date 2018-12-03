@@ -54,9 +54,9 @@ class Invoice extends Model {
 	public function getFullDataAttribute() {
 		$invoiceService = new InvoiceService($this->application);
 		$language = $this->application->kitchen->user->language;
+		$settings = app('settings');
 		
 		$pdfs = Pdf::all()->pluck('name', 'id');
-		
 		
 		return [[
 			'name' => 'recipient',
@@ -81,12 +81,12 @@ class Invoice extends Model {
 			'label' => __('admin/invoices.subject'),
 			'type' => 'text',
 			'checked' => true,
-			'value' => app('settings')->get("invoice_email_subject_{$language}", ''),
+			'value' => $this->exists ? $settings->get("invoices_default_resend_subject_{$language}", '') : $settings->get("invoices_default_subject_{$language}", ''),
 		], [
 			'name' => 'message',
 			'label' => __('admin/invoices.message'),
 			'type' => 'textarea',
-			'value' => app('settings')->get("invoice_email_text_{$language}", ''),
+			'value' => $this->exists ? $settings->get("invoices_default_resend_email_{$language}", '') : $settings->get("invoices_default_email_{$language}", ''),
 		], [
 			'name' => 'attachments',
 			'label' => __('admin/invoices.attachments'),
@@ -96,7 +96,7 @@ class Invoice extends Model {
 			'name' => 'items',
 			'label' => 'Items',
 			'type' => 'invoice',
-			'value' => $invoiceService->getOutstandingItems($language),
+			'value' => $this->items()->count() ? $this->formattedItems : $invoiceService->getOutstandingItems($language),
 			'options' => $invoiceService->getOptions($language),
 			'taxOptions' => [
 				'21' => '21%',
@@ -118,6 +118,16 @@ class Invoice extends Model {
 		return $this->hasMany(InvoiceItem::class);
 	}
 	
+	
+	public function getFormattedItemsAttribute() {
+		return $this->items->map(function ($item) {
+			return [
+				'quantity' => $item->quantity,
+				'item' => $item->name,
+				'unitPrice' => $item->unit_price,
+			];
+		});
+	}
 	
 	public function services() {
 		return $this->hasManyThrough(Service::class, InvoiceItem::class);

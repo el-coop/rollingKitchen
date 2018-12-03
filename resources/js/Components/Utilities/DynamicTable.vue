@@ -6,6 +6,8 @@
 				<tr>
 					<th v-for="(column,index) in columns" v-text="column.label" :key="index"
 						v-if="!column.invisible"></th>
+					<th v-if="hasActions">
+					</th>
 					<th v-if="action"></th>
 				</tr>
 				</thead>
@@ -13,6 +15,9 @@
 					<tr v-for="(field, index) in fields" :key="`${index}${field.id}`">
 						<td v-if="!column.invisible" v-for="(column,colIndex) in columns" :key="`${index}_${colIndex}`"
 							v-html="valueDisplay(column,field[column.name])" @click="editObject(field)"></td>
+						<td v-if="hasActions">
+							<slot name="actions" :field="field" :on-update="replaceObject"></slot>
+						</td>
 						<td v-if="action && deleteAllowed">
 							<button class="button is-danger" type="button"
 									:class="{'is-loading' : deleteing === field.id}"
@@ -148,6 +153,13 @@
 				return value;
 			},
 
+			replaceObject(object) {
+				const editedId = this.fields.findIndex((item) => {
+					return item.id === object.id;
+				});
+				this.fields.splice(editedId, 1, object);
+			},
+
 			updateObject(object) {
 				if (Object.keys(this.object).length === 0) {
 					this.fields.push(object);
@@ -230,10 +242,10 @@
 				return 'patch';
 			},
 
+			hasActions() {
+				return !!this.$scopedSlots.actions;
+			}
+
 		},
 	}
 </script>
-
-<style scoped>
-
-</style>

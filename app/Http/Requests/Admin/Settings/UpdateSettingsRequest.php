@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
 class UpdateSettingsRequest extends FormRequest {
+	private $fields;
+	private $settings;
+	
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
@@ -16,34 +19,34 @@ class UpdateSettingsRequest extends FormRequest {
 	public function authorize() {
 		return Gate::allows('update-settings');
 	}
-
+	
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
 	 * @return array
 	 */
 	public function rules() {
-		return [
-			'accountant' => 'required|email',
-			'application_text_en' => 'required|string',
-			'application_text_nl' => 'required|string',
-			'registration_text_en' => 'required|string',
-			'registration_text_nl' => 'required|string',
-			'login_text_en' => 'required|string',
-			'login_text_nl' => 'required|string'
-		];
+		$this->settings = app('settings');
+		$this->fields = array_keys($this->settings->all());
+		
+		$rules = [];
+		foreach ($this->fields as $field) {
+			$rules[$field] = 'required|string';
+		};
+		
+		$rules['invoices_accountant'] = 'required|email';
+		unset($rules['general_registration_status']);
+		return $rules;
 	}
-
+	
 	public function commit() {
-	    $settings = app('settings');
-		$names = array_keys($settings->all());
-		foreach ($names as $name) {
-			if ($name === 'registration_status') {
-				$value = $this->has($name);
+		foreach ($this->fields as $field) {
+			if ($field === 'general_registration_status') {
+				$value = $this->filled($field);
 			} else {
-				$value = $this->input($name);
+				$value = $this->input($field);
 			}
-			$settings->put($name,$value);
+			$this->settings->put($field, $value);
 		}
 	}
 }

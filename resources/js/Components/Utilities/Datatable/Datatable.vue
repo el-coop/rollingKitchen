@@ -4,7 +4,8 @@
 			<div class="field is-grouped">
 				<div class="buttons">
 					<slot name="buttons" :actions="buttonActions"></slot>
-					<a :href="`${this.url}/export?${exportOptions}`" class="button is-dark" v-text="$translations.download"></a>
+					<a :href="`${this.url}/export?${exportOptions}`" class="button is-dark"
+					   v-text="$translations.download"></a>
 				</div>
 			</div>
 		</div>
@@ -45,7 +46,7 @@
 								  :init-filters="initFilters"></datatable-filter>
 			</div>
 		</div>
-		<datatable-row-display>
+		<datatable-row-display :width="editWidth">
 			<slot :object="object" :on-update="updateObject"></slot>
 		</datatable-row-display>
 	</div>
@@ -103,6 +104,10 @@
 				default() {
 					return {};
 				}
+			},
+
+			editWidth: {
+				default: 600
 			}
 		},
 
