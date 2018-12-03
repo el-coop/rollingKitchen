@@ -488,12 +488,12 @@ class KitchenControllerTest extends TestCase {
 	    $pastApplication = factory(Application::class)->make(['year' => '2012']);
 	    $this->user->user->applications()->save($pastApplication);
 	    $this->actingAs($this->user)->get(action('Kitchen\KitchenController@edit', $this->user->user))
-            ->assertSee(__('admin/applications.applications'))
+            ->assertSee(__('kitchen/kitchen.pastApplications'))
             ->assertSee($pastApplication->year);
     }
 
     public function test_past_applications_tab_doesnt_exists_if_there_are_no_past_applications(){
         $this->actingAs($this->user)->get(action('Kitchen\KitchenController@edit', $this->user->user))
-            ->assertDontSee(__('admin/applications.applications'));
+            ->assertDontSee(__('kitchen/kitchen.pastApplications'));
     }
 }
