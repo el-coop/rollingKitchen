@@ -43,7 +43,7 @@ class InvoiceService {
 			if (is_array($item)) {
 				$invoice->addItem($item['item'], $item['unitPrice'], $item['quantity']);
 			} else {
-				$invoice->addItem($item->item, $item->unitPrice, $item->quantity);
+				$invoice->addItem($item->name, $item->unit_price, $item->quantity);
 			}
 		}
 		return $invoice;

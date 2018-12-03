@@ -71,9 +71,9 @@ class GenerateInvoiceRequest extends FormRequest {
 		
 		$invoice->amount = $total;
 		$invoice->save();
-		SendInvoice::dispatch($invoice, $this->input('recipient'), $this->input('subject'), $this->input('message'), collect([
+		SendInvoice::dispatch($invoice, $this->input('recipient'), $this->input('subject'), $this->input('message'), $this->input('attachments', []), collect([
 			$this->input('bcc', false),
-			$this->input('accountant', false)
+			$this->input('accountant', false) ? app('settings')->get('accountant') : false
 		])->filter());
 		
 		
