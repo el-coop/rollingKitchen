@@ -77,6 +77,12 @@ class Invoice extends Model {
 				'true' => __('admin/invoices.accountant')
 			],
 		], [
+			'name' => 'subject',
+			'label' => __('admin/invoices.subject'),
+			'type' => 'text',
+			'checked' => true,
+			'value' => app('settings')->get("invoice_email_subject_{$language}", ''),
+		], [
 			'name' => 'message',
 			'label' => __('admin/invoices.message'),
 			'type' => 'textarea',

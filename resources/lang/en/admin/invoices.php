@@ -5,6 +5,7 @@ return [
 	'invoice' => 'Invoice',
 	'new' => 'Create new invoice',
 	'amount' => 'Amount',
+	'subject' => 'Subject',
 	'message' => 'Message',
 	'attachments' => 'Attachments',
 	'accountant' => 'BCC Accountant',
@@ -18,5 +19,4 @@ return [
 	'customerDetails' => 'Customer Details',
 	'businessDetails' => 'Business Details',
 	'date' => 'Date',
-
 ];

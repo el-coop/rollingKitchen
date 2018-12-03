@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin\Invoice;
 
+use App\Jobs\SendInvoice;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\Service;
@@ -32,7 +33,8 @@ class GenerateInvoiceRequest extends FormRequest {
 			$rules = $rules->merge([
 				'recipient' => 'required|email',
 				'bcc' => 'nullable|email',
-				'message' => 'required|string'
+				'message' => 'required|string',
+				'subject' => 'required|string',
 			]);
 		}
 		return $rules->toArray();
@@ -69,6 +71,10 @@ class GenerateInvoiceRequest extends FormRequest {
 		
 		$invoice->amount = $total;
 		$invoice->save();
+		SendInvoice::dispatch($invoice, $this->input('recipient'), $this->input('subject'), $this->input('message'), collect([
+			$this->input('bcc', false),
+			$this->input('accountant', false)
+		])->filter());
 		
 		
 		return $invoice;
