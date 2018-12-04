@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Service extends Model {
-
+	
 	public function getFullDataAttribute() {
 		$fullData = collect([[
 			'name' => 'name_nl',
 			'label' => __('admin/fields.name_nl'),
 			'type' => 'text',
 			'value' => $this->name_nl,
-		],[
+		], [
 			'name' => 'name_en',
 			'label' => __('admin/fields.name_en'),
 			'type' => 'text',
@@ -45,9 +45,9 @@ class Service extends Model {
 		]]);
 		return $fullData;
 	}
-
+	
 	public function applications() {
-		return $this->belongsToMany(Application::class)->withPivot('quantity');
+		return $this->belongsToMany(Application::class)->withPivot('quantity')->withTimestamps();
 	}
-
+	
 }

@@ -7,14 +7,21 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class SettingsController extends Controller {
-
-    public function show(){
-        $settings = app('settings')->all();
-        return view('admin.settings.show', compact('settings'));
-    }
-
-    public function update(UpdateSettingsRequest $request){
-        $request->commit();
-        return redirect()->back();
-    }
+	
+	public function show() {
+		$settings = app('settings');
+		$generalSettings = collect([
+			'registration_year' => $settings->get('registration_year')
+		]);
+		$tabs = [
+			'admin/settings.title' => $generalSettings->merge($settings->allStartingWith('general_')),
+			'admin/invoices.invoices' => $settings->allStartingWith('invoices_')
+		];
+		return view('admin.settings.show', compact('tabs'));
+	}
+	
+	public function update(UpdateSettingsRequest $request) {
+		$request->commit();
+		return redirect()->back();
+	}
 }

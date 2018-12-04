@@ -42,7 +42,7 @@ class KitchenController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function show(Kitchen $kitchen) {
-		$kitchen->load('photos', 'user', 'applications','applications.products');
+		$kitchen->load('photos', 'user', 'applications','applications.products','applications.invoices');
 		$indexLink = Kitchen::indexPage();
 		return view('admin.kitchens.show', compact('kitchen', 'indexLink'));
 	}

@@ -28,5 +28,12 @@ return [
 	'backup' => 'Backup',
 	'safety' => 'Safety',
 	'electrical' => 'Electrical',
-	'misc' => 'Misc'
+	'misc' => 'Misc',
+	'total' => 'Total',
+	'quantity' => 'Quantity',
+	'item' => 'Item',
+	'unitPrice' => 'Unit Price',
+	'vat' => 'VAT',
+	'paid' => 'Paid',
+	'unpaid' => 'Unpaid',
 ];

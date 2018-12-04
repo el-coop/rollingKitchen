@@ -25,6 +25,9 @@
 				<select-view label="@lang('admin/services.services')">
 					@include('admin.kitchens.show.application.services')
 				</select-view>
+				<select-view label="@lang('admin/invoices.invoices')">
+					@include('admin.kitchens.show.application.invoices')
+				</select-view>
 			</select-chooser>
 		</div>
 	</div>

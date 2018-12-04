@@ -6,14 +6,19 @@
 				<tr>
 					<th v-for="(column,index) in columns" v-text="column.label" :key="index"
 						v-if="!column.invisible"></th>
+					<th v-if="hasActions">
+					</th>
 					<th v-if="action"></th>
 				</tr>
 				</thead>
 				<draggable element="tbody" :list="fields" :options="draggable">
 					<tr v-for="(field, index) in fields" :key="`${index}${field.id}`">
 						<td v-if="!column.invisible" v-for="(column,colIndex) in columns" :key="`${index}_${colIndex}`"
-							v-text="valueDisplay(column,field[column.name])" @click="editObject(field)"></td>
-						<td v-if="action">
+							v-html="valueDisplay(column,field[column.name])" @click="editObject(field)"></td>
+						<td v-if="hasActions">
+							<slot name="actions" :field="field" :on-update="replaceObject"></slot>
+						</td>
+						<td v-if="action && deleteAllowed">
 							<button class="button is-danger" type="button"
 									:class="{'is-loading' : deleteing === field.id}"
 									@click="destroy(field)" v-text="$translations.delete">
@@ -28,9 +33,10 @@
 			<div v-if="sortable" class="button is-primary" :class="{'is-loading': savingOrder}" @click="saveOrder"
 				 v-text="$translations.saveOrder"></div>
 		</div>
-		<modal-component :name="`${_uid}modal`" v-if="action">
-			<dynamic-form :headers="headers" :init-fields="formFields" :method="method" :url="url"
-						  @object-update="updateObject" :extra-data="extraData">
+		<modal-component :name="`${_uid}modal`" v-if="action" :width="modal.width" :height="modal.height"
+						 :pivotX="modal.pivotX" :pivotY="modal.pivotY">
+			<dynamic-form :headers="headers" :init-fields="!formFromUrl ? formFields : null" :method="method" :url="url"
+						  @object-update="updateObject" :extra-data="extraData" :button-text="formButtonText">
 
 			</dynamic-form>
 		</modal-component>
@@ -49,6 +55,31 @@
 		mixins: [DatatableFormatters],
 
 		props: {
+			formButtonText: {
+				type: String,
+				default() {
+					return this.$translations.save;
+				}
+
+			},
+
+			modal: {
+				type: Object,
+				default() {
+					return {
+						height: 'auto',
+						width: 600,
+						pivotX: 0.5,
+						pivotY: 0.5,
+					}
+				}
+			},
+
+			formFromUrl: {
+				type: Boolean,
+				default: false
+			},
+
 			initFields: {
 				required: true,
 				type: Array
@@ -69,6 +100,10 @@
 				default() {
 					return {};
 				}
+			},
+			deleteAllowed: {
+				type: Boolean,
+				default: true
 			},
 			headers: {
 				type: Object,
@@ -116,6 +151,13 @@
 					return this[column.callback](value);
 				}
 				return value;
+			},
+
+			replaceObject(object) {
+				const editedId = this.fields.findIndex((item) => {
+					return item.id === object.id;
+				});
+				this.fields.splice(editedId, 1, object);
 			},
 
 			updateObject(object) {
@@ -200,10 +242,10 @@
 				return 'patch';
 			},
 
+			hasActions() {
+				return !!this.$scopedSlots.actions;
+			}
+
 		},
 	}
 </script>
-
-<style scoped>
-
-</style>

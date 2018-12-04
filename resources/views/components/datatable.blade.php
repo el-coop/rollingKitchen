@@ -19,6 +19,9 @@ if (!isset($fields)) {
 		   :extra-params="{
 		   		table: '{{$table}}'
 		   }"
+		   @isset($editWidth)
+		   :edit-width="{{$editWidth}}"
+		   @endisset
 		   url="\admin\datatable"
 		   :labels="{
 		   		pagination: '@lang('datatable.pagination')',

@@ -16,7 +16,14 @@
 				return new Intl.NumberFormat(document.documentElement.lang, {
 					minimumFractionDigits: 2
 				}).format(value);
-			}
+			},
+
+			paidStatus(value) {
+				if (value) {
+					return `<span class="tag is-success">${this.$translations.paid}</span>`;
+				}
+				return `<span class="tag is-danger">${this.$translations.unpaid}</span>`;
+			},
 		}
 	}
 </script>
