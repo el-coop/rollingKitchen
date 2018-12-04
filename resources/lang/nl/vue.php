@@ -21,12 +21,14 @@ return [
 	'text' => 'Tekst',
 	'textarea' => 'Tekstveld',
 	'saveOrder' => 'Opslaan',
-	'pending' => 'Pending',
+	'pending' => 'In behandeling',
 	'reopened' => 'Heropened',
 	'accepted' => 'Toegewezen',
 	'rejected' => 'Afgewezen',
-	'backup' => 'Backup',
+	'backup' => 'Reserve',
 	'safety' => 'Safety',
 	'electrical' => 'Electrisch',
-	'misc' => 'Diverse'
+	'misc' => 'Diverse',
+	'paid' => 'Betaald',
+	'unpaid' => 'Onbetaald',
 ];
