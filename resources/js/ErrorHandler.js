@@ -3,7 +3,7 @@ let errorCount = 0;
 function generalJsErrorReport(message, source, lineNo, colno, trace) {
     if (errorCount < 3) {
         errorCount++;
-        axios.post('/jserror', {
+        axios.post('/developer/error/jsError', {
             page: window.location.href,
             userAgent: navigator.userAgent,
             message,
@@ -19,8 +19,7 @@ function generalJsErrorReport(message, source, lineNo, colno, trace) {
 }
 
 function vueErrorReport(err, vm, info) {
-    console.log(arguments);
-    axios.post('/jserror', {
+    axios.post('/developer/error/jsError', {
         page: window.location.href,
         userAgent: navigator.userAgent,
         message: `Error in ${info}: "${err.toString()}" - ${formatComponentName(vm)}`,

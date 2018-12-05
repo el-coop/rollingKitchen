@@ -20,7 +20,6 @@ Auth::routes([
 
 Route::get('/language/{language}','LocaleController@set');
 Route::get('/images/{photo}','PhotoController@show');
-Route::post('/jserror', 'ErrorController@storeJsError');
 
 foreach (\File::allFiles(__DIR__ . "/web") as $routeFile) {
     include $routeFile;

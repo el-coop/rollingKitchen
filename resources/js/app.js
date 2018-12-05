@@ -33,5 +33,3 @@ Vue.prototype.$bus = new Vue();
 const app = new Vue({
 	el: '#app'
 });
-throw new Error('message');
-

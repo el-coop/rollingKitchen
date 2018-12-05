@@ -4,11 +4,13 @@ namespace App\Providers;
 
 use App\Models\Admin;
 use App\Models\Application;
+use App\Models\Error;
 use App\Models\Field;
 use App\Models\Invoice;
 use App\Models\Kitchen;
 use App\Models\Pdf;
 use App\Policies\ApplicationPolicy;
+use App\Policies\ErrorPolicy;
 use App\Policies\FieldPolicy;
 use App\Policies\InvoicePolicy;
 use App\Policies\KitchenPolicy;
@@ -27,9 +29,10 @@ class AuthServiceProvider extends ServiceProvider {
 		Kitchen::class => KitchenPolicy::class,
 		Application::class => ApplicationPolicy::class,
 		Pdf::class => PDFPOlicy::class,
-		Invoice::class => InvoicePolicy::class
+		Invoice::class => InvoicePolicy::class,
+		Error::class => ErrorPolicy::class
 	];
-	
+
 	/**
 	 * Register any authentication / authorization services.
 	 *

@@ -9,35 +9,32 @@
 </template>
 
 <script>
-	import TextField from './TextField';
-	import SelectField from './SelectField';
-	import TextareaField from './TextareatField';
-
-	export default {
-		name: "DynamicFields",
-		components: {
-			TextField,
-			TextareaField,
-			SelectField,
-		},
-
-		props: {
-			fields: {
-				type: Array,
-				default() {
-					return null;
-				}
-			},
-			hide: {
-				type: Array,
-				default() {
-					return [];
-				}
-			},
-		}
-	}
+    import TextField from './TextField';
+    import SelectField from './SelectField';
+    import TextareaField from './TextareatField';
+    export default {
+        name: "DynamicFields",
+        components: {
+            TextField,
+            TextareaField,
+            SelectField,
+        },
+        props: {
+            fields: {
+                type: Array,
+                default() {
+                    return null;
+                }
+            },
+            hide: {
+                type: Array,
+                default() {
+                    return [];
+                }
+            },
+        }
+    }
 </script>
 
 <style scoped>
-
 </style>

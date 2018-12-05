@@ -22,7 +22,7 @@ if (!isset($fields)) {
 		   @isset($editWidth)
 		   :edit-width="{{$editWidth}}"
 		   @endisset
-		   url="\admin\datatable"
+		   url="\{{$userUrl}}\datatable"
 		   :labels="{
 		   		pagination: '@lang('datatable.pagination')',
 		   		noPagination: '@lang('datatable.noPagination')',

@@ -34,7 +34,9 @@ class Handler extends ExceptionHandler {
 	 * @return void
 	 */
 	public function report(Exception $exception) {
-		$this->logException($exception);
+		if ($this->shouldReport($exception)) {
+			$this->logException($exception);
+		}
 		parent::report($exception);
 	}
 
@@ -49,16 +51,16 @@ class Handler extends ExceptionHandler {
 		return parent::render($request, $exception);
 	}
 
-	protected function logException(Exception $exception){
+	protected function logException(Exception $exception) {
 		$request = request();
 		$error = new Error;
 		$phpError = new PhpError;
-		if ($request->user()){
+		if ($request->user()) {
 			$error->user_id = $request->user()->id;
 		}
 		$error->page = $request->fullUrl();
 		$phpError->message = $exception->getMessage();
-		$phpError->exception  = json_encode([
+		$phpError->exception = json_encode([
 			'class' => get_class($exception),
 			'message' => $exception->getMessage(),
 			'code' => $exception->getCode(),

@@ -15,7 +15,7 @@ class UserType
      */
     public function handle($request, Closure $next, $userType)
     {
-    	if($request->user()->user_type != $userType){
+    	if($request->user()->user_type != $userType) {
 			return abort(403, 'Access denied');
 		}
         return $next($request);

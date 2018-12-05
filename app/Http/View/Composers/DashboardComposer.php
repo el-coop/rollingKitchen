@@ -9,6 +9,7 @@
 namespace App\Http\View\Composers;
 
 
+use App\Models\Admin;
 use Illuminate\View\View;
 
 class DashboardComposer {
@@ -16,7 +17,12 @@ class DashboardComposer {
     public $dashboardItems;
 
     public function __construct() {
-        $this->dashboardItems = config('admin.navbar');
+    	$request = request();
+    	if ($request->user()->user_type == Admin::class){
+			$this->dashboardItems = config('admin.navbar');
+		} else {
+    		$this->dashboardItems = config('developer.navbar');
+		}
     }
 
     public function compose(View $view){

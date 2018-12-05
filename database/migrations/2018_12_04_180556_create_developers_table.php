@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateJsErrorsTable extends Migration
+class CreateDevelopersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreateJsErrorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('js_errors', function (Blueprint $table) {
+        Schema::create('developers', function (Blueprint $table) {
             $table->increments('id');
-			$table->text('message');
-			$table->string('user_agent');
-			$table->json('exception');
-			$table->json('vm');
             $table->timestamps();
         });
     }
@@ -30,6 +26,6 @@ class CreateJsErrorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('js_errors');
+        Schema::dropIfExists('developers');
     }
 }

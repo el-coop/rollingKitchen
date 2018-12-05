@@ -34,7 +34,7 @@ class LogErrorRequest extends FormRequest {
 			$error->user_id = $this->user()->id;
 		}
 		$error->page = $this->input('page');
-		$jsError->class = $this->input('message');
+		$jsError->message = $this->input('message');
 		$jsError->exception = json_encode([
 			'message' => $this->input('message'),
 			'source' => $this->input('source'),

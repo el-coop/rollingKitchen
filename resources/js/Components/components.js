@@ -34,3 +34,4 @@ Vue.component('FileField', require('./Form/FileField'));
 Vue.component('CheckboxField', require('./Form/CheckboxField'));
 Vue.component('InvoiceField', require('./Form/InvoiceField'));
 Vue.component('AlternativeSubmitField', require('./Form/AlternativeSubmitField'));
+Vue.component('JsonField', require('./Form/JsonField'));

@@ -4,7 +4,7 @@
 
 @section('content')
 	<div>
-		@component('components.datatable')
+		@component('components.datatable', ['userUrl' => 'admin'])
 
 			@slot('filters',$filters)
 			@slot('editWidth',1000)
