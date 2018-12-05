@@ -18,7 +18,9 @@ class KitchenControllerTest extends TestCase {
 
 	use RefreshDatabase;
 	protected $settings;
-
+	private $user;
+	private $user1;
+	
 	public function setUp() {
 		parent::setUp();
 
