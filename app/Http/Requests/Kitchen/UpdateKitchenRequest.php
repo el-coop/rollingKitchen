@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Kitchen;
 
+use App\Events\Kitchen\ApplicationResubmitted;
+use App\Events\Kitchen\ApplicationSubmitted;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateKitchenRequest extends FormRequest {
@@ -68,6 +70,11 @@ class UpdateKitchenRequest extends FormRequest {
 			$this->application->terrace_width = $this->input('terrace_width');
 			$this->application->seats = $this->input('seats');
 			if ($this->input('review')) {
+				if($this->application->status == 'new'){
+					event(new ApplicationSubmitted($this->application));
+				} else {
+					event(new ApplicationResubmitted($this->application));
+				}
 				$this->application->status = 'pending';
 				$this->session()->flash('fireworks', true);
 			}

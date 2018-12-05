@@ -2,14 +2,18 @@
 
 namespace Tests\Feature\Kitchens;
 
+use App\Models\Admin;
 use App\Models\Application;
 use App\Models\Kitchen;
 use App\Models\Photo;
 use App\Models\Service;
 use App\Models\User;
+use App\Notifications\Admin\ApplicationResubmittedNotification;
+use App\Notifications\Kitchen\ApplicationSubmittedNotification;
 use Image;
 use Illuminate\Http\UploadedFile;
 use Storage;
+use Notification;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -241,7 +245,7 @@ class KitchenControllerTest extends TestCase {
 	}
 	
 	public function test_kitchen_can_see_but_not_update_submitted_application() {
-		$appliedText = $this->settings->get("application_text_{$this->user->language}");
+		$appliedText = $this->settings->get("application_success_text_{$this->user->language}");
 		$application = factory(Application::class)->make([
 			'year' => $this->settings->get('registration_year'),
 			'status' => 'pending',
@@ -336,8 +340,167 @@ class KitchenControllerTest extends TestCase {
 		]);
 	}
 	
+	public function test_kitchen_can_submit_unsubmitted_application() {
+		
+		\Notification::fake();
+		
+		$services = factory(Service::class, 3)->create();
+		$application = factory(Application::class)->make([
+			'year' => $this->settings->get('registration_year'),
+			'status' => 'new',
+		]);
+		$this->user->user->applications()->save($application);
+		$this->actingAs($this->user)->patch(action('Kitchen\KitchenController@update', $this->user->user), [
+			'name' => 'test',
+			'email' => 'test@best.rest',
+			'language' => 'nl',
+			'kitchen' => [
+				'data' => 'test'
+			],
+			'application' => [
+				'data' => 'test'
+			],
+			'services' => [
+				$services->get(0)->id => 1,
+				$services->get(1)->id => 0,
+				$services->get(2)->id => 5
+			],
+			'socket' => 5,
+			'length' => 1,
+			'width' => 1,
+			'review' => true
+		])->assertRedirect()->assertSessionHas('toast', [
+			'type' => 'success',
+			'title' => '',
+			'message' => __('vue.updateSuccess', [], 'nl')
+		])->assertSessionHas('fireworks');
+		
+		$this->assertDatabaseHas('users', [
+			'id' => $this->user->id,
+			'name' => 'test',
+			'email' => 'test@best.rest',
+			'language' => 'nl',
+		]);
+		$this->assertDatabaseHas('kitchens', [
+			'id' => $this->user->user->id,
+			'data' => json_encode([
+				'data' => 'test'
+			])
+		]);
+		$this->assertDatabaseHas('applications', [
+			'id' => $application->id,
+			'data' => json_encode([
+				'data' => 'test'
+			]),
+			'status' => 'pending',
+			'socket' => 5,
+			'length' => 1,
+			'width' => 1,
+		]);
+		
+		$this->assertDatabaseHas('application_service', [
+			'application_id' => $application->id,
+			'service_id' => $services->get(0)->id,
+			'quantity' => 1
+		]);
+		$this->assertDatabaseHas('application_service', [
+				'application_id' => $application->id,
+				'service_id' => $services->get(2)->id,
+				'quantity' => 5
+			]
+		);
+		
+		$this->assertDatabaseMissing('application_service', [
+			'application_id' => $application->id,
+			'service_id' => $services->get(1)->id,
+		]);
+		
+		Notification::assertSentTo([$application->kitchen->user], ApplicationSubmittedNotification::class);
+	}
 	
-	public function test_kitchen_can_update_kitchen_data_but_not_submitted_application() {
+	public function test_kitchen_can_submit_reopened_application() {
+		
+		$admin = factory(User::class)->make();
+		factory(Admin::class)->create()->user()->save($admin);
+		
+		Notification::fake();
+		
+		$services = factory(Service::class, 3)->create();
+		$application = factory(Application::class)->make([
+			'year' => $this->settings->get('registration_year'),
+			'status' => 'reopened',
+		]);
+		$this->user->user->applications()->save($application);
+		$this->actingAs($this->user)->patch(action('Kitchen\KitchenController@update', $this->user->user), [
+			'name' => 'test',
+			'email' => 'test@best.rest',
+			'language' => 'nl',
+			'kitchen' => [
+				'data' => 'test'
+			],
+			'application' => [
+				'data' => 'test'
+			],
+			'services' => [
+				$services->get(0)->id => 1,
+				$services->get(1)->id => 0,
+				$services->get(2)->id => 5
+			],
+			'socket' => 5,
+			'length' => 1,
+			'width' => 1,
+			'review' => true
+		])->assertRedirect()->assertSessionHas('toast', [
+			'type' => 'success',
+			'title' => '',
+			'message' => __('vue.updateSuccess', [], 'nl')
+		])->assertSessionHas('fireworks');
+		
+		$this->assertDatabaseHas('users', [
+			'id' => $this->user->id,
+			'name' => 'test',
+			'email' => 'test@best.rest',
+			'language' => 'nl',
+		]);
+		$this->assertDatabaseHas('kitchens', [
+			'id' => $this->user->user->id,
+			'data' => json_encode([
+				'data' => 'test'
+			])
+		]);
+		$this->assertDatabaseHas('applications', [
+			'id' => $application->id,
+			'data' => json_encode([
+				'data' => 'test'
+			]),
+			'status' => 'pending',
+			'socket' => 5,
+			'length' => 1,
+			'width' => 1,
+		]);
+		
+		$this->assertDatabaseHas('application_service', [
+			'application_id' => $application->id,
+			'service_id' => $services->get(0)->id,
+			'quantity' => 1
+		]);
+		$this->assertDatabaseHas('application_service', [
+				'application_id' => $application->id,
+				'service_id' => $services->get(2)->id,
+				'quantity' => 5
+			]
+		);
+		
+		$this->assertDatabaseMissing('application_service', [
+			'application_id' => $application->id,
+			'service_id' => $services->get(1)->id,
+		]);
+		
+		Notification::assertSentTo([$admin], ApplicationResubmittedNotification::class);
+	}
+	
+	
+	public function test_kitchen_can_update_kitchen_data_but_not_submitted_application_data() {
 		$services = factory(Service::class, 3)->create();
 		$application = factory(Application::class)->make([
 			'year' => $this->settings->get('registration_year'),
@@ -403,7 +566,7 @@ class KitchenControllerTest extends TestCase {
 		);
 	}
 	
-	public function test_kitchen_can_update_kitchen_data_and_reopened_application() {
+	public function test_kitchen_can_update_kitchen_data_and_reopened_application_data() {
 		$services = factory(Service::class, 3)->create();
 		$application = factory(Application::class)->make([
 			'year' => $this->settings->get('registration_year'),

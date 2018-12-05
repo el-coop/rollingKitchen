@@ -36,5 +36,7 @@ return [
 	'vat' => 'VAT',
 	'paid' => 'Paid',
 	'unpaid' => 'Unpaid',
-	'close' => 'Close'
+	'close' => 'Close',
+	'previous' => '&laquo; Previous',
+	'next' => 'Next &raquo;',
 ];

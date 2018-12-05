@@ -10,7 +10,7 @@
 		@csrf
 		@method('patch')
 		<input name="review" type="hidden" value="0" ref="review">
-		<tabs>
+		<tabs :pagination-buttons="true">
 			<tab label="@lang('kitchen/kitchen.businessInformation')">@include('kitchen.kitchen')</tab>
 			<tab label="@lang('kitchen/kitchen.kitchenInformation')">@include('kitchen.application')</tab>
 			<tab label="@lang('kitchen/kitchen.services')">@include('kitchen.services')</tab>
