@@ -259,7 +259,7 @@ class KitchenControllerTest extends TestCase {
 			->assertViewHas('kitchen', $this->user->user)
 			->assertViewHas('application', $application)
 			->assertSee("value: '{$application->length}'")
-			->assertSee($appliedText)
+			->assertSee(str_replace(PHP_EOL, '<br>', $appliedText))
 			->assertDontSee('id="reviewButton"');
 	}
 	
