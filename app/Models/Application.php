@@ -7,26 +7,26 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 
 class Application extends Model {
-
+	
 	use HasFields;
-
+	
 	protected $casts = [
 		'data' => 'array'
 	];
-
-
+	
+	
 	static function indexPage() {
 		return action('Admin\ApplicationController@index', [], false);
 	}
-
+	
 	public function kitchen() {
 		return $this->belongsTo(Kitchen::class);
 	}
-
+	
 	public function products() {
 		return $this->hasMany(Product::class);
 	}
-
+	
 	public function getFullDataAttribute() {
 		$editData = collect([
 			[
@@ -40,7 +40,7 @@ class Application extends Model {
 				'label' => __('global.status'),
 				'type' => 'select',
 				'options' => [
-
+					
 					'pending' => __('vue.pending'),
 					'accepted' => __('vue.accepted'),
 					'reopened' => __('vue.reopened'),
@@ -50,10 +50,10 @@ class Application extends Model {
 				'value' => $this->status
 			]
 		]);
-
+		
 		return $editData->concat($this->getFieldsData());
 	}
-
+	
 	public function services() {
 		return $this->belongsToMany(Service::class)->withPivot('quantity')->withTimestamps();
 	}
@@ -65,20 +65,25 @@ class Application extends Model {
 	public function invoicedItems() {
 		return $this->hasManyThrough(InvoiceItem::class, Invoice::class);
 	}
-
+	
 	public function hasService(Service $service) {
 		return $this->services()->where('service_id', $service->id)->where('quantity', '>', 0)->exists();
 	}
-
+	
 	public function serviceQuantity(Service $service) {
 		return $this->services()->where('service_id', $service->id)->first()->pivot->quantity;
 	}
-
+	
 	public function electricDevices() {
 		return $this->hasMany(ElectricDevice::class);
 	}
-
+	
 	public function isOpen() {
 		return ($this->status == 'new' || $this->status == 'reopened') && $this->year == app('settings')->get('registration_year');
+	}
+	
+	public function setNumber() {
+		$this->number = (static::where('year', $this->year)->max('number') ?? 0) + 1;
+		$this->save();
 	}
 }

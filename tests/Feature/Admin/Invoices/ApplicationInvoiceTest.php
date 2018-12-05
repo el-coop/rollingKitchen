@@ -265,6 +265,11 @@ class ApplicationInvoiceTest extends TestCase {
 			'amount' => 5,
 		]);
 		
+		$this->assertDatabaseHas('applications',[
+			'id' => $this->application->id,
+			'number' => 1
+		]);
+		
 		Queue::assertPushed(SendInvoice::class);
 		
 	}
