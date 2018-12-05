@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Admin;
+use App\Models\Developer;
 use App\Models\User;
 use Illuminate\Console\Command;
 
@@ -13,14 +14,14 @@ class ImportData extends Command {
 	 * @var string
 	 */
 	protected $signature = 'import:data';
-	
+
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
 	protected $description = 'Imports all prepared data from the past';
-	
+
 	/**
 	 * Create a new command instance.
 	 *
@@ -29,7 +30,7 @@ class ImportData extends Command {
 	public function __construct() {
 		parent::__construct();
 	}
-	
+
 	/**
 	 * Execute the console command.
 	 *
@@ -40,6 +41,11 @@ class ImportData extends Command {
 		factory(Admin::class)->create()->user()->save(factory(User::class)->make([
 			'name' => 'admin',
 			'email' => 'admin@kitchen.com',
+			'password' => bcrypt(123456)
+		]));
+		factory(Developer::class)->create()->user()->save(factory(User::class)->make([
+			'name' => 'developer',
+			'email' => 'developer@elcoop.io',
 			'password' => bcrypt(123456)
 		]));
 		$this->call('import:services');

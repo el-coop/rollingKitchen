@@ -12,6 +12,7 @@ import 'izitoast/dist/css/iziToast.css';
 import VueIziToast from 'vue-izitoast';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faLink, faSignOutAlt, faBars, faFileUpload, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
+require('./ErrorHandler');
 
 library.add(faLink, faSignOutAlt, faBars, faFileUpload, faTimesCircle);
 
@@ -32,4 +33,3 @@ Vue.prototype.$bus = new Vue();
 const app = new Vue({
 	el: '#app'
 });
-
