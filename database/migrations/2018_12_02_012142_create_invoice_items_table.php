@@ -22,7 +22,7 @@ class CreateInvoiceItemsTable extends Migration {
 			$table->timestamps();
 			
 			$table->foreign('invoice_id')
-				->references('id')->on('applications')
+				->references('id')->on('invoices')
 				->onDelete('cascade');
 			$table->foreign('service_id')
 				->references('id')->on('services');
