@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateKitchenRequest extends FormRequest {
 	private $kitchen;
+	private $application;
 	
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -23,44 +24,54 @@ class UpdateKitchenRequest extends FormRequest {
 	 * @return array
 	 */
 	public function rules() {
-		return [
+		$this->application = $this->kitchen->getCurrentApplication();
+		$rules = collect([
 			'name' => 'required|min:2',
 			'email' => 'required|email',
+			'language' => 'required|in:en,nl',
 			'kitchen' => 'required|array',
-			'application' => 'required|array',
-			'services' => 'array',
-			'socket' => 'required|numeric',
-			'length' => 'required|numeric',
-			'width' => 'required|numeric',
-			'terrace_length' => 'numeric|nullable',
-			'terrace_width' => 'numeric|nullable',
-			'seats' => 'numeric|nullable'
-		];
+		]);
+		
+		if ($this->user()->can('update', $this->application)) {
+			$rules = $rules->merge([
+				'application' => 'required|array',
+				'services' => 'array',
+				'socket' => 'required|numeric',
+				'length' => 'required|numeric',
+				'width' => 'required|numeric',
+				'terrace_length' => 'numeric|nullable',
+				'terrace_width' => 'numeric|nullable',
+				'seats' => 'numeric|nullable'
+			]);
+		}
+		
+		return $rules->toArray();
 	}
 	
 	public function commit() {
 		$this->kitchen->user->name = $this->input('name');
 		$this->kitchen->user->email = $this->input('email');
+		$this->kitchen->user->language = $this->input('language');
 		$this->kitchen->user->save();
 		
 		
 		$this->kitchen->data = $this->input('kitchen');
 		$this->kitchen->save();
 		
-		$application = $this->kitchen->getCurrentApplication();
-		if ($this->user()->can('update', $application)) {
+		if ($this->user()->can('update', $this->application)) {
 			
-			$application->data = $this->input('application');
-			$application->socket = $this->input('socket');
-			$application->length = $this->input('length');
-			$application->width = $this->input('width');
-			$application->terrace_length = $this->input('terrace_length');
-			$application->terrace_width = $this->input('terrace_width');
-			$application->seats = $this->input('seats');
+			$this->application->data = $this->input('application');
+			$this->application->socket = $this->input('socket');
+			$this->application->length = $this->input('length');
+			$this->application->width = $this->input('width');
+			$this->application->terrace_length = $this->input('terrace_length');
+			$this->application->terrace_width = $this->input('terrace_width');
+			$this->application->seats = $this->input('seats');
 			if ($this->input('review')) {
-				$application->status = 'pending';
+				$this->application->status = 'pending';
+				$this->session()->flash('fireworks', true);
 			}
-			$application->save();
+			$this->application->save();
 			
 			$services = collect($this->input('services'))->mapWithKeys(function ($quantity, $service) {
 				return [$service => [
@@ -71,8 +82,7 @@ class UpdateKitchenRequest extends FormRequest {
 			});
 			
 			
-			$application->services()->sync($services);
-			
+			$this->application->services()->sync($services);
 			
 		}
 	}

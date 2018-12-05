@@ -11,8 +11,16 @@ return [
 	'general_login_text_en' => 'Login Text EN',
 	'general_registration_text_nl' => 'Registration Text NL',
 	'general_login_text_nl' => 'Login Text NL',
-	'general_application_text_en' => 'English text when application submitted',
-	'general_application_text_nl' => 'Dutch text when application submitted',
+	
+	'application_text_nl' => 'Application instructions NL',
+	'application_text_en' =>  'Application instructions EN',
+	'application_success_text_nl' => 'Text when application submitted NL',
+	'application_success_text_en' => 'Text when application submitted EN	',
+	'application_success_modal_nl' => 'Success text when application submitted NL',
+	'application_success_modal_en' => 'Success text when application submitted EN',
+	'application_success_email_nl' => 'Success email when application submitted NL',
+	'application_success_email_en' => 'Success email when application submitted EN',
+	
 	'invoices_accountant' => "Accountant's Email",
 	'invoices_business_details' => "Business details",
 	

@@ -6,6 +6,8 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 // our components
 Vue.component('Navbar', require('./Global/Navbar'));
+Vue.component('toast', require('./Global/Toast'));
+Vue.component('FireworksModal', require('./Global/FireworksModal'));
 
 // utilities
 Vue.component('Drawer', require('./Utilities/Drawer'));

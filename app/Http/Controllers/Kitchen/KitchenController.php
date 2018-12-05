@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class KitchenController extends Controller {
-
+	
 	/**
 	 * Show the form for creating a new resource.
 	 *
@@ -24,23 +24,23 @@ class KitchenController extends Controller {
 	public function create() {
 		return view('auth.register');
 	}
-
+	
 	/**
 	 * Store a newly created resource in storage.
 	 *
 	 * @param CreateKitchenRequest $request
-	 * @return void
+	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	public function store(CreateKitchenRequest $request) {
 		$kitchen = $request->commit();
 		Auth::login($kitchen->user, true);
 		return redirect()->action('Kitchen\KitchenController@edit', $kitchen);
 	}
-
+	
 	public function storePhoto(Kitchen $kitchen, UploadPhotoRequest $request) {
 		return $request->commit();
 	}
-
+	
 	/**
 	 * Display the specified resource.
 	 *
@@ -49,7 +49,7 @@ class KitchenController extends Controller {
 	 */
 	public function show(Kitchen $kitchen) {
 	}
-
+	
 	/**
 	 * Show the form for editing the specified resource.
 	 *
@@ -57,17 +57,19 @@ class KitchenController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function edit(Kitchen $kitchen) {
-		$services = Service::orderBy('type','asc')->get();
+		$locale = App::getLocale();
+		
+		$services = Service::orderBy('type', 'asc')->get();
 		$application = $kitchen->getCurrentApplication();
 		$pastApplications = $kitchen->applications()->where('year', '!=', app('settings')->get('registration_year'))->get();
-		$message = false;
-		if(! $application->isOpen()){
-			$locale = App::getLocale();
-			$message = app('settings')->get("general_application_text_{$locale}");
+		
+		$message = app('settings')->get("application_text_{$locale}");
+		if (!$application->isOpen()) {
+			$message = app('settings')->get("application_success_text_{$locale}");
 		}
-		return view('kitchen.edit', compact('kitchen', 'application', 'application', 'services','message', 'pastApplications'));
+		return view('kitchen.edit', compact('kitchen', 'application', 'application', 'services', 'message', 'pastApplications'));
 	}
-
+	
 	/**
 	 * Update the specified resource in storage.
 	 *
@@ -77,9 +79,13 @@ class KitchenController extends Controller {
 	 */
 	public function update(UpdateKitchenRequest $request, Kitchen $kitchen) {
 		$request->commit();
-		return back()->with('success', true);
+		return back()->with('toast', [
+			'type' => 'success',
+			'title' => '',
+			'message' => __('vue.updateSuccess', [], $request->input('language'))
+		]);
 	}
-
+	
 	/**
 	 * Remove the specified resource from storage.
 	 *
@@ -89,7 +95,7 @@ class KitchenController extends Controller {
 	public function destroy(Kitchen $kitchen) {
 		//
 	}
-
+	
 	public function destroyPhoto(Kitchen $kitchen, Photo $photo) {
 		$photo->delete();
 		return [

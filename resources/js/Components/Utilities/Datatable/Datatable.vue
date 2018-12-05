@@ -180,7 +180,7 @@
 			filter(filters) {
 				this.params.filter = filters;
 				Vue.nextTick(() => {
-					this.$refs.table.refresh()
+					this.$refs.table.refresh();
 				})
 			},
 			cellClicked(data, field, event) {

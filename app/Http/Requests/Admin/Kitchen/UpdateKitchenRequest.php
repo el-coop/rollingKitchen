@@ -27,6 +27,7 @@ class UpdateKitchenRequest extends FormRequest {
 		return [
 			'status' => 'required|in:new,motherlist',
 			'name' => 'required|min:2',
+			'language' => 'required|in:en,nl',
 			'email' => 'required|email',
 			'kitchen' => 'required|array',
 			'kitchen.*' => 'required',
@@ -37,6 +38,7 @@ class UpdateKitchenRequest extends FormRequest {
 		
 		$this->kitchen->user->name = $this->input('name');
 		$this->kitchen->user->email = $this->input('email');
+		$this->kitchen->user->language = $this->input('language');
 		$this->kitchen->status = $this->input('status');
 		
 		$this->kitchen->data = $this->input('kitchen');

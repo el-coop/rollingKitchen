@@ -3,11 +3,9 @@
 @section('title',__('kitchen/kitchen.application'))
 
 @section('content')
-	@if(!$application->isOpen())
-		<div class="notification">
-			{{ $message }}
-		</div>
-	@endif
+	<div class="notification">
+		{{ $message }}
+	</div>
 	<form method="post" action="{{ action('Kitchen\KitchenController@update', $kitchen) }}" ref="form">
 		@csrf
 		@method('patch')
@@ -25,7 +23,8 @@
 				@lang('global.save')
 			</button>
 			@if($application->isOpen())
-				<button class="button is-success" type="button" @click="$toast.question('@lang('kitchen/kitchen.submitConfirmSubtitle')','@lang('kitchen/kitchen.submitConfirmTitle')',{
+				<button class="button is-success" type="button"
+						@click="$toast.question('@lang('kitchen/kitchen.submitConfirmSubtitle')','@lang('kitchen/kitchen.submitConfirmTitle')',{
 				timeout: false, position:'center',buttons: [
 					['<button>@lang('global.yes')</button>', (instance, toast) => {
 						$refs.review.value = 1;
@@ -41,4 +40,15 @@
 			@endif
 		</div>
 	</form>
+	@if(session()->has('fireworks'))
+		<fireworks-modal
+				text="{{ app('settings')->get('application_success_modal_' . App::getLocale()) }}"></fireworks-modal>
+	@endif
+	@if($errors->any())
+		@php
+			var_dump($errors->all());
+		@endphp
+		<toast message="@lang('vue.pleaseCorrect')" title="@lang('vue.formErrors')"
+			   type="error"></toast>
+	@endif
 @endsection
