@@ -4,7 +4,7 @@
 
 @section('content')
 	<div>
-		@component('components.datatable', ['userUrl' => 'admin'])
+		@component('components.datatable')
 			@slot('buttons')
 				@if(isset($fieldType))
 					<a class="button is-light"

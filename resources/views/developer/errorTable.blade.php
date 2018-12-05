@@ -4,7 +4,7 @@
 
 @section('content')
     <div>
-        @component('components.datatable', ['userUrl' => 'developer'])
+        @component('components.datatable')
             @if(isset($filters))
                 @slot('filters',$filters)
             @endif
