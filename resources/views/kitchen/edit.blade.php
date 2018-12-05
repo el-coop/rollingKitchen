@@ -4,7 +4,7 @@
 
 @section('content')
 	<div class="notification">
-		{{ $message }}
+		{!!  str_replace(PHP_EOL,'<br>',$message) !!}
 	</div>
 	<form method="post" action="{{ action('Kitchen\KitchenController@update', $kitchen) }}" ref="form">
 		@csrf
@@ -42,7 +42,7 @@
 	</form>
 	@if(session()->has('fireworks'))
 		<fireworks-modal
-				text="{{ app('settings')->get('application_success_modal_' . App::getLocale()) }}"></fireworks-modal>
+				text="{{ str_replace(PHP_EOL,'<br>',app('settings')->get('application_success_modal_' . App::getLocale())) }}"></fireworks-modal>
 	@endif
 	@if($errors->any())
 		@php
