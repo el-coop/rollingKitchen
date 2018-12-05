@@ -16,6 +16,10 @@
 <body>
 <div id="app">
 	@yield('body')
+	@if(session()->has('toast'))
+		<toast message="{{ session()->get('toast')['message'] }}" title="{{ session()->get('toast')['title'] }}"
+			   type="{{ session()->get('toast')['type'] }}"></toast>
+	@endif
 </div>
 <script>
 	var translations = @json(__('vue'))

@@ -152,6 +152,7 @@ class MotherlistTest extends TestCase {
 			->patch(action('Admin\KitchenController@update', $kitchen), [
 				'name' => 'testname',
 				'email' => 'bla@gla.gla',
+				'language' => 'nl',
 				'status' => 'motherlist',
 				'kitchen' => [
 					'test' => 'best',
@@ -164,6 +165,7 @@ class MotherlistTest extends TestCase {
 			'user_id' => $kitchen->id,
 			'name' => 'testname',
 			'email' => 'bla@gla.gla',
+			'language' => 'nl'
 		]);
 		
 		

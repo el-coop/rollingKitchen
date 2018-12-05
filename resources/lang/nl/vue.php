@@ -28,5 +28,6 @@ return [
 	'backup' => 'Backup',
 	'safety' => 'Safety',
 	'electrical' => 'Electrisch',
-	'misc' => 'Diverse'
+	'misc' => 'Diverse',
+	'close' => 'Sluiten'
 ];

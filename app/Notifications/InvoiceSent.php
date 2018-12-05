@@ -72,11 +72,17 @@ class InvoiceSent extends Notification {
 	 */
 	public function toMail($notifiable) {
 		
+		$message = explode(PHP_EOL, $this->body);
+		
 		$email = (new MailMessage)
 			->subject($this->subject)
-			->greeting(__('notification.greeting', ['name' => $this->name], $this->language))
-			->line($this->body)
-			->bcc($this->bcc);
+			->greeting(__('notification.greeting', ['name' => $this->name], $this->language));
+		
+		foreach ($message as $line) {
+			$email->line($line);
+		}
+		
+		$email->bcc($this->bcc);
 		
 		foreach ($this->files as $file) {
 			$email->attach($file['file'], [

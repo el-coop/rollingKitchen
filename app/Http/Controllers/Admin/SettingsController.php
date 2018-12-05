@@ -15,13 +15,18 @@ class SettingsController extends Controller {
 		]);
 		$tabs = [
 			'admin/settings.title' => $generalSettings->merge($settings->allStartingWith('general_')),
-			'admin/invoices.invoices' => $settings->allStartingWith('invoices_')
+			'admin/applications.applications' => $settings->allStartingWith('application_'),
+			'admin/invoices.invoices' => $settings->allStartingWith('invoices_'),
 		];
 		return view('admin.settings.show', compact('tabs'));
 	}
 	
 	public function update(UpdateSettingsRequest $request) {
 		$request->commit();
-		return redirect()->back();
+		return redirect()->back()->with('toast', [
+			'type' => 'success',
+			'title' => '',
+			'message' => __('vue.updateSuccess')
+		]);
 	}
 }

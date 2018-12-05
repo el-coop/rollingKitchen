@@ -13,6 +13,14 @@
 		</div>
 		<div class="box">
 			<slot></slot>
+			<div class="buttons mt-1 has-content-justified-center" v-if="paginationButtons">
+				<button class="button is-dark" @click="showPrev()"
+						type="button" v-html="$translations.previous">
+				</button>
+				<button class="button is-dark" @click="showNext()"
+						type="button" v-html="$translations.next">
+				</button>
+			</div>
 		</div>
 	</div>
 </template>
@@ -21,6 +29,13 @@
 
 	export default {
 		name: "Tabs",
+
+		props: {
+			paginationButtons: {
+				type: Boolean,
+				default: false
+			}
+		},
 
 		data() {
 			return {
@@ -44,6 +59,20 @@
 		methods: {
 			show(tab) {
 				this.selected = tab;
+			},
+
+			showPrev() {
+				this.selected--;
+				if (this.selected < 0) {
+					this.selected = this.views.length - 1;
+				}
+			},
+
+			showNext() {
+				this.selected++;
+				if (this.selected === this.views.length) {
+					this.selected = 0;
+				}
 			}
 		},
 

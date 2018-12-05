@@ -173,7 +173,6 @@
                     this.exportOptions += `&${option}=${paramValue}`;
                 }
             },
-
             changePage(page) {
                 this.$refs.table.changePage(page);
             },
@@ -218,7 +217,6 @@
                 currentData.splice(objectIndex,1);
                 this.$refs.table.setData(currentData);
             }
-
         },
 
     }
