@@ -1,6 +1,6 @@
 <template>
 	<modal-component name="fireworks">
-		<div class="pyro has-text-white has-text-centered is-size-4 has-background-black" v-text="text">
+		<div class="pyro has-text-white has-text-centered is-size-4 has-background-black" v-html="text">
 		</div>
 		<div class="buttons">
 			<button class="button is-fullwidth" @click="$modal.hide('fireworks')" v-text="$translations.close"></button>
