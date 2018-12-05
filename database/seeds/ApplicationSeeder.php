@@ -22,7 +22,7 @@ class ApplicationSeeder extends Seeder {
 					} else {
 						$value = $faker->paragraph;
 					}
-					return [$field->name_en => $value];
+					return [$field->id => $value];
 				});
 				$kitchen->applications()->save($application);
                 \App\Models\Service::inRandomOrder()->limit(3)->get()->each(function ($service) use ($application) {

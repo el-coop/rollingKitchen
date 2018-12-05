@@ -64,7 +64,6 @@ class ApplicationTest extends TestCase {
 
 	public function test_datatable_gets_table_data() {
 		$response = $this->actingAs($this->admin->user)->get(action('DatatableController@list', ['table' => 'admin.applicationsTable', 'per_page' => 20]));
-
 		foreach ($this->applications as $application) {
 			$response->assertJsonFragment([
 				'id' => $application->id,
