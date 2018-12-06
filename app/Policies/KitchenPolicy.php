@@ -9,7 +9,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 
 class KitchenPolicy {
 	use HandlesAuthorization;
-	
+
 	/**
 	 * Determine whether the user can view the kitchen.
 	 *
@@ -20,7 +20,7 @@ class KitchenPolicy {
 	public function view(User $user, Kitchen $kitchen) {
 		//
 	}
-	
+
 	/**
 	 * Determine whether the user can create kitchens.
 	 *
@@ -30,7 +30,7 @@ class KitchenPolicy {
 	public function create(User $user) {
 		//
 	}
-	
+
 	/**
 	 * Determine whether the user can update the kitchen.
 	 *
@@ -44,7 +44,7 @@ class KitchenPolicy {
 		}
 		return $user->user_type == Admin::class;
 	}
-	
+
 	/**
 	 * Determine whether the user can delete the kitchen.
 	 *
@@ -53,9 +53,9 @@ class KitchenPolicy {
 	 * @return mixed
 	 */
 	public function delete(User $user, Kitchen $kitchen) {
-		//
+		return $user->user_type == Admin::class;
 	}
-	
+
 	/**
 	 * Determine whether the user can restore the kitchen.
 	 *
@@ -66,7 +66,7 @@ class KitchenPolicy {
 	public function restore(User $user, Kitchen $kitchen) {
 		//
 	}
-	
+
 	/**
 	 * Determine whether the user can permanently delete the kitchen.
 	 *

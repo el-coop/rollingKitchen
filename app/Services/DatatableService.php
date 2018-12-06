@@ -68,10 +68,14 @@ class DatatableService implements FromCollection, WithHeadings {
 		});
 		foreach ($selectFields as $field) {
 			$fieldName = $field['name'];
+
 			if (strpos($fieldName, 'count') !== 0) {
-				$tableName = isset($field['table']) ? "{$field['table']}." : '';
-				$selects[] = "{$tableName}{$fieldName}";
+				if (strpos($fieldName, 'component') === false) {
+					$tableName = isset($field['table']) ? "{$field['table']}." : '';
+					$selects[] = "{$tableName}{$fieldName}";
+				}
 			} else {
+
 				$selects[] = DB::raw("$fieldName");
 			}
 		}
