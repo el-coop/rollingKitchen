@@ -7,7 +7,7 @@ return [
 		['kitchens', 'users.user_id', 'kitchens.id'],
 		['photos', 'photos.kitchen_id', 'kitchens.id']
 	],
-	
+
 	'fields' => [[
 		'name' => 'id',
 		'table' => 'kitchens',
@@ -42,5 +42,8 @@ return [
 			'no' => ['0', 0],
 		],
 		'callback' => 'numToBoolTag'
+	],[
+		'name' => '__component:delete-button',
+		'title' => 'global.delete'
 	]]
 ];

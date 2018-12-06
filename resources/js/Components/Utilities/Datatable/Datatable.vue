@@ -59,6 +59,10 @@
     import DatatableFilter from './DatatableFilter';
     import DatatableFormatters from './DatatableFormatters';
     import DatatableRowDisplay from "./DatatableRowDisplay";
+    import Vue from 'vue'
+    import DeleteButton from './DeleteButton'
+
+    Vue.component('delete-button', DeleteButton);
 
     export default {
         name: 'Datatable',
@@ -68,7 +72,8 @@
             DatatableFilter,
             Vuetable,
             VuetablePaginationInfo,
-            VuetablePagination
+            VuetablePagination,
+            DeleteButton
         },
         props: {
             url: {
@@ -188,11 +193,13 @@
                 });
             },
             rowClicked(data, event) {
-                this.$modal.show('datatable-row');
-                this.object = data;
-                this.$bus.$emit('vuetable-row-clicked', {
-                    data, event
-                });
+                if (event.srcElement.className !== 'button is-danger') {
+                    this.$modal.show('datatable-row');
+                    this.object = data;
+                    this.$bus.$emit('vuetable-row-clicked', {
+                        data, event
+                    });
+                }
             },
             updateObject(data) {
                 this.object = {...this.object, ...data};
@@ -210,11 +217,11 @@
             deleteObject(data) {
                 this.$modal.hide('datatable-row');
                 this.object = {...this.object, ...data};
-                const currentData =  this.$refs.table.tableData;
-                let objectIndex = currentData.findIndex((item)=> {
+                const currentData = this.$refs.table.tableData;
+                let objectIndex = currentData.findIndex((item) => {
                     return item.id === this.object.id;
                 });
-                currentData.splice(objectIndex,1);
+                currentData.splice(objectIndex, 1);
                 this.$refs.table.setData(currentData);
             }
         },
