@@ -1,5 +1,5 @@
 <template>
-    <ajax-form v-on.stop="" method='delete' :action="action">
+    <ajax-form method='delete' :action="action">
         <button type="submit" class="button is-danger">Delete</button>
     </ajax-form>
 </template>
