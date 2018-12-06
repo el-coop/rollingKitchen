@@ -44,11 +44,5 @@
 		<fireworks-modal
 				text="{{ str_replace(PHP_EOL,'<br>',app('settings')->get('application_success_modal_' . App::getLocale())) }}"></fireworks-modal>
 	@endif
-	@if($errors->any())
-		@php
-			var_dump($errors->all());
-		@endphp
-		<toast message="@lang('vue.pleaseCorrect')" title="@lang('vue.formErrors')"
-			   type="error"></toast>
-	@endif
+	@include('components.errors')
 @endsection

@@ -53,4 +53,5 @@
 			</div>
 		</form>
 	</div>
+	@include('components.errors')
 @endsection

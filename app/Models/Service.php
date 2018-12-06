@@ -22,6 +22,7 @@ class Service extends Model {
 			'label' => __('admin/services.category'),
 			'type' => 'select',
 			'options' => [
+				'socket' => __('vue.socket'),
 				'safety' => __('vue.safety'),
 				'electrical' => __('vue.electrical'),
 				'misc' => __('vue.misc'),
