@@ -8,5 +8,6 @@ return [
 	'businessInformation' => 'Business Information',
 	'kitchenInformation' => 'Kitchen Information',
 	'services' => 'Services',
-	'pastApplications' => 'Past Applications'
+	'pastApplications' => 'Past Applications',
+	'photoValidation' => 'You must upload photos or fill at least on of the following: website/facebook/instagram'
 ];
