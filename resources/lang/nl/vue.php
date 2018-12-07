@@ -29,5 +29,14 @@ return [
 	'safety' => 'Safety',
 	'electrical' => 'Electrisch',
 	'misc' => 'Diverse',
-	'close' => 'Sluiten'
+	'total' => 'Totaal',
+	'quantity' => 'Hoeveelheid',
+	'item' => 'Item',
+	'unitPrice' => 'Eenheids prijs',
+	'vat' => 'BTW',
+	'paid' => 'Betaald',
+	'unpaid' => 'Onbetaald',
+	'close' => 'Sluiten',
+	'previous' => '&laquo; Vorige',
+	'next' => 'Volgende &raquo;',
 ];

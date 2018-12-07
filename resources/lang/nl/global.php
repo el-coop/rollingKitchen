@@ -23,7 +23,10 @@ return [
 	'password_confirm' => 'Wachtwoord bevestigen',
 	'login' => 'Inloggen',
 	'register' => 'Aanmelden',
-	'language' => 'Language',
+	'language' => 'Taal',
 	'year' => 'Jaar',
-	'pdfs' => 'PDFs'
+	'pdfs' => 'PDFs',
+
+	'delete' => 'Verwijderen',
+
 ];
