@@ -59,7 +59,8 @@ class KitchenController extends Controller {
 	public function edit(Kitchen $kitchen) {
 		$locale = App::getLocale();
 		
-		$services = Service::orderBy('type', 'asc')->get();
+		$services = Service::where('category', '!=', 'socket')->orderBy('type', 'asc')->get();
+		$sockets = Service::where('category', '=', 'socket')->orderBy('price', 'asc')->get();
 		$application = $kitchen->getCurrentApplication();
 		$pastApplications = $kitchen->applications()->where('year', '!=', app('settings')->get('registration_year'))->get();
 		
@@ -67,7 +68,7 @@ class KitchenController extends Controller {
 		if (!$application->isOpen()) {
 			$message = app('settings')->get("application_success_text_{$locale}");
 		}
-		return view('kitchen.edit', compact('kitchen', 'application', 'application', 'services', 'message', 'pastApplications'));
+		return view('kitchen.edit', compact('kitchen', 'application', 'application', 'services', 'message', 'pastApplications', 'sockets'));
 	}
 	
 	/**

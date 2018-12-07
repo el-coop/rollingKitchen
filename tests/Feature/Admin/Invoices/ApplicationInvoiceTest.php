@@ -132,15 +132,15 @@ class ApplicationInvoiceTest extends TestCase {
 			$this->application->services()->attach($service, ['quantity' => rand(1, 3)]);
 		});
 		
-		$outstandingItems = [];
-		$outstandingItems[] = [
+		$outstandingItems = [[
 			'quantity' => 1,
 			'item' => __('admin/invoices.fee', [], $language),
 			'unitPrice' => $this->application->data[8]
-		];
-		if ($this->application->socket) {
-			$outstandingItems[] = $this->getSocketData($language);
-		}
+		], [
+			'quantity' => 1,
+			'item' => __('kitchen/services.trash', [], $language),
+			'unitPrice' => 50
+		]];
 		foreach ($this->application->services as $service) {
 			$outstandingItems[] = [
 				'quantity' => intval($service->pivot->quantity),
@@ -265,7 +265,7 @@ class ApplicationInvoiceTest extends TestCase {
 			'amount' => 5,
 		]);
 		
-		$this->assertDatabaseHas('applications',[
+		$this->assertDatabaseHas('applications', [
 			'id' => $this->application->id,
 			'number' => 1
 		]);

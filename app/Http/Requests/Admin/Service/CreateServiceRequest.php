@@ -24,7 +24,7 @@ class CreateServiceRequest extends FormRequest {
 		return [
 			'name_nl' => 'required|min:2',
 			'name_en' => 'required|min:2',
-				'category' => 'required|in:safety,electrical,misc',
+			'category' => 'required|in:safety,electrical,misc,socket',
 			'type' => 'required|in:0,1',
 			'price' => 'required|numeric',
 		];

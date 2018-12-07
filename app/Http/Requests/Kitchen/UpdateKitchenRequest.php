@@ -34,9 +34,10 @@ class UpdateKitchenRequest extends FormRequest {
 			'kitchen' => 'required|array',
 		]);
 		
-		if ($this->user()->can('update', $this->application)) {
+		if ($this->user()->can('update', $this->application) && $this->input('review')) {
 			$rules = $rules->merge([
 				'application' => 'required|array',
+				'application.8' => 'required|numeric',
 				'services' => 'array',
 				'socket' => 'required|numeric',
 				'length' => 'required|numeric',
@@ -63,14 +64,13 @@ class UpdateKitchenRequest extends FormRequest {
 		if ($this->user()->can('update', $this->application)) {
 			
 			$this->application->data = $this->input('application');
-			$this->application->socket = $this->input('socket');
 			$this->application->length = $this->input('length');
 			$this->application->width = $this->input('width');
 			$this->application->terrace_length = $this->input('terrace_length');
 			$this->application->terrace_width = $this->input('terrace_width');
 			$this->application->seats = $this->input('seats');
 			if ($this->input('review')) {
-				if($this->application->status == 'new'){
+				if ($this->application->status == 'new') {
 					event(new ApplicationSubmitted($this->application));
 				} else {
 					event(new ApplicationResubmitted($this->application));
@@ -80,7 +80,13 @@ class UpdateKitchenRequest extends FormRequest {
 			}
 			$this->application->save();
 			
-			$services = collect($this->input('services'))->mapWithKeys(function ($quantity, $service) {
+			$services = collect($this->input('services'));
+			
+			if ($this->input('socket')) {
+				$services->put($this->input('socket'), 1);
+			}
+			
+			$services = $services->mapWithKeys(function ($quantity, $service) {
 				return [$service => [
 					'quantity' => $quantity
 				]];

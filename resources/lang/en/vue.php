@@ -39,4 +39,5 @@ return [
 	'close' => 'Close',
 	'previous' => '&laquo; Previous',
 	'next' => 'Next &raquo;',
+	'socket' => 'Socket'
 ];

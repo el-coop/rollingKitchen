@@ -62,21 +62,15 @@ class InvoiceService {
 			];
 		});
 		
-		$result = $result->concat([$this->getApplicationData()]);
-		
-		if ($this->application->socket) {
-			$result = $result->concat([$this->getSocketData()]);
-		}
+		$result = $result->concat($this->getApplicationData());
 		return $result;
 	}
 	
 	public function getOutstandingItems() {
 		$result = [];
 		if (!$this->application->invoices()->count()) {
-			$result[] = $this->getApplicationData();
-			if ($this->application->socket) {
-				$result[] = $this->getSocketData();
-			}
+			$result = $this->getApplicationData();
+			
 		}
 		$invoicedServices = $this->application->invoicedItems()->select('service_id', DB::raw('COUNT(*) as quantity'))->where('service_id', '!=', null)->groupBy('service_id')->get();
 		foreach ($this->application->services as $service) {
@@ -95,40 +89,14 @@ class InvoiceService {
 	}
 	
 	protected function getApplicationData(): array {
-		return [
+		return [[
 			'quantity' => 1,
 			'item' => __('admin/invoices.fee', [], $this->language),
 			'unitPrice' => $this->application->data[8]
-		];
-	}
-	
-	protected function getSocketData() {
-		
-		switch ($this->application->socket) {
-			case 1:
-				$data = __('kitchen/services.2X230', [], $this->language);
-				break;
-			case 2:
-				$data = __('kitchen/services.3x230', [], $this->language);
-				break;
-			case 3:
-				$data = __('kitchen/services.1x400-16', [], $this->language);
-				break;
-			case 4:
-				$data = __('kitchen/services.1x400-32', [], $this->language);
-				break;
-			default:
-				$data = __('kitchen/services.2x400', [], $this->language);
-		}
-		
-		$data = explode('€', $data);
-		
-		return [
+		], [
 			'quantity' => 1,
-			'item' => trim($data[0]),
-			'unitPrice' => trim($data[1])
-		];
-		
+			'item' => __('kitchen/services.trash', [], $this->language),
+			'unitPrice' => 50
+		]];
 	}
-	
 }
