@@ -40,7 +40,7 @@ class ApplicationSubmittedNotification extends Notification {
 		$message = explode(PHP_EOL, app('settings')->get("application_success_email_{$notifiable->language}"));
 		$email = (new MailMessage)
 			->subject(__('notification.notificationSubmitted', [], $notifiable->language))
-			->greeting(__('notification.greeting', ['name' => $this->name], $notifiable->language));
+			->greeting(__('notification.greeting', ['name' => $notifiable->name], $notifiable->language));
 		
 		foreach ($message as $line) {
 			$email->line($line);

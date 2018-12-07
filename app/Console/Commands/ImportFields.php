@@ -40,6 +40,7 @@ class ImportFields extends Command {
 	public function handle() {
 		$this->info('Reading File...');
 		$fieldsJson = json_decode(\Storage::disk('local')->get('fields.json'), true);
+
 		foreach ($fieldsJson as $fieldType => $fields) {
 			$order = 0;
 			$this->info("Importing {$fieldType} fields");
@@ -55,7 +56,16 @@ class ImportFields extends Command {
 			
 			$this->alert("Import {$fieldType} Complete");
 		}
-		
+
+		Field::forceCreate([
+			'name_en' => 'Instagram',
+			'name_nl' => 'Instagram',
+			'type' => 'text',
+			'order' =>  Kitchen::getLastFieldOrder() + 1,
+			'form' => Kitchen::class,
+		]);
+
+
 	}
 	
 	protected function getFieldTypeName($type) {

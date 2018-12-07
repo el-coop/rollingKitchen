@@ -372,11 +372,16 @@ class KitchenControllerTest extends TestCase {
 			'email' => 'test@best.rest',
 			'language' => 'nl',
 			'kitchen' => [
-				'data' => 'test'
+				1 => 'test',
+				2 => 'test',
+				3 => 'test',
+				4 => 'test',
+				5 => 'test',
+				7 => 'test',
 			],
 			'application' => [
-				'data' => 'test',
-				8 => 2000
+				8 => 2000,
+				9 => 'these are like 10 chars'
 			],
 			'services' => [
 				$services->get(0)->id => 1,
@@ -402,14 +407,19 @@ class KitchenControllerTest extends TestCase {
 		$this->assertDatabaseHas('kitchens', [
 			'id' => $this->user->user->id,
 			'data' => json_encode([
-				'data' => 'test'
+				1 => 'test',
+				2 => 'test',
+				3 => 'test',
+				4 => 'test',
+				5 => 'test',
+				7 => 'test',
 			])
 		]);
 		$this->assertDatabaseHas('applications', [
 			'id' => $application->id,
 			'data' => json_encode([
-				'data' => 'test',
-				8 => 2000
+				8 => 2000,
+				9 => 'these are like 10 chars'
 			]),
 			'status' => 'pending',
 			'length' => 1,
@@ -463,11 +473,16 @@ class KitchenControllerTest extends TestCase {
 			'email' => 'test@best.rest',
 			'language' => 'nl',
 			'kitchen' => [
-				'data' => 'test'
+				1 => 'test',
+				2 => 'test',
+				3 => 'test',
+				4 => 'test',
+				5 => 'test',
+				7 => 'test',
 			],
 			'application' => [
-				'data' => 'test',
-				8 => 2000
+				8 => 2000,
+				9 => 'these are like 10 chars'
 			],
 			'services' => [
 				$services->get(0)->id => 1,
@@ -493,14 +508,19 @@ class KitchenControllerTest extends TestCase {
 		$this->assertDatabaseHas('kitchens', [
 			'id' => $this->user->user->id,
 			'data' => json_encode([
-				'data' => 'test'
+				1 => 'test',
+				2 => 'test',
+				3 => 'test',
+				4 => 'test',
+				5 => 'test',
+				7 => 'test',
 			])
 		]);
 		$this->assertDatabaseHas('applications', [
 			'id' => $application->id,
 			'data' => json_encode([
-				'data' => 'test',
-				8 => 2000
+				8 => 2000,
+				9 => 'these are like 10 chars'
 			]),
 			'status' => 'pending',
 			'length' => 1,

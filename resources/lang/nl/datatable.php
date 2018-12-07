@@ -7,6 +7,6 @@ return [
 	'next' => 'Volgende',
 	'prev' => 'Vorige',
 	'filters' => 'Filters',
-	'filter' => 'Filter',
-	'clear' => 'Clear',
+	'filter' => 'Filteren',
+	'clear' => 'Leegmaken',
 ];

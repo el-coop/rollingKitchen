@@ -18,7 +18,10 @@
 
 		computed: {
 			errorText() {
-				return this.error[0].replace(this.field.name.replace('[', '.').replace(']', ''), this.field.label);
+				if (!this.error) {
+					return '';
+				}
+				return this.error[0].replace(this.field.name.replace('[', '.').replace(']', '').replace('_', ' '), this.field.label);
 			}
 		}
 	}
