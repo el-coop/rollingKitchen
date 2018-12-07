@@ -1,8 +1,8 @@
 <?php
 
 return [
-	'notificationSubmitted' => 'Rollende Keukens participation application was submitted successfully',
-	'greeting' => 'Hello :name,',
-	'resubmitted' => ':name has resubmitted their application',
-	'clickToView' => 'Click here to view it'
+	'notificationSubmitted' => 'Rollende Keukens deelname aanmelding is succesvol ingediend',
+	'greeting' => 'Hallo :name,',
+	'resubmitted' => ':name hebben aanmelding opnieuw ingediend',
+	'clickToView' => 'Klik hier om  aanmelding te bekijken'
 ];
