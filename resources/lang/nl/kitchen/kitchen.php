@@ -7,5 +7,6 @@ return [
 	'submitReview' => 'Indienen voor beoordeling',
 	'businessInformation' => 'Bedrijfsgegevens',
 	'kitchenInformation' => 'Keuken informatie',
-	'services' => 'Services'
+	'services' => 'Services',
+	'pastApplications' => 'Aanmeldingen voorgaande jaren'
 ];

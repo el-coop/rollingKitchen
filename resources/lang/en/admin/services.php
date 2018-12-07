@@ -5,8 +5,8 @@ return [
 	'category' => 'Category',
 	'amount' => 'Quantity',
 	'select' => 'Yes/No',
-  'service' => 'Service',
+	'service' => 'Service',
 	'services' => 'Services',
 	'download_application_services' => 'Download Application Services',
-  'kitchenServices' => 'kitchenServices'
+	'kitchenServices' => 'kitchenServices',
 ];

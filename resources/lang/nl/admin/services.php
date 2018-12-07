@@ -6,5 +6,7 @@ return [
 	'amount' => 'Hoeveelheid',
 	'select' => 'Ja/Nee',
 	'service' => 'Service',
-	'download_application_services' => 'Download Services Totalen'
+	'download_application_services' => 'Download Services Totalen',
+	'kitchenServices' => 'keukenServices',
+
 ];
