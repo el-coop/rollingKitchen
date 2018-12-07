@@ -39,4 +39,5 @@ return [
 	'close' => 'Sluiten',
 	'previous' => '&laquo; Vorige',
 	'next' => 'Volgende &raquo;',
+	'socket' => 'Aansluiting'
 ];
