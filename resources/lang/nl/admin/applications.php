@@ -4,5 +4,6 @@ return [
 	'applications' => 'Seizoensgegevens',
 	'product' => 'Product',
 	'price' => 'Prijs',
-	'products' => 'Producten'
+	'products' => 'Producten',
+	'number' => 'Nummer'
 ];

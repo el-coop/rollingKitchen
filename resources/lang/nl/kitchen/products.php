@@ -5,5 +5,5 @@ return [
 	'price' => 'Prijs',
 	'food' => 'Gerecht',
 	'drinks' => 'Drank',
-	'other' => 'Other'
+	'other' => 'Overig'
 ];
