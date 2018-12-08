@@ -7,9 +7,17 @@ class HomeController extends Controller {
 	public function show() {
 		$settings = app('settings');
 		$locale = \App::getLocale();
-		$registrationText = $settings->get("general_registration_text_{$locale}");
+
+		$registrationOpen = $settings->get('general_registration_status');
+		if ($registrationOpen) {
+			$registrationText = $settings->get("general_registration_text_{$locale}");
+		} else {
+			$registrationText = $settings->get("general_registration_closed_text_{$locale}");
+
+		}
 		$loginText = $settings->get("general_login_text_{$locale}");
-		
-		return view('welcome', compact('registrationText', 'loginText'));
+
+		return view('welcome', compact('registrationText', 'loginText', 'registrationOpen'));
+
 	}
 }

@@ -4,10 +4,13 @@ return [
 	'settings' => 'Instellingen',
 	'files' => 'Documenten',
 	'chooseFile' => 'Choose a file',
+	'closed' => 'Gesloten',
 
 	'registration_year' => 'Aanmeldings jaar',
 	'general_registration_status' => 'Registratie openen',
 	'general_registration_text_nl' => 'Aanmelden Tekst NL',
+	'general_registration_closed_text_nl' =>'Tekst aanmelding gesloten NL',
+	'general_registration_closed_text_en' => 'Tekst aanmelding gesloten EN',
 	'general_login_text_nl' => 'Inloggen Tekst NL',
 	'general_registration_text_en' => 'Aanmelden Tekst EN',
 	'general_login_text_en' => 'Inloggen Tekst EN',

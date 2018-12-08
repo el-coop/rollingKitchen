@@ -28,8 +28,7 @@ class KitchenControllerTest extends TestCase {
 	
 	public function setUp() {
 		parent::setUp();
-		
-		
+
 		Storage::fake('local');
 		Storage::disk('local')->put('test.valuestore', '');
 		$path = Storage::path('test.valuestore');
@@ -39,7 +38,7 @@ class KitchenControllerTest extends TestCase {
 		$settings = app('settings');
 		$settings->put('general_registration_status', true);
 		$settings->put('registration_year', 2018);
-		
+
 		$this->user = factory(User::class)->make();
 		factory(Kitchen::class)->create()->user()->save($this->user);
 		$this->user1 = factory(User::class)->make();
@@ -51,6 +50,13 @@ class KitchenControllerTest extends TestCase {
 	public function test_guest_can_view_registration_form() {
 		$this->get(action('Kitchen\KitchenController@create'))->assertSuccessful()
 			->assertViewIs('auth.register');
+	}
+
+	public function test_guest_cant_view_registration_form_when_registration_is_closed() {
+		$settings = app('settings');
+		$settings->put('general_registration_status', false);
+		$this->get(action('Kitchen\KitchenController@create'))->assertRedirect(action('HomeController@show'));
+
 	}
 	
 	
