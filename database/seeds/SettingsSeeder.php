@@ -15,6 +15,8 @@ class SettingsSeeder extends Seeder {
 		$settings->put('general_registration_status', false);
 		$settings->put('general_registration_text_nl', 'Klik op aanmelden als je in 2017 niet hebt meegedaan aan Het Weekend van de Rollende keukens.');
 		$settings->put('general_registration_text_en', 'Click register if you did not participate in Het Weekend van de Rollende Keukens in 2018');
+		$settings->put('general_registration_closed_text_nl', 'Het is helaas niet langer mogelijk om je aan te melden voor de Rolende Keukens 2019.');
+		$settings->put('general_registration_closed_text_en', 'Unfortunately it is no longer possible to register for the Rollende Keukens 2019.');
 		$settings->put('general_login_text_nl', 'Klik op inloggen als je in 2017 ook al hebt meegedaan aan Het Weekend van de Rollende Keukens.');
 		$settings->put('general_login_text_en', 'Click login if you participated in Het Weekend van de Rollende Keukens in 2018');
 		
