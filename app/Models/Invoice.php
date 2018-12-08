@@ -19,6 +19,13 @@ class Invoice extends Model {
 		'paid' => 'boolean'
 	];
 	
+	protected static function boot() {
+		parent::boot();
+		static::deleted(function ($invoice) {
+			$invoice->items->each->delete();
+		});
+	}
+	
 	static function getNumber() {
 		$year = app('settings')->get('registration_year');
 		$number = static::where('prefix', $year)->count() + 1;

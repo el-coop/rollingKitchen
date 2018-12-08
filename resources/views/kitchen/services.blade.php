@@ -23,3 +23,12 @@
 		@include('kitchen.services.services')
 	</div>
 </div>
+<div class="buttons has-content-justified-center">
+	@if($application->isOpen())
+		<confirmation-submit label="@lang('kitchen/kitchen.submitReview')"
+							 title="@lang('kitchen/kitchen.submitConfirmTitle')"
+							 subtitle="@lang('kitchen/kitchen.submitConfirmSubtitle')" yes-text="@lang('global.yes')"
+							 no-text="@lang('global.no')" name="review" value="1"
+							 id="reviewButton"></confirmation-submit>
+	@endif
+</div>
