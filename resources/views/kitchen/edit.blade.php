@@ -22,8 +22,9 @@
 					@lang('global.save')
 				</button>
 				<confirmation-submit button-class="is-danger" label="@lang('global.delete')"
-									 title="This will delete all the data you ever inserted into this app and the user"
-									 subtitle="Are you sure you want to do this?" yes-text="@lang('global.yes')"
+									 title="@lang('kitchen/kitchen.deleteConfirmTitle')"
+									 subtitle="@lang('kitchen/kitchen.deleteConfirmSubtitle')"
+									 yes-text="@lang('global.yes')"
 									 no-text="@lang('global.no')" name="_method" value="delete"></confirmation-submit>
 			</template>
 		</tabs>
