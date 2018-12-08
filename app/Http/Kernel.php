@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\KitchenRegistrationOpen;
 use App\Http\Middleware\LocaleMiddleware;
 use App\Http\Middleware\UserType;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -62,7 +63,8 @@ class Kernel extends HttpKernel {
 		'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
 		'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
 		'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-		'userType' => UserType::class
+		'userType' => UserType::class,
+		'kitchenRegistrationOpen' => KitchenRegistrationOpen::class,
 	];
 	
 	/**

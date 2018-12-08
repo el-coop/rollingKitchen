@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('title',__('kitchen/kitchen.services'))
+@section('title',__('global.welcome'))
 
 
 @section('content')
@@ -14,15 +14,21 @@
                 <div class="card is-flex is-column h-100">
                     <div class="card-content fill-parent">
                         <p class="title">
-                        {{$registrationText}}
+                            {{$registrationText}}
                         </p>
 
                     </div>
 
                     <footer class="card-footer">
-                        <a href="{{action('Kitchen\KitchenController@create')}}" class="card-footer-item button is-dark is-size-3">
+                        <a href="{{$registrationOpen ? action('Kitchen\KitchenController@create') : '#' }}" {{$registrationOpen ? '' : 'disabled'}}
+                           class="card-footer-item button is-dark is-size-3">
 
-                            @lang('global.register')
+
+                            @if($registrationOpen)
+                                @lang('global.register')
+                            @else
+                                @lang('admin/settings.closed')
+                            @endif
 
                         </a>
                     </footer>
@@ -41,7 +47,8 @@
                     </div>
 
                     <footer class="card-footer">
-                        <a href="{{action('Auth\LoginController@showLoginForm')}}" class="card-footer-item button is-dark is-size-3">
+                        <a href="{{action('Auth\LoginController@showLoginForm')}}"
+                           class="card-footer-item button is-dark is-size-3">
 
                             @lang('global.login')
 
