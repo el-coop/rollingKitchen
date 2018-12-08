@@ -12,6 +12,8 @@ Route::group(['prefix' => 'kitchen', 'namespace' => 'Kitchen'], function () {
 		
 		Route::get('/{kitchen}', 'KitchenController@edit');
 		Route::patch('/{kitchen}', 'KitchenController@update');
+		Route::delete('/{kitchen}', 'KitchenController@destroy');
+		
 		
 		Route::post('/{kitchen}/photo', 'KitchenController@storePhoto');
 		Route::delete('/{kitchen}/photo/{photo}', 'KitchenController@destroyPhoto');

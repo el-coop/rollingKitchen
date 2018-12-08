@@ -14,12 +14,13 @@
 		<div class="box">
 			<slot></slot>
 			<div class="buttons mt-1 has-content-justified-center" v-if="paginationButtons">
-				<button class="button is-dark" @click="showPrev()"
+				<button class="button is-dark" @click="showPrev()" v-if="selected > 0"
 						type="button" v-html="$translations.previous">
 				</button>
-				<button class="button is-dark" @click="showNext()"
+				<button class="button is-dark" @click="showNext()" v-if="selected !== views.length-1"
 						type="button" v-html="$translations.next">
 				</button>
+				<slot name="buttons"></slot>
 			</div>
 		</div>
 	</div>
