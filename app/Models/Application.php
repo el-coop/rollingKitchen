@@ -10,6 +10,15 @@ class Application extends Model {
 	
 	use HasFields;
 	
+	protected static function boot() {
+		parent::boot();
+		static::deleted(function ($application) {
+			$application->services()->sync([]);
+			$application->products->each->delete();
+			$application->electricDevices->each->delete();
+		});
+	}
+	
 	protected $casts = [
 		'data' => 'array'
 	];
@@ -79,7 +88,8 @@ class Application extends Model {
 	}
 	
 	public function isOpen() {
-		return ($this->status == 'new' || $this->status == 'reopened') && $this->year == app('settings')->get('registration_year');
+		$settings = app('settings');
+		return ($this->status == 'new' || $this->status == 'reopened') && $this->year == $settings->get('registration_year') && $settings->get('general_registration_status');
 	}
 	
 	public function setNumber() {

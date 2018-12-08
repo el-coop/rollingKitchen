@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Kitchen;
 
 use App;
 use App\Http\Requests\Kitchen\CreateKitchenRequest;
+use App\Http\Requests\Kitchen\DestroyKitchenRequest;
 use App\Http\Requests\Kitchen\Photo\UploadPhotoRequest;
 use App\Http\Requests\Kitchen\UpdateKitchenRequest;
 use App\Models\Application;
@@ -90,11 +91,13 @@ class KitchenController extends Controller {
 	/**
 	 * Remove the specified resource from storage.
 	 *
+	 * @param DestroyKitchenRequest $request
 	 * @param  \App\Models\Kitchen $kitchen
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy(Kitchen $kitchen) {
-		//
+	public function destroy(DestroyKitchenRequest $request, Kitchen $kitchen) {
+		$request->commit();
+		return redirect()->action('HomeController@show');
 	}
 	
 	public function destroyPhoto(Kitchen $kitchen, Photo $photo) {

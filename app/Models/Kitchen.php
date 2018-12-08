@@ -9,6 +9,16 @@ class Kitchen extends Model {
 	
 	use HasFields;
 	
+	protected static function boot() {
+		parent::boot();
+		static::deleted(function ($kitchen) {
+			$kitchen->user->delete();
+			$kitchen->applications->each->delete();
+			$kitchen->photos->each->delete();
+		});
+	}
+	
+	
 	protected $casts = [
 		'data' => 'array'
 	];

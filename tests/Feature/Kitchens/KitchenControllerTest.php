@@ -37,7 +37,7 @@ class KitchenControllerTest extends TestCase {
 		});
 		$settings = app('settings');
 		$settings->put('general_registration_status', true);
-		$this->app->settings->put('registration_year', 2018);
+		$settings->put('registration_year', 2018);
 
 		$this->user = factory(User::class)->make();
 		factory(Kitchen::class)->create()->user()->save($this->user);
@@ -715,7 +715,7 @@ class KitchenControllerTest extends TestCase {
 		]);
 		$this->assertDatabaseMissing('application_service', [
 			'application_id' => $application->id,
-			'service_id' => 0	,
+			'service_id' => 0,
 			'quantity' => 1
 		]);
 	}
@@ -760,4 +760,53 @@ class KitchenControllerTest extends TestCase {
 		$this->actingAs($this->user)->get(action('Kitchen\KitchenController@edit', $this->user->user))
 			->assertDontSee(__('kitchen/kitchen.pastApplications'));
 	}
+	
+	public function test_kitchen_can_delete_self_and_all_applications() {
+		$pastApplication = factory(Application::class)->make(['year' => '2012']);
+		$this->user->user->applications()->save($pastApplication);
+		$this->actingAs($this->user)->delete(action('Kitchen\KitchenController@destroy', $this->user->user))
+			->assertRedirect(action('HomeController@show'));
+		
+		$this->assertDatabaseMissing('users', [
+			'user_type' => Kitchen::class,
+			'user_id' => $this->user->user->id
+		]);
+		
+		$this->assertDatabaseMissing('applications', [
+			'kitchen_id' => $this->user->user->id
+		]);
+		
+		$this->assertDatabaseMissing('kitchens', [
+			'id' => $this->user->user->id
+		]);
+	}
+	
+	public function test_guest_cant_delete_kitchen_and_application() {
+		$this->delete(action('Kitchen\KitchenController@destroy', $this->user->user))
+			->assertRedirect(action('Auth\LoginController@showLoginForm'));
+		
+		$this->assertDatabaseHas('users', [
+			'user_type' => Kitchen::class,
+			'user_id' => $this->user->user->id
+		]);
+		
+		$this->assertDatabaseHas('kitchens', [
+			'id' => $this->user->user->id
+		]);
+	}
+	
+	public function test_other_kitchen_cant_delete_kitchen_and_application() {
+		$this->actingAs($this->user1)->delete(action('Kitchen\KitchenController@destroy', $this->user->user))
+			->assertForbidden();
+		
+		$this->assertDatabaseHas('users', [
+			'user_type' => Kitchen::class,
+			'user_id' => $this->user->user->id
+		]);
+		
+		$this->assertDatabaseHas('kitchens', [
+			'id' => $this->user->user->id
+		]);
+	}
+	
 }
