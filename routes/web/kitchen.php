@@ -3,7 +3,7 @@
 
 Route::group(['prefix' => 'kitchen', 'namespace' => 'Kitchen'], function () {
 	
-	Route::group(['middleware' => ['guest']], function () {
+	Route::group(['middleware' => ['guest', 'kitchenRegistrationOpen']], function () {
 		Route::get('register', 'KitchenController@create');
 		Route::post('register', 'KitchenController@store');
 	});

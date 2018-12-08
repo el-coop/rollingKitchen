@@ -15,7 +15,7 @@
 								@if($loop->first || ($loop->iteration >= (1+$loop->count/2) && $loop->iteration < (2+$loop->count/2)) )
 									<div class="column">
 										@endif
-										@component('admin.settings.componenets.setting', ['name' => $key])
+										@component('admin.settings.components.setting', ['name' => $key])
 											@switch($key)
 												@case('registration_year')
 												<input class="input" type="text" name="{{$key}}" readonly

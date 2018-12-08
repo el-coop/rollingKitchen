@@ -4,10 +4,13 @@ return [
 	'settings' => 'Settings',
 	'files' => 'Files',
 	'chooseFile' => 'Choose a file',
+	'closed' => 'Closed',
 	
 	'registration_year' => 'Registration Year',
 	'general_registration_status' => 'Open Registration',
 	'general_registration_text_en' => 'Registration Text EN',
+	'general_registration_closed_text_nl' =>'Text registration closed NL',
+    'general_registration_closed_text_en' => 'Text registration closed EN',
 	'general_login_text_en' => 'Login Text EN',
 	'general_registration_text_nl' => 'Registration Text NL',
 	'general_login_text_nl' => 'Login Text NL',
