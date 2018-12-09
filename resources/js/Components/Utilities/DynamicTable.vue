@@ -148,7 +148,10 @@
 					return this.$translations[value];
 				}
 				if (column.callback) {
-					return this[column.callback](value);
+					const callbacks = column.callback.split('|')
+					callbacks.forEach((callback) => {
+						value = this[callback](value, column.callbackOptions);
+					});
 				}
 				return value;
 			},
@@ -219,7 +222,8 @@
 						value: this.object[column.name] || '',
 						type: column.type || 'text',
 						subType: column.subType || '',
-						options: column.options || {}
+						options: column.options || {},
+						icon: column.icon || false,
 					});
 				}
 

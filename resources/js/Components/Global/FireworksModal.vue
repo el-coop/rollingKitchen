@@ -1,7 +1,10 @@
 <template>
 	<modal-component name="fireworks">
-		<div class="pyro has-text-white has-text-centered is-size-4 has-background-black" v-html="text">
+		<div class="has-text-centered is-size-4" v-html="text">
 		</div>
+		<figure class="image is-4by3">
+			<img src="/images/welcome.gif">
+		</figure>
 		<div class="buttons">
 			<button class="button is-fullwidth" @click="$modal.hide('fireworks')" v-text="$translations.close"></button>
 		</div>
