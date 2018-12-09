@@ -12,9 +12,9 @@ class CreateServiceRequest extends FormRequest {
 	 * @return bool
 	 */
 	public function authorize() {
-		return true;
+		return $this->user()->can('create', Service::class);
 	}
-	
+
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -29,20 +29,20 @@ class CreateServiceRequest extends FormRequest {
 			'price' => 'required|numeric',
 		];
 	}
-	
+
 	public function commit() {
 		$service = new Service;
-		
+
 		$service->name_nl = $this->input('name_nl');
 		$service->name_en = $this->input('name_en');
 		$service->category = $this->input('category');
 		$service->type = $this->input('type');
 		$service->price = $this->input('price');
-		
-		
+
+
 		$service->save();
-		
-		
+
+
 		return [
 			'id' => $service->id,
 			'name_nl' => $this->input('name_nl'),

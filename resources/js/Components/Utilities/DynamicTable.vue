@@ -223,7 +223,8 @@
 							value: typeof this.object[column.name] === 'undefined' ? '' : this.object[column.name],
 							type: column.type || 'text',
 							subType: column.subType || '',
-							options: column.options || {}
+							options: column.options || {},
+							icon: column.icon || false,
 						});
 					}
 				}

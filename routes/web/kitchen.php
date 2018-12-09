@@ -3,6 +3,9 @@
 
 Route::group(['prefix' => 'kitchen', 'namespace' => 'Kitchen'], function () {
 	
+	Route::get('pdf/{pdf}', 'KitchenController@showPdf');
+	
+	
 	Route::group(['middleware' => ['guest', 'kitchenRegistrationOpen']], function () {
 		Route::get('register', 'KitchenController@create');
 		Route::post('register', 'KitchenController@store');

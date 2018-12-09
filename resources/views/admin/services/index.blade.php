@@ -6,6 +6,7 @@
 
     <div>
         @component('components.datatable')
+            @slot('deleteButton', true)
             @slot('buttons')
                 <button class="button is-light" @click="actions.newObjectForm">@lang('admin/services.add')</button>
                 <a href="{{action('Admin\ServiceController@export')}}" class="button is-info">@lang('admin/services.download_application_services')</a>

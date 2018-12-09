@@ -5,20 +5,19 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		Route::group(['prefix' => 'kitchens'], function () {
 			Route::get('/', 'KitchenController@index');
 			Route::get('/{kitchen}', 'KitchenController@show');
+			Route::delete('/delete/{kitchen}', 'KitchenController@destroy');
 			Route::get('/edit/{kitchen}', 'KitchenController@edit');
 			Route::patch('/edit/{kitchen}', 'KitchenController@update');
 		});
 		
 		Route::group(['prefix' => 'services'], function () {
-			
 			Route::get('/', 'ServiceController@index');
 			Route::get('/edit', 'ServiceController@create');
 			Route::post('/edit', 'ServiceController@store');
 			Route::patch('/edit/{service}', 'ServiceController@update');
 			Route::get('/edit/{service}', 'ServiceController@edit');
 			Route::get('/export', 'ServiceController@export');
-			
-			
+			Route::delete('/delete/{service}', 'ServiceController@destroy');
 		});
 		
 		Route::group(['prefix' => 'field'], function () {

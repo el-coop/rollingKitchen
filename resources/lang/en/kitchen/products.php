@@ -3,7 +3,6 @@
 return [
 	'product' => 'Product',
 	'price' => 'Price',
-	'food' => 'Food',
-	'drinks' => 'Drinks',
+	'menu' => 'Menu',
 	'other' => 'Other'
 ];

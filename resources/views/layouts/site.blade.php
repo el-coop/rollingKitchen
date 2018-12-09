@@ -2,7 +2,7 @@
 
 @section('body')
 	<main>
-		<navbar title="@lang('global.title')" :menu="false" class="is-dark" :fluid="false">
+		<navbar title="@lang('global.title')" :menu="false" class="is-contrast-background" :fluid="false">
 			@auth
 				@component('components.logout', [
 					'class' => ''
