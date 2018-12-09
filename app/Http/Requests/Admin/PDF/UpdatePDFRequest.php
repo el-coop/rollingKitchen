@@ -4,16 +4,16 @@ namespace App\Http\Requests\Admin\PDF;
 
 use App\Models\Pdf;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Storage;
 
-class UploadPDFRequest extends FormRequest {
+class UpdatePDFRequest extends FormRequest {
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
 	 * @return bool
 	 */
 	public function authorize() {
-		return $this->user()->can('create', Pdf::class);
+		$this->pdf = $this->route('pdf');
+		return $this->user()->can('update', $this->pdf);
 	}
 	
 	/**
@@ -23,19 +23,15 @@ class UploadPDFRequest extends FormRequest {
 	 */
 	public function rules() {
 		return [
-			'file' => 'required|file',
 			'name' => 'required|string|unique:pdfs',
 			'visibility' => 'required|in:0,1,2'
 		];
 	}
 	
 	public function commit() {
-		$path = $this->file('file')->store('public/pdf');
-		$pdf = new Pdf;
-		$pdf->file = basename($path);
-		$pdf->name = $this->input('name');
-		$pdf->visibility = $this->input('visibility');
-		$pdf->save();
-		return $pdf;
+		$this->pdf->name = $this->input('name');
+		$this->pdf->visibility = $this->input('visibility');
+		$this->pdf->save();
+		return $this->pdf;
 	}
 }

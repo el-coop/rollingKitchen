@@ -11,5 +11,6 @@ return [
 	'kitchenInformation' => 'Kitchen Information',
 	'services' => 'Services',
 	'pastApplications' => 'Past Applications',
-	'photoValidation' => 'You must upload photos or fill at least on of the following: website/facebook/instagram'
+	'photoValidation' => 'You must upload photos or fill at least on of the following: website/facebook/instagram',
+	'pdfsTitle' => 'Files for your consideration'
 ];
