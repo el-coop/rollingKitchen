@@ -148,9 +148,9 @@
 					return this.$translations[value];
 				}
 				if (column.callback) {
-					const callbacks = column.callback.split('|')
+					const callbacks = column.callback.split('|');
 					callbacks.forEach((callback) => {
-						value = this[callback](value, column.callbackOptions);
+						value = this[callback](value, column);
 					});
 				}
 				return value;

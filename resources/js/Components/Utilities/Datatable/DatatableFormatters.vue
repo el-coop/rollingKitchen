@@ -26,8 +26,8 @@
 				return `<span class="tag is-danger">${this.$translations.unpaid}</span>`;
 			},
 
-			prefix(value, {prefix}) {
-				return `${prefix}${value}`
+			prefix(value, {callbackOptions}) {
+				return `${callbackOptions.prefix}${value}`
 			}
 		}
 	}

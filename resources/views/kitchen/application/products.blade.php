@@ -12,7 +12,7 @@
 	subType: 'number',
 	type: 'text',
 	icon: 'euro-sign',
-	callbackOptions: {prefix: '€ '},
+	callbackOptions: {prefix: '€'},
 	callback: 'localNumber|prefix'
 }]" :init-fields="{{ $application->products()->where('category',$category)->get() }}"
 					   @if($application->isOpen()) action="/kitchen/applications/{{$application->id}}/products" @endif
