@@ -21,9 +21,10 @@
     name: 'file',
     label: '@lang('admin/settings.chooseFile')',
     type: 'file',
-    invisible: true
+    invisible: true,
+    edit: false
 }]" :init-fields="{{$pdfs}}" action="{{action('Admin\PDFController@upload')}}"
-					   :headers="{'Content-Type': 'multipart/form-data'}" :edit="false">
+					   :headers="{'Content-Type': 'multipart/form-data'}">
 		</dynamic-table>
 	</div>
 @endsection

@@ -148,7 +148,10 @@
 					return this.$translations[value];
 				}
 				if (column.callback) {
-					return this[column.callback](value, column);
+					const callbacks = column.callback.split('|');
+					callbacks.forEach((callback) => {
+						value = this[callback](value, column);
+					});
 				}
 				return value;
 			},
@@ -213,14 +216,16 @@
 
 				for (const prop in this.columns) {
 					const column = this.columns[prop];
-					fields.push({
-						name: column.name,
-						label: column.label,
-						value: this.object[column.name] || '',
-						type: column.type || 'text',
-						subType: column.subType || '',
-						options: column.options || {}
-					});
+					if (!Object.keys(this.object).length || column.edit !== false) {
+						fields.push({
+							name: column.name,
+							label: column.label,
+							value: typeof this.object[column.name] === 'undefined' ? '' : this.object[column.name],
+							type: column.type || 'text',
+							subType: column.subType || '',
+							options: column.options || {}
+						});
+					}
 				}
 
 				return fields;

@@ -36,7 +36,8 @@
 
 		data() {
 			return {
-				errors: {}
+				errors: {},
+				realMethod: this.method
 			}
 		},
 		methods: {
@@ -49,6 +50,9 @@
 				}
 				if (this.headers['Content-type'] === 'application/json') {
 					return this.jsonify(data);
+				} else if (this.method !== 'post' && this.method !== 'get') {
+					data.append('_method', this.method);
+					this.realMethod = "post";
 				}
 				return data;
 			},
@@ -75,9 +79,9 @@
 			},
 
 			async submit() {
-				this.clearErrors();
-				let response;
 				const data = this.getData();
+				let response;
+
 				const options = {
 					headers: this.headers,
 				};
@@ -88,16 +92,16 @@
 				} else {
 					this.$emit('submitting');
 				}
-
-
 				try {
-					response = await axios[this.method](this.action, data, options);
+					response = await axios[this.realMethod](this.action, data, options);
 				} catch (error) {
 					response = error.response;
 					if (response.data.errors) {
 						this.formatErrors(response.data.errors);
 					}
 				}
+
+				this.realMethod = this.method;
 				this.$emit('submitted', response);
 			},
 
