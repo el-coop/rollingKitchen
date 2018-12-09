@@ -39,6 +39,11 @@
 	width: 32px;
 }
 
+.is-contrast-background {
+	background-color: $contrast-bg;
+	color: whitesmoke;
+}
+
 @media #{$under-tablet} {
 	main > .container {
 		margin-left: 5px;

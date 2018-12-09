@@ -1,16 +1,20 @@
 .field.has-addons.are-labels {
 	label.button {
 		height: 100%;
-
+		border-bottom-right-radius: 4px !important;
+		border-top-right-radius: 4px !important;
+		z-index: 2;
 	}
 
 	.input {
 		height: 100%;
 
 		&.is-short-numeric {
+			border-radius: 4px;
+			box-shadow: inset -1px 1px 2px rgba(10, 10, 10, 0.1);;
 		}
 
-		width: 75px;
+		width: 60px;
 	}
 
 	.button {
@@ -18,5 +22,9 @@
 		height: auto;
 		white-space: normal;
 		background-color: white;
+
+		&.is-static {
+			border: none;
+		}
 	}
 }

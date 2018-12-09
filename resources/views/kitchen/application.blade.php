@@ -1,7 +1,7 @@
 <div class="columns">
 	<div class="column">
 		@include('kitchen.application.dimensions')
-		<dynamic-fields :fields="{{ $application->fulldata->map(function($item) use($errors, $application){
+		<dynamic-fields class="mt-1" :fields="{{ $application->fulldata->map(function($item) use($errors, $application){
 	$fieldName = str_replace(']','',str_replace('[','.',$item['name']));
 
 	$item['value'] = old($fieldName, $item['value']);
