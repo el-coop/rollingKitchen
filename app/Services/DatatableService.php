@@ -70,7 +70,7 @@ class DatatableService implements FromCollection, WithHeadings {
 			$fieldName = $field['name'];
 
 			if (strpos($fieldName, 'count') !== 0) {
-				if (strpos($fieldName, 'component') === false) {
+				if (strpos($fieldName, 'slot') === false) {
 					$tableName = isset($field['table']) ? "{$field['table']}." : '';
 					$selects[] = "{$tableName}{$fieldName}";
 				}

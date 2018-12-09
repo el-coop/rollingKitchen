@@ -43,7 +43,7 @@ return [
 		],
 		'callback' => 'numToBoolTag'
 	],[
-		'name' => '__component:delete-button',
+		'name' => '__slot:delete',
 		'title' => 'global.delete'
 	]]
 ];
