@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\Admin\Service\CreateServiceRequest;
+use App\Http\Requests\Admin\Service\DestroyServiceRequest;
 use App\Http\Requests\Admin\Service\UpdateServiceRequest;
 use App\Models\Kitchen;
 use App\Models\Service;
@@ -46,5 +47,9 @@ class ServiceController extends Controller {
     public function export(Excel $excel, KitchenServicesService $kitchenServicesService){
         return $excel->download($kitchenServicesService, __('admin/services.kitchenServices') . '.xls');
     }
+
+    public function destroy(DestroyServiceRequest $request, Service $service){
+		$request->commit();
+	}
 
 }

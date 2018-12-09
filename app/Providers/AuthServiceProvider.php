@@ -9,12 +9,14 @@ use App\Models\Field;
 use App\Models\Invoice;
 use App\Models\Kitchen;
 use App\Models\Pdf;
+use App\Models\Service;
 use App\Policies\ApplicationPolicy;
 use App\Policies\ErrorPolicy;
 use App\Policies\FieldPolicy;
 use App\Policies\InvoicePolicy;
 use App\Policies\KitchenPolicy;
 use App\Policies\PDFPOlicy;
+use App\Policies\ServicePolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -30,7 +32,8 @@ class AuthServiceProvider extends ServiceProvider {
 		Application::class => ApplicationPolicy::class,
 		Pdf::class => PDFPOlicy::class,
 		Invoice::class => InvoicePolicy::class,
-		Error::class => ErrorPolicy::class
+		Error::class => ErrorPolicy::class,
+		Service::class => ServicePolicy::class
 	];
 
 	/**

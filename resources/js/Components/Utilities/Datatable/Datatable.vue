@@ -24,6 +24,11 @@
                               @vuetable:pagination-data="paginationData"
                               @vuetable:loading='tableLoading'
                               @vuetable:loaded='tableLoaded'>
+                        <template :v-if="deleteSlot" slot="delete" slot-scope="props">
+                            <ajax-form method='delete' :action="deleteAction + props.rowData.id" scope="props">
+                                <button type="submit" class="button is-danger" v-text="$translations.delete"></button>
+                            </ajax-form>
+                        </template>
                     </vuetable>
                 </div>
                 <div class="level">
@@ -59,6 +64,8 @@
     import DatatableFilter from './DatatableFilter';
     import DatatableFormatters from './DatatableFormatters';
     import DatatableRowDisplay from "./DatatableRowDisplay";
+    import AjaxForm from '../../Form/AjaxForm';
+
 
     export default {
         name: 'Datatable',
@@ -68,7 +75,8 @@
             DatatableFilter,
             Vuetable,
             VuetablePaginationInfo,
-            VuetablePagination
+            VuetablePagination,
+            AjaxForm
         },
         props: {
             url: {
@@ -108,6 +116,12 @@
 
             editWidth: {
                 default: 600
+            },
+            deleteSlot: {
+                type: Boolean,
+                default(){
+                    return false
+                }
             }
         },
 
@@ -138,6 +152,12 @@
 
         methods: {
             calcFields(settings) {
+                if (this.deleteSlot){
+                    settings.push({
+                        name: '__slot:delete',
+                        title: this.$translations.delete
+                    })
+                }
                 return settings.map((field) => {
                     if (field.callback) {
                         field.callback = this[field.callback].bind(this)
@@ -188,11 +208,15 @@
                 });
             },
             rowClicked(data, event) {
-                this.$modal.show('datatable-row');
-                this.object = data;
-                this.$bus.$emit('vuetable-row-clicked', {
-                    data, event
-                });
+                if (event.srcElement.className !== 'button is-danger') {
+                    this.$modal.show('datatable-row');
+                    this.object = data;
+                    this.$bus.$emit('vuetable-row-clicked', {
+                        data, event
+                    });
+                } else {
+                    this.deleteObject(data)
+                }
             },
             updateObject(data) {
                 this.object = {...this.object, ...data};
@@ -210,14 +234,20 @@
             deleteObject(data) {
                 this.$modal.hide('datatable-row');
                 this.object = {...this.object, ...data};
-                const currentData =  this.$refs.table.tableData;
-                let objectIndex = currentData.findIndex((item)=> {
+                const currentData = this.$refs.table.tableData;
+                let objectIndex = currentData.findIndex((item) => {
                     return item.id === this.object.id;
                 });
-                currentData.splice(objectIndex,1);
+                currentData.splice(objectIndex, 1);
                 this.$refs.table.setData(currentData);
             }
         },
+        computed: {
+            deleteAction: function(){
+                return window.location.pathname + '/delete/';
+            }
+
+        }
 
     }
 </script>

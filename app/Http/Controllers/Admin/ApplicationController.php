@@ -21,7 +21,7 @@ class ApplicationController extends Controller {
 			'year' => app('settings')->get('registration_year')
 		]);
 		$title = __('admin/applications.applications');
- 		return view('admin.datatableDefault', compact('fieldType','filters','title'));
+ 		return view('admin.datatableDefault', compact('fieldType','filters','title' ));
 	}
 
 	/**

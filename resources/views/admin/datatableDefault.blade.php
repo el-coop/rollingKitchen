@@ -5,6 +5,9 @@
 @section('content')
 	<div>
 		@component('components.datatable')
+			@isset($deleteButton)
+				@slot('deleteButton', $deleteButton)
+			@endisset
 			@slot('buttons')
 				@if(isset($fieldType))
 					<a class="button is-light"
