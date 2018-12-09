@@ -153,6 +153,12 @@
 
         methods: {
             calcFields(settings) {
+                if (this.deleteSlot){
+                    settings.push({
+                        name: '__slot:delete',
+                        title: this.$translations.delete
+                    })
+                }
                 return settings.map((field) => {
                     if (field.callback) {
                         field.callback = this[field.callback].bind(this)

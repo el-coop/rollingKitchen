@@ -42,8 +42,5 @@ return [
 			'no' => ['0', 0],
 		],
 		'callback' => 'numToBoolTag'
-	],[
-		'name' => '__slot:delete',
-		'title' => 'global.delete'
 	]]
 ];

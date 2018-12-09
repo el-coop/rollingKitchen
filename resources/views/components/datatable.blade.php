@@ -34,7 +34,7 @@ if (!isset($fields)) {
 		   }"
            :init-filters="{{ $filters ?? '{}' }}"
             @isset($deleteButton)
-                :delete="true"
+                :delete-slot="true"
             @endif
 >
     @isset($buttons)
