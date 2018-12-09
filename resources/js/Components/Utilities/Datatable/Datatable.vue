@@ -24,6 +24,11 @@
                               @vuetable:pagination-data="paginationData"
                               @vuetable:loading='tableLoading'
                               @vuetable:loaded='tableLoaded'>
+                        <template slot="delete" slot-scope="props">
+                            <ajax-form method='delete' :action="deleteAction + props.rowData.id" scope="props">
+                                <button type="submit" class="button is-danger">Delete</button>
+                            </ajax-form>
+                        </template>
                     </vuetable>
                 </div>
                 <div class="level">
@@ -59,10 +64,8 @@
     import DatatableFilter from './DatatableFilter';
     import DatatableFormatters from './DatatableFormatters';
     import DatatableRowDisplay from "./DatatableRowDisplay";
-    import Vue from 'vue'
-    import DeleteButton from './DeleteButton'
+    import AjaxForm from '../../Form/AjaxForm';
 
-    Vue.component('delete-button', DeleteButton);
 
     export default {
         name: 'Datatable',
@@ -73,7 +76,7 @@
             Vuetable,
             VuetablePaginationInfo,
             VuetablePagination,
-            DeleteButton
+            AjaxForm
         },
         props: {
             url: {
@@ -132,7 +135,8 @@
                 exportOptions: '',
                 buttonActions: {
                     newObjectForm: this.newObjectForm
-                }
+                },
+                deleteAction: ''
             }
         },
 
@@ -193,12 +197,15 @@
                 });
             },
             rowClicked(data, event) {
+                console.log(data);
                 if (event.srcElement.className !== 'button is-danger') {
                     this.$modal.show('datatable-row');
                     this.object = data;
                     this.$bus.$emit('vuetable-row-clicked', {
                         data, event
                     });
+                } else {
+                    this.$refs.table.refresh();
                 }
             },
             updateObject(data) {
@@ -225,6 +232,10 @@
                 this.$refs.table.setData(currentData);
             }
         },
+        mounted(){
+            this.deleteAction = window.location.pathname + '/delete/'
+
+        }
 
     }
 </script>
