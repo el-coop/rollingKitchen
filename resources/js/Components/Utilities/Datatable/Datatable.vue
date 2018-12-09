@@ -24,7 +24,7 @@
                               @vuetable:pagination-data="paginationData"
                               @vuetable:loading='tableLoading'
                               @vuetable:loaded='tableLoaded'>
-                        <template slot="delete" slot-scope="props">
+                        <template :v-if="deleteSlot" slot="delete" slot-scope="props">
                             <ajax-form method='delete' :action="deleteAction + props.rowData.id" scope="props">
                                 <button type="submit" class="button is-danger">Delete</button>
                             </ajax-form>
@@ -116,6 +116,12 @@
 
             editWidth: {
                 default: 600
+            },
+            deleteSlot: {
+                type: Boolean,
+                default(){
+                    return false
+                }
             }
         },
 
