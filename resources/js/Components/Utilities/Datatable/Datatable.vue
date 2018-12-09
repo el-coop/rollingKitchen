@@ -141,8 +141,7 @@
                 exportOptions: '',
                 buttonActions: {
                     newObjectForm: this.newObjectForm
-                },
-                deleteAction: ''
+                }
             }
         },
 
@@ -243,8 +242,10 @@
                 this.$refs.table.setData(currentData);
             }
         },
-        mounted(){
-            this.deleteAction = window.location.pathname + '/delete/'
+        computed: {
+            deleteAction: function(){
+                return window.location.pathname + '/delete/';
+            }
 
         }
 
