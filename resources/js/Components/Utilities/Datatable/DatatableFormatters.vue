@@ -24,6 +24,9 @@
 				}
 				return `<span class="tag is-danger">${this.$translations.unpaid}</span>`;
 			},
+			numerateOptions(value) {
+				return value;
+			}
 		}
 	}
 </script>

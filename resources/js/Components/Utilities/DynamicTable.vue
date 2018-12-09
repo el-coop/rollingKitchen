@@ -148,7 +148,7 @@
 					return this.$translations[value];
 				}
 				if (column.callback) {
-					return this[column.callback](value);
+					return this[column.callback](value, column);
 				}
 				return value;
 			},

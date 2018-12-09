@@ -15,7 +15,7 @@ class CreatePdfsTable extends Migration {
 			$table->increments('id');
 			$table->string('file');
 			$table->string('name');
-			$table->integer('show');
+			$table->integer('visibility');
 			$table->timestamps();
 		});
 	}
