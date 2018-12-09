@@ -33,9 +33,12 @@ if (!isset($fields)) {
 		   		clear: '@lang('datatable.clear')',
 		   }"
            :init-filters="{{ $filters ?? '{}' }}"
-            @isset($deleteButton)
-                :delete-slot="true"
-            @endif
+           @isset($deleteButton)
+            :delete-slot="true"
+           @endif
+           @isset($deleteButtonTxt)
+            delete-btn="{{$deleteButtonTxt}}"
+           @endisset
 >
     @isset($buttons)
         <template slot="buttons" slot-scope="{actions}">{{$buttons}}</template>

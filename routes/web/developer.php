@@ -6,10 +6,10 @@ Route::group(['prefix' => 'developer'], function(){
 
 		Route::get('phpErrors', 'ErrorController@phpErrors');
 		Route::get('phpErrors/edit/{error}', 'ErrorController@show');
-		Route::delete('phpErrors/edit/{error}', 'ErrorController@resolve');
+		Route::delete('phpErrors/delete/{error}', 'ErrorController@resolve');
 
 		Route::get('jsErrors', 'ErrorController@jsErrors');
 		Route::get('jsErrors/edit/{error}', 'ErrorController@show');
-		Route::delete('jsErrors/edit/{error}', 'ErrorController@resolve');
+		Route::delete('jsErrors/delete/{error}', 'ErrorController@resolve');
 	});
 });

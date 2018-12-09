@@ -12,24 +12,29 @@ use Illuminate\Support\Facades\DB;
 
 class ErrorController extends Controller {
 
-	public function storeJsError(LogErrorRequest $request){
+	public function storeJsError(LogErrorRequest $request) {
 		$request->commit();
 	}
 
-	public function jsErrors(){
+	public function jsErrors() {
 		$title = $title = __('developer/errors.js_errors');
-		return view('developer.errorTable', compact('title'));	}
-
-	public function phpErrors(){
-		$title = $title = __('developer/errors.php_errors');
-		return view('developer.errorTable', compact('title'));
+		$deleteButton = true;
+		$deleteButtonTxt = __('developer/errors.resolve');
+		return view('developer.errorTable', compact('title', 'deleteButtonTxt', 'deleteButton'));
 	}
 
-	public function show(Error $error){
+	public function phpErrors() {
+		$title = $title = __('developer/errors.php_errors');
+		$deleteButton = true;
+		$deleteButtonTxt = __('developer/errors.resolve');
+		return view('developer.errorTable', compact('title', 'deleteButtonTxt', 'deleteButton'));
+	}
+
+	public function show(Error $error) {
 		return $error->fullData;
 	}
 
-	public function resolve(ResolveErrorRequest $request,Error $error){
+	public function resolve(ResolveErrorRequest $request, Error $error) {
 		$request->commit();
 		return ['deleted' => true];
 	}

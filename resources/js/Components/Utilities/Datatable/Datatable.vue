@@ -26,7 +26,7 @@
                               @vuetable:loaded='tableLoaded'>
                         <template :v-if="deleteSlot" slot="delete" slot-scope="props">
                             <ajax-form method='delete' :action="deleteAction + props.rowData.id" scope="props">
-                                <button type="submit" class="button is-danger" v-text="$translations.delete"></button>
+                                <button type="submit" class="button is-danger" v-text="deleteBtn"></button>
                             </ajax-form>
                         </template>
                     </vuetable>
@@ -79,6 +79,12 @@
             AjaxForm
         },
         props: {
+            deleteBtn: {
+                type: String,
+                default(){
+                    return this.$translations.delete
+                }
+            },
             url: {
                 required: true,
                 type: String

@@ -14,7 +14,7 @@ class UpdateServiceRequest extends FormRequest {
 	 */
 	public function authorize() {
 		$this->service = $this->route('service');
-		return $this->user()->can('update', Service::class);
+		return $this->user()->can('update', $this->service);
 	}
 
 	/**
