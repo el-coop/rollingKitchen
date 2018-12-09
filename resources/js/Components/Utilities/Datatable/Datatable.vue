@@ -209,7 +209,6 @@
                 });
             },
             rowClicked(data, event) {
-                console.log(data);
                 if (event.srcElement.className !== 'button is-danger') {
                     this.$modal.show('datatable-row');
                     this.object = data;
@@ -217,7 +216,7 @@
                         data, event
                     });
                 } else {
-                    this.$refs.table.refresh();
+                    this.deleteObject(data)
                 }
             },
             updateObject(data) {

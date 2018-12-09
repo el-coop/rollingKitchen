@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Kitchen\DeleteKitchenRequest;
 use App\Http\Requests\Admin\Kitchen\UpdateKitchenRequest;
+use App\Http\Requests\Kitchen\DestroyKitchenRequest;
 use App\Models\Kitchen;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -78,7 +79,7 @@ class KitchenController extends Controller {
 	 * @param  \App\Models\Kitchen $kitchen
 	 * @return void
 	 */
-	public function destroy(DeleteKitchenRequest $request,Kitchen $kitchen) {
+	public function destroy(DestroyKitchenRequest $request,Kitchen $kitchen) {
 		$request->commit();
 	}
 

@@ -18,6 +18,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 			Route::patch('/edit/{service}', 'ServiceController@update');
 			Route::get('/edit/{service}', 'ServiceController@edit');
 			Route::get('/export', 'ServiceController@export');
+			Route::delete('/delete/{service}', 'ServiceController@destroy');
 
 
 		});
