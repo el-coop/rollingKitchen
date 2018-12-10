@@ -90,7 +90,6 @@ class ApplicationInvoiceTest extends TestCase {
 			->assertForbidden();
 	}
 	
-	
 	public function test_admin_loads_new_invoice_form() {
 		$settings = app('settings');
 		$language = $this->kitchen->language;
@@ -272,6 +271,107 @@ class ApplicationInvoiceTest extends TestCase {
 		
 		Queue::assertPushed(SendInvoice::class);
 		
+	}
+	
+	public function test_updates_services_count_with_new_invoice() {
+		
+		Queue::fake();
+		$services = factory(Service::class, 2)->create()->each(function ($service) {
+			$this->application->services()->attach($service, ['quantity' => 2]);
+		});
+		
+		$service = $services->first();
+		
+		$prefix = app('settings')->get('registration_year');
+		$number = Invoice::getNumber();
+		
+		$this->actingAs($this->user)->post(action('Admin\ApplicationInvoiceController@store', $this->application), [
+			'tax' => 21,
+			'recipient' => $this->kitchen->email,
+			'bcc' => $this->user->email,
+			'message' => 'test',
+			'subject' => 'test subject',
+			'items' => [[
+				'quantity' => 3,
+				'unitPrice' => 1,
+				'item' => $service->name_en
+			], [
+				'quantity' => 2,
+				'unitPrice' => 2,
+				'item' => 'test2'
+			]]
+		])->assertSuccessful()->assertJson([
+			'prefix' => $prefix,
+			'number' => $number,
+			'tax' => 21,
+			'application_id' => 1,
+			'amount' => 7,
+			'total' => 8.47,
+			'taxAmount' => 1.47,
+		]);
+		
+		$this->assertDatabaseHas('invoices', [
+			'prefix' => $prefix,
+			'number' => $number,
+			'tax' => 21,
+			'application_id' => 1,
+			'amount' => 7,
+		]);
+		
+		$this->assertDatabaseHas('applications', [
+			'id' => $this->application->id,
+			'number' => 1
+		]);
+		
+		$this->assertEquals(3, $this->application->serviceQuantity($service));
+	}
+	
+	public function test_new_service_relationship_new_invoice() {
+		
+		Queue::fake();
+		$service = factory(Service::class)->create();
+		
+		
+		$prefix = app('settings')->get('registration_year');
+		$number = Invoice::getNumber();
+		
+		$this->actingAs($this->user)->post(action('Admin\ApplicationInvoiceController@store', $this->application), [
+			'tax' => 21,
+			'recipient' => $this->kitchen->email,
+			'bcc' => $this->user->email,
+			'message' => 'test',
+			'subject' => 'test subject',
+			'items' => [[
+				'quantity' => 2,
+				'unitPrice' => 1,
+				'item' => $service->name_en
+			], [
+				'quantity' => 2,
+				'unitPrice' => 2,
+				'item' => 'test2'
+			]]
+		])->assertSuccessful()->assertJson([
+			'prefix' => $prefix,
+			'number' => $number,
+			'tax' => 21,
+			'application_id' => 1,
+			'amount' => 6
+		]);
+		
+		$this->assertDatabaseHas('invoices', [
+			'prefix' => $prefix,
+			'number' => $number,
+			'tax' => 21,
+			'application_id' => 1,
+			'amount' => 6,
+		]);
+		
+		$this->assertDatabaseHas('applications', [
+			'id' => $this->application->id,
+			'number' => 1
+		]);
+		
+		$this->assertEquals(2, $this->application->serviceQuantity($service));
 	}
 	
 	public function test_new_invoice_validation() {
@@ -467,6 +567,131 @@ class ApplicationInvoiceTest extends TestCase {
 		
 	}
 	
+	public function test_updates_services_count_with_edited_invoice() {
+		
+		Queue::fake();
+		$services = factory(Service::class, 2)->create()->each(function ($service) {
+			$this->application->services()->attach($service, ['quantity' => 1]);
+		});
+		
+		$service = $services->first();
+		
+		$invoice = $this->invoices->first();
+		
+		$prefix = app('settings')->get('registration_year');
+		
+		$this->actingAs($this->user)->patch(action('Admin\ApplicationInvoiceController@update', [
+			'application' => $this->application,
+			'invoice' => $invoice
+		]), [
+			'tax' => 21,
+			'recipient' => $this->kitchen->email,
+			'bcc' => $this->user->email,
+			'message' => 'test',
+			'subject' => 'test subject',
+			'items' => [[
+				'quantity' => 2,
+				'unitPrice' => 1,
+				'item' => $service->name_nl
+			], [
+				'quantity' => 2,
+				'unitPrice' => 2,
+				'item' => 'test2'
+			]]
+		])->assertSuccessful()->assertJson([
+			'prefix' => $prefix,
+			'number' => $invoice->number,
+			'tax' => 21,
+			'application_id' => 1,
+			'amount' => 6,
+		]);
+		
+		$this->assertDatabaseHas('invoice_items', [
+			'quantity' => 2,
+			'unit_price' => 1,
+			'name' => $service->name_nl,
+			'invoice_id' => $invoice->id
+		]);
+		
+		$this->assertDatabaseHas('invoice_items', [
+			'quantity' => 2,
+			'unit_price' => 2,
+			'name' => 'test2',
+			'invoice_id' => $invoice->id
+		]);
+		
+		$this->assertDatabaseHas('invoices', [
+			'id' => $invoice->id,
+			'number' => $invoice->number,
+			'tax' => 21,
+			'amount' => 6,
+		]);
+		$this->assertCount(2, $invoice->items);
+		
+		$this->assertEquals(2, $this->application->serviceQuantity($service));
+	}
+	
+	public function test_new_service_relationship_on_updated_invoice() {
+		
+		Queue::fake();
+		$service = factory(Service::class)->create();
+		
+		
+		$invoice = $this->invoices->first();
+		
+		$prefix = app('settings')->get('registration_year');
+		
+		$this->actingAs($this->user)->patch(action('Admin\ApplicationInvoiceController@update', [
+			'application' => $this->application,
+			'invoice' => $invoice
+		]), [
+			'tax' => 21,
+			'recipient' => $this->kitchen->email,
+			'bcc' => $this->user->email,
+			'message' => 'test',
+			'subject' => 'test subject',
+			'items' => [[
+				'quantity' => 3,
+				'unitPrice' => 1,
+				'item' => $service->name_nl
+			], [
+				'quantity' => 2,
+				'unitPrice' => 2,
+				'item' => 'test2'
+			]]
+		])->assertSuccessful()->assertJson([
+			'prefix' => $prefix,
+			'number' => $invoice->number,
+			'tax' => 21,
+			'application_id' => 1,
+			'amount' => 7,
+		]);
+		
+		$this->assertDatabaseHas('invoice_items', [
+			'quantity' => 3,
+			'unit_price' => 1,
+			'name' => $service->name_nl,
+			'invoice_id' => $invoice->id
+		]);
+		
+		$this->assertDatabaseHas('invoice_items', [
+			'quantity' => 2,
+			'unit_price' => 2,
+			'name' => 'test2',
+			'invoice_id' => $invoice->id
+		]);
+		
+		$this->assertDatabaseHas('invoices', [
+			'id' => $invoice->id,
+			'number' => $invoice->number,
+			'tax' => 21,
+			'amount' => 7,
+		]);
+		$this->assertCount(2, $invoice->items);
+		
+		$this->assertEquals(3, $this->application->serviceQuantity($service));
+	}
+	
 	public function test_edit_invoice_validation() {
 		
 		Queue::fake();
@@ -535,33 +760,4 @@ class ApplicationInvoiceTest extends TestCase {
 			'paid' => 0
 		]);
 	}
-	
-	protected function getSocketData($language) {
-		switch ($this->application->socket) {
-			case 1:
-				$data = __('kitchen/services.2X230', [], $language);
-				break;
-			case 2:
-				$data = __('kitchen/services.3x230', [], $language);
-				break;
-			case 3:
-				$data = __('kitchen/services.1x400-16', [], $language);
-				break;
-			case 4:
-				$data = __('kitchen/services.1x400-32', [], $language);
-				break;
-			default:
-				$data = __('kitchen/services.2x400', [], $language);
-		}
-		
-		$data = explode('€', $data);
-		
-		return [
-			'quantity' => 1,
-			'item' => trim($data[0]),
-			'unitPrice' => trim($data[1])
-		];
-	}
-	
-	
 }

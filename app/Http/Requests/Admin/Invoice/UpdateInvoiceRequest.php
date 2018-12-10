@@ -65,6 +65,9 @@ class UpdateInvoiceRequest extends FormRequest {
 				$invoiceItem->service_id = $service->id;
 			}
 			$this->invoice->items()->save($invoiceItem);
+			if ($invoiceItem->service_id) {
+				$application->registerNewServices($service);
+			}
 			$total += $item['quantity'] * $item['unitPrice'];
 		}
 		
