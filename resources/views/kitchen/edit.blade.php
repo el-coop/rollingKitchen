@@ -3,9 +3,7 @@
 @section('title',__('kitchen/kitchen.application'))
 
 @section('content')
-	<div class="notification">
-		{!!  str_replace(PHP_EOL,'<br>',$message) !!}
-	</div>
+	@include('kitchen.message')
 	<form method="post" action="{{ action('Kitchen\KitchenController@update', $kitchen) }}" ref="form">
 		@csrf
 		@method('patch')

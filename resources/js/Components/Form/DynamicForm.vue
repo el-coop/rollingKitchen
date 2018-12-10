@@ -4,7 +4,7 @@
         <div v-if="loading" class="has-text-centered">
             <a class="button is-loading"></a>
         </div>
-        <component v-if="hide.indexOf(field.name) === -1"
+        <component v-if="(hide.indexOf(field.name) === -1)"
                    :error="errors[field.name.replace('[','.').replace(']','')] || null"
                    v-for="(field,key) in fields" :is="`${field.type}-field`"
                    :field="field" :loading="alternativeSubmitting" :key="key">

@@ -216,15 +216,17 @@
 
 				for (const prop in this.columns) {
 					const column = this.columns[prop];
-					fields.push({
-						name: column.name,
-						label: column.label,
-						value: this.object[column.name] || '',
-						type: column.type || 'text',
-						subType: column.subType || '',
-						options: column.options || {},
-						icon: column.icon || false,
-					});
+					if (!Object.keys(this.object).length || column.edit !== false) {
+						fields.push({
+							name: column.name,
+							label: column.label,
+							value: typeof this.object[column.name] === 'undefined' ? '' : this.object[column.name],
+							type: column.type || 'text',
+							subType: column.subType || '',
+							options: column.options || {},
+							icon: column.icon || false,
+						});
+					}
 				}
 
 				return fields;

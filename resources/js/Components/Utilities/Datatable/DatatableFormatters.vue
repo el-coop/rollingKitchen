@@ -13,7 +13,6 @@
 			},
 
 			localNumber(value) {
-				console.log(value);
 				return new Intl.NumberFormat(document.documentElement.lang, {
 					minimumFractionDigits: 2
 				}).format(value);
@@ -25,7 +24,9 @@
 				}
 				return `<span class="tag is-danger">${this.$translations.unpaid}</span>`;
 			},
-
+			numerateOptions(value, {options}) {
+				return options[value];
+			},
 			prefix(value, {callbackOptions}) {
 				return `${callbackOptions.prefix}${value}`
 			}

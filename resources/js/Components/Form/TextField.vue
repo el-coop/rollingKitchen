@@ -5,7 +5,7 @@
 			<input class="input" :class="{'is-danger': error}" :type="field.subType || 'text'" v-model="value"
 				   :name="field.name" step="any" :disabled="field.readonly" :placeholder="field.placeholder || ''">
 			<span class="icon is-small is-left" v-if="field.icon || false" >
-			<font-awesome-icon :icon="field.icon"></font-awesome-icon>
+			<font-awesome-icon :icon="field.icon" size="sm"></font-awesome-icon>
 			</span>
 		</div>
 		<p v-if="error" class="help is-danger" v-text="errorText"></p>
