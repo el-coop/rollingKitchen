@@ -18,7 +18,7 @@ class GenerateInvoiceRequest extends FormRequest {
 	public function authorize() {
 		return $this->user()->can('create', Invoice::class);
 	}
-	
+
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -39,12 +39,12 @@ class GenerateInvoiceRequest extends FormRequest {
 		}
 		return $rules->toArray();
 	}
-	
+
 	public function commit() {
 		$application = $this->route('application');
 		$number = Invoice::getNumber();
 		$prefix = app('settings')->get('registration_year');
-		
+
 		if ($this->input('file_download', false)) {
 			$invoiceService = new InvoiceService($application);
 			$invoice = $invoiceService->generate("{$prefix}-{$number}", $this->input('tax'), $this->input('items'));
@@ -64,18 +64,18 @@ class GenerateInvoiceRequest extends FormRequest {
 			if ($service = Service::where("name_en", $item['item'])->orWhere("name_nl", $item['item'])->first()) {
 				$invoiceItem->service_id = $service->id;
 			}
-			
+
 			$invoice->items()->save($invoiceItem);
-			
+
 			if ($invoiceItem->service_id) {
 				$application->registerNewServices($service);
 			}
 			$total += $item['quantity'] * $item['unitPrice'];
 		}
-		
+
 		$invoice->amount = $total;
 		$invoice->save();
-		
+
 		if (!$this->application->number) {
 			$this->application->setNumber();
 		}
@@ -83,8 +83,7 @@ class GenerateInvoiceRequest extends FormRequest {
 			$this->input('bcc', false),
 			$this->input('accountant', false) ? app('settings')->get('invoices_accountant') : false
 		])->filter());
-		
-		
-		return $invoice;
+
+		return $invoice->with('payments')->first();
 	}
 }

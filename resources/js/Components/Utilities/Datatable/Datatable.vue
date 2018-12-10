@@ -162,6 +162,8 @@
 				if (this.deleteSlot) {
 					settings.push({
 						name: '__slot:delete',
+                        title: this.$translations.delete,
+                        filter: false
 					})
 				}
 				return settings.map((field) => {
