@@ -1,60 +1,60 @@
 <template>
-	<div>
-		<div class="box">
-			<div class="field is-grouped">
-				<div class="buttons">
-					<slot name="buttons" :actions="buttonActions"></slot>
-					<a :href="`${this.url}/export?${exportOptions}`" class="button is-dark"
-					   v-text="$translations.download"></a>
-				</div>
-			</div>
-		</div>
-		<div class="table-wrapper">
-			<div class="table-parent">
-				<div class="table-container">
-					<vuetable ref="table"
-							  pagination-path=""
-							  :api-url="`${url}/list`"
-							  :fields="fields"
-							  :css="css"
-							  :append-params="params"
-							  :per-page="perPage"
-							  @vuetable:cell-clicked="cellClicked"
-							  @vuetable:row-clicked="rowClicked"
-							  @vuetable:pagination-data="paginationData"
-							  @vuetable:loading='tableLoading'
-							  @vuetable:loaded='tableLoaded'>
-						<template :v-if="deleteSlot" slot="delete" slot-scope="props">
-							<ajax-form method='delete' :action="deleteAction + props.rowData.id" scope="props">
-								<button type="submit" class="button is-danger" v-text="$translations.delete"></button>
-							</ajax-form>
-						</template>
-					</vuetable>
-				</div>
-				<div class="level">
-					<div class="level-left">
-						<vuetable-pagination-info class="level-item" ref="paginationInfo"
-												  :info-template="labels.pagination"
-												  :no-data-template="labels.noPagination">
-						</vuetable-pagination-info>
-					</div>
-					<div class="level-right">
-						<vuetable-pagination ref="pagination" class="level-item" :prev-text="labels.prev"
-											 :next-text="labels.next"
-											 @vuetable-pagination:change-page="changePage"></vuetable-pagination>
-					</div>
-				</div>
-			</div>
-			<div class="filter">
-				<datatable-filter :table-fields="fields" @filter="filter" :filter-text="labels.filter"
-								  :filters-text="labels.filters" :clear-text="labels.clear"
-								  :init-filters="initFilters"></datatable-filter>
-			</div>
-		</div>
-		<datatable-row-display :width="editWidth">
-			<slot :object="object" :on-update="updateObject" :on-delete="deleteObject"></slot>
-		</datatable-row-display>
-	</div>
+    <div>
+        <div class="box">
+            <div class="field is-grouped">
+                <div class="buttons">
+                    <slot name="buttons" :actions="buttonActions"></slot>
+                    <a :href="`${this.url}/export?${exportOptions}`" class="button is-dark"
+                       v-text="$translations.download"></a>
+                </div>
+            </div>
+        </div>
+        <div class="table-wrapper">
+            <div class="table-parent">
+                <div class="table-container">
+                    <vuetable ref="table"
+                              pagination-path=""
+                              :api-url="`${url}/list`"
+                              :fields="fields"
+                              :css="css"
+                              :append-params="params"
+                              :per-page="perPage"
+                              @vuetable:cell-clicked="cellClicked"
+                              @vuetable:row-clicked="rowClicked"
+                              @vuetable:pagination-data="paginationData"
+                              @vuetable:loading='tableLoading'
+                              @vuetable:loaded='tableLoaded'>
+                        <template :v-if="deleteSlot" slot="delete" slot-scope="props">
+                            <ajax-form method='delete' :action="deleteAction + props.rowData.id" scope="props">
+                                <button type="submit" class="button is-danger" v-text="deleteBtn"></button>
+                            </ajax-form>
+                        </template>
+                    </vuetable>
+                </div>
+                <div class="level">
+                    <div class="level-left">
+                        <vuetable-pagination-info class="level-item" ref="paginationInfo"
+                                                  :info-template="labels.pagination"
+                                                  :no-data-template="labels.noPagination">
+                        </vuetable-pagination-info>
+                    </div>
+                    <div class="level-right">
+                        <vuetable-pagination ref="pagination" class="level-item" :prev-text="labels.prev"
+                                             :next-text="labels.next"
+                                             @vuetable-pagination:change-page="changePage"></vuetable-pagination>
+                    </div>
+                </div>
+            </div>
+            <div class="filter">
+                <datatable-filter :table-fields="fields" @filter="filter" :filter-text="labels.filter"
+                                  :filters-text="labels.filters" :clear-text="labels.clear"
+                                  :init-filters="initFilters"></datatable-filter>
+            </div>
+        </div>
+        <datatable-row-display :width="editWidth">
+            <slot :object="object" :on-update="updateObject" :on-delete="deleteObject"></slot>
+        </datatable-row-display>
+    </div>
 </template>
 
 <script>
@@ -67,40 +67,47 @@
 	import AjaxForm from '../../Form/AjaxForm';
 
 
-	export default {
-		name: 'Datatable',
-		mixins: [DatatableFormatters],
-		components: {
-			DatatableRowDisplay,
-			DatatableFilter,
-			Vuetable,
-			VuetablePaginationInfo,
-			VuetablePagination,
-			AjaxForm
-		},
-		props: {
-			url: {
-				required: true,
-				type: String
-			},
-			fieldSettings: {
-				type: Array,
-				default() {
-					return [];
-				}
-			},
-			perPageOptions: {
-				type: Array,
-				default() {
-					return [10, 20, 50, 100];
-				}
-			},
-			extraParams: {
-				type: Object,
-				default() {
-					return {};
-				}
-			},
+    export default {
+        name: 'Datatable',
+        mixins: [DatatableFormatters],
+        components: {
+            DatatableRowDisplay,
+            DatatableFilter,
+            Vuetable,
+            VuetablePaginationInfo,
+            VuetablePagination,
+            AjaxForm
+        },
+        props: {
+            deleteBtn: {
+                type: String,
+                default(){
+                    return this.$translations.delete
+                }
+            },
+            url: {
+                required: true,
+                type: String
+            },
+            fieldSettings: {
+                type: Array,
+                default() {
+                    return [];
+                }
+            },
+            perPageOptions: {
+                type: Array,
+                default() {
+                    return [10, 20, 50, 100];
+                }
+            },
+            extraParams: {
+                type: Object,
+                default() {
+                    return {};
+                }
+            },
+
 
 			labels: {
 				type: Object,

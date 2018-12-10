@@ -48,7 +48,7 @@ class Error extends Model {
 			$fullData->push([
 				'name' => 'request',
 				'label' => __('developer\errors.request'),
-				'type' => 'text',
+				'type' => 'json',
 				'value' => $this->error->request,
 
 			]);

@@ -9,7 +9,12 @@ use App\Models\Pdf;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PDFPOlicy {
-	use HandlesAuthorization;
+
+	public function before($user,$ability){
+		if ($user->user_type == Developer::class){
+			return true;
+		}
+	}
 	
 	/**
 	 * Determine whether the user can view the pdf.
@@ -40,7 +45,7 @@ class PDFPOlicy {
 	 * @return mixed
 	 */
 	public function update(User $user, Pdf $pdf) {
-		return $user->user_type == Admin::class || $user->user_type == Developer::class;
+		return $user->user_type == Admin::class;
 		
 	}
 	

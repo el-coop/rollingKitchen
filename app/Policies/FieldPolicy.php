@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Admin;
+use App\Models\Developer;
 use App\Models\Field;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -10,6 +11,11 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class FieldPolicy {
     use HandlesAuthorization;
 
+	public function before($user,$ability){
+		if ($user->user_type == Developer::class){
+			return true;
+		}
+	}
     /**
      * Determine whether the user can view the field.
      *

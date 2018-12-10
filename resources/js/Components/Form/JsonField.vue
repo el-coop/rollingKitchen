@@ -2,7 +2,7 @@
     <div class="field">
         <label class="label" v-text="field.label"></label>
         <div class="control">
-            <vue-json-pretty  :data="JSON.parse(value)" :options="{maxDepth: 100}"></vue-json-pretty>
+            <vue-json-pretty  :data="JSON.parse(value)" :options="{maxDepth: 100}" ></vue-json-pretty>
         </div>
     </div>
 </template>

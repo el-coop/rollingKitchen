@@ -10,6 +10,13 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class ErrorPolicy {
 	use HandlesAuthorization;
 
+
+	public function before($user,$ability){
+		if ($user->user_type == Developer::class){
+			return true;
+		}
+	}
+
 	/**
 	 * Determine whether the user can view the error.
 	 *
@@ -18,7 +25,6 @@ class ErrorPolicy {
 	 * @return mixed
 	 */
 	public function view(User $user) {
-		$user->user_type = Developer::class;
 	}
 
 	/**
@@ -50,7 +56,6 @@ class ErrorPolicy {
 	 * @return mixed
 	 */
 	public function delete(User $user, Error $error) {
-		return $user->user_type == Developer::class;
 	}
 
 	/**

@@ -1,12 +1,18 @@
 <?php
 namespace App\Policies;
 use App\Models\Admin;
+use App\Models\Developer;
 use App\Models\User;
 use App\Models\Kitchen;
 use Illuminate\Auth\Access\HandlesAuthorization;
 class KitchenPolicy {
 	use HandlesAuthorization;
 
+	public function before($user,$ability){
+		if ($user->user_type == Developer::class){
+			return true;
+		}
+	}
 	/**
 	 * Determine whether the user can view the kitchen.
 	 *
