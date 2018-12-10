@@ -21,5 +21,6 @@ return [
 	'date' => 'Date',
 	'togglePaid' => 'Mark as paid',
 	'toggleUnpaid' => 'Mark as unpaid',
-	'number' => 'Number'
+	'number' => 'Number',
+	'invoiceSent' => 'Invoice Sent',
 ];
