@@ -55,7 +55,7 @@ class InvoiceService {
 	}
 	
 	public function getOptions() {
-		$result = Service::all()->map(function ($service) {
+		$result = Service::where('category', '!=', 'socket')->get()->map(function ($service) {
 			return [
 				'item' => $service->{"name_{$this->language}"},
 				'unitPrice' => $service->price
@@ -72,7 +72,7 @@ class InvoiceService {
 			$result = $this->getApplicationData();
 			
 		}
-		$invoicedServices = $this->application->invoicedItems()->select('service_id', DB::raw('COUNT(*) as quantity'))->where('service_id', '!=', null)->groupBy('service_id')->get();
+		$invoicedServices = $this->application->invoicedItems()->select('service_id', DB::raw('SUM(quantity) as quantity'))->where('service_id', '!=', null)->groupBy('service_id')->get();
 		foreach ($this->application->services as $service) {
 			$quanity = $service->pivot->quantity;
 			$paidFor = $invoicedServices->firstWhere('service_id', $service->id)->quantity ?? 0;

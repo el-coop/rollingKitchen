@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Requests\Kitchen;
+namespace App\Http\Requests\Admin\Service;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DestroyKitchenRequest extends FormRequest {
+class DestroyServiceRequest extends FormRequest {
+	protected $service;
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
 	 * @return bool
 	 */
 	public function authorize() {
-
-		$this->kitchen = $this->route('kitchen');
-		return $this->user()->can('delete', $this->kitchen);
+		$this->service = $this->route('service');
+		return $this->user()->can('delete', $this->service);
 	}
 
 	/**
@@ -27,7 +27,7 @@ class DestroyKitchenRequest extends FormRequest {
 		];
 	}
 
-	public function commit() {
-		$this->kitchen->delete();
+	public function commit(){
+		$this->service->delete();
 	}
 }

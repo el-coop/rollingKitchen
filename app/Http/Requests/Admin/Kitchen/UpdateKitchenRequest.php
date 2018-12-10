@@ -29,8 +29,7 @@ class UpdateKitchenRequest extends FormRequest {
 			'name' => 'required|min:2',
 			'language' => 'required|in:en,nl',
 			'email' => 'required|email',
-			'kitchen' => 'required|array',
-			'kitchen.*' => 'required',
+			'kitchen' => 'required|array'
 		];
 	}
 	

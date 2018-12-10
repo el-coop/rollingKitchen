@@ -61,11 +61,15 @@ class GenerateInvoiceRequest extends FormRequest {
 			$invoiceItem->quantity = $item['quantity'];
 			$invoiceItem->name = $item['item'];
 			$invoiceItem->unit_price = $item['unitPrice'];
-			
 			if ($service = Service::where("name_en", $item['item'])->orWhere("name_nl", $item['item'])->first()) {
 				$invoiceItem->service_id = $service->id;
 			}
+			
 			$invoice->items()->save($invoiceItem);
+			
+			if ($invoiceItem->service_id) {
+				$application->registerNewServices($service);
+			}
 			$total += $item['quantity'] * $item['unitPrice'];
 		}
 		

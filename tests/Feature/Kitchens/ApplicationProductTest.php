@@ -71,14 +71,14 @@ class ApplicationProductTest extends TestCase {
 		$this->actingAs($this->admin)->post(action('Kitchen\ApplicationProductController@create', $this->application), [
 			'name' => 'test',
 			'price' => 2.5,
-			'category' => 'drinks'
+			'category' => 'menu'
 		])->assertSuccessful();
 		
 		$this->assertDatabaseHas('products', [
 			'application_id' => $this->application->id,
 			'name' => 'test',
 			'price' => 2.5,
-			'category' => 'drinks'
+			'category' => 'menu'
 		]);
 	}
 	
@@ -88,14 +88,14 @@ class ApplicationProductTest extends TestCase {
 		$this->actingAs($this->kitchen)->post(action('Kitchen\ApplicationProductController@create', $this->application), [
 			'name' => 'test',
 			'price' => 2.5,
-			'category' => 'drinks'
+			'category' => 'menu'
 		])->assertSuccessful();
 		
 		$this->assertDatabaseHas('products', [
 			'application_id' => $this->application->id,
 			'name' => 'test',
 			'price' => 2.5,
-			'category' => 'drinks'
+			'category' => 'menu'
 		]);
 	}
 	

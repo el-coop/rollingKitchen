@@ -24,6 +24,12 @@
 				}
 				return `<span class="tag is-danger">${this.$translations.unpaid}</span>`;
 			},
+			numerateOptions(value, {options}) {
+				return options[value];
+			},
+			prefix(value, {callbackOptions}) {
+				return `${callbackOptions.prefix}${value}`
+			}
 		}
 	}
 </script>

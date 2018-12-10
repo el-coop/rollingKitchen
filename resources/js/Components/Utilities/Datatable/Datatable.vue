@@ -24,6 +24,11 @@
                               @vuetable:pagination-data="paginationData"
                               @vuetable:loading='tableLoading'
                               @vuetable:loaded='tableLoaded'>
+                        <template :v-if="deleteSlot" slot="delete" slot-scope="props">
+                            <ajax-form method='delete' :action="deleteAction + props.rowData.id" scope="props">
+                                <button type="submit" class="button is-danger" v-text="deleteBtn"></button>
+                            </ajax-form>
+                        </template>
                     </vuetable>
                 </div>
                 <div class="level">
@@ -53,12 +58,14 @@
 </template>
 
 <script>
-    import Vuetable from 'vuetable-2/src/components/Vuetable.vue';
-    import VuetablePaginationInfo from 'vuetable-2/src/components/VuetablePaginationInfo.vue';
-    import VuetablePagination from './DatatablePagination';
-    import DatatableFilter from './DatatableFilter';
-    import DatatableFormatters from './DatatableFormatters';
-    import DatatableRowDisplay from "./DatatableRowDisplay";
+	import Vuetable from 'vuetable-2/src/components/Vuetable.vue';
+	import VuetablePaginationInfo from 'vuetable-2/src/components/VuetablePaginationInfo.vue';
+	import VuetablePagination from './DatatablePagination';
+	import DatatableFilter from './DatatableFilter';
+	import DatatableFormatters from './DatatableFormatters';
+	import DatatableRowDisplay from "./DatatableRowDisplay";
+	import AjaxForm from '../../Form/AjaxForm';
+
 
     export default {
         name: 'Datatable',
@@ -68,9 +75,16 @@
             DatatableFilter,
             Vuetable,
             VuetablePaginationInfo,
-            VuetablePagination
+            VuetablePagination,
+            AjaxForm
         },
         props: {
+            deleteBtn: {
+                type: String,
+                default(){
+                    return this.$translations.delete
+                }
+            },
             url: {
                 required: true,
                 type: String
@@ -94,209 +108,231 @@
                 }
             },
 
-            labels: {
-                type: Object,
-                required: true
-            },
 
-            initFilters: {
-                type: Object,
-                default() {
-                    return {};
-                }
-            },
+			labels: {
+				type: Object,
+				required: true
+			},
 
-            editWidth: {
-                default: 600
-            }
-        },
+			initFilters: {
+				type: Object,
+				default() {
+					return {};
+				}
+			},
 
-        data() {
-            return {
-                fields: [],
-                loading: false,
-                tableCss: 'table is-bordered is-striped is-fullwidth',
-                css: {
-                    tableClass: this.tableCss,
-                    ascendingClass: 'column-sorted column-sorted-up',
-                    descendingClass: 'column-sorted column-sorted-down',
-                },
-                perPage: 20,
-                params: this.extraParams,
-                object: null,
-                exportOptions: '',
-                buttonActions: {
-                    newObjectForm: this.newObjectForm
-                }
-            }
-        },
+			editWidth: {
+				default: 600
+			},
+			deleteSlot: {
+				type: Boolean,
+				default() {
+					return false
+				}
+			}
+		},
 
-        created() {
-            this.fields = this.calcFields(this.fieldSettings);
-            this.params.filter = this.initFilters;
-        },
+		data() {
+			return {
+				fields: [],
+				loading: false,
+				tableCss: 'table is-bordered is-striped is-fullwidth',
+				css: {
+					tableClass: this.tableCss,
+					ascendingClass: 'column-sorted column-sorted-up',
+					descendingClass: 'column-sorted column-sorted-down',
+				},
+				perPage: 20,
+				params: this.extraParams,
+				object: null,
+				exportOptions: '',
+				buttonActions: {
+					newObjectForm: this.newObjectForm
+				}
+			}
+		},
 
-        methods: {
-            calcFields(settings) {
-                return settings.map((field) => {
-                    if (field.callback) {
-                        field.callback = this[field.callback].bind(this)
-                    }
-                    return field;
-                });
-            },
+		created() {
+			this.fields = this.calcFields(this.fieldSettings);
+			this.params.filter = this.initFilters;
+		},
 
-            newObjectForm() {
-                this.$modal.show('datatable-row');
-                this.object = {};
+		methods: {
+			calcFields(settings) {
+				if (this.deleteSlot) {
+					settings.push({
+						name: '__slot:delete',
+					})
+				}
+				return settings.map((field) => {
+					if (field.callback) {
+						field.callback = this[field.callback].bind(this)
+					}
+					return field;
+				});
+			},
+
+			newObjectForm() {
+				this.$modal.show('datatable-row');
+				this.object = {};
 
 
-            },
-            paginationData(paginationData) {
-                this.$refs.pagination.setPaginationData(paginationData);
-                this.$refs.paginationInfo.setPaginationData(paginationData);
-            },
-            tableLoading() {
-                this.css.tableClass = `${this.tableCss} is-loading`;
-            },
-            tableLoaded() {
-                this.css.tableClass = this.tableCss;
+			},
+			paginationData(paginationData) {
+				this.$refs.pagination.setPaginationData(paginationData);
+				this.$refs.paginationInfo.setPaginationData(paginationData);
+			},
+			tableLoading() {
+				this.css.tableClass = `${this.tableCss} is-loading`;
+			},
+			tableLoaded() {
+				this.css.tableClass = this.tableCss;
 
-                const name = window.location.pathname.split('/').slice(-1).pop();
-                this.exportOptions = `name=${name}`;
-                const params = this.$refs.table.httpOptions.params;
-                for (let option in params) {
-                    let paramValue = params[option];
-                    if (typeof paramValue !== 'string') {
-                        paramValue = JSON.stringify(paramValue);
-                    }
-                    this.exportOptions += `&${option}=${paramValue}`;
-                }
-            },
-            changePage(page) {
-                this.$refs.table.changePage(page);
-            },
-            filter(filters) {
-                this.params.filter = filters;
-                Vue.nextTick(() => {
-                    this.$refs.table.refresh()
-                })
-            },
-            cellClicked(data, field, event) {
-                this.$bus.$emit('vuetable-cell-clicked', {
-                    data, field, event
-                });
-            },
-            rowClicked(data, event) {
-                this.$modal.show('datatable-row');
-                this.object = data;
-                this.$bus.$emit('vuetable-row-clicked', {
-                    data, event
-                });
-            },
-            updateObject(data) {
-                this.object = {...this.object, ...data};
-                const currentData = this.$refs.table.tableData;
-                const elementIndex = currentData.findIndex((row) => {
-                    return row.id === data.id;
-                });
-                if (elementIndex > -1) {
-                    currentData[elementIndex] = this.object;
-                } else {
-                    currentData.push(this.object);
-                }
-                this.$refs.table.setData(currentData);
-            },
-            deleteObject(data) {
-                this.$modal.hide('datatable-row');
-                this.object = {...this.object, ...data};
-                const currentData =  this.$refs.table.tableData;
-                let objectIndex = currentData.findIndex((item)=> {
-                    return item.id === this.object.id;
-                });
-                currentData.splice(objectIndex,1);
-                this.$refs.table.setData(currentData);
-            }
-        },
+				const name = window.location.pathname.split('/').slice(-1).pop();
+				this.exportOptions = `name=${name}`;
+				const params = this.$refs.table.httpOptions.params;
+				for (let option in params) {
+					let paramValue = params[option];
+					if (typeof paramValue !== 'string') {
+						paramValue = JSON.stringify(paramValue);
+					}
+					this.exportOptions += `&${option}=${paramValue}`;
+				}
+			},
+			changePage(page) {
+				this.$refs.table.changePage(page);
+			},
+			filter(filters) {
+				this.params.filter = filters;
+				Vue.nextTick(() => {
+					this.$refs.table.refresh()
+				})
+			},
+			cellClicked(data, field, event) {
+				this.$bus.$emit('vuetable-cell-clicked', {
+					data, field, event
+				});
+			},
+			rowClicked(data, event) {
+				if (event.srcElement.className !== 'button is-danger') {
+					this.$modal.show('datatable-row');
+					this.object = data;
+					this.$bus.$emit('vuetable-row-clicked', {
+						data, event
+					});
+				} else {
+					this.deleteObject(data)
+				}
+			},
+			updateObject(data) {
+				this.object = {...this.object, ...data};
+				const currentData = this.$refs.table.tableData;
+				const elementIndex = currentData.findIndex((row) => {
+					return row.id === data.id;
+				});
+				if (elementIndex > -1) {
+					currentData[elementIndex] = this.object;
+				} else {
+					currentData.push(this.object);
+				}
+				this.$refs.table.setData(currentData);
+			},
+			deleteObject(data) {
+				this.$modal.hide('datatable-row');
+				this.object = {...this.object, ...data};
+				const currentData = this.$refs.table.tableData;
+				let objectIndex = currentData.findIndex((item) => {
+					return item.id === this.object.id;
+				});
+				currentData.splice(objectIndex, 1);
+				this.$refs.table.setData(currentData);
+			}
+		},
+		computed: {
+			deleteAction: function () {
+				return window.location.pathname + '/delete/';
+			}
 
-    }
+		}
+
+	}
 </script>
 
 <style lang="scss">
-    @import "../../../../sass/variables";
+	@import "../../../../sass/variables";
 
-    .table.is-loading {
-        opacity: 0.4;
-        position: relative;
-        transition: opacity .3s ease-in-out;
-    }
+	.table.is-loading {
+		opacity: 0.4;
+		position: relative;
+		transition: opacity .3s ease-in-out;
+	}
 
-    .table.is-loading:after {
-        position: absolute;
-        content: '';
-        top: 40%;
-        left: 50%;
-        margin: -30px 0 0 -30px;
-        border-radius: 100%;
-        animation-fill-mode: both;
-        border: 4px solid #000;
-        height: 60px;
-        width: 60px;
-        background: transparent !important;
-        display: inline-block;
-        animation: pulse 1s 0s ease-in-out infinite;
-    }
+	.table.is-loading:after {
+		position: absolute;
+		content: '';
+		top: 40%;
+		left: 50%;
+		margin: -30px 0 0 -30px;
+		border-radius: 100%;
+		animation-fill-mode: both;
+		border: 4px solid #000;
+		height: 60px;
+		width: 60px;
+		background: transparent !important;
+		display: inline-block;
+		animation: pulse 1s 0s ease-in-out infinite;
+	}
 
-    @keyframes pulse {
-        0% {
-            -webkit-transform: scale(0.6);
-            transform: scale(0.6);
-        }
-        50% {
-            -webkit-transform: scale(1);
-            transform: scale(1);
-            border-width: 12px;
-        }
-        100% {
-            -webkit-transform: scale(0.6);
-            transform: scale(0.6);
-        }
-    }
+	@keyframes pulse {
+		0% {
+			-webkit-transform: scale(0.6);
+			transform: scale(0.6);
+		}
+		50% {
+			-webkit-transform: scale(1);
+			transform: scale(1);
+			border-width: 12px;
+		}
+		100% {
+			-webkit-transform: scale(0.6);
+			transform: scale(0.6);
+		}
+	}
 
-    .column-sorted:after {
-        float: right;
-    }
+	.column-sorted:after {
+		float: right;
+	}
 
-    .column-sorted.column-sorted-down:after {
-        content: "\25bc"
-    }
+	.column-sorted.column-sorted-down:after {
+		content: "\25bc"
+	}
 
-    .column-sorted.column-sorted-up:after {
-        content: '\25b2'
-    }
+	.column-sorted.column-sorted-up:after {
+		content: '\25b2'
+	}
 
-    .table-wrapper {
-        display: flex;
-        flex-direction: column;
+	.table-wrapper {
+		display: flex;
+		flex-direction: column;
 
-        > .table-parent {
-            flex: 1;
-            margin-top: 1rem;
+		> .table-parent {
+			flex: 1;
+			margin-top: 1rem;
 
-            > .table-container {
-                max-width: calc(100vw - 2.5rem);
-            }
+			> .table-container {
+				max-width: calc(100vw - 2.5rem);
+			}
 
-            @media #{$above-tablet} {
-                margin-top: 0;
-                margin-right: 1rem;
-            }
+			@media #{$above-tablet} {
+				margin-top: 0;
+				margin-right: 1rem;
+			}
 
-        }
+		}
 
-        @media #{$above-tablet} {
-            flex-direction: row;
-        }
+		@media #{$above-tablet} {
+			flex-direction: row;
+		}
 
-    }
+	}
 </style>

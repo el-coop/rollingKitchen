@@ -98,9 +98,6 @@
 
 		watch: {
 			quantity(value) {
-				if (value < 1) {
-					this.quantity = 1;
-				}
 				this.$emit('input', {
 					quantity: this.quantity,
 					unitPrice: this.unitPrice,

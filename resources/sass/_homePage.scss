@@ -1,0 +1,23 @@
+.button.is-light.has-text-red {
+
+	color: #B61A0E;
+}
+
+.footer.no-border {
+
+	border-top: none;
+}
+
+.hover-border {
+	border: 1px solid transparent;
+	border-radius: 4px;
+
+	&:hover {
+ border-color: #B61A0E;
+	}
+	> .content{
+
+		padding: 1em;
+	}
+
+}

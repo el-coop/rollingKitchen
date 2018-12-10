@@ -4,7 +4,7 @@ return [
 	'electrictyTitle' => 'Elektrische apparaten',
 	'electrictySubtitle' => 'Geef hier alle apparaten aan, die je tijdens de Rollende Keukens aansluit.',
 	'electricity' => 'Elektra',
-	'watts' => 'Watts',
+	'watts' => 'Watt',
 	'none' => 'Geen',
 	'sockets' => 'Stroomaansluiting',
 	'2X230' => 'Stroom 2 x 230V, 16A Blauw (1 Fase, CEE) € 125 ',

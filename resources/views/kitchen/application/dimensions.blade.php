@@ -5,6 +5,7 @@
 	readonly: {{ !$application->isOpen() ? 'true' : 'false'}},
 	type: 'text',
 	subType: 'number',
+	placeholder: '@lang('kitchen/dimensions.inMeters')',
 	error: {{ $errors->has('length') ? collect($errors->get('length')) : 'null'}},
 },{
 	name : 'width',
@@ -13,6 +14,7 @@
 	readonly: {{ ! $application->isOpen() ? 'true' : 'false'}},
 	type: 'text',
 	subType: 'number',
+	placeholder: '@lang('kitchen/dimensions.inMeters')',
 	error: {{ $errors->has('width') ? collect($errors->get('width')) : 'null'}},
 },{
 	name : 'terrace_length',
@@ -21,6 +23,7 @@
 	readonly: {{ ! $application->isOpen() ? 'true' : 'false'}},
 	type: 'text',
 	subType: 'number',
+	placeholder: '@lang('kitchen/dimensions.inMeters')',
     error: {{ $errors->has('terrace_length') ? collect($errors->get('terrace_length')) :  'null'}},
 },{
 	name : 'terrace_width',
@@ -29,6 +32,7 @@
 	readonly: {{ ! $application->isOpen() ? 'true' : 'false'}},
 	type: 'text',
 	subType: 'number',
+	placeholder: '@lang('kitchen/dimensions.inMeters')',
     error: {{ $errors->has('terrace_width') ? collect($errors->get('terrace_width')) : 'null'}},
 },{
 	name : 'seats',

@@ -7,7 +7,7 @@ return [
 		['kitchens', 'users.user_id', 'kitchens.id'],
 		['photos', 'photos.kitchen_id', 'kitchens.id']
 	],
-	
+
 	'fields' => [[
 		'name' => 'id',
 		'table' => 'kitchens',

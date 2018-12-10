@@ -116,7 +116,7 @@ class ErrorTest extends TestCase {
 	}
 
 	public function test_guest_cant_get_full_data() {
-		$this->get(action('ErrorController@resolve', $this->phpErrors->first()->error))->assertRedirect(action('Auth\LoginController@login'));
+		$this->get(action('ErrorController@show', $this->phpErrors->first()->error))->assertRedirect(action('Auth\LoginController@login'));
 	}
 
 	public function test_kitchen_cant_get_full_data() {

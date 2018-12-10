@@ -11,10 +11,18 @@ import VModal from 'vue-js-modal';
 import 'izitoast/dist/css/iziToast.css';
 import VueIziToast from 'vue-izitoast';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faLink, faSignOutAlt, faBars, faFileUpload, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
+import {
+	faLink,
+	faSignOutAlt,
+	faBars,
+	faFileUpload,
+	faTimesCircle,
+	faEuroSign
+} from '@fortawesome/free-solid-svg-icons'
+
 require('./ErrorHandler');
 
-library.add(faLink, faSignOutAlt, faBars, faFileUpload, faTimesCircle);
+library.add(faLink, faSignOutAlt, faBars, faFileUpload, faTimesCircle, faEuroSign);
 
 Vue.use(VModal);
 Vue.use(VueIziToast);

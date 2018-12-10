@@ -9,9 +9,11 @@ use App\Http\Requests\Kitchen\Photo\UploadPhotoRequest;
 use App\Http\Requests\Kitchen\UpdateKitchenRequest;
 use App\Models\Application;
 use App\Models\Kitchen;
+use App\Models\Pdf;
 use App\Models\Photo;
 use App\Models\Service;
 use Auth;
+use Storage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -51,6 +53,10 @@ class KitchenController extends Controller {
 	public function show(Kitchen $kitchen) {
 	}
 	
+	public function showPdf(Pdf $pdf) {
+		return Storage::download("public/pdf/{$pdf->file}", "{$pdf->name}.pdf");
+	}
+	
 	/**
 	 * Show the form for editing the specified resource.
 	 *
@@ -60,16 +66,25 @@ class KitchenController extends Controller {
 	public function edit(Kitchen $kitchen) {
 		$locale = App::getLocale();
 		
-		$services = Service::where('category', '!=', 'socket')->orderBy('type', 'asc')->get();
 		$sockets = Service::where('category', '=', 'socket')->orderBy('price', 'asc')->get();
 		$application = $kitchen->getCurrentApplication();
 		$pastApplications = $kitchen->applications()->where('year', '!=', app('settings')->get('registration_year'))->get();
+		
+		if ($application->status === 'accepted') {
+			$pdfs = Pdf::where('visibility', 1)->orWhere('visibility', 2)->get();
+		} else {
+			$pdfs = Pdf::where('visibility', 1)->get();
+		}
+		
+		$countableServices = Service::where('type', 0)->where('category', '!=', 'socket')->orderByRaw("LENGTH(name_{$locale}) desc")->get();;
+		$checkableServices = Service::where('type', 1)->where('category', '!=', 'socket')->orderByRaw("LENGTH(name_{$locale}) desc")->get();;
+		
 		
 		$message = app('settings')->get("application_text_{$locale}");
 		if (!$application->isOpen()) {
 			$message = app('settings')->get("application_success_text_{$locale}");
 		}
-		return view('kitchen.edit', compact('kitchen', 'application', 'application', 'services', 'message', 'pastApplications', 'sockets'));
+		return view('kitchen.edit', compact('kitchen', 'application', 'application', 'services', 'message', 'pastApplications', 'sockets', 'countableServices', 'checkableServices', 'pdfs'));
 	}
 	
 	/**
