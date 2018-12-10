@@ -66,8 +66,14 @@
 </script>
 
 <style scoped lang="scss">
+	@import '../../../sass/variables';
+
 	.navbar {
 		margin-bottom: 1rem;
+
+		&.is-dark {
+			background-color: lighten($contrast-bg,30%);
+		}
 	}
 
 	.navbar-brand {
