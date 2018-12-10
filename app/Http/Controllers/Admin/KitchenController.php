@@ -75,7 +75,7 @@ class KitchenController extends Controller {
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param DeleteKitchenRequest $request
+	 * @param DestroyKitchenRequest $request
 	 * @param  \App\Models\Kitchen $kitchen
 	 * @return void
 	 */

@@ -11,12 +11,11 @@ class DestroyKitchenRequest extends FormRequest {
 	 * @return bool
 	 */
 	public function authorize() {
-		
+
 		$this->kitchen = $this->route('kitchen');
-		
 		return $this->user()->can('delete', $this->kitchen);
 	}
-	
+
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -27,7 +26,7 @@ class DestroyKitchenRequest extends FormRequest {
 			//
 		];
 	}
-	
+
 	public function commit() {
 		$this->kitchen->delete();
 	}
