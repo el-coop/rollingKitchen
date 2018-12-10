@@ -7,62 +7,42 @@
 
     <section class="section">
 
-
         <div class="columns">
             <div class="column">
-
-                <div class="card is-flex is-column h-100">
-                    <div class="card-content fill-parent">
+                <a href="{{$registrationOpen ? action('Kitchen\KitchenController@create') : '#' }}"
+                   class="is-flex is-column h-100 hover-border">
+                    <div class="content fill-parent">
                         <p class="title">
                             {{$registrationText}}
                         </p>
-
                     </div>
-
-                    <footer class="card-footer">
-                        <a href="{{$registrationOpen ? action('Kitchen\KitchenController@create') : '#' }}" {{$registrationOpen ? '' : 'disabled'}}
-                           class="card-footer-item button is-dark is-size-3">
-
-
-                            @if($registrationOpen)
-                                @lang('global.register')
-                            @else
-                                @lang('admin/settings.closed')
-                            @endif
-
-                        </a>
-                    </footer>
-                </div>
+                    <button class="button is-light has-text-red is-size-3" {{$registrationOpen ? '' : 'disabled'}}>
+                        @if($registrationOpen)
+                            @lang('global.register')
+                        @else
+                            @lang('admin/settings.closed')
+                        @endif
+                    </button>
+                </a>
             </div>
+
             <div class="column">
-
-
-                <div class="card is-flex" style="flex-direction: column; height: 100%">
-                    <div class="card-content" style="flex: 1">
+                <a href="{{action('Auth\LoginController@showLoginForm')}}"
+                   class="is-flex is-column h-100 hover-border">
+                    <div class="content fill-parent">
                         <p class="title">
                             {{$loginText}}
-
                         </p>
-
                     </div>
-
-                    <footer class="card-footer">
-                        <a href="{{action('Auth\LoginController@showLoginForm')}}"
-                           class="card-footer-item button is-dark is-size-3">
-
-                            @lang('global.login')
-
-                        </a>
-                    </footer>
-                </div>
+                    <button class="button is-light has-text-red is-size-3">
+                        @lang('global.login')
+                    </button>
+                </a>
             </div>
-            <div class="column">
 
-                <figure class="image is-square">
-
-                    <img src="/images/logo.png" alt="kreeft">
-
-
+            <div class="column is-half is-hidden-touch">
+                <figure class="image is-5by3">
+                    <img src="/images/logo20192.png" alt="kreeft">
                 </figure>
             </div>
         </div>
