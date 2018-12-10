@@ -37,3 +37,7 @@ $menu-item-color: darken($contrast-text, 10);
 $menu-item-hover-color: $contrast-text;
 $menu-item-hover-background-color: lighten($contrast-bg, 10);
 $menu-item-active-background-color: lighten($contrast-bg, 10);
+$tabs-link-active-color: $red;
+$tabs-link-active-border-bottom-color: $red;
+$tabs-toggle-link-active-background-color: $red;
+$tabs-toggle-link-active-border-color: $red;

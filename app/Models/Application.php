@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\HasFields;
+use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 
@@ -80,7 +81,7 @@ class Application extends Model {
 	}
 	
 	public function serviceQuantity(Service $service) {
-		return $this->services()->where('service_id', $service->id)->first()->pivot->quantity;
+		return $this->services()->where('service_id', $service->id)->first()->pivot->quantity ?? 0;
 	}
 	
 	public function electricDevices() {
@@ -95,5 +96,17 @@ class Application extends Model {
 	public function setNumber() {
 		$this->number = (static::where('year', $this->year)->max('number') ?? 0) + 1;
 		$this->save();
+	}
+	
+	public function registerNewServices(Service $service) {
+		$paidQuantity = $this->invoicedItems()->select(DB::raw('SUM(quantity) as quantity'))->where('service_id', '=', $service->id)
+			->groupBy('service_id')->first()->quantity;
+		
+		$requestedQuantity = $this->serviceQuantity($service);
+		if (!$requestedQuantity || $paidQuantity > $requestedQuantity) {
+			$this->services()->syncWithoutDetaching([$service->id => [
+				'quantity' => $paidQuantity
+			]]);
+		}
 	}
 }
