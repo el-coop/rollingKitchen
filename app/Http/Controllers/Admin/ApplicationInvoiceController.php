@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\Admin\Invoice\AddPaymentRequest;
 use App\Http\Requests\Admin\Invoice\DestroyPaymentRequest;
 use App\Http\Requests\Admin\Invoice\GenerateInvoiceRequest;
-use App\Http\Requests\Admin\Invoice\TogglePaymentStatusRequest;
 use App\Http\Requests\Admin\Invoice\UpdateInvoiceRequest;
 use App\Http\Requests\Admin\Invoice\UpdatePaymentRequest;
 use App\Models\Application;
@@ -27,10 +26,6 @@ class ApplicationInvoiceController extends Controller {
 		$invoice = (new Invoice);
 		$invoice->application_id = $application->id;
 		return $invoice->fullData;
-	}
-
-	public function togglePaid(TogglePaymentStatusRequest $request, Invoice $invoice) {
-		return $request->commit();
 	}
 
 	public function store(GenerateInvoiceRequest $request, Application $application) {

@@ -29,7 +29,19 @@
 			},
 			prefix(value, {callbackOptions}) {
 				return `${callbackOptions.prefix}${value}`
-			}
+			},
+            date(value){
+			    const date = new Date(value);
+                let year = date.getFullYear();
+
+                let month = (1 + date.getMonth()).toString();
+                month = month.length > 1 ? month : '0' + month;
+
+                let day = date.getDate().toString();
+                day = day.length > 1 ? day : '0' + day;
+
+                return month + '/' + day + '/' + year;
+            }
 		}
 	}
 </script>

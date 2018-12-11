@@ -36,7 +36,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 			Route::get('/', 'ApplicationInvoiceController@index');
 			Route::get('/{application}', 'ApplicationInvoiceController@create');
 			Route::post('/{application}', 'ApplicationInvoiceController@store');
-			Route::patch('/{invoice}/toggle', 'ApplicationInvoiceController@togglePaid');
 			Route::get('/{application}/{invoice}', 'ApplicationInvoiceController@edit');
 			Route::patch('/{application}/{invoice}', 'ApplicationInvoiceController@update');
 		});

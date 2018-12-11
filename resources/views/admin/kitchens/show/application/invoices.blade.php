@@ -19,7 +19,7 @@
 			   		pivotX: 1
 			   }" :form-from-url="true" form-button-text="@lang('admin/invoices.send')" :delete-allowed="false">
 	<template slot="actions" slot-scope="{field, onUpdate}">
-		<button @click="$bus.$emit('open-payment-modal', field, onUpdate)" class="button is-success">@lang('admin/invoices.addPayment')</button>
+		<button @click="$bus.$emit('open-payment-modal', field, onUpdate)" class="button is-success">@lang('admin/invoices.managePayments')</button>
 	</template>
 </dynamic-table>
 <invoice-table >

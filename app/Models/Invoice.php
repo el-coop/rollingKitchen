@@ -16,10 +16,6 @@ class Invoice extends Model {
 		'totalPaid'
 	];
 
-	protected $casts = [
-		'paid' => 'boolean'
-	];
-
 	protected static function boot() {
 		parent::boot();
 		static::deleted(function ($invoice) {

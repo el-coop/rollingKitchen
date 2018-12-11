@@ -31,6 +31,9 @@
         mounted() {
             this.$bus.$on('open-payment-modal',this.setUp);
         },
+        beforeDestroy() {
+            this.$bus.$off('open-payment-modal',this.setUp);
+        },
         data() {
             return {
                 invoice: [],
@@ -38,7 +41,8 @@
                     {
                         name: 'date',
                         label: this.$translations.date,
-                        subType: 'date'
+                        subType: 'date',
+                        callback: 'date'
                     },
                     {
                         name: 'amount',
@@ -63,9 +67,10 @@
                 this.onAdd(this.invoice);
             },
             async setUp(field, onUpdate) {
+                this.invoice = [];
                 this.$modal.show('payment');
                 if (this.fromUrl) {
-                    const response = await axios.get('/admin/invoices/payments/' + field.id);
+                    const response = await axios.get('/admin/invoices/payments/' + field.id + '?time=' + Date.now());
                     this.invoice = response.data;
                 } else {
                     this.invoice = field;
