@@ -10,7 +10,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateInvoiceRequest extends FormRequest {
 	private $invoice;
-	
+
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
@@ -20,7 +20,7 @@ class UpdateInvoiceRequest extends FormRequest {
 		$this->invoice = $this->route('invoice');
 		return $this->user()->can('update', $this->invoice);
 	}
-	
+
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -41,12 +41,12 @@ class UpdateInvoiceRequest extends FormRequest {
 		}
 		return $rules->toArray();
 	}
-	
+
 	public function commit() {
 		$this->invoice = $this->route('invoice');
 		$application = $this->route('application');
 		$number = $this->invoice->formattedNumber;
-		
+
 		if ($this->input('file_download', false)) {
 			$invoiceService = new InvoiceService($application);
 			$invoice = $invoiceService->generate($number, $this->input('tax'), $this->input('items'));
@@ -60,7 +60,7 @@ class UpdateInvoiceRequest extends FormRequest {
 			$invoiceItem->quantity = $item['quantity'];
 			$invoiceItem->name = $item['item'];
 			$invoiceItem->unit_price = $item['unitPrice'];
-			
+
 			if ($service = Service::where("name_en", $item['item'])->orWhere("name_nl", $item['item'])->first()) {
 				$invoiceItem->service_id = $service->id;
 			}
@@ -70,14 +70,14 @@ class UpdateInvoiceRequest extends FormRequest {
 			}
 			$total += $item['quantity'] * $item['unitPrice'];
 		}
-		
+
 		$this->invoice->amount = $total;
 		$this->invoice->save();
 		SendInvoice::dispatch($this->invoice, $this->input('recipient'), $this->input('subject'), $this->input('message'), $this->input('attachments', []), collect([
 			$this->input('bcc', false),
 			$this->input('accountant', false) ? app('settings')->get('invoices_accountant') : false
 		])->filter());
-		
-		return $this->invoice;
+
+		return $this->invoice->load('payments');
 	}
 }

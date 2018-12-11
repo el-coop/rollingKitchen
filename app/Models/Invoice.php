@@ -12,7 +12,8 @@ class Invoice extends Model {
 	protected $appends = [
 		'total',
 		'taxAmount',
-		'formattedNumber'
+		'formattedNumber',
+		'totalPaid'
 	];
 
 	protected $casts = [
@@ -140,7 +141,11 @@ class Invoice extends Model {
 		return $this->hasManyThrough(Service::class, InvoiceItem::class);
 	}
 
-	public function payments(){
+	public function payments() {
 		return $this->hasMany(InvoicePayment::class);
+	}
+
+	public function getTotalPaidAttribute() {
+		return $this->payments()->sum('amount');
 	}
 }

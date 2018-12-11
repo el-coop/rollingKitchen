@@ -84,6 +84,6 @@ class GenerateInvoiceRequest extends FormRequest {
 			$this->input('accountant', false) ? app('settings')->get('invoices_accountant') : false
 		])->filter());
 
-		return $invoice->with('payments')->first();
+		return $invoice->load('payments');
 	}
 }

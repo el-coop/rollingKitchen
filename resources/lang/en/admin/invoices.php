@@ -23,5 +23,6 @@ return [
 	'toggleUnpaid' => 'Mark as unpaid',
 	'number' => 'Number',
 	'addPayment' => 'Add Payment',
-	'date' => 'Date Paid'
+	'totalPaid' => 'Total Paid',
+	'managePayments' => 'Manage Payments'
 ];

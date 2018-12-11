@@ -1,27 +1,35 @@
 <template>
     <modal-component name="payment" height="100%" :width="800" :pivotY="0"
                      :pivotX="1">
-        <dynamic-table :columns="columns" :init-fields="invoice.payments" :action="action">
-
-        </dynamic-table>
+        <payments-table v-if="invoice.payments" @updated-total="updateInvoice" :columns="columns" :init-fields="invoice.payments"
+                        :action="action">
+        </payments-table>
+        <div v-else class="has-text-centered">
+            <a class="button is-loading"></a>
+        </div>
     </modal-component>
 </template>
 
 <script>
     import ModalComponent from '../Utilities/ModalComponent';
     import DynamicTable from '../Utilities/DynamicTable'
+    import PaymentsTable from './PaymentsTable';
 
     export default {
         name: "InvoiceTable",
         components: {
             ModalComponent,
-            DynamicTable
+            DynamicTable,
+            PaymentsTable
+        },
+        props: {
+            fromUrl: {
+                type: Boolean,
+                default: false
+            }
         },
         mounted() {
-            this.$bus.$on('open-payment-modal', (field) => {
-                this.$modal.show('payment');
-                this.invoice = field;
-            });
+            this.$bus.$on('open-payment-modal',this.setUp);
         },
         data() {
             return {
@@ -35,15 +43,34 @@
                     {
                         name: 'amount',
                         label: this.$translations.amount,
-                        subType: 'number'
-                    }
-                ]
+                        subType: 'number',
+                        callback: 'localNumber',
+
+                    },
+                ],
+                onAdd: {}
 
             }
         },
         computed: {
             action() {
                 return '/admin/invoices/payments/' + this.invoice.id;
+            }
+        },
+        methods: {
+            updateInvoice(total) {
+                this.invoice.totalPaid = total;
+                this.onAdd(this.invoice);
+            },
+            async setUp(field, onUpdate) {
+                this.$modal.show('payment');
+                if (this.fromUrl) {
+                    const response = await axios.get('/admin/invoices/payments/' + field.id);
+                    this.invoice = response.data;
+                } else {
+                    this.invoice = field;
+                }
+                this.onAdd = onUpdate;
             }
         }
     }

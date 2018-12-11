@@ -6,7 +6,7 @@ return [
 		['applications', 'invoices.application_id', 'applications.id'],
 		['users', 'users.user_id', 'applications.kitchen_id'],
 	],
-	
+
 	'fields' => [[
 		'name' => 'id',
 		'table' => 'invoices',
@@ -49,13 +49,9 @@ return [
 		'callback' => 'localNumber',
 		'filter' => false
 	], [
-		'name' => 'paid',
-		'title' => 'global.status',
-		'filter' => [
-			'vue.unpaid',
-			'vue.paid',
-		],
-		'sortField' => 'paid',
-		'callback' => 'paidStatus'
+		'name' => 'totalPaid',
+		'title' => 'admin/invoices.totalPaid',
+		'noTable' => true,
+		'callback' => 'localNumber'
 	]]
 ];

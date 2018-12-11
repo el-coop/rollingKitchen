@@ -60,4 +60,8 @@ class ApplicationInvoiceController extends Controller {
 			'success' => true
 		];
 	}
+
+	public function getPayments(Invoice $invoice){
+		return $invoice->load('payments');
+	}
 }
