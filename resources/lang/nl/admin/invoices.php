@@ -21,5 +21,8 @@ return [
 	'date' => 'Datum',
 	'togglePaid' => 'Als betaald markeren',
 	'toggleUnpaid' => 'Als onbetaald markeren',
-	'number' => 'Nummer'
+	'number' => 'Nummer',
+	'addPayment' => 'TBT',
+	'totalPaid' => 'TBT',
+	'managePayments' => 'TBT'
 ];
