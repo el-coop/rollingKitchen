@@ -23,7 +23,8 @@
 				:init-fields="[]"
 				:url="`/admin/invoices/${field.id}/toggle`"
 				:button-class="field.paid ? 'is-danger' : 'is-success'"
-				:on-data-update="onUpdate">
+				:on-data-update="onUpdate"
+				successToast="@lang('admin/invoices.invoiceSent')">
 		</dynamic-form>
 	</template>
 </dynamic-table>

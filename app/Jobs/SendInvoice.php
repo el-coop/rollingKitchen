@@ -88,7 +88,7 @@ class SendInvoice implements ShouldQueue {
 			'name' => "{$number}.pdf"
 		]);
 		Notification::route('mail', $this->recipient)
-			->notify(new InvoiceSent($this->subject, $application->kitchen->user->name, $this->message, $language, $files->toArray(), $this->bcc->toArray()));
+			->notify(new InvoiceSent($this->subject, $application->kitchen->user->name, $this->message, $language, $files->toArray(), $this->bcc->toArray()))->locale($language);
 		
 		Storage::delete("invoices/{$number}.pdf");
 	}

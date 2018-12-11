@@ -43,8 +43,8 @@ class ApplicationResubmittedNotification extends Notification {
 	 */
 	public function toMail($notifiable) {
 		return (new MailMessage)
-			->line(__('notification.resubmitted', ['name' => $this->application->kitchen->user->name], $notifiable->language))
-			->action(__('notification.clickToView', [], $notifiable->language), action('Admin\ApplicationController@show', $this->application));
+			->line(__('notification.resubmitted', ['name' => $this->application->kitchen->user->name]))
+			->action(__('notification.clickToView'), action('Admin\ApplicationController@show', $this->application));
 	}
 	
 	/**
