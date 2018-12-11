@@ -56,5 +56,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 			Route::patch('/{pdf}', 'PDFController@update');
 			Route::delete('/{pdf}', 'PDFController@destroy');
 		});
+		
+		Route::group(['prefix' => 'debtors'], function () {
+			Route::get('/', 'DebtorController@index');
+			Route::get('/edit', 'DebtorController@create');
+			Route::post('/edit', 'DebtorController@store');
+			Route::get('/edit/{debtor}', 'DebtorController@edit');
+			Route::patch('/edit/{debtor}', 'DebtorController@update');
+			Route::delete('/delete/{debtor}', 'DebtorController@destroy');
+		});
 	});
 });

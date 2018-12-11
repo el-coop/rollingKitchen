@@ -5,6 +5,7 @@ return [
 		'admin/kitchens.kitchens' => 'Admin\KitchenController@index',
 		'admin/applications.applications' => 'Admin\ApplicationController@index',
 		'kitchen/kitchen.services' => 'Admin\ServiceController@index',
+		'admin/debtors.debtors' => 'Admin\DebtorController@index',
 		'admin/invoices.invoices' => 'Admin\ApplicationInvoiceController@index',
 	],
 	'admin/settings.title' => [

@@ -13,26 +13,31 @@ use App;
 use App\Models\Field;
 
 trait HasFields {
+	
 	static function fields() {
-		return Field::where('form', static::class)->orderBy('order')->get();
+		$field = property_exists(static::class, 'fieldClass') ? static::$fieldClass : static::class;
+		return Field::where('form', $field)->orderBy('order')->get();
 	}
-
+	
 	static function getLastFieldOrder() {
-		return Field::where('form', '=', static::class)->max('order');
+		$field = property_exists(static::class, 'fieldClass') ? static::$fieldClass : static::class;
+		return Field::where('form', '=', $field)->max('order');
 	}
-
+	
 	public function getFieldsData() {
-
-		$dataName = strtolower(substr(static::class, strrpos(static::class, '\\') + 1));
-
+		$field = property_exists(static::class, 'fieldClass') ? static::$fieldClass : static::class;
+		
+		
+		$dataName = strtolower(substr($field, strrpos($field, '\\') + 1));
+		
 		return static::fields()->map(function ($item) use ($dataName) {
 			return [
-                'name' => "{$dataName}[{$item->id}]",
-                'label' => $item->{'name_' . App::getLocale()},
-                'type' => $item->type,
-                'value' => $this->data[$item->id] ?? ''
+				'name' => "{$dataName}[{$item->id}]",
+				'label' => $item->{'name_' . App::getLocale()},
+				'type' => $item->type,
+				'value' => $this->data[$item->id] ?? ''
 			];
 		});
 	}
-
+	
 }
