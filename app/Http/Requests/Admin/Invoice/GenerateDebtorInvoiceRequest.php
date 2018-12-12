@@ -74,6 +74,6 @@ class GenerateDebtorInvoiceRequest extends FormRequest {
 			$this->input('accountant', false) ? app('settings')->get('invoices_accountant') : false
 		])->filter());
 		
-		return $invoice;
+		return $invoice->load('payments');
 	}
 }

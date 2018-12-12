@@ -73,6 +73,6 @@ class UpdateDebtorInvoiceRequest extends FormRequest {
 			$this->input('accountant', false) ? app('settings')->get('invoices_accountant') : false
 		])->filter());
 		
-		return $this->invoice;
+		return $this->invoice->load('payments');
 	}
 }
