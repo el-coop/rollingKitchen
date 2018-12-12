@@ -41,5 +41,7 @@ return [
 	'next' => 'Volgende &raquo;',
 	'socket' => 'Aansluiting',
 	'date' => 'TBT',
-	'amount' => 'TBT'
+	'amount' => 'TBT',
+	'deleteConfirmTitle' => 'Are you sure you want to delete this? TBT'
+
 ];
