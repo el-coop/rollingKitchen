@@ -25,4 +25,5 @@ return [
 	'totalPaid' => 'TBT',
 	'managePayments' => 'TBT',
 	'invoiceSent' => 'Invoice Sent TBT',
+	'amountLeft' => 'Left to pay TBT',
 ];
