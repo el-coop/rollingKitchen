@@ -70,9 +70,7 @@ class SendApplicationInvoice implements ShouldQueue {
 	public function handle() {
 		$application = $this->invoice->owner;
 		$language = $application->kitchen->user->language;
-		if ($language == 'nl') {
-			setlocale(LC_TIME, 'nl_NL.utf8');
-		}
+		
 		$invoiceService = new InvoiceService($application);
 		$number = $this->invoice->formattedNumber;
 		$invoiceService->generate($number, $this->invoice->items, $this->invoice->tax)

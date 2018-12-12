@@ -63,9 +63,7 @@ class SendDebtorInvoice implements ShouldQueue {
 	public function handle() {
 		$owner = $this->invoice->owner;
 		$language = $owner->language;
-		if ($language == 'nl') {
-			setlocale(LC_TIME, 'nl_NL.utf8');
-		}
+		
 		
 		$invoiceService = new InvoiceService($owner);
 		$number = $this->invoice->formattedNumber;
