@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', __('developer\failedJobs.failedJobs'))
+@section('title', __('developer/failedJobs.failedJobs'))
 
 @section('content')
     <div>
