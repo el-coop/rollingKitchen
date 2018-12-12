@@ -2,9 +2,13 @@
 
 return [
 	'model' => \App\Models\Invoice::class,
-	'joins' => [
-		['applications', 'invoices.application_id', 'applications.id'],
-		['users', 'users.user_id', 'applications.kitchen_id'],
+	'joinsOn' => [
+		['applications', 'invoices.owner_id', '=', 'applications.id', 'invoices.owner_type', '=', \App\Models\Application::class],
+		['debtors', 'invoices.owner_id', '=', 'debtors.id', 'invoices.owner_type', '=', \App\Models\Debtor::class],
+		['users', 'applications.kitchen_id', '=', 'users.user_id', 'users.user_type', '=', \App\Models\Kitchen::class],
+	],
+	'cases' => [
+		'WHEN debtors.name IS NULL THEN users.name ELSE debtors.name END as name'
 	],
 	
 	'fields' => [[
@@ -12,7 +16,10 @@ return [
 		'table' => 'invoices',
 		'visible' => false
 	], [
-		'name' => 'application_id',
+		'name' => 'owner_id',
+		'visible' => false
+	], [
+		'name' => 'owner_type',
 		'visible' => false
 	], [
 		'name' => 'number',
@@ -31,12 +38,14 @@ return [
 		'noTable' => true,
 		'table' => 'invoices',
 		'title' => 'admin/invoices.number',
-		'filter' => false
+		'filter' => false,
+		'sortField' => 'number',
+	
 	], [
 		'name' => 'name',
-		'table' => 'users',
-		'title' => 'auth.kitchenName',
-		'sortField' => 'name'
+		'noTable' => true,
+		'title' => 'global.name',
+		'sortField' => 'amount',
 	], [
 		'name' => 'prefix',
 		'title' => 'global.year',
@@ -49,13 +58,9 @@ return [
 		'callback' => 'localNumber',
 		'filter' => false
 	], [
-		'name' => 'paid',
-		'title' => 'global.status',
-		'filter' => [
-			'vue.unpaid',
-			'vue.paid',
-		],
-		'sortField' => 'paid',
-		'callback' => 'paidStatus'
+		'name' => 'totalPaid',
+		'title' => 'admin/invoices.totalPaid',
+		'noTable' => true,
+		'callback' => 'localNumber'
 	]]
 ];

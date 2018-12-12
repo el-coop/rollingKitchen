@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\Admin\Invoices;
 
-use App\Jobs\SendInvoice;
+use App\Jobs\SendApplicationInvoice;
 use App\Models\Admin;
 use App\Models\Application;
 use App\Models\Invoice;
+use App\Models\InvoicePayment;
 use App\Models\Kitchen;
 use App\Models\Service;
 use App\Models\User;
@@ -19,13 +20,15 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class ApplicationInvoiceTest extends TestCase {
 	
 	use RefreshDatabase;
-	
+	use WithFaker;
+
 	private $user;
 	private $kitchen;
 	private $application;
 	private $invoice;
 	private $invoices;
-	
+	private $payment;
+
 	protected function setUp() {
 		parent::setUp();
 		$this->user = factory(User::class)->make();
@@ -57,12 +60,12 @@ class ApplicationInvoiceTest extends TestCase {
 				$total = $invoiceItem->unit_price * $invoiceItem->quantity;
 			}
 			
-			
 			$invoice->amount = $total;
 			$invoice->save();
-			
 		});
-		
+		$this->payment = factory(InvoicePayment::class)->make();
+		$this->invoices->first()->payments()->save($this->payment);
+
 	}
 	
 	public function test_guest_cant_see_invoice_index_page() {
@@ -197,7 +200,7 @@ class ApplicationInvoiceTest extends TestCase {
 			]]
 		])->assertRedirect(action('Auth\LoginController@login'));
 		
-		Queue::assertNotPushed(SendInvoice::class);
+		Queue::assertNotPushed(SendApplicationInvoice::class);
 	}
 	
 	public function test_kitchen_cant_create_new_invoice() {
@@ -220,9 +223,8 @@ class ApplicationInvoiceTest extends TestCase {
 			]]
 		])->assertForbidden();
 		
-		Queue::assertNotPushed(SendInvoice::class);
+		Queue::assertNotPushed(SendApplicationInvoice::class);
 	}
-	
 	
 	public function test_admin_can_create_new_invoice() {
 		
@@ -250,7 +252,8 @@ class ApplicationInvoiceTest extends TestCase {
 			'prefix' => $prefix,
 			'number' => $number,
 			'tax' => 21,
-			'application_id' => 1,
+			'owner_id' => 1,
+			'owner_type' => Application::class,
 			'amount' => 5,
 			'total' => 6.05,
 			'taxAmount' => 1.05,
@@ -260,7 +263,8 @@ class ApplicationInvoiceTest extends TestCase {
 			'prefix' => $prefix,
 			'number' => $number,
 			'tax' => 21,
-			'application_id' => 1,
+			'owner_id' => 1,
+			'owner_type' => Application::class,
 			'amount' => 5,
 		]);
 		
@@ -269,7 +273,7 @@ class ApplicationInvoiceTest extends TestCase {
 			'number' => 1
 		]);
 		
-		Queue::assertPushed(SendInvoice::class);
+		Queue::assertPushed(SendApplicationInvoice::class);
 		
 	}
 	
@@ -304,7 +308,8 @@ class ApplicationInvoiceTest extends TestCase {
 			'prefix' => $prefix,
 			'number' => $number,
 			'tax' => 21,
-			'application_id' => 1,
+			'owner_id' => 1,
+			'owner_type' => Application::class,
 			'amount' => 7,
 			'total' => 8.47,
 			'taxAmount' => 1.47,
@@ -314,7 +319,8 @@ class ApplicationInvoiceTest extends TestCase {
 			'prefix' => $prefix,
 			'number' => $number,
 			'tax' => 21,
-			'application_id' => 1,
+			'owner_id' => 1,
+			'owner_type' => Application::class,
 			'amount' => 7,
 		]);
 		
@@ -330,7 +336,6 @@ class ApplicationInvoiceTest extends TestCase {
 		
 		Queue::fake();
 		$service = factory(Service::class)->create();
-		
 		
 		$prefix = app('settings')->get('registration_year');
 		$number = Invoice::getNumber();
@@ -354,7 +359,8 @@ class ApplicationInvoiceTest extends TestCase {
 			'prefix' => $prefix,
 			'number' => $number,
 			'tax' => 21,
-			'application_id' => 1,
+			'owner_id' => 1,
+			'owner_type' => Application::class,
 			'amount' => 6
 		]);
 		
@@ -362,7 +368,8 @@ class ApplicationInvoiceTest extends TestCase {
 			'prefix' => $prefix,
 			'number' => $number,
 			'tax' => 21,
-			'application_id' => 1,
+			'owner_id' => 1,
+			'owner_type' => Application::class,
 			'amount' => 6,
 		]);
 		
@@ -378,7 +385,6 @@ class ApplicationInvoiceTest extends TestCase {
 		
 		Queue::fake();
 		
-		
 		$this->actingAs($this->user)->post(action('Admin\ApplicationInvoiceController@store', $this->application), [
 			'tax' => '',
 			'recipient' => 'test',
@@ -388,7 +394,7 @@ class ApplicationInvoiceTest extends TestCase {
 			'items' => 'test'
 		])->assertRedirect()->assertSessionHasErrors(['tax', 'recipient', 'bcc', 'message', 'subject', 'items']);
 		
-		Queue::assertNotPushed(SendInvoice::class);
+		Queue::assertNotPushed(SendApplicationInvoice::class);
 		
 	}
 	
@@ -476,7 +482,7 @@ class ApplicationInvoiceTest extends TestCase {
 			]]
 		])->assertRedirect(action('Auth\LoginController@login'));
 		
-		Queue::assertNotPushed(SendInvoice::class);
+		Queue::assertNotPushed(SendApplicationInvoice::class);
 	}
 	
 	public function test_kitchen_cant_edit_invoice() {
@@ -503,7 +509,7 @@ class ApplicationInvoiceTest extends TestCase {
 			]]
 		])->assertForbidden();
 		
-		Queue::assertNotPushed(SendInvoice::class);
+		Queue::assertNotPushed(SendApplicationInvoice::class);
 	}
 	
 	
@@ -536,7 +542,8 @@ class ApplicationInvoiceTest extends TestCase {
 			'prefix' => $prefix,
 			'number' => $invoice->number,
 			'tax' => 21,
-			'application_id' => 1,
+			'owner_id' => 1,
+			'owner_type' => Application::class,
 			'amount' => 5,
 			'total' => 6.05,
 			'taxAmount' => 1.05,
@@ -563,7 +570,7 @@ class ApplicationInvoiceTest extends TestCase {
 			'amount' => 5,
 		]);
 		$this->assertCount(2, $invoice->items);
-		Queue::assertPushed(SendInvoice::class);
+		Queue::assertPushed(SendApplicationInvoice::class);
 		
 	}
 	
@@ -602,7 +609,8 @@ class ApplicationInvoiceTest extends TestCase {
 			'prefix' => $prefix,
 			'number' => $invoice->number,
 			'tax' => 21,
-			'application_id' => 1,
+			'owner_id' => 1,
+			'owner_type' => Application::class,
 			'amount' => 6,
 		]);
 		
@@ -636,7 +644,6 @@ class ApplicationInvoiceTest extends TestCase {
 		Queue::fake();
 		$service = factory(Service::class)->create();
 		
-		
 		$invoice = $this->invoices->first();
 		
 		$prefix = app('settings')->get('registration_year');
@@ -663,7 +670,8 @@ class ApplicationInvoiceTest extends TestCase {
 			'prefix' => $prefix,
 			'number' => $invoice->number,
 			'tax' => 21,
-			'application_id' => 1,
+			'owner_id' => 1,
+			'owner_type' => Application::class,
 			'amount' => 7,
 		]);
 		
@@ -697,7 +705,6 @@ class ApplicationInvoiceTest extends TestCase {
 		Queue::fake();
 		$invoice = $this->invoices->first();
 		
-		
 		$this->actingAs($this->user)->patch(action('Admin\ApplicationInvoiceController@update', [
 			'application' => $this->application,
 			'invoice' => $invoice
@@ -710,54 +717,79 @@ class ApplicationInvoiceTest extends TestCase {
 			'items' => 'test'
 		])->assertRedirect()->assertSessionHasErrors(['tax', 'recipient', 'bcc', 'message', 'subject', 'items']);
 		
-		Queue::assertNotPushed(SendInvoice::class);
+		Queue::assertNotPushed(SendApplicationInvoice::class);
 		
 	}
 	
-	
-	public function test_guest_cant_toggle_invoice_status() {
+	public function test_guest_cant_add_payment() {
 		$invoice = $this->invoices->first();
-		
-		$this->patch(action('Admin\ApplicationInvoiceController@togglePaid', $invoice))->assertRedirect(action('Auth\LoginController@login'));
-		
+		$this->post(action('Admin\ApplicationInvoiceController@addPayment', $invoice))->assertRedirect(action('Auth\LoginController@login'));
+
 	}
-	
-	public function test_kitchen_cant_toggle_invoice_status() {
-		
+
+	public function test_kitchen_cant_add_payment() {
+
 		$invoice = $this->invoices->first();
-		
-		$this->actingAs($this->kitchen)->patch(action('Admin\ApplicationInvoiceController@togglePaid', $invoice))->assertForbidden();
+
+		$this->actingAs($this->kitchen)->post(action('Admin\ApplicationInvoiceController@addPayment', $invoice))->assertForbidden();
 	}
-	
-	
-	public function test_admin_can_mark_invoice_as_paid() {
-		
+
+
+	public function test_admin_can_add_payment() {
+		$date = $this->faker()->date();
 		$invoice = $this->invoices->first();
-		$this->actingAs($this->user)->patch(action('Admin\ApplicationInvoiceController@togglePaid', $invoice))
-			->assertSuccessful()
-			->assertJson($invoice->toArray());
-		
-		$this->assertDatabaseHas('invoices', [
-			'id' => $invoice->id,
-			'paid' => 1
+		$this->actingAs($this->user)->post(action('Admin\ApplicationInvoiceController@addPayment', $invoice), [
+			'amount' => 100,
+			'date' => $date
+		])
+			->assertSuccessful();
+
+		$this->assertDatabaseHas('invoice_payments', [
+			'invoice_id' => $invoice->id,
+			'amount' => 100,
+			'date' => $date
+		]);
+		$this->assertEquals($invoice->totalPaid, 100 + $this->payment->amount);
+	}
+	public function test_guest_cant_update_payment() {
+		$invoice = $this->invoices->first();
+		$this->patch(action('Admin\ApplicationInvoiceController@updatePayment', [$invoice ,$this->payment]))->assertRedirect(action('Auth\LoginController@login'));
+
+	}
+	public function test_kitchen_cant_update_payment() {
+		$invoice = $this->invoices->first();
+		$this->actingAs($this->kitchen)->patch(action('Admin\ApplicationInvoiceController@updatePayment', [$invoice ,$this->payment]))->assertForbidden();
+	}
+
+	public function test_admin_can_update_payment() {
+		$invoice = $this->invoices->first();
+		$date = $this->faker()->date();
+		$this->actingAs($this->user)->patch(action('Admin\ApplicationInvoiceController@updatePayment', [$invoice ,$this->payment]), [
+			'amount' => 500,
+			'date' => $date
+		])->assertSuccessful();
+		$this->assertDatabaseHas('invoice_payments', [
+			'id' => $this->payment->id,
+			'date' => $date,
+			'amount' => 500
 		]);
 	}
-	
-	public function test_admin_can_mark_invoice_as_unpaid() {
-		
+
+	public function test_guest_cant_destroy_payment() {
 		$invoice = $this->invoices->first();
-		$invoice->paid = true;
-		$invoice->save();
-		$this->actingAs($this->user)->patch(action('Admin\ApplicationInvoiceController@togglePaid', $invoice))
-			->assertSuccessful()
-			->assertJsonFragment([
-				'id' => $invoice->id,
-				'paid' => false
-			]);
-		
-		$this->assertDatabaseHas('invoices', [
-			'id' => $invoice->id,
-			'paid' => 0
+		$this->delete(action('Admin\ApplicationInvoiceController@destroyPayment', [$invoice ,$this->payment]))->assertRedirect(action('Auth\LoginController@login'));
+
+	}
+	public function test_kitchen_cant_destroy_payment() {
+		$invoice = $this->invoices->first();
+		$this->actingAs($this->kitchen)->delete(action('Admin\ApplicationInvoiceController@destroyPayment', [$invoice ,$this->payment]))->assertForbidden();
+	}
+
+	public function test_admin_can_destroy_payment() {
+		$invoice = $this->invoices->first();
+		$this->actingAs($this->user)->delete(action('Admin\ApplicationInvoiceController@destroyPayment', [$invoice ,$this->payment]))->assertSuccessful();
+		$this->assertDatabaseMissing('invoice_payments', [
+			'id' => $this->payment->id,
 		]);
 	}
 }

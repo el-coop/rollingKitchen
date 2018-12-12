@@ -69,11 +69,12 @@ class Application extends Model {
 	}
 	
 	public function invoices() {
-		return $this->hasMany(Invoice::class);
+		return $this->morphMany(Invoice::class, 'owner');
 	}
 	
 	public function invoicedItems() {
-		return $this->hasManyThrough(InvoiceItem::class, Invoice::class);
+		return $this->hasManyThrough(InvoiceItem::class, Invoice::class, 'owner_id')
+			->where('owner_type', static::class);;
 	}
 	
 	public function hasService(Service $service) {

@@ -17,89 +17,107 @@ use DB;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class DatatableService implements FromCollection, WithHeadings {
-
+	
 	use Exportable;
-
+	
 	private $queryConfig;
 	private $request;
-
+	
 	public function __construct(Request $request) {
 		$this->request = $request;
 		$this->queryConfig = config($this->request->input('table'));
 	}
-
+	
 	public function query() {
-
+		
 		if ($this->queryConfig['table'] ?? false) {
 			$tableName = $this->queryConfig['table'];
 			$query = DB::table($this->queryConfig['table']);
 		} else {
 			$query = $this->queryConfig['model']::query();
 			$tableName = (new $this->queryConfig['model'])->getTable();
-
 		}
-
-
+		
+		
 		$this->addWhere($query, $this->queryConfig);
 		$this->addJoins($query, $this->queryConfig);
 		$this->addJoinOn($query, $this->queryConfig);
 		$this->addSelects($query, $this->queryConfig);
-
+		
 		$query->groupBy("{$tableName}.id");
-
+		
 		if ($this->request->filled('sort')) {
 			$sort = explode('|', $this->request->input('sort'));
 			$query->orderBy($sort[0], $sort[1]);
 		} else {
 			$query->orderBy("{$tableName}.created_at", 'desc');
 		}
-
+		
 		if ($this->request->filled('filter')) {
 			$this->addFilter($query, $this->request, $this->queryConfig['fields']);
 		}
 		return $query;
 	}
-
-
+	
+	
 	protected function addSelects($query, $queryConfig) {
 		$selects = [];
+		if ($cases = $queryConfig['cases'] ?? false) {
+			foreach ($cases as $case) {
+				$selects[] = DB::raw("CASE {$case}");
+			}
+		}
+		
 		$selectFields = collect($queryConfig['fields'])->reject(function ($item) {
 			return $item['noTable'] ?? false;
 		});
 		foreach ($selectFields as $field) {
 			$fieldName = $field['name'];
-
+			
 			if (strpos($fieldName, 'count') !== 0) {
 				$tableName = isset($field['table']) ? "{$field['table']}." : '';
 				$selects[] = "{$tableName}{$fieldName}";
 			} else {
-
+				
 				$selects[] = DB::raw("$fieldName");
 			}
 		}
-
+		
+		
 		$query->select(...$selects);
 		return $query;
 	}
-
+	
 	protected function addJoins($query, $queryConfig) {
 		if ($joins = $queryConfig['joins'] ?? false) {
 			foreach ($joins as $join) {
 				$query->leftJoin(...$join);
 			}
-
+			
 		}
 		return $query;
 	}
-
-
+	
+	protected function addJoinOn($query, $queryConfig) {
+		if ($joinsOn = $queryConfig['joinsOn'] ?? false) {
+			foreach ($joinsOn as $joinOn) {
+				$query->leftJoin($joinOn[0], function ($join) use ($joinOn) {
+					$join->on($joinOn[1], $joinOn[2], $joinOn[3])
+						->where($joinOn[4], $joinOn[5], $joinOn[6]);
+				});
+			}
+		}
+		return $query;
+	}
+	
+	
 	protected function addWhere($query, $queryConfig) {
 		if ($where = $queryConfig['where'] ?? false) {
 			$query->where($where);
 		}
 		return $query;
 	}
-
+	
 	protected function addFilter($query, $request, $queryConfig) {
 		$filters = json_decode($request->input('filter'));
 		foreach ($filters as $field => $filter) {
@@ -117,7 +135,7 @@ class DatatableService implements FromCollection, WithHeadings {
 			}
 		}
 	}
-
+	
 	public function headings(): array {
 		return collect($this->queryConfig['fields'])->filter(function ($item) {
 			return $item['visible'] ?? true;
@@ -125,7 +143,7 @@ class DatatableService implements FromCollection, WithHeadings {
 			return __($item['title'] ?? $item['name']);
 		})->toArray();
 	}
-
+	
 	/**
 	 * @return Collection
 	 */
@@ -134,7 +152,7 @@ class DatatableService implements FromCollection, WithHeadings {
 			return $this->formatField($item);
 		});
 	}
-
+	
 	protected function formatField($field) {
 		$formatted = $field;
 		$config = collect($this->queryConfig['fields']);
@@ -147,17 +165,5 @@ class DatatableService implements FromCollection, WithHeadings {
 			}
 		}
 		return $formatted;
-	}
-
-	protected function addJoinOn($query, $queryConfig) {
-		if ($joinsOn = $queryConfig['joinsOn'] ?? false) {
-			foreach ($joinsOn as $joinOn) {
-				$query->leftJoin($joinOn[0], function ($join) use ($joinOn) {
-					$join->on($joinOn[1], $joinOn[2], $joinOn[3])
-						->where($joinOn[4], $joinOn[5], $joinOn[6]);
-				});
-			}
-		}
-		return $query;
 	}
 }

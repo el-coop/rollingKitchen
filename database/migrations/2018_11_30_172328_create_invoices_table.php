@@ -13,17 +13,14 @@ class CreateInvoicesTable extends Migration {
 	public function up() {
 		Schema::create('invoices', function (Blueprint $table) {
 			$table->increments('id');
-			$table->integer('application_id')->unsigned()->nullable();
+			$table->integer('owner_id')->unsigned()->nullable();
+			$table->string('owner_type');
 			$table->string('prefix');
 			$table->integer('number');
-			$table->integer('amount')->default(0);
+			$table->decimal('amount', 10, 2)->default(0);
 			$table->integer('tax');
-			
-			$table->boolean('paid')->default(false);
+
 			$table->timestamps();
-			
-			$table->foreign('application_id')
-				->references('id')->on('applications');
 		});
 	}
 	

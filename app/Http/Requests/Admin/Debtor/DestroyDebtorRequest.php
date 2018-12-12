@@ -1,20 +1,21 @@
 <?php
 
-namespace App\Http\Requests\Admin\Invoice;
+namespace App\Http\Requests\Admin\Debtor;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TogglePaymentStatusRequest extends FormRequest {
+class DestroyDebtorRequest extends FormRequest {
+	private $debtor;
+	
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
 	 * @return bool
 	 */
 	public function authorize() {
-		$this->invoice = $this->route('invoice');
-		return $this->user()->can('update', $this->invoice);
+		$this->debtor = $this->route('debtor');
+		return $this->user()->can('delete', $this->debtor);
 	}
-	
 	
 	/**
 	 * Get the validation rules that apply to the request.
@@ -28,9 +29,6 @@ class TogglePaymentStatusRequest extends FormRequest {
 	}
 	
 	public function commit() {
-		$this->invoice->paid = !$this->invoice->paid;
-		$this->invoice->save();
-		return $this->invoice;
-		
+		$this->debtor->delete();
 	}
 }

@@ -12,11 +12,8 @@ class Invoice extends Model {
 	protected $appends = [
 		'total',
 		'taxAmount',
-		'formattedNumber'
-	];
-	
-	protected $casts = [
-		'paid' => 'boolean'
+		'formattedNumber',
+		'totalPaid'
 	];
 	
 	protected static function boot() {
@@ -25,7 +22,7 @@ class Invoice extends Model {
 			$invoice->items->each->delete();
 		});
 	}
-	
+
 	static function getNumber() {
 		$year = app('settings')->get('registration_year');
 		$number = static::where('prefix', $year)->count() + 1;
@@ -59,17 +56,47 @@ class Invoice extends Model {
 	}
 	
 	public function getFullDataAttribute() {
-		$invoiceService = new InvoiceService($this->application);
-		$language = $this->application->kitchen->user->language;
+		$language = $this->owner instanceof Application ? $this->owner->kitchen->user->language : $this->owner->language;
 		$settings = app('settings');
-		
+
 		$pdfs = Pdf::all()->pluck('name', 'id');
+
+		
+		$pdfs = collect([]);
+		$options = collect([]);
+		$items = $this->formattedItems;
+		$subject = '';
+		$message = '';
+		$individualTax = true;
+		$taxOptions = [
+			'21' => '21%',
+			'6' => '6%',
+			'0' => '0',
+		];
+		if ($this->owner instanceof Application) {
+			$taxOptions = [
+				'21' => '21%',
+				'0' => '0',
+			];
+			$individualTax = false;
+			$invoiceService = new InvoiceService($this->owner);
+			$options = $invoiceService->getOptions($language);
+			$pdfs = Pdf::all()->pluck('name', 'id');
+			if ($this->exists) {
+				$subject = $settings->get("invoices_default_resend_subject_{$language}", '');
+				$message = $settings->get("invoices_default_resend_email_{$language}", '');
+			} else {
+				$items = $invoiceService->getOutstandingItems($language);
+				$subject = $settings->get("invoices_default_subject_{$language}", '');
+				$message = $settings->get("invoices_default_email_{$language}", '');
+			}
+		}
 		
 		return [[
 			'name' => 'recipient',
 			'label' => __('admin/invoices.recipient'),
 			'type' => 'text',
-			'value' => $this->application->kitchen->user->email,
+			'value' => $this->owner instanceof Application ? $this->owner->kitchen->user->email : $this->owner->email,
 		], [
 			'name' => 'bcc',
 			'label' => __('admin/invoices.bcc'),
@@ -88,12 +115,12 @@ class Invoice extends Model {
 			'label' => __('admin/invoices.subject'),
 			'type' => 'text',
 			'checked' => true,
-			'value' => $this->exists ? $settings->get("invoices_default_resend_subject_{$language}", '') : $settings->get("invoices_default_subject_{$language}", ''),
+			'value' => $subject,
 		], [
 			'name' => 'message',
 			'label' => __('admin/invoices.message'),
 			'type' => 'textarea',
-			'value' => $this->exists ? $settings->get("invoices_default_resend_email_{$language}", '') : $settings->get("invoices_default_email_{$language}", ''),
+			'value' => $message,
 		], [
 			'name' => 'attachments',
 			'label' => __('admin/invoices.attachments'),
@@ -103,12 +130,10 @@ class Invoice extends Model {
 			'name' => 'items',
 			'label' => 'Items',
 			'type' => 'invoice',
-			'value' => $this->items()->count() ? $this->formattedItems : $invoiceService->getOutstandingItems($language),
-			'options' => $invoiceService->getOptions($language),
-			'taxOptions' => [
-				'21' => '21%',
-				'0' => '0',
-			]
+			'value' => $items,
+			'individualTax' => $individualTax,
+			'options' => $options,
+			'taxOptions' => $taxOptions
 		], [
 			'name' => 'file_download',
 			'label' => __('admin/invoices.preview'),
@@ -117,20 +142,20 @@ class Invoice extends Model {
 		]];
 	}
 	
-	public function application() {
-		return $this->belongsTo(Application::class);
+	public function owner() {
+		return $this->morphTo();
 	}
 	
 	public function items() {
 		return $this->hasMany(InvoiceItem::class);
 	}
 	
-	
 	public function getFormattedItemsAttribute() {
 		return $this->items->map(function ($item) {
 			return [
 				'quantity' => $item->quantity,
 				'item' => $item->name,
+				'tax' => $item->tax,
 				'unitPrice' => $item->unit_price,
 			];
 		});
@@ -138,5 +163,13 @@ class Invoice extends Model {
 	
 	public function services() {
 		return $this->hasManyThrough(Service::class, InvoiceItem::class);
+	}
+
+	public function payments() {
+		return $this->hasMany(InvoicePayment::class);
+	}
+
+	public function getTotalPaidAttribute() {
+		return $this->payments()->sum('amount');
 	}
 }

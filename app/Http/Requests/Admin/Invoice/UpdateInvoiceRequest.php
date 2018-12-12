@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Admin\Invoice;
 
-use App\Jobs\SendInvoice;
+use App\Jobs\SendApplicationInvoice;
 use App\Models\InvoiceItem;
 use App\Models\Service;
 use App\Services\InvoiceService;
@@ -29,6 +29,7 @@ class UpdateInvoiceRequest extends FormRequest {
 	public function rules() {
 		$rules = collect([
 			'items' => 'required|array|min:1',
+			'items.*.*' => 'required',
 			'tax' => 'required|in:0,21'
 		]);
 		if (!$this->input('file_download', false)) {
@@ -44,12 +45,12 @@ class UpdateInvoiceRequest extends FormRequest {
 	
 	public function commit() {
 		$this->invoice = $this->route('invoice');
-		$application = $this->route('application');
+		$application = $this->invoice->owner;
 		$number = $this->invoice->formattedNumber;
 		
 		if ($this->input('file_download', false)) {
 			$invoiceService = new InvoiceService($application);
-			$invoice = $invoiceService->generate($number, $this->input('tax'), $this->input('items'));
+			$invoice = $invoiceService->generate($number, $this->input('items'), $this->input('tax'));
 			return $invoice->download($number);
 		}
 		$this->invoice->items()->delete();
@@ -73,11 +74,11 @@ class UpdateInvoiceRequest extends FormRequest {
 		
 		$this->invoice->amount = $total;
 		$this->invoice->save();
-		SendInvoice::dispatch($this->invoice, $this->input('recipient'), $this->input('subject'), $this->input('message'), $this->input('attachments', []), collect([
+		SendApplicationInvoice::dispatch($this->invoice, $this->input('recipient'), $this->input('subject'), $this->input('message'), $this->input('attachments', []), collect([
 			$this->input('bcc', false),
 			$this->input('accountant', false) ? app('settings')->get('invoices_accountant') : false
 		])->filter());
 		
-		return $this->invoice;
+		return $this->invoice->load('payments');
 	}
 }

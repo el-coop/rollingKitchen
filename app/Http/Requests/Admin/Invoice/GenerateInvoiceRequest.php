@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Admin\Invoice;
 
-use App\Jobs\SendInvoice;
+use App\Jobs\SendApplicationInvoice;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\Service;
@@ -18,7 +18,7 @@ class GenerateInvoiceRequest extends FormRequest {
 	public function authorize() {
 		return $this->user()->can('create', Invoice::class);
 	}
-	
+
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -27,6 +27,7 @@ class GenerateInvoiceRequest extends FormRequest {
 	public function rules() {
 		$rules = collect([
 			'items' => 'required|array|min:1',
+			'items.*.*' => 'required',
 			'tax' => 'required|in:0,21'
 		]);
 		if (!$this->input('file_download', false)) {
@@ -39,15 +40,15 @@ class GenerateInvoiceRequest extends FormRequest {
 		}
 		return $rules->toArray();
 	}
-	
+
 	public function commit() {
 		$application = $this->route('application');
 		$number = Invoice::getNumber();
 		$prefix = app('settings')->get('registration_year');
-		
+
 		if ($this->input('file_download', false)) {
 			$invoiceService = new InvoiceService($application);
-			$invoice = $invoiceService->generate("{$prefix}-{$number}", $this->input('tax'), $this->input('items'));
+			$invoice = $invoiceService->generate("{$prefix}-{$number}", $this->input('items'), $this->input('tax'));
 			return $invoice->download("{$prefix}-{$number}");
 		}
 		$invoice = new Invoice;
@@ -64,27 +65,26 @@ class GenerateInvoiceRequest extends FormRequest {
 			if ($service = Service::where("name_en", $item['item'])->orWhere("name_nl", $item['item'])->first()) {
 				$invoiceItem->service_id = $service->id;
 			}
-			
+
 			$invoice->items()->save($invoiceItem);
-			
+
 			if ($invoiceItem->service_id) {
 				$application->registerNewServices($service);
 			}
 			$total += $item['quantity'] * $item['unitPrice'];
 		}
-		
+
 		$invoice->amount = $total;
 		$invoice->save();
-		
+
 		if (!$this->application->number) {
 			$this->application->setNumber();
 		}
-		SendInvoice::dispatch($invoice, $this->input('recipient'), $this->input('subject'), $this->input('message'), $this->input('attachments', []), collect([
+		SendApplicationInvoice::dispatch($invoice, $this->input('recipient'), $this->input('subject'), $this->input('message'), $this->input('attachments', []), collect([
 			$this->input('bcc', false),
 			$this->input('accountant', false) ? app('settings')->get('invoices_accountant') : false
 		])->filter());
-		
-		
-		return $invoice;
+
+		return $invoice->load('payments');
 	}
 }
