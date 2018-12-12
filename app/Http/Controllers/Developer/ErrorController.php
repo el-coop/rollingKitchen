@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Developer;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Developer\ResolveErrorRequest;
 use App\Http\Requests\LogErrorRequest;
 use App\Models\Error;
-use App\Services\DatatableService;
-use App\Services\ErrorService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+
 
 class ErrorController extends Controller {
 

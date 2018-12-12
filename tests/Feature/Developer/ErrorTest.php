@@ -40,37 +40,37 @@ class ErrorTest extends TestCase {
 	}
 
 	public function test_guest_cant_see_php_error_page() {
-		$this->get(action('ErrorController@phpErrors'))->assertRedirect(action('Auth\LoginController@login'));
+		$this->get(action('Developer\ErrorController@phpErrors'))->assertRedirect(action('Auth\LoginController@login'));
 	}
 
 	public function test_kitchen_cant_see_php_error_page() {
-		$this->actingAs($this->kitchen->user)->get(action('ErrorController@phpErrors'))->assertForbidden();
+		$this->actingAs($this->kitchen->user)->get(action('Developer\ErrorController@phpErrors'))->assertForbidden();
 	}
 
 	public function test_admin_cant_see_php_error_page() {
-		$this->actingAs($this->admin->user)->get(action('ErrorController@phpErrors'))->assertForbidden();
+		$this->actingAs($this->admin->user)->get(action('Developer\ErrorController@phpErrors'))->assertForbidden();
 	}
 
 	public function test_developer_can_see_php_error_page() {
-		$this->actingAs($this->developer->user)->get(action('ErrorController@phpErrors'))
+		$this->actingAs($this->developer->user)->get(action('Developer\ErrorController@phpErrors'))
 			->assertStatus(200)
 			->assertSee('</datatable>');
 	}
 
 	public function test_guest_cant_see_js_error_page() {
-		$this->get(action('ErrorController@jsErrors'))->assertRedirect(action('Auth\LoginController@login'));
+		$this->get(action('Developer\ErrorController@jsErrors'))->assertRedirect(action('Auth\LoginController@login'));
 	}
 
 	public function test_kitchen_cant_see_js_error_page() {
-		$this->actingAs($this->kitchen->user)->get(action('ErrorController@jsErrors'))->assertForbidden();
+		$this->actingAs($this->kitchen->user)->get(action('Developer\ErrorController@jsErrors'))->assertForbidden();
 	}
 
 	public function test_admin_cant_see_js_error_page() {
-		$this->actingAs($this->admin->user)->get(action('ErrorController@jsErrors'))->assertForbidden();
+		$this->actingAs($this->admin->user)->get(action('Developer\ErrorController@jsErrors'))->assertForbidden();
 	}
 
 	public function test_developer_can_see_js_error_page() {
-		$this->actingAs($this->developer->user)->get(action('ErrorController@jsErrors'))
+		$this->actingAs($this->developer->user)->get(action('Developer\ErrorController@jsErrors'))
 			->assertStatus(200)
 			->assertSee('</datatable>');
 	}
@@ -98,42 +98,42 @@ class ErrorTest extends TestCase {
 	}
 
 	public function test_guest_cant_resolve() {
-		$this->delete(action('ErrorController@resolve', $this->phpErrors->first()->error))->assertRedirect(action('Auth\LoginController@login'));
+		$this->delete(action('Developer\ErrorController@resolve', $this->phpErrors->first()->error))->assertRedirect(action('Auth\LoginController@login'));
 	}
 
 	public function test_kitchen_cant_resolve() {
-		$this->actingAs($this->kitchen->user)->delete(action('ErrorController@resolve',$this->phpErrors->first()->error))->assertForbidden();
+		$this->actingAs($this->kitchen->user)->delete(action('Developer\ErrorController@resolve',$this->phpErrors->first()->error))->assertForbidden();
 	}
 
 	public function test_admin_cant_resolve() {
-		$this->actingAs($this->admin->user)->delete(action('ErrorController@resolve',$this->phpErrors->first()->error))->assertForbidden();
+		$this->actingAs($this->admin->user)->delete(action('Developer\ErrorController@resolve',$this->phpErrors->first()->error))->assertForbidden();
 	}
 
 	public function test_developer_can_resolve() {
-		$this->actingAs($this->developer->user)->delete(action('ErrorController@resolve',$this->phpErrors->first()->error))->assertSuccessful();
+		$this->actingAs($this->developer->user)->delete(action('Developer\ErrorController@resolve',$this->phpErrors->first()->error))->assertSuccessful();
 		$this->assertDatabaseMissing('php_errors', ['id' => $this->phpErrors->first()->id]);
 		$this->assertDatabaseMissing('errors', ['id' => $this->phpErrors->first()->error->id]);
 	}
 
 	public function test_guest_cant_get_full_data() {
-		$this->get(action('ErrorController@show', $this->phpErrors->first()->error))->assertRedirect(action('Auth\LoginController@login'));
+		$this->get(action('Developer\ErrorController@show', $this->phpErrors->first()->error))->assertRedirect(action('Auth\LoginController@login'));
 	}
 
 	public function test_kitchen_cant_get_full_data() {
-		$this->actingAs($this->kitchen->user)->get(action('ErrorController@show',$this->phpErrors->first()->error))->assertForbidden();
+		$this->actingAs($this->kitchen->user)->get(action('Developer\ErrorController@show',$this->phpErrors->first()->error))->assertForbidden();
 	}
 
 	public function test_admin_cant_get_full_data() {
-		$this->actingAs($this->admin->user)->get(action('ErrorController@show',$this->phpErrors->first()->error))->assertForbidden();
+		$this->actingAs($this->admin->user)->get(action('Developer\ErrorController@show',$this->phpErrors->first()->error))->assertForbidden();
 	}
 
 	public function test_developer_can_get_full_data() {
-		$response = $this->actingAs($this->developer->user)->get(action('ErrorController@show',$this->phpErrors->first()->error))->assertSuccessful();
+		$response = $this->actingAs($this->developer->user)->get(action('Developer\ErrorController@show',$this->phpErrors->first()->error))->assertSuccessful();
 		$response->assertJson($this->phpErrors->first()->error->fullData->toArray());
 	}
 
 	public function test_store_js_error(){
-		$this->actingAs($this->kitchen->user)->post(action('ErrorController@storeJsError', [
+		$this->actingAs($this->kitchen->user)->post(action('Developer\ErrorController@storeJsError', [
 			'page' => 'test.com',
 			'message' => 'test',
 			'source' => 'test',
