@@ -22,6 +22,7 @@
 		<button @click="$bus.$emit('open-payment-modal', field, onUpdate)" class="button is-success">@lang('admin/invoices.managePayments')</button>
 	</template>
 </dynamic-table>
-<invoice-table >
-</invoice-table>
+<invoice-payments-modal>
+
+</invoice-payments-modal>
 

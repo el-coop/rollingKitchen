@@ -9,7 +9,7 @@ Vue.component('Navbar', require('./Global/Navbar'));
 Vue.component('toast', require('./Global/Toast'));
 Vue.component('FireworksModal', require('./Global/FireworksModal'));
 Vue.component('ConfirmationSubmit', require('./Global/ConfirmationSubmit'));
-Vue.component('InvoiceTable', require('./Invoice/InvoiceTable'));
+Vue.component('InvoicePaymentsModal', require('./Invoice/InvoicePaymentsModal'));
 
 // utilities
 Vue.component('Drawer', require('./Utilities/Drawer'));

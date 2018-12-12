@@ -25,6 +25,7 @@
 			</template>
 		@endcomponent
 	</div>
-	<invoice-table :from-url="true">
-	</invoice-table>
+	<invoice-payments-modal :from-url="true">
+
+	</invoice-payments-modal>
 @endsection

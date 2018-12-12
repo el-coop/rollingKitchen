@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Models\InvoicePayment;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class PaymentPolicy {
+class InvoicePaymentPolicy {
 	use HandlesAuthorization;
 
 	public function before($user,$ability){

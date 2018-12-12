@@ -162,7 +162,7 @@
 				if (this.deleteSlot) {
 					settings.push({
 						name: '__slot:delete',
-                        title: this.$translations.delete,
+                        title: '',
                         filter: false
 					})
 				}

@@ -1,9 +1,9 @@
 <template>
     <modal-component name="payment" height="100%" :width="800" :pivotY="0"
                      :pivotX="1">
-        <payments-table v-if="invoice.payments" @updated-total="updateInvoice" :columns="columns" :init-fields="invoice.payments"
+        <invoice-payments-table v-if="invoice.payments" @updated-total="updateInvoice" :columns="columns" :init-fields="invoice.payments"
                         :action="action">
-        </payments-table>
+        </invoice-payments-table>
         <div v-else class="has-text-centered">
             <a class="button is-loading"></a>
         </div>
@@ -13,14 +13,14 @@
 <script>
     import ModalComponent from '../Utilities/ModalComponent';
     import DynamicTable from '../Utilities/DynamicTable'
-    import PaymentsTable from './PaymentsTable';
+    import InvoicePaymentsTable from './InvoicePaymentsTable';
 
     export default {
-        name: "InvoiceTable",
+        name: "InvoicePaymentsModal",
         components: {
             ModalComponent,
             DynamicTable,
-            PaymentsTable
+            InvoicePaymentsTable
         },
         props: {
             fromUrl: {
@@ -70,7 +70,7 @@
                 this.invoice = [];
                 this.$modal.show('payment');
                 if (this.fromUrl) {
-                    const response = await axios.get('/admin/invoices/payments/' + field.id + '?time=' + Date.now());
+                    const response = await axios.get('/admin/invoices/payments/' + field.id);
                     this.invoice = response.data;
                 } else {
                     this.invoice = field;

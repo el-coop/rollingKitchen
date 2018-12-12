@@ -731,11 +731,12 @@ class ApplicationInvoiceTest extends TestCase {
 		$this->actingAs($this->kitchen)->get(action('Admin\ApplicationInvoiceController@getPayments', $invoice))->assertForbidden();
 	}
 
-	public function test_kitchen_admin_get_payments() {
+	public function test_admin_can_get_payments() {
 
 		$invoice = $this->invoices->first();
-		$this->actingAs($this->user)->get(action('Admin\ApplicationInvoiceController@getPayments',$invoice))->assertSuccessful()
-		->assertJson($invoice->load('payments')->toArray());
+		$this->actingAs($this->user)->get(action('Admin\ApplicationInvoiceController@getPayments',$invoice))
+			->assertSuccessful()
+			->assertJson($invoice->load('payments')->toArray());
 	}
 
 

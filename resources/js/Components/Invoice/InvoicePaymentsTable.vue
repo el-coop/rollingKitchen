@@ -2,7 +2,7 @@
     import DynamicTable from '../Utilities/DynamicTable';
     export default {
         extends: DynamicTable,
-        name: "PaymentsTable",
+        name: "InvoicePaymentsTable",
         methods: {
             calculateTotal(){
                 let total = 0;

@@ -29,15 +29,19 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		});
 
 		Route::group(['prefix' => 'invoices'], function () {
-			Route::post('/payments/{invoice}', 'ApplicationInvoiceController@addPayment');
-			Route::get('/payments/{invoice}', 'ApplicationInvoiceController@getPayments');
-			Route::delete('/payments/{invoice}/{invoicePayment}', 'ApplicationInvoiceController@destroyPayment');
-			Route::patch('/payments/{invoice}/{invoicePayment}', 'ApplicationInvoiceController@updatePayment');
+			Route::group(['prefix' => 'payments'], function () {
+				Route::post('/{invoice}', 'ApplicationInvoiceController@addPayment');
+				Route::get('/{invoice}', 'ApplicationInvoiceController@getPayments');
+				Route::delete('/{invoice}/{invoicePayment}', 'ApplicationInvoiceController@destroyPayment');
+				Route::patch('/{invoice}/{invoicePayment}', 'ApplicationInvoiceController@updatePayment');
+			});
 			Route::get('/', 'ApplicationInvoiceController@index');
 			Route::get('/{application}', 'ApplicationInvoiceController@create');
 			Route::post('/{application}', 'ApplicationInvoiceController@store');
+			Route::patch('/{invoice}/toggle', 'ApplicationInvoiceController@togglePaid');
 			Route::get('/{application}/{invoice}', 'ApplicationInvoiceController@edit');
 			Route::patch('/{application}/{invoice}', 'ApplicationInvoiceController@update');
+
 		});
 
 		Route::group(['prefix' => 'applications'], function () {

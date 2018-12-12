@@ -42,9 +42,26 @@
 	}
 </script>
 
-<style scoped>
-	.modal-body{
+<style lang="scss">
+	@import "../../../sass/variables";
+
+	.modal-body {
+		overflow-x: hidden;
 		overflow-y: auto;
+
+		> *:last-child {
+			margin-bottom: 1rem;
+		}
+
+		.modal-close {
+			position: relative;
+			float: right;
+			top: 0;
+			right: 0;
+
+			&:after, &:before {
+				background: $contrast-bg;
+			}
+		}
 	}
 </style>
-
