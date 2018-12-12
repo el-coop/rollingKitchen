@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use JustBetter\PaginationWithHavings\PaginationWithHavings;
 
-class User extends Authenticatable {
+class User extends Authenticatable implements HasLocalePreference {
 	use Notifiable;
 	use PaginationWithHavings;
 	
@@ -23,5 +24,14 @@ class User extends Authenticatable {
 	
 	public function user() {
 		return $this->morphTo();
+	}
+	
+	/**
+	 * Get the preferred locale of the entity.
+	 *
+	 * @return string|null
+	 */
+	public function preferredLocale() {
+		return $this->language;
 	}
 }

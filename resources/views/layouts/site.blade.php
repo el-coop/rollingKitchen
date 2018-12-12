@@ -2,7 +2,8 @@
 
 @section('body')
 	<main>
-		<navbar title="@lang('global.title')" :menu="false" class="is-dark" :fluid="false">
+		<navbar title="@lang('global.title')" :menu="false" title-link="{{ action('HomeController@show') }}"
+				class="is-dark" :fluid="false">
 			@auth
 				@component('components.logout', [
 					'class' => ''

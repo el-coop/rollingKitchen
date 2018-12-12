@@ -12,11 +12,8 @@ class Invoice extends Model {
 	protected $appends = [
 		'total',
 		'taxAmount',
-		'formattedNumber'
-	];
-	
-	protected $casts = [
-		'paid' => 'boolean'
+		'formattedNumber',
+		'totalPaid'
 	];
 	
 	protected static function boot() {
@@ -25,7 +22,7 @@ class Invoice extends Model {
 			$invoice->items->each->delete();
 		});
 	}
-	
+
 	static function getNumber() {
 		$year = app('settings')->get('registration_year');
 		$number = static::where('prefix', $year)->count() + 1;
@@ -61,6 +58,9 @@ class Invoice extends Model {
 	public function getFullDataAttribute() {
 		$language = $this->owner instanceof Application ? $this->owner->kitchen->user->language : $this->owner->language;
 		$settings = app('settings');
+
+		$pdfs = Pdf::all()->pluck('name', 'id');
+
 		
 		$pdfs = collect([]);
 		$options = collect([]);
@@ -150,7 +150,6 @@ class Invoice extends Model {
 		return $this->hasMany(InvoiceItem::class);
 	}
 	
-	
 	public function getFormattedItemsAttribute() {
 		return $this->items->map(function ($item) {
 			return [
@@ -164,5 +163,13 @@ class Invoice extends Model {
 	
 	public function services() {
 		return $this->hasManyThrough(Service::class, InvoiceItem::class);
+	}
+
+	public function payments() {
+		return $this->hasMany(InvoicePayment::class);
+	}
+
+	public function getTotalPaidAttribute() {
+		return $this->payments()->sum('amount');
 	}
 }

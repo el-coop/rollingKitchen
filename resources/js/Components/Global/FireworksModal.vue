@@ -5,9 +5,6 @@
 		<figure class="image is-4by3">
 			<img src="/images/welcome.gif">
 		</figure>
-		<div class="buttons">
-			<button class="button is-fullwidth" @click="$modal.hide('fireworks')" v-text="$translations.close"></button>
-		</div>
 	</modal-component>
 </template>
 

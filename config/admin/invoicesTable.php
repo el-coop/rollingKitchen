@@ -2,9 +2,13 @@
 
 return [
 	'model' => \App\Models\Invoice::class,
-	'joins' => [
-		['applications', 'invoices.application_id', 'applications.id'],
-		['users', 'users.user_id', 'applications.kitchen_id'],
+	'joins' => [['users', 'users.user_id', 'applications.kitchen_id']],
+	'joinsOn' => [
+		['applications', 'invoices.owner_id', '=', 'applications.id', 'invoices.owner_type', '=', \App\Models\Application::class],
+		['debtors', 'invoices.owner_id', '=', 'debtors.id', 'invoices.owner_type', '=', \App\Models\Debtor::class],
+	],
+	'cases' => [
+		"WHEN invoices.owner_type = '" . \App\Models\Debtor::class . "' THEN debtors.name ELSE users.name END as name"
 	],
 	
 	'fields' => [[
@@ -12,7 +16,7 @@ return [
 		'table' => 'invoices',
 		'visible' => false
 	], [
-		'name' => 'application_id',
+		'name' => 'owner_id',
 		'visible' => false
 	], [
 		'name' => 'number',
@@ -34,8 +38,8 @@ return [
 		'filter' => false
 	], [
 		'name' => 'name',
-		'table' => 'users',
-		'title' => 'auth.kitchenName',
+		'noTable' => true,
+		'title' => 'global.name',
 		'sortField' => 'name'
 	], [
 		'name' => 'prefix',
@@ -49,13 +53,9 @@ return [
 		'callback' => 'localNumber',
 		'filter' => false
 	], [
-		'name' => 'paid',
-		'title' => 'global.status',
-		'filter' => [
-			'vue.unpaid',
-			'vue.paid',
-		],
-		'sortField' => 'paid',
-		'callback' => 'paidStatus'
+		'name' => 'totalPaid',
+		'title' => 'admin/invoices.totalPaid',
+		'noTable' => true,
+		'callback' => 'localNumber'
 	]]
 ];

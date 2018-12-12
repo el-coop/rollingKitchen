@@ -4,13 +4,14 @@
 				},{
 					name: 'total',
 					label: '@lang('admin/invoices.amount')',
-					subtype: 'number',
+					subType: 'number',
 					callback: 'localNumber',
 				},{
-					name: 'paid',
-					label: '@lang('global.status')',
-					callback: 'paidStatus'
-				}]" :init-fields="{{ $application->invoices }}"
+					name: 'totalPaid',
+					label: '@lang('admin/invoices.totalPaid')',
+					subType: 'number',
+					callback: 'localNumber',
+				}]" :init-fields="{{ $application->invoices()->with('payments')->get() }}"
 			   action="{{ action('Admin\ApplicationInvoiceController@store', $application) }}" :modal="{
 			   		width: 1000,
 			   		height: '100%',
@@ -18,12 +19,10 @@
 			   		pivotX: 1
 			   }" :form-from-url="true" form-button-text="@lang('admin/invoices.send')" :delete-allowed="false">
 	<template slot="actions" slot-scope="{field, onUpdate}">
-		<dynamic-form
-				:button-text="field.paid ? '@lang('admin/invoices.toggleUnpaid')' : '@lang('admin/invoices.togglePaid')'"
-				:init-fields="[]"
-				:url="`/admin/invoices/${field.id}/toggle`"
-				:button-class="field.paid ? 'is-danger' : 'is-success'"
-				:on-data-update="onUpdate">
-		</dynamic-form>
+		<button @click="$bus.$emit('open-payment-modal', field, onUpdate)" class="button is-success">@lang('admin/invoices.managePayments')</button>
 	</template>
 </dynamic-table>
+<invoice-payments-modal>
+
+</invoice-payments-modal>
+

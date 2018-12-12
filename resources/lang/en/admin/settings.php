@@ -5,7 +5,7 @@ return [
 	'files' => 'Files',
 	'chooseFile' => 'Choose a file',
 	'closed' => 'Closed',
-	'visibleTo' => 'Visible to:',
+	'visibleTo' => 'Visible to',
 	'allKitchens' => 'All kitchens',
 	'acceptedKitchens' => 'Accepted kitchens',
 	'noKitchens' => 'Nobody',
@@ -40,7 +40,6 @@ return [
 	'invoices_default_subject_en' => 'Invoice creation default subject EN',
 	'invoices_default_email_nl' => 'Invoice creation default email NL',
 	'invoices_default_email_en' => 'Invoice creation default email en',
-	
 	
 	'invoices_default_resend_subject_nl' => 'Invoice resent default subject NL',
 	'invoices_default_resend_subject_en' => 'Invoice resent default subject EN',

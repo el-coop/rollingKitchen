@@ -11,6 +11,7 @@ return [
 	'kitchenInformation' => 'Keuken informatie',
 	'services' => 'Services',
 	'pastApplications' => 'Aanmeldingen voorgaande jaren',
-	'photoValidation' => 'Foto upload, of één van de volgende velden: website/facebook/instagram, vereist'
+	'photoValidation' => 'Foto upload, of één van de volgende velden: website/facebook/instagram, vereist',
+	'pdfsTitle' => 'Files for your consideration TBT'
 
 ];

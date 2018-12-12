@@ -7,17 +7,17 @@
 						<font-awesome-icon icon="bars" class="icon" fixed-width></font-awesome-icon>
 					</button>
 				</div>
-				<div class="navbar-item" v-text="title">
-				</div>
+				<a :href="titleLink" class="navbar-item" v-text="title">
+				</a>
 				<div class="navbar-item ml-auto" v-html="buttons">
 
 				</div>
 			</div>
 			<div class="navbar-menu">
 				<div class="navbar-start">
-					<div class="navbar-item" v-text="title">
+					<a :href="titleLink" class="navbar-item" v-text="title">
 
-					</div>
+					</a>
 				</div>
 				<div class="navbar-end" ref="buttons">
 					<slot></slot>
@@ -42,6 +42,11 @@
 			fluid: {
 				type: Boolean,
 				default: true
+			},
+
+			titleLink: {
+				type: String,
+				default: '#'
 			}
 		},
 
@@ -72,7 +77,7 @@
 		margin-bottom: 1rem;
 
 		&.is-dark {
-			background-color: lighten($contrast-bg,30%);
+			background-color: lighten($contrast-bg, 30%);
 		}
 	}
 

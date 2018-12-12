@@ -70,11 +70,11 @@ class SendDebtorInvoice implements ShouldQueue {
 		
 		
 		Notification::route('mail', $this->recipient)
-			->notify(new InvoiceSent($this->subject, $owner->name, $this->message, $language, [[
+			->notify((new InvoiceSent($this->subject, $owner->name, $this->message, $language, [[
 				'file' => storage_path("app/invoices/{$number}.pdf"),
 				'name' => "{$number}.pdf"
-			]], $this->bcc->toArray()));
-
+			]], $this->bcc->toArray()))->locale($language));
+		
 		Storage::delete("invoices/{$number}.pdf");
 	}
 }
