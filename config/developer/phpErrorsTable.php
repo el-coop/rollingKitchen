@@ -14,7 +14,7 @@ return [
 		],
 		[
 			'name' => 'created_at',
-			'title' => 'developer\errors.createdAt',
+			'title' => 'developer/errors.createdAt',
 			'table' => 'errors',
 			'filter' => false,
 		],
@@ -27,13 +27,13 @@ return [
 		[
 			'name' => 'page',
 			'table' => 'errors',
-			'title' => 'developer\errors.page',
+			'title' => 'developer/errors.page',
 			'sortField' => 'page'
 		],
 		[
 			'name' => 'message',
 			'table' => 'php_errors',
-			'title' => 'developer\errors.message',
+			'title' => 'developer/errors.message',
 			'sortField' => 'message'
 		]
 	]
