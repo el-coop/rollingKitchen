@@ -22,7 +22,7 @@ return [
 	'togglePaid' => 'Als betaald markeren',
 	'toggleUnpaid' => 'Als onbetaald markeren',
 	'number' => 'Nummer',
-	'addPayment' => 'TBT',
 	'totalPaid' => 'TBT',
-	'managePayments' => 'TBT'
+	'managePayments' => 'TBT',
+	'invoiceSent' => 'Invoice Sent TBT',
 ];
