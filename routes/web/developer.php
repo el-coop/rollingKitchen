@@ -15,7 +15,7 @@ Route::group(['prefix' => 'developer', 'namespace' => 'Developer'], function(){
 		Route::get('failedJobs', 'FailedJobsController@index');
 		Route::get('failedJobs/show/{id}', 'FailedJobsController@show');
 
-		Route::post('failedJobs/retry/{id}','FailedJobsController@retry' );
+		Route::post('failedJobs/retry/{id}', 'FailedJobsController@retry');
 		Route::delete('failedJobs/delete/{id}','FailedJobsController@delete' );
 
 	});

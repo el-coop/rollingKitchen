@@ -14,8 +14,8 @@ class FailedJobsController extends Controller {
 	}
 
 	public function retry($id) {
-		$command = 'queue:retry ' . $id;
-		Artisan::call($command);
+		Artisan::call('queue:retry', ['id' => $id]);
+		return ['success' => true];
 	}
 
 	public function delete($id) {
