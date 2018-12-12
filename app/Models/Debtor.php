@@ -40,4 +40,9 @@ class Debtor extends Model {
 		
 		return $fullData->concat($this->getFieldsData());
 	}
+	
+	public function invoices() {
+		return $this->morphMany(Invoice::class, 'owner');
+	}
+	
 }

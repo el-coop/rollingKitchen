@@ -59,11 +59,22 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		
 		Route::group(['prefix' => 'debtors'], function () {
 			Route::get('/', 'DebtorController@index');
-			Route::get('/edit', 'DebtorController@create');
-			Route::post('/edit', 'DebtorController@store');
-			Route::get('/edit/{debtor}', 'DebtorController@edit');
-			Route::patch('/edit/{debtor}', 'DebtorController@update');
+			
+			Route::group(['prefix' => 'edit'], function () {
+				Route::get('/', 'DebtorController@create');
+				Route::post('/', 'DebtorController@store');
+				Route::get('/{debtor}', 'DebtorController@edit');
+				Route::patch('/{debtor}', 'DebtorController@update');
+			});
+			Route::group(['prefix' => 'invoice'], function () {
+				Route::get('/{debtor}', 'DebtorInvoiceController@create');
+				Route::post('/{debtor}', 'DebtorInvoiceController@store');
+				Route::get('/{debtor}/{invoice}', 'DebtorInvoiceController@edit');
+				Route::patch('/{debtor}/{invoice}', 'DebtorInvoiceController@update');
+			});
+			
 			Route::delete('/delete/{debtor}', 'DebtorController@destroy');
+			Route::get('/{debtor}', 'DebtorController@show');
 		});
 	});
 });

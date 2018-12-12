@@ -8,47 +8,58 @@
 
 namespace App\Services;
 
+use App\Models\Application;
 use App\Models\Service;
-use ConsoleTVs\Invoices\Classes\Invoice as InvoiceFile;
+use App\Services\IndividualTaxInvoice as InvoiceFile;
 use DB;
 
 
 class InvoiceService {
 	
 	protected $application;
+	protected $recipient;
 	protected $language;
 	
-	public function __construct($application) {
-		$this->application = $application;
-		$this->language = $application->kitchen->user->language;
+	public function __construct($recipient) {
+		$this->recipient = $recipient;
+		
+		if ($recipient instanceof Application) {
+			$this->application = $recipient;
+			$this->recipient = $recipient->kitchen->user;
+			$this->recipient->data = $recipient->kitchen->data;
+		} else {
+			$this->recipient = $recipient;
+		}
+		$this->language = $this->recipient->language;
 	}
 	
 	
-	public function generate($number, $tax, $items) {
+	public function generate($number, $items, $tax = null) {
 		$settings = app('settings');
-		$kitchen = $this->application->kitchen;
-		$language = $kitchen->user->language;
+		
 		$invoice = InvoiceFile::make()
+			->language($this->language)
 			->logo(asset('/images/logo.png'))
 			->number($number)
+			->taxType($tax !== null ? 'percentage' : 'individual')
 			->tax($tax)
-			->notes($settings->get("invoices_notes_{$language}"))
+			->notes($settings->get("invoices_notes_{$this->language}"))
 			->business(str_replace(PHP_EOL, '<br>', $settings->get("invoices_business_details")))
-			->notes(str_replace(PHP_EOL, '<br>', $settings->get("invoices_notes_{$language}")))
-			->footnote(str_replace(PHP_EOL, '<br>', $settings->get("invoices_footer_{$language}")))
+			->notes(str_replace(PHP_EOL, '<br>', $settings->get("invoices_notes_{$this->language}")))
+			->footnote(str_replace(PHP_EOL, '<br>', $settings->get("invoices_footer_{$this->language}")))
 			->customer([
-				'name' => $kitchen->user->name,
-				'phone' => $kitchen->data[5],
-				'location' => $kitchen->data[2],
-				'zip' => $kitchen->data[3],
-				'city' => $kitchen->data[4],
+				'name' => $this->recipient->name,
+				'phone' => $this->recipient->data[5],
+				'location' => $this->recipient->data[2],
+				'zip' => $this->recipient->data[3],
+				'city' => $this->recipient->data[4],
 			]);
 		
 		foreach ($items as $item) {
 			if (is_array($item)) {
-				$invoice->addItem($item['item'], $item['unitPrice'], $item['quantity']);
+				$invoice->addItem($item['item'], $item['unitPrice'], $item['quantity'], $item['tax'] ?? 0);
 			} else {
-				$invoice->addItem($item->name, $item->unit_price, $item->quantity);
+				$invoice->addItem($item->name, $item->unit_price, $item->quantity, $item->tax ?? 0);
 			}
 		}
 		return $invoice;

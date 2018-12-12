@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Notification;
 
-class SendInvoice implements ShouldQueue {
+class SendApplicationInvoice implements ShouldQueue {
 	use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 	/**
 	 * @var Invoice
@@ -68,11 +68,11 @@ class SendInvoice implements ShouldQueue {
 	 * @return void
 	 */
 	public function handle() {
-		$application = $this->invoice->application;
+		$application = $this->invoice->owner;
 		$language = $application->kitchen->user->language;
 		$invoiceService = new InvoiceService($application);
 		$number = $this->invoice->formattedNumber;
-		$invoiceService->generate($number, $this->invoice->tax, $this->invoice->items)
+		$invoiceService->generate($number, $this->invoice->items, $this->invoice->tax)
 			->save("invoices/{$number}.pdf");
 		
 		$files = collect($this->attachments)->map(function ($file) {

@@ -10,7 +10,7 @@
 		</div>
 		<div class="column is-2" v-if="individualTax">
 			<div class="select is-fullwidth">
-				<select :name="`${name}[${index}][tax]`" v-model="tax"  @keypress.enter.prevent>
+				<select :name="`${name}[${index}][tax]`" v-model="tax" @keypress.enter.prevent>
 					<option v-for="(taxLabel,taxValue) in taxOptions" :value="taxValue" v-text="taxLabel">
 					</option>
 				</select>
@@ -19,10 +19,10 @@
 		<div class="column">
 			<div class="dropdown is-hoverable w-100">
 				<div class="dropdown-trigger fill-parent">
-					<input v-model="item" required  @keypress.enter.prevent
+					<input v-model="item" required @keypress.enter.prevent
 						   :name="`${name}[${index}][item]`" class="input">
 				</div>
-				<div class="dropdown-menu">
+				<div class="dropdown-menu" v-if="options.length > 0">
 					<div class="dropdown-content">
 						<a class="dropdown-item" v-for="(option, index) in options" :key="index" v-text="option.item"
 						   @click="updateValue(option)"></a>

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Admin\Invoices;
 
-use App\Jobs\SendInvoice;
+use App\Jobs\SendApplicationInvoice;
 use App\Models\Admin;
 use App\Models\Application;
 use App\Models\Invoice;
@@ -197,7 +197,7 @@ class ApplicationInvoiceTest extends TestCase {
 			]]
 		])->assertRedirect(action('Auth\LoginController@login'));
 		
-		Queue::assertNotPushed(SendInvoice::class);
+		Queue::assertNotPushed(SendApplicationInvoice::class);
 	}
 	
 	public function test_kitchen_cant_create_new_invoice() {
@@ -220,7 +220,7 @@ class ApplicationInvoiceTest extends TestCase {
 			]]
 		])->assertForbidden();
 		
-		Queue::assertNotPushed(SendInvoice::class);
+		Queue::assertNotPushed(SendApplicationInvoice::class);
 	}
 	
 	
@@ -250,7 +250,8 @@ class ApplicationInvoiceTest extends TestCase {
 			'prefix' => $prefix,
 			'number' => $number,
 			'tax' => 21,
-			'application_id' => 1,
+			'owner_id' => 1,
+			'owner_type' => Application::class,
 			'amount' => 5,
 			'total' => 6.05,
 			'taxAmount' => 1.05,
@@ -260,7 +261,8 @@ class ApplicationInvoiceTest extends TestCase {
 			'prefix' => $prefix,
 			'number' => $number,
 			'tax' => 21,
-			'application_id' => 1,
+			'owner_id' => 1,
+			'owner_type' => Application::class,
 			'amount' => 5,
 		]);
 		
@@ -269,7 +271,7 @@ class ApplicationInvoiceTest extends TestCase {
 			'number' => 1
 		]);
 		
-		Queue::assertPushed(SendInvoice::class);
+		Queue::assertPushed(SendApplicationInvoice::class);
 		
 	}
 	
@@ -304,7 +306,8 @@ class ApplicationInvoiceTest extends TestCase {
 			'prefix' => $prefix,
 			'number' => $number,
 			'tax' => 21,
-			'application_id' => 1,
+			'owner_id' => 1,
+			'owner_type' => Application::class,
 			'amount' => 7,
 			'total' => 8.47,
 			'taxAmount' => 1.47,
@@ -314,7 +317,8 @@ class ApplicationInvoiceTest extends TestCase {
 			'prefix' => $prefix,
 			'number' => $number,
 			'tax' => 21,
-			'application_id' => 1,
+			'owner_id' => 1,
+			'owner_type' => Application::class,
 			'amount' => 7,
 		]);
 		
@@ -354,7 +358,8 @@ class ApplicationInvoiceTest extends TestCase {
 			'prefix' => $prefix,
 			'number' => $number,
 			'tax' => 21,
-			'application_id' => 1,
+			'owner_id' => 1,
+			'owner_type' => Application::class,
 			'amount' => 6
 		]);
 		
@@ -362,7 +367,8 @@ class ApplicationInvoiceTest extends TestCase {
 			'prefix' => $prefix,
 			'number' => $number,
 			'tax' => 21,
-			'application_id' => 1,
+			'owner_id' => 1,
+			'owner_type' => Application::class,
 			'amount' => 6,
 		]);
 		
@@ -388,7 +394,7 @@ class ApplicationInvoiceTest extends TestCase {
 			'items' => 'test'
 		])->assertRedirect()->assertSessionHasErrors(['tax', 'recipient', 'bcc', 'message', 'subject', 'items']);
 		
-		Queue::assertNotPushed(SendInvoice::class);
+		Queue::assertNotPushed(SendApplicationInvoice::class);
 		
 	}
 	
@@ -476,7 +482,7 @@ class ApplicationInvoiceTest extends TestCase {
 			]]
 		])->assertRedirect(action('Auth\LoginController@login'));
 		
-		Queue::assertNotPushed(SendInvoice::class);
+		Queue::assertNotPushed(SendApplicationInvoice::class);
 	}
 	
 	public function test_kitchen_cant_edit_invoice() {
@@ -503,7 +509,7 @@ class ApplicationInvoiceTest extends TestCase {
 			]]
 		])->assertForbidden();
 		
-		Queue::assertNotPushed(SendInvoice::class);
+		Queue::assertNotPushed(SendApplicationInvoice::class);
 	}
 	
 	
@@ -536,7 +542,8 @@ class ApplicationInvoiceTest extends TestCase {
 			'prefix' => $prefix,
 			'number' => $invoice->number,
 			'tax' => 21,
-			'application_id' => 1,
+			'owner_id' => 1,
+			'owner_type' => Application::class,
 			'amount' => 5,
 			'total' => 6.05,
 			'taxAmount' => 1.05,
@@ -563,7 +570,7 @@ class ApplicationInvoiceTest extends TestCase {
 			'amount' => 5,
 		]);
 		$this->assertCount(2, $invoice->items);
-		Queue::assertPushed(SendInvoice::class);
+		Queue::assertPushed(SendApplicationInvoice::class);
 		
 	}
 	
@@ -602,7 +609,8 @@ class ApplicationInvoiceTest extends TestCase {
 			'prefix' => $prefix,
 			'number' => $invoice->number,
 			'tax' => 21,
-			'application_id' => 1,
+			'owner_id' => 1,
+			'owner_type' => Application::class,
 			'amount' => 6,
 		]);
 		
@@ -663,7 +671,8 @@ class ApplicationInvoiceTest extends TestCase {
 			'prefix' => $prefix,
 			'number' => $invoice->number,
 			'tax' => 21,
-			'application_id' => 1,
+			'owner_id' => 1,
+			'owner_type' => Application::class,
 			'amount' => 7,
 		]);
 		
@@ -710,7 +719,7 @@ class ApplicationInvoiceTest extends TestCase {
 			'items' => 'test'
 		])->assertRedirect()->assertSessionHasErrors(['tax', 'recipient', 'bcc', 'message', 'subject', 'items']);
 		
-		Queue::assertNotPushed(SendInvoice::class);
+		Queue::assertNotPushed(SendApplicationInvoice::class);
 		
 	}
 	
