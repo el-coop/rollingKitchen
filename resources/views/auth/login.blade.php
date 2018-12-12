@@ -10,7 +10,7 @@
 					'class' => 'h-100'
 				])
 					@slot('title')
-						<p class="title is-4">
+						<p class="title is-4 is-title-red">
 							@lang('global.login')
 						</p>
 					@endslot
