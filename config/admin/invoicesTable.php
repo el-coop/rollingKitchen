@@ -61,6 +61,7 @@ return [
 		'name' => 'totalPaid',
 		'title' => 'admin/invoices.totalPaid',
 		'noTable' => true,
-		'callback' => 'localNumber'
+		'callback' => 'localNumber',
+		'filter' => false,
 	]]
 ];
