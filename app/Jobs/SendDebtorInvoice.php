@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Models\Invoice;
-use App\Models\Pdf;
 use App\Notifications\InvoiceSent;
 use App\Services\InvoiceService;
 use Illuminate\Bus\Queueable;
@@ -12,10 +11,10 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Storage;
 use Notification;
+use Storage;
 
-class SendInvoice implements ShouldQueue {
+class SendDebtorInvoice implements ShouldQueue {
 	use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 	/**
 	 * @var Invoice
@@ -28,19 +27,15 @@ class SendInvoice implements ShouldQueue {
 	/**
 	 * @var string
 	 */
-	private $message;
-	/**
-	 * @var array
-	 */
-	private $bcc;
+	private $subject;
 	/**
 	 * @var string
 	 */
-	private $subject;
+	private $message;
 	/**
-	 * @var array
+	 * @var Collection
 	 */
-	private $attachments;
+	private $bcc;
 	
 	/**
 	 * Create a new job instance.
@@ -51,44 +46,34 @@ class SendInvoice implements ShouldQueue {
 	 * @param string $message
 	 * @param Collection $bcc
 	 */
-	public function __construct(Invoice $invoice, string $recipient, string $subject, string $message, array $attachments, Collection $bcc) {
+	public function __construct(Invoice $invoice, string $recipient, string $subject, string $message, Collection $bcc) {
 		//
 		$this->invoice = $invoice;
 		$this->recipient = $recipient;
+		$this->subject = $subject;
 		$this->message = $message;
 		$this->bcc = $bcc;
-		$this->subject = $subject;
-		$this->attachments = $attachments;
 	}
 	
 	/**
 	 * Execute the job.
 	 *
-	 * @param InvoiceService $service
 	 * @return void
 	 */
 	public function handle() {
-		$application = $this->invoice->application;
-		$language = $application->kitchen->user->language;
-		$invoiceService = new InvoiceService($application);
+		$owner = $this->invoice->owner;
+		$language = $owner->language;
+		$invoiceService = new InvoiceService($owner);
 		$number = $this->invoice->formattedNumber;
-		$invoiceService->generate($number, $this->invoice->tax, $this->invoice->items)
+		$invoiceService->generate($number, $this->invoice->items)
 			->save("invoices/{$number}.pdf");
 		
-		$files = collect($this->attachments)->map(function ($file) {
-			$pdf = Pdf::find($file);
-			return [
-				'file' => storage_path("app/public/pdf/{$pdf->file}"),
-				'name' => $pdf->name
-			];
-		});
 		
-		$files->push([
-			'file' => storage_path("app/invoices/{$number}.pdf"),
-			'name' => "{$number}.pdf"
-		]);
 		Notification::route('mail', $this->recipient)
-			->notify(new InvoiceSent($this->subject, $application->kitchen->user->name, $this->message, $language, $files->toArray(), $this->bcc->toArray()))->locale($language);
+			->notify((new InvoiceSent($this->subject, $owner->name, $this->message, $language, [[
+				'file' => storage_path("app/invoices/{$number}.pdf"),
+				'name' => "{$number}.pdf"
+			]], $this->bcc->toArray()))->locale($language));
 		
 		Storage::delete("invoices/{$number}.pdf");
 	}

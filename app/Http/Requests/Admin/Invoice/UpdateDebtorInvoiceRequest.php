@@ -2,13 +2,12 @@
 
 namespace App\Http\Requests\Admin\Invoice;
 
-use App\Jobs\SendApplicationInvoice;
+use App\Jobs\SendDebtorInvoice;
 use App\Models\InvoiceItem;
-use App\Models\Service;
 use App\Services\InvoiceService;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateInvoiceRequest extends FormRequest {
+class UpdateDebtorInvoiceRequest extends FormRequest {
 	private $invoice;
 	
 	/**
@@ -30,7 +29,6 @@ class UpdateInvoiceRequest extends FormRequest {
 		$rules = collect([
 			'items' => 'required|array|min:1',
 			'items.*.*' => 'required',
-			'tax' => 'required|in:0,21'
 		]);
 		if (!$this->input('file_download', false)) {
 			$rules = $rules->merge([
@@ -45,36 +43,32 @@ class UpdateInvoiceRequest extends FormRequest {
 	
 	public function commit() {
 		$this->invoice = $this->route('invoice');
-		$application = $this->invoice->owner;
+		$debtor = $this->invoice->owner;
 		$number = $this->invoice->formattedNumber;
 		
 		if ($this->input('file_download', false)) {
-			$invoiceService = new InvoiceService($application);
+			$invoiceService = new InvoiceService($debtor);
 			$invoice = $invoiceService->generate($number, $this->input('items'), $this->input('tax'));
 			return $invoice->download($number);
 		}
 		$this->invoice->items()->delete();
-		$this->invoice->tax = $this->input('tax');
+		$this->invoice->tax = 0;
 		$total = 0;
 		foreach ($this->input('items') as $item) {
 			$invoiceItem = new InvoiceItem;
 			$invoiceItem->quantity = $item['quantity'];
 			$invoiceItem->name = $item['item'];
 			$invoiceItem->unit_price = $item['unitPrice'];
-			
-			if ($service = Service::where("name_en", $item['item'])->orWhere("name_nl", $item['item'])->first()) {
-				$invoiceItem->service_id = $service->id;
-			}
+			$invoiceItem->tax = $item['tax'];
 			$this->invoice->items()->save($invoiceItem);
-			if ($invoiceItem->service_id) {
-				$application->registerNewServices($service);
-			}
-			$total += $item['quantity'] * $item['unitPrice'];
+			
+			$total += $item['quantity'] * $item['unitPrice'] * (1 + $item['tax'] / 100);
 		}
 		
 		$this->invoice->amount = $total;
 		$this->invoice->save();
-		SendApplicationInvoice::dispatch($this->invoice, $this->input('recipient'), $this->input('subject'), $this->input('message'), $this->input('attachments', []), collect([
+		
+		SendDebtorInvoice::dispatch($this->invoice, $this->input('recipient'), $this->input('subject'), $this->input('message'), collect([
 			$this->input('bcc', false),
 			$this->input('accountant', false) ? app('settings')->get('invoices_accountant') : false
 		])->filter());

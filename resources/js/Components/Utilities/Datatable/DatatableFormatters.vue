@@ -30,18 +30,18 @@
 			prefix(value, {callbackOptions}) {
 				return `${callbackOptions.prefix}${value}`
 			},
-            date(value){
-			    const date = new Date(value);
-                let year = date.getFullYear();
+			date(value) {
+				const date = new Date(value);
+				let year = date.getUTCFullYear();
 
-                let month = (1 + date.getMonth()).toString();
-                month = month.length > 1 ? month : '0' + month;
+				let month = (1 + date.getUTCMonth()).toString();
+				month = month.length > 1 ? month : '0' + month;
 
-                let day = date.getDate().toString();
-                day = day.length > 1 ? day : '0' + day;
+				let day = date.getUTCDate().toString();
+				day = day.length > 1 ? day : '0' + day;
 
-                return day + '/' + month + '/' + year;
-            }
+				return day + '/' + month + '/' + year;
+			}
 		}
 	}
 </script>

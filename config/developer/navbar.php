@@ -3,12 +3,13 @@ return [
 	'developer/errors.errors' => [
 		'developer/errors.js_errors' => 'ErrorController@jsErrors',
 		'developer/errors.php_errors' => 'ErrorController@phpErrors',
-
+	
 	],
 	'admin/kitchens.kitchens' => [
 		'admin/kitchens.kitchens' => 'Admin\KitchenController@index',
 		'admin/applications.applications' => 'Admin\ApplicationController@index',
 		'kitchen/kitchen.services' => 'Admin\ServiceController@index',
+		'admin/debtors.debtors' => 'Admin\DebtorController@index',
 		'admin/invoices.invoices' => 'Admin\ApplicationInvoiceController@index',
 	],
 	'admin/settings.title' => [

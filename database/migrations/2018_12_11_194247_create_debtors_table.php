@@ -4,22 +4,19 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateInvoicesTable extends Migration {
+class CreateDebtorsTable extends Migration {
 	/**
 	 * Run the migrations.
 	 *
 	 * @return void
 	 */
 	public function up() {
-		Schema::create('invoices', function (Blueprint $table) {
+		Schema::create('debtors', function (Blueprint $table) {
 			$table->increments('id');
-			$table->integer('owner_id')->unsigned()->nullable();
-			$table->string('owner_type');
-			$table->string('prefix');
-			$table->integer('number');
-			$table->decimal('amount', 10, 2)->default(0);
-			$table->integer('tax');
-
+			$table->string('name');
+			$table->string('email');
+			$table->string('language', 2);
+			$table->json('data');
 			$table->timestamps();
 		});
 	}
@@ -30,6 +27,6 @@ class CreateInvoicesTable extends Migration {
 	 * @return void
 	 */
 	public function down() {
-		Schema::dropIfExists('invoices');
+		Schema::dropIfExists('debtors');
 	}
 }
