@@ -53,6 +53,13 @@ class FailedJobsController extends Controller {
 				'type' => 'textarea',
 				'value' => $failedJob->exception,
 				'readonly' => true
+			],
+			[
+				'name' => 'failed_at',
+				'label' => __('developer\failedJobs.failedAt'),
+				'type' => 'text',
+				'value' => $failedJob->failed_at,
+				'readonly' => true
 			]
 		]);
 	}

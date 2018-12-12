@@ -16,13 +16,13 @@
             @endisset
             @slot('editWidth',1000)
             <template slot-scope="{object, onDelete}" v-if="object">
-                <dynamic-fields :url="`{{Request::url() }}/show/${object.id}`"></dynamic-fields>
-                <div class="mt-1">
-                    <ajax-form :action="`{{Request::url() }}/retry/${object.id}`">
-                        <button class="button is-info is-fullwidth"
-                                type="submit">@lang('developer\failedJobs.retry')</button>
-                    </ajax-form>
-                </div>
+                <dynamic-form :url="`{{Request::url() }}/retry/${object.id}`"
+                              method="post"
+                              button-text="@lang('developer\failedJobs.retry')"
+                              button-class="is-info"
+                              :on-data-update="onDelete"
+                              success-toast="@lang('developer\failedJobs.retried')"
+                ></dynamic-form>
             </template>
         @endcomponent
     </div>

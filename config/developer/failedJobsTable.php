@@ -1,11 +1,17 @@
 <?php
 return [
 	'table' => 'failed_jobs',
+	'orderBy' => 'failed_at',
 	'fields' => [
 		[
 			'name' => 'id',
 			'title' => 'id',
 			'visible' => false,
+		],
+		[
+			'name' => 'failed_at',
+			'title' => 'developer\failedJobs.failedAt',
+			'filter' => false,
 		],
 		[
 			'name' => 'connection',

@@ -5,5 +5,7 @@ return [
 	'queue' => 'Queue',
 	'payload' => 'Payload',
 	'failedJobs' => 'Failed Jobs',
-	'retry' => 'Retry'
+	'retry' => 'Retry',
+	'failedAt' => 'Failed At',
+	'retried' => 'Job Retried Successfully'
 ];

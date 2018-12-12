@@ -13,6 +13,12 @@ return [
 
 		],
 		[
+			'name' => 'created_at',
+			'title' => 'developer\errors.createdAt',
+			'table' => 'errors',
+			'filter' => false,
+		],
+		[
 			'name' => 'email',
 			'table' => 'users',
 			'title' => 'global.email',
