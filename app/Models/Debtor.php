@@ -14,6 +14,10 @@ class Debtor extends Model {
 		'data' => 'array'
 	];
 	
+	static function indexPage() {
+		return action('Admin\DebtorController@index', [], false);
+	}
+	
 	public function getFullDataAttribute() {
 		$fullData = collect([
 			[

@@ -45,7 +45,8 @@ class DebtorController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function show(Debtor $debtor) {
-		return view('admin.debtors.show', compact('debtor'));
+		$indexLink = Debtor::indexPage();
+		return view('admin.debtors.show', compact('debtor', 'indexLink'));
 	}
 	
 	/**

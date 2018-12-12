@@ -43,7 +43,7 @@ class UpdateDebtorInvoiceRequest extends FormRequest {
 	
 	public function commit() {
 		$this->invoice = $this->route('invoice');
-		$debtor = $this->route('debtor');
+		$debtor = $this->invoice->owner;
 		$number = $this->invoice->formattedNumber;
 		
 		if ($this->input('file_download', false)) {

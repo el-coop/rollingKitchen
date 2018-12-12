@@ -40,10 +40,9 @@ class DatatableService implements FromCollection, WithHeadings {
 		
 		
 		$this->addWhere($query, $this->queryConfig);
-		$this->addJoinOn($query, $this->queryConfig);
 		$this->addJoins($query, $this->queryConfig);
+		$this->addJoinOn($query, $this->queryConfig);
 		$this->addSelects($query, $this->queryConfig);
-		$query->groupBy("{$tableName}.id");
 		
 		$query->groupBy("{$tableName}.id");
 		
@@ -65,7 +64,7 @@ class DatatableService implements FromCollection, WithHeadings {
 		$selects = [];
 		if ($cases = $queryConfig['cases'] ?? false) {
 			foreach ($cases as $case) {
-				$selects[] = DB::raw("Case {$case}");
+				$selects[] = DB::raw("CASE {$case}");
 			}
 		}
 		
