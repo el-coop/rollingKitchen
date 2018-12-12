@@ -12,5 +12,6 @@ return [
 	'user_agent' => 'User Agent',
 	'vm' => 'vm',
 	'resolve' => 'Oplossen',
-	'resolved' => 'Error opgelost'
+	'resolved' => 'Error opgelost',
+	'createdAt' => 'TBT'
 ];
