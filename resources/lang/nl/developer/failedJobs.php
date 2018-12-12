@@ -1,11 +1,11 @@
 <?php
 
 return [
-	'connection' => 'TBT',
-	'queue' => 'TBT',
-	'payload' => 'TBT',
-	'failedJobs' => 'TBT',
-	'retry' => 'TBT',
-	'failedAt' => 'TBT',
-	'retried' => 'TBT'
+	'connection' => 'Connectie',
+	'queue' => 'Wachtrij',
+	'payload' => 'Data',
+	'failedJobs' => 'Mislukte taak',
+	'retry' => 'Opnieuw proberen',
+	'failedAt' => 'Mislukt op',
+	'retried' => 'Opnieuw geprobeerd'
 ];

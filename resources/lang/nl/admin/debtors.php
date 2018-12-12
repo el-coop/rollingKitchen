@@ -1,5 +1,5 @@
 <?php
 return [
-	'debts' => 'Debts TBT',
-	'createDebtor' => 'Create debtor TBT'
+	'debts' => 'Debiteuren',
+	'createDebtor' => 'Debiteur toevoegen'
 ];

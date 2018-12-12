@@ -13,5 +13,5 @@ return [
 	'vm' => 'vm',
 	'resolve' => 'Oplossen',
 	'resolved' => 'Error opgelost',
-	'createdAt' => 'TBT'
+	'createdAt' => 'Gemaakt op'
 ];
