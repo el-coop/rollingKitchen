@@ -10,6 +10,6 @@ class Developer extends Model {
 	}
 
 	public function homePage() {
-		return action('ErrorController@phpErrors');
+		return action('Developer\ErrorController@phpErrors');
 	}
 }

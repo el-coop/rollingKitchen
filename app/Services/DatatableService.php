@@ -51,7 +51,13 @@ class DatatableService implements FromCollection, WithHeadings {
 			$sort = explode('|', $this->request->input('sort'));
 			$query->orderBy($sort[0], $sort[1]);
 		} else {
-			$query->orderBy("{$tableName}.created_at", 'desc');
+			if ($this->queryConfig['table'] == 'failed_jobs') {
+				$query->orderBy("{$tableName}.failed_at");
+
+			} else {
+				$query->orderBy("{$tableName}.created_at", 'desc');
+
+			}
 		}
 
 		if ($this->request->filled('filter')) {
