@@ -45,7 +45,7 @@
                     </div>
                 </div>
             </div>
-            <div class="filter">
+            <div class="filter" v-if="withFilters">
                 <datatable-filter :table-fields="fields" @filter="filter" :filter-text="labels.filter"
                                   :filters-text="labels.filters" :clear-text="labels.clear"
                                   :init-filters="initFilters"></datatable-filter>
@@ -253,7 +253,10 @@
 		computed: {
 			deleteAction: function () {
 				return window.location.pathname + '/delete/';
-			}
+			},
+            withFilters: function () {
+                return Object.keys(this.initFilters).length !== 0;
+            }
 
 		}
 

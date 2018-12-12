@@ -4,5 +4,6 @@ return [
 	'connection' => 'Connection',
 	'queue' => 'Queue',
 	'payload' => 'Payload',
-	'failedJobs' => 'Failed Jobs'
+	'failedJobs' => 'Failed Jobs',
+	'retry' => 'Retry'
 ];
