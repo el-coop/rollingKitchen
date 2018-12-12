@@ -18,15 +18,14 @@ class CreateInvoicesTable extends Migration {
 			$table->integer('number');
 			$table->integer('amount')->default(0);
 			$table->integer('tax');
-			
-			$table->boolean('paid')->default(false);
+
 			$table->timestamps();
-			
+
 			$table->foreign('application_id')
 				->references('id')->on('applications');
 		});
 	}
-	
+
 	/**
 	 * Reverse the migrations.
 	 *

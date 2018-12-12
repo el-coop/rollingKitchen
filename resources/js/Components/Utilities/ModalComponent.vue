@@ -5,6 +5,7 @@
 		   :pivotX="pivotX"
 		   ref="modal">
 		<div class="box h-100 modal-body">
+			<button class="modal-close is-large" @click="$modal.hide(name)"></button>
 			<slot/>
 		</div>
 	</modal>
@@ -41,9 +42,26 @@
 	}
 </script>
 
-<style scoped>
-	.modal-body{
+<style lang="scss">
+	@import "../../../sass/variables";
+
+	.modal-body {
+		overflow-x: hidden;
 		overflow-y: auto;
+
+		> *:last-child {
+			margin-bottom: 1rem;
+		}
+
+		.modal-close {
+			position: relative;
+			float: right;
+			top: 0;
+			right: 0;
+
+			&:after, &:before {
+				background: $contrast-bg;
+			}
+		}
 	}
 </style>
-

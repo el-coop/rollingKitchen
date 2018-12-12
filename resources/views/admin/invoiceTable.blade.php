@@ -18,16 +18,14 @@
 				<dynamic-form :url="`{{Request::url() }}/${object.application_id}/${object.id}`"
 							  :on-data-update="onUpdate"></dynamic-form>
 				<div class="mt-1">
-					<dynamic-form
-							:button-text="object.paid ? '@lang('admin/invoices.toggleUnpaid')' : '@lang('admin/invoices.togglePaid')'"
-							:init-fields="[]"
-							:url="`/admin/invoices/${object.id}/toggle`"
-							:button-class="object.paid ? 'is-danger' : 'is-success'"
-							:on-data-update="onUpdate">
-					</dynamic-form>
+					<button class="button is-fullwidth is-success" @click="$bus.$emit('open-payment-modal', object, onUpdate)">
+						@lang('admin\invoices.managePayments')
+					</button>
 				</div>
-
 			</template>
 		@endcomponent
 	</div>
+	<invoice-payments-modal :from-url="true">
+
+	</invoice-payments-modal>
 @endsection
