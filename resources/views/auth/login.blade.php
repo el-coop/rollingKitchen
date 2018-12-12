@@ -5,7 +5,7 @@
 @section('content')
 	<div class="section">
 		<div class="columns">
-			<div class="column is-8">
+			<div class="column is-half">
 				@component('components.card',[
 					'class' => 'h-100'
 				])
@@ -38,9 +38,9 @@
 					</form>
 				@endcomponent
 			</div>
-			<div class="column">
+
 				@include('logoCard')
-			</div>
+
 		</div>
 	</div>
 @endsection
