@@ -1,7 +1,5 @@
-<div class="column">
-	<div class="h-100 is-flex has-content-justified-center has-items-aligned-center">
-		<figure class="image is-square" style="width: 100%">
-			<img src="{{ asset('images/awesomeKreeft.jpg') }}" alt="@lang('global.title')">
+<div class="column is-hidden-touch">
+		<figure class="image">
+			<img src="{{ asset('images/logo20194.png') }}" alt="@lang('global.title')">
 		</figure>
-	</div>
 </div>

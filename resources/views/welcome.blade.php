@@ -8,44 +8,39 @@
     <section class="section">
 
         <div class="columns">
-            <div class="column">
+            <div class="column is-half">
                 <a href="{{$registrationOpen ? action('Kitchen\KitchenController@create') : '#' }}"
-                   class="is-flex is-column h-100 hover-border">
-                    <div class="content fill-parent">
-                        <p class="title">
-                            {{$registrationText}}
-                        </p>
-                    </div>
-                    <button class="button is-light has-text-red is-size-3" {{$registrationOpen ? '' : 'disabled'}}>
+                        {{$registrationOpen ? '' : 'disabled'}} class="is-flex is-column hover-border-red">
+                    <button class="button is-light is-fullwidth has-text-red is-size-3">
+
                         @if($registrationOpen)
                             @lang('global.register')
                         @else
                             @lang('admin/settings.closed')
                         @endif
                     </button>
-                </a>
-            </div>
 
-            <div class="column">
-                <a href="{{action('Auth\LoginController@showLoginForm')}}"
-                   class="is-flex is-column h-100 hover-border">
-                    <div class="content fill-parent">
+                    <div class="content">
+                        <p class="title">
+                            {{$registrationText}}
+                        </p>
+                    </div>
+                </a>
+
+                <hr>
+
+                <a href="{{action('Auth\LoginController@showLoginForm')}}" class="is-flex is-column hover-border-red">
+                    <button class="button is-light is-fullwidth has-text-red is-size-3">
+                        @lang('global.login')
+                    </button>
+                    <div class="content">
                         <p class="title">
                             {{$loginText}}
                         </p>
                     </div>
-                    <button class="button is-light has-text-red is-size-3">
-                        @lang('global.login')
-                    </button>
                 </a>
             </div>
-
-            <div class="column is-half is-hidden-touch">
-                <figure class="image is-5by3">
-                    <img src="/images/logo20192.png" alt="kreeft">
-                </figure>
-            </div>
+            @include('logoCard')
         </div>
-
     </section>
 @endsection

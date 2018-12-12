@@ -40,8 +40,7 @@ return [
 	'previous' => '&laquo; Vorige',
 	'next' => 'Volgende &raquo;',
 	'socket' => 'Aansluiting',
-	'date' => 'TBT',
-	'amount' => 'TBT',
-	'deleteConfirmTitle' => 'Are you sure you want to delete this? TBT'
-
+	'date' => 'Datum',
+	'amount' => 'Bedrag',
+	'deleteConfirmTitle' => 'Weet je zeker dat je dit wil verwijderen?'
 ];

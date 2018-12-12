@@ -5,12 +5,12 @@
 @section('content')
 	<div class="section">
 		<div class="columns">
-			<div class="column is-8">
+			<div class="column is-half">
 				@component('components.card',[
 					'class' => 'h-100'
 				])
 					@slot('title')
-						<p class="title is-4">
+						<p class="title is-4 is-title-red">
 							@lang('global.login')
 						</p>
 					@endslot
@@ -38,9 +38,9 @@
 					</form>
 				@endcomponent
 			</div>
-			<div class="column">
+
 				@include('logoCard')
-			</div>
+
 		</div>
 	</div>
 @endsection
