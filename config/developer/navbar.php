@@ -1,9 +1,9 @@
 <?php
 return [
 	'developer/errors.errors' => [
-		'developer/errors.js_errors' => 'Developer/ErrorController@jsErrors',
-		'developer/errors.php_errors' => 'Developer/ErrorController@phpErrors',
-		'developer/failedJobs.failedJobs' => 'Developer/FailedJobsController@index',
+		'developer/errors.js_errors' => 'Developer\ErrorController@jsErrors',
+		'developer/errors.php_errors' => 'Developer\ErrorController@phpErrors',
+		'developer/failedJobs.failedJobs' => 'Developer\FailedJobsController@index',
 	],
 	'admin/kitchens.kitchens' => [
 		'admin/kitchens.kitchens' => 'Admin\KitchenController@index',
