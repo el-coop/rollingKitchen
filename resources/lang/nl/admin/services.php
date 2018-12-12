@@ -9,5 +9,6 @@ return [
 	'services' => 'TBT',
 	'download_application_services' => 'Download Services Totalen',
 	'kitchenServices' => 'keukenServices',
+	'createService' => 'Create service TBT',
 
 ];

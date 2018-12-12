@@ -24,7 +24,7 @@ class ApplicationInvoiceController extends Controller {
 
 	public function create(Application $application) {
 		$invoice = (new Invoice);
-		$invoice->application_id = $application->id;
+		$invoice->owner = $application;
 		return $invoice->fullData;
 	}
 
@@ -33,7 +33,6 @@ class ApplicationInvoiceController extends Controller {
 	}
 
 	public function edit(Application $application, Invoice $invoice) {
-		$invoice->application_id = $application->id;
 		return $invoice->fullData;
 	}
 

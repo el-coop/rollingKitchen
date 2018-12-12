@@ -2,14 +2,13 @@
 
 namespace App\Http\Requests\Admin\Invoice;
 
-use App\Jobs\SendApplicationInvoice;
+use App\Jobs\SendDebtorInvoice;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
-use App\Models\Service;
 use App\Services\InvoiceService;
 use Illuminate\Foundation\Http\FormRequest;
 
-class GenerateInvoiceRequest extends FormRequest {
+class GenerateDebtorInvoiceRequest extends FormRequest {
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
@@ -18,7 +17,7 @@ class GenerateInvoiceRequest extends FormRequest {
 	public function authorize() {
 		return $this->user()->can('create', Invoice::class);
 	}
-
+	
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -27,8 +26,7 @@ class GenerateInvoiceRequest extends FormRequest {
 	public function rules() {
 		$rules = collect([
 			'items' => 'required|array|min:1',
-			'items.*.*' => 'required',
-			'tax' => 'required|in:0,21'
+			'items.*.*' => 'required'
 		]);
 		if (!$this->input('file_download', false)) {
 			$rules = $rules->merge([
@@ -40,51 +38,42 @@ class GenerateInvoiceRequest extends FormRequest {
 		}
 		return $rules->toArray();
 	}
-
+	
 	public function commit() {
-		$application = $this->route('application');
+		$debtor = $this->route('debtor');
 		$number = Invoice::getNumber();
 		$prefix = app('settings')->get('registration_year');
-
+		
 		if ($this->input('file_download', false)) {
-			$invoiceService = new InvoiceService($application);
-			$invoice = $invoiceService->generate("{$prefix}-{$number}", $this->input('items'), $this->input('tax'));
+			$invoiceService = new InvoiceService($debtor);
+			$invoice = $invoiceService->generate("{$prefix}-{$number}", $this->input('items'));
 			return $invoice->download("{$prefix}-{$number}");
 		}
 		$invoice = new Invoice;
 		$invoice->prefix = $prefix;
 		$invoice->number = $number;
-		$invoice->tax = $this->input('tax');
-		$application->invoices()->save($invoice);
+		$invoice->tax = 0;
+		$debtor->invoices()->save($invoice);
 		$total = 0;
 		foreach ($this->input('items') as $item) {
 			$invoiceItem = new InvoiceItem;
 			$invoiceItem->quantity = $item['quantity'];
 			$invoiceItem->name = $item['item'];
 			$invoiceItem->unit_price = $item['unitPrice'];
-			if ($service = Service::where("name_en", $item['item'])->orWhere("name_nl", $item['item'])->first()) {
-				$invoiceItem->service_id = $service->id;
-			}
-
+			$invoiceItem->tax = $item['tax'];
 			$invoice->items()->save($invoiceItem);
-
-			if ($invoiceItem->service_id) {
-				$application->registerNewServices($service);
-			}
-			$total += $item['quantity'] * $item['unitPrice'];
+			
+			$total += $item['quantity'] * $item['unitPrice'] * (1 + $item['tax'] / 100);
 		}
-
+		
 		$invoice->amount = $total;
 		$invoice->save();
-
-		if (!$this->application->number) {
-			$this->application->setNumber();
-		}
-		SendApplicationInvoice::dispatch($invoice, $this->input('recipient'), $this->input('subject'), $this->input('message'), $this->input('attachments', []), collect([
+		
+		SendDebtorInvoice::dispatch($invoice, $this->input('recipient'), $this->input('subject'), $this->input('message'), collect([
 			$this->input('bcc', false),
 			$this->input('accountant', false) ? app('settings')->get('invoices_accountant') : false
 		])->filter());
-
+		
 		return $invoice->load('payments');
 	}
 }

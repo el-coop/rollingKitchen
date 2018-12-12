@@ -213,7 +213,7 @@ class TableTest extends TestCase {
 	}
 
 	public function test_kitchen_cant_delete_service(){
-		$this->actingAs($this->kitchen->user)->delete(action('Admin\KitchenController@destroy', $this->services->first()))->assertForbidden();
+		$this->actingAs($this->kitchen->user)->delete(action('Admin\ServiceController@destroy', $this->services->first()))->assertForbidden();
 	}
 
 	public function test_admin_can_delete_kitchen(){

@@ -5,37 +5,37 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 // our components
-Vue.component('Navbar', require('./Global/Navbar'));
-Vue.component('toast', require('./Global/Toast'));
-Vue.component('FireworksModal', require('./Global/FireworksModal'));
-Vue.component('ConfirmationSubmit', require('./Global/ConfirmationSubmit'));
-Vue.component('InvoicePaymentsModal', require('./Invoice/InvoicePaymentsModal'));
+Vue.component('Navbar', require('./Global/Navbar').default);
+Vue.component('toast', require('./Global/Toast').default);
+Vue.component('FireworksModal', require('./Global/FireworksModal').default);
+Vue.component('ConfirmationSubmit', require('./Global/ConfirmationSubmit').default);
+Vue.component('InvoicePaymentsModal', require('./Invoice/InvoicePaymentsModal').default);
 
 // utilities
-Vue.component('Drawer', require('./Utilities/Drawer'));
-Vue.component('ListSection', require('./Utilities/ListSection'));
-Vue.component('Datatable', require('./Utilities/Datatable/Datatable'));
-Vue.component('ModalComponent', require('./Utilities/ModalComponent'));
-Vue.component('Tabs', require('./Utilities/Tabs/Tabs'));
-Vue.component('Tab', require('./Utilities/Tabs/Tab'));
-Vue.component('Carousel', require('./Utilities/Carousel'));
-Vue.component('SelectChooser', require('./Utilities/SelectChooser/SelectChooser'));
-Vue.component('SelectView', require('./Utilities/SelectChooser/SelectView'));
-Vue.component('DynamicTable', require('./Utilities/DynamicTable'));
-Vue.component('StepsForm', require('./Utilities/StepsForm/StepsForm'));
-Vue.component('FromStep', require('./Utilities/StepsForm/FormStep'));
-Vue.component('ImageManager', require('./Utilities/ImageManager/ImageManager'));
+Vue.component('Drawer', require('./Utilities/Drawer').default);
+Vue.component('ListSection', require('./Utilities/ListSection').default);
+Vue.component('Datatable', require('./Utilities/Datatable/Datatable').default);
+Vue.component('ModalComponent', require('./Utilities/ModalComponent').default);
+Vue.component('Tabs', require('./Utilities/Tabs/Tabs').default);
+Vue.component('Tab', require('./Utilities/Tabs/Tab').default);
+Vue.component('Carousel', require('./Utilities/Carousel').default);
+Vue.component('SelectChooser', require('./Utilities/SelectChooser/SelectChooser').default);
+Vue.component('SelectView', require('./Utilities/SelectChooser/SelectView').default);
+Vue.component('DynamicTable', require('./Utilities/DynamicTable').default);
+Vue.component('StepsForm', require('./Utilities/StepsForm/StepsForm').default);
+Vue.component('FromStep', require('./Utilities/StepsForm/FormStep').default);
+Vue.component('ImageManager', require('./Utilities/ImageManager/ImageManager').default);
 
 
 // form
-Vue.component('AjaxForm', require('./Form/AjaxForm'));
-Vue.component('DynamicForm', require('./Form/DynamicForm'));
-Vue.component('DynamicFields', require('./Form/DynamicFields'));
-Vue.component('TextField', require('./Form/TextField'));
-Vue.component('TextareaField', require('./Form/TextareatField'));
-Vue.component('SelectField', require('./Form/SelectField'));
-Vue.component('FileField', require('./Form/FileField'));
-Vue.component('CheckboxField', require('./Form/CheckboxField'));
-Vue.component('InvoiceField', require('./Form/InvoiceField'));
-Vue.component('AlternativeSubmitField', require('./Form/AlternativeSubmitField'));
-Vue.component('JsonField', require('./Form/JsonField'));
+Vue.component('AjaxForm', require('./Form/AjaxForm').default);
+Vue.component('DynamicForm', require('./Form/DynamicForm').default);
+Vue.component('DynamicFields', require('./Form/DynamicFields').default);
+Vue.component('TextField', require('./Form/TextField').default);
+Vue.component('TextareaField', require('./Form/TextareatField').default);
+Vue.component('SelectField', require('./Form/SelectField').default);
+Vue.component('FileField', require('./Form/FileField').default);
+Vue.component('CheckboxField', require('./Form/CheckboxField').default);
+Vue.component('InvoiceField', require('./Form/InvoiceField').default);
+Vue.component('AlternativeSubmitField', require('./Form/AlternativeSubmitField').default);
+Vue.component('JsonField', require('./Form/JsonField').default);
