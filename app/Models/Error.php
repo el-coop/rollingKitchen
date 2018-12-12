@@ -14,14 +14,14 @@ class Error extends Model {
 		$fullData = collect([
 			[
 				'name' => 'page',
-				'label' => __('developer\errors.page'),
+				'label' => __('developer/errors.page'),
 				'type' => strlen($this->page) < 25 ? 'text' : 'textarea',
 				'value' => $this->page,
 				'readonly' => true
 			],
 			[
 				'name' => 'error_type',
-				'label' => __('developer\errors.error_type'),
+				'label' => __('developer/errors.error_type'),
 				'type' => 'text',
 				'value' => $this->error_type,
 				'readonly' => true
@@ -29,7 +29,7 @@ class Error extends Model {
 			],
 			[
 				'name' => 'message',
-				'label' => __('developer\errors.message'),
+				'label' => __('developer/errors.message'),
 				'type' => strlen($this->error->message) < 25 ? 'text' : 'textarea',
 				'value' => $this->error->message,
 				'readonly' => true
@@ -37,7 +37,7 @@ class Error extends Model {
 			],
 			[
 				'name' => 'exception',
-				'label' => __('developer\errors.exception'),
+				'label' => __('developer/errors.exception'),
 				'type' => 'json',
 				'value' => $this->error->exception,
 
@@ -47,7 +47,7 @@ class Error extends Model {
 		if ($this->error_type == PhpError::class){
 			$fullData->push([
 				'name' => 'request',
-				'label' => __('developer\errors.request'),
+				'label' => __('developer/errors.request'),
 				'type' => 'json',
 				'value' => $this->error->request,
 
@@ -55,14 +55,14 @@ class Error extends Model {
 		} else {
 			$fullData->push([
 				'name' => 'user_agent',
-				'label' => __('developer\errors.user_agent'),
+				'label' => __('developer/errors.user_agent'),
 				'type' => 'text',
 				'value' => $this->error->user_agent,
 
 			]);
 			$fullData->push([
 				'name' => 'vm',
-				'label' => __('developer\errors.vm'),
+				'label' => __('developer/errors.vm'),
 				'type' => 'json',
 				'value' => $this->error->vm,
 			]);
