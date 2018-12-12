@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', __('developer\failedJobs.failedJobs'))
+@section('title', __('developer/failedJobs.failedJobs'))
 
 @section('content')
     <div>
@@ -18,10 +18,10 @@
             <template slot-scope="{object, onDelete}" v-if="object">
                 <dynamic-form :url="`{{Request::url() }}/retry/${object.id}`"
                               method="post"
-                              button-text="@lang('developer\failedJobs.retry')"
+                              button-text="@lang('developer/failedJobs.retry')"
                               button-class="is-info"
                               :on-data-update="onDelete"
-                              success-toast="@lang('developer\failedJobs.retried')"
+                              success-toast="@lang('developer/failedJobs.retried')"
                 ></dynamic-form>
             </template>
         @endcomponent

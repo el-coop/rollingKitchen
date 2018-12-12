@@ -1,23 +1,24 @@
-.button.is-light.has-text-red {
+.hover-border-red{
 
-	color: #B61A0E;
-}
-
-.footer.no-border {
-
-	border-top: none;
-}
-
-.hover-border {
-	border: 1px solid transparent;
-	border-radius: 4px;
-
-	&:hover {
- border-color: #B61A0E;
-	}
-	> .content{
+	> .content {
 
 		padding: 1em;
 	}
 
+	border: 1px solid transparent;
+	border-radius: 4px;
+
+	&:hover{
+
+		border-color: #b61a0e;
+
+	}
+}
+
+.button.is-light.has-text-red {
+	color: #b61a0e;
+}
+
+.is-title-red{
+	color: #b61a0e ;
 }

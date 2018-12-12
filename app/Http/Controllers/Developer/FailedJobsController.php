@@ -28,35 +28,35 @@ class FailedJobsController extends Controller {
 		return collect([
 			[
 				'name' => 'connection',
-				'label' => __('developer\failedJobs.connection'),
+				'label' => __('developer/failedJobs.connection'),
 				'type' => 'text',
 				'value' => $failedJob->connection,
 				'readonly' => true
 			],
 			[
 				'name' => 'queue',
-				'label' => __('developer\failedJobs.queue'),
+				'label' => __('developer/failedJobs.queue'),
 				'type' => 'text',
 				'value' => $failedJob->queue,
 				'readonly' => true
 			],
 			[
 				'name' => 'payload',
-				'label' => __('developer\failedJobs.payload'),
+				'label' => __('developer/failedJobs.payload'),
 				'type' => 'textarea',
 				'value' => $failedJob->payload,
 				'readonly' => true
 			],
 			[
 				'name' => 'exception',
-				'label' => __('developer\errors.exception'),
+				'label' => __('developer/errors.exception'),
 				'type' => 'textarea',
 				'value' => $failedJob->exception,
 				'readonly' => true
 			],
 			[
 				'name' => 'failed_at',
-				'label' => __('developer\failedJobs.failedAt'),
+				'label' => __('developer/failedJobs.failedAt'),
 				'type' => 'text',
 				'value' => $failedJob->failed_at,
 				'readonly' => true

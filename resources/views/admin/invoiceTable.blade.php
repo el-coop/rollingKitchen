@@ -21,7 +21,7 @@
 				<div class="mt-1">
 					<button class="button is-fullwidth is-success"
 							@click="$bus.$emit('open-payment-modal', object, onUpdate)">
-						@lang('admin\invoices.managePayments')
+						@lang('admin/invoices.managePayments')
 					</button>
 				</div>
 			</template>
