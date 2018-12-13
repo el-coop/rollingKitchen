@@ -44,6 +44,10 @@
 				type: String,
 				default: ''
 			},
+			submitting: {
+			    type: Boolean,
+				default: false
+			}
 
 		},
 
@@ -51,7 +55,6 @@
 			return {
 				confirmed: false,
 				disabled: false,
-				submitting: false
 			}
 		},
 		methods: {
@@ -73,13 +76,12 @@
 			},
 			async handleConfirm(instance, toast) {
                 this.disabled = false;
-                this.submitting = true;
                 await this.$nextTick();
 				this.confirmed = true;
 				this.$el.click();
 				instance.hide({transitionOut: 'fadeOut'}, toast, 'button');
 				this.confirmed = false;
 			}
-		}
+		},
 	}
 </script>

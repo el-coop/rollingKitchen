@@ -25,14 +25,9 @@
 							  @vuetable:loading='tableLoading'
 							  @vuetable:loaded='tableLoaded'>
 						<template :v-if="deleteSlot" slot="delete" slot-scope="props">
-							<ajax-form method='delete' :action="deleteAction + props.rowData.id"
-									   :key="`delete${props.rowData.id}`"
-									   @submitted="deleteObject">
-								<confirmation-submit button-class="is-danger" :title="$translations.deleteConfirmTitle"
-													 subtitle=" "
-													 :yes-text="$translations.yes" :no-text="$translations.no"
-													 :label="deleteBtn"></confirmation-submit>
-							</ajax-form>
+							<delete-form :delete-btn="deleteBtn" :action="deleteAction + props.rowData.id" :key="`delete${props.rowData.id}`" @delete-submitted="deleteObject">
+
+							</delete-form>
 						</template>
 					</vuetable>
 				</div>
@@ -70,6 +65,7 @@
 	import DatatableFormatters from './DatatableFormatters';
 	import DatatableRowDisplay from "./DatatableRowDisplay";
 	import AjaxForm from '../../Form/AjaxForm';
+	import DeleteForm from '../../Form/DeleteForm';
 
 
 	export default {
@@ -81,7 +77,8 @@
 			Vuetable,
 			VuetablePaginationInfo,
 			VuetablePagination,
-			AjaxForm
+			AjaxForm,
+			DeleteForm
 		},
 		props: {
 			deleteBtn: {
@@ -153,7 +150,8 @@
 				exportOptions: '',
 				buttonActions: {
 					newObjectForm: this.newObjectForm
-				}
+				},
+				deleteSubmitting: false,
 			}
 		},
 
