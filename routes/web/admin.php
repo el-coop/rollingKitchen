@@ -29,25 +29,29 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		});
 		
 		Route::group(['prefix' => 'invoices'], function () {
+			
+			Route::get('/', 'ApplicationInvoiceController@index');
+			
 			Route::group(['prefix' => 'payments'], function () {
 				Route::post('/{invoice}', 'ApplicationInvoiceController@addPayment');
 				Route::get('/{invoice}', 'ApplicationInvoiceController@getPayments');
 				Route::delete('/{invoice}/{invoicePayment}', 'ApplicationInvoiceController@destroyPayment');
 				Route::patch('/{invoice}/{invoicePayment}', 'ApplicationInvoiceController@updatePayment');
 			});
-			Route::get('/', 'ApplicationInvoiceController@index');
-			Route::get('/{application}', 'ApplicationInvoiceController@create');
-			Route::post('/{application}', 'ApplicationInvoiceController@store');
 			
-			Route::get('/application/{invoice}', 'ApplicationInvoiceController@edit');
-			Route::patch('/application/{invoice}', 'ApplicationInvoiceController@update');
-			Route::get('/debtor/{invoice}', 'DebtorInvoiceController@edit');
-			Route::patch('/debtor/{invoice}', 'DebtorInvoiceController@update');
+			Route::group(['prefix' => 'application'], function () {
+				Route::get('/{application}', 'ApplicationInvoiceController@create');
+				Route::post('/{application}', 'ApplicationInvoiceController@store');
+				Route::get('/{application}/{invoice}', 'ApplicationInvoiceController@edit');
+				Route::patch('/{application}/{invoice}', 'ApplicationInvoiceController@update');
+			});
 			
-			
-			Route::get('/{application}/{invoice}', 'ApplicationInvoiceController@edit');
-			Route::patch('/{application}/{invoice}', 'ApplicationInvoiceController@update');
-			
+			Route::group(['prefix' => 'debtor'], function () {
+				Route::get('/{debtor}', 'DebtorInvoiceController@create');
+				Route::post('/{debtor}', 'DebtorInvoiceController@store');
+				Route::get('/{debtor}/{invoice}', 'DebtorInvoiceController@edit');
+				Route::patch('/{debtor}/{invoice}', 'DebtorInvoiceController@update');
+			});
 		});
 		
 		Route::group(['prefix' => 'applications'], function () {
@@ -78,12 +82,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 				Route::post('/', 'DebtorController@store');
 				Route::get('/{debtor}', 'DebtorController@edit');
 				Route::patch('/{debtor}', 'DebtorController@update');
-			});
-			Route::group(['prefix' => 'invoice'], function () {
-				Route::get('/{debtor}', 'DebtorInvoiceController@create');
-				Route::post('/{debtor}', 'DebtorInvoiceController@store');
-				Route::get('/{debtor}/{invoice}', 'DebtorInvoiceController@edit');
-				Route::patch('/{debtor}/{invoice}', 'DebtorInvoiceController@update');
 			});
 			
 			Route::delete('/delete/{debtor}', 'DebtorController@destroy');
