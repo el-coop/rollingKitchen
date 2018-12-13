@@ -32,11 +32,9 @@
         methods: {
             submitted(response){
                 this.buttonClass = 'is-danger';
-                let success = false;
                 if (response.status === 200 || response.status === 204 ){
-                    success = true;
+                    this.$emit('success');
                 }
-                this.$emit('delete-submitted', success);
             }
         }
     }
