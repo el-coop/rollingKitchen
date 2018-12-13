@@ -43,7 +43,7 @@
 			value: {
 				type: String,
 				default: ''
-			},
+			}
 
 		},
 
@@ -53,12 +53,11 @@
 				disabled: false,
 			}
 		},
-
 		methods: {
 			handleClick(event) {
-				this.disabled = true;
 				if (!this.confirmed) {
-					event.preventDefault();
+                    this.disabled = true;
+                    event.preventDefault();
 					this.$toast.question(this.subtitle, this.title, {
 						timeout: false, position: 'center', buttons: [
 							[`<button>${this.yesText}</button>`, this.handleConfirm, true],
@@ -72,13 +71,13 @@
 				instance.hide({transitionOut: 'fadeOut'}, toast, 'button');
 			},
 			async handleConfirm(instance, toast) {
-				this.disabled = false;
-				await this.$nextTick();
+                this.disabled = false;
+                await this.$nextTick();
 				this.confirmed = true;
 				this.$el.click();
 				instance.hide({transitionOut: 'fadeOut'}, toast, 'button');
 				this.confirmed = false;
 			}
-		}
+		},
 	}
 </script>

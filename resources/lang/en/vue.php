@@ -42,6 +42,8 @@ return [
 	'socket' => 'Socket',
 	'date' => 'Date',
 	'amount' => 'Amount',
-	'deleteConfirmTitle' => 'Are you sure you want to delete this?'
+	'deleteConfirmTitle' => 'Are you sure you want to delete this?',
+	'sessionExpired' => 'Session Expired Please Refresh',
+	'generalError' => 'An Error Has Occurred Please Try Again Later'
 
 ];
