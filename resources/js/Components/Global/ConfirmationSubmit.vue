@@ -1,5 +1,5 @@
 <template>
-	<button class="button" :class="[submitting ? 'is-loading' : '', buttonClass]" @click="handleClick" v-text="label" :name="name"
+	<button class="button" :class="buttonClass" @click="handleClick" v-text="label" :name="name"
 			:value="value" :disabled="disabled"></button>
 </template>
 <script>
@@ -43,10 +43,6 @@
 			value: {
 				type: String,
 				default: ''
-			},
-			submitting: {
-			    type: Boolean,
-				default: false
 			}
 
 		},
