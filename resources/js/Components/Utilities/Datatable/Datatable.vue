@@ -25,10 +25,10 @@
                               @vuetable:loading='tableLoading'
                               @vuetable:loaded='tableLoaded'>
                         <template :v-if="deleteSlot" slot="delete" slot-scope="props">
-                            <delete-form :delete-btn="deleteBtn" :action="deleteAction + props.rowData.id"
+                            <datatable-delete-form :delete-btn="deleteBtn" :action="deleteAction + props.rowData.id"
                                          :key="`delete${props.rowData.id}`" @success="refresh">
 
-                            </delete-form>
+                            </datatable-delete-form>
                         </template>
                     </vuetable>
                 </div>
@@ -66,7 +66,7 @@
     import DatatableFormatters from './DatatableFormatters';
     import DatatableRowDisplay from "./DatatableRowDisplay";
     import AjaxForm from '../../Form/AjaxForm';
-    import DeleteForm from '../../Form/DeleteForm';
+    import DatatableDeleteForm from '../../Form/DatatableDeleteForm';
 
 
     export default {
@@ -79,7 +79,7 @@
             VuetablePaginationInfo,
             VuetablePagination,
             AjaxForm,
-            DeleteForm
+            DatatableDeleteForm
         },
         props: {
             deleteBtn: {

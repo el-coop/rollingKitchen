@@ -11,16 +11,19 @@
     import ConfirmationSubmit from '../Global/ConfirmationSubmit';
     import AjaxForm from './AjaxForm';
     export default {
-        name: "DeleteForm",
+        name: "DatatableDeleteForm",
         components: {
             AjaxForm,
             ConfirmationSubmit
         },
         props: {
             action: {
-                type: String
+                type: String,
+                required: true
             },
             deleteBtn: {
+                type: String,
+                required: true
             }
 
         },
