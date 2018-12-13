@@ -27,7 +27,7 @@
 						<template :v-if="deleteSlot" slot="delete" slot-scope="props">
 							<ajax-form method='delete' :action="deleteAction + props.rowData.id"
 									   :key="`delete${props.rowData.id}`"
-									   @submitting="deleteObject({id: props.rowData.id})">
+									   @submitted="deleteObject">
 								<confirmation-submit button-class="is-danger" :title="$translations.deleteConfirmTitle"
 													 subtitle=" "
 													 :yes-text="$translations.yes" :no-text="$translations.no"
@@ -241,15 +241,10 @@
 				}
 				this.$refs.table.setData(currentData);
 			},
-			deleteObject(data) {
-				this.$modal.hide('datatable-row');
-				this.object = {...this.object, ...data};
-				const currentData = this.$refs.table.tableData;
-				let objectIndex = currentData.findIndex((item) => {
-					return item.id === this.object.id;
-				});
-				currentData.splice(objectIndex, 1);
-				this.$refs.table.setData(currentData);
+			deleteObject(response) {
+			    if (response.status === 200 || response.status === 204 ){
+                    this.$refs.table.refresh()
+                }
 			}
 		},
 		computed: {

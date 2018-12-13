@@ -70,7 +70,6 @@
                 this.invoice = [];
                 this.$modal.show('payment');
                 if (this.fromUrl) {
-                    console.log('here');
                     const response = await axios.get('/admin/invoices/payments/' + field.id);
                     this.invoice = response.data;
                 } else {

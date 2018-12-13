@@ -42,5 +42,7 @@ return [
 	'socket' => 'Aansluiting',
 	'date' => 'Datum',
 	'amount' => 'Bedrag',
-	'deleteConfirmTitle' => 'Weet je zeker dat je dit wil verwijderen?'
+	'deleteConfirmTitle' => 'Weet je zeker dat je dit wil verwijderen?',
+	'sessionExpired' => 'TBT',
+	'generalError' => 'TBT'
 ];
