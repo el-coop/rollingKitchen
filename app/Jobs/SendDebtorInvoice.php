@@ -63,6 +63,8 @@ class SendDebtorInvoice implements ShouldQueue {
 	public function handle() {
 		$owner = $this->invoice->owner;
 		$language = $owner->language;
+		
+		
 		$invoiceService = new InvoiceService($owner);
 		$number = $this->invoice->formattedNumber;
 		$invoiceService->generate($number, $this->invoice->items)

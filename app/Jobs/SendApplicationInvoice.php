@@ -70,6 +70,7 @@ class SendApplicationInvoice implements ShouldQueue {
 	public function handle() {
 		$application = $this->invoice->owner;
 		$language = $application->kitchen->user->language;
+		
 		$invoiceService = new InvoiceService($application);
 		$number = $this->invoice->formattedNumber;
 		$invoiceService->generate($number, $this->invoice->items, $this->invoice->tax)

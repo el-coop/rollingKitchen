@@ -41,6 +41,7 @@ return [
 	'next' => 'Next &raquo;',
 	'socket' => 'Socket',
 	'date' => 'Date',
-	'amount' => 'Amount'
+	'amount' => 'Amount',
+	'deleteConfirmTitle' => 'Are you sure you want to delete this?'
 
 ];

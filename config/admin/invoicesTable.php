@@ -63,5 +63,11 @@ return [
 		'noTable' => true,
 		'callback' => 'localNumber',
 		'filter' => false,
+	], [
+		'name' => 'amountLeft',
+		'title' => 'admin/invoices.amountLeft',
+		'noTable' => true,
+		'callback' => 'localNumber',
+		'filter' => false,
 	]]
 ];
