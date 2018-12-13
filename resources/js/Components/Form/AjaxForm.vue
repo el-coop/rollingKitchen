@@ -98,9 +98,14 @@
 					response = error.response;
 					if (response.data.errors) {
 						this.formatErrors(response.data.errors);
+					} else  {
+					    if (response.status === 419 ) {
+					        this.$toast.error(this.$translations.sessionExpired);
+                        } else {
+					        this.$toast.error(this.$translations.generalError);
+						}
 					}
 				}
-
 				this.realMethod = this.method;
 				this.$emit('submitted', response);
 			},

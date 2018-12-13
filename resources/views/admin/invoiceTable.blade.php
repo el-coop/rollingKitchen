@@ -16,8 +16,8 @@
 					</a>
 				</div>
 				<dynamic-form
-						:url="`{{Request::url() }}/${object.owner_type.substring(11).toLowerCase()}/${object.id}`"
-						:on-data-update="onUpdate" form-button-text="@lang('admin/invoices.send')"></dynamic-form>
+						:url="`{{Request::url() }}/${object.owner_type.substring(11).toLowerCase()}/${object.owner_id}/${object.id}`"
+						:on-data-update="onUpdate" button-text="@lang('admin/invoices.send')"></dynamic-form>
 				<div class="mt-1">
 					<button class="button is-fullwidth is-success"
 							@click="$bus.$emit('open-payment-modal', object, onUpdate)">

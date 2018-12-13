@@ -25,4 +25,5 @@ return [
 	'totalPaid' => 'Total Paid',
 	'managePayments' => 'Manage Payments',
 	'invoiceSent' => 'Invoice Sent',
+	'amountLeft' => 'Left to pay',
 ];

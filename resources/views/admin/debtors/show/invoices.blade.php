@@ -12,6 +12,11 @@
 					label: '@lang('admin/invoices.totalPaid')',
 					subType: 'number',
 					callback: 'localNumber',
+				},{
+					name: 'amountLeft',
+					label: '@lang('admin/invoices.amountLeft')',
+					subType: 'number',
+					callback: 'localNumber',
 				}]" :init-fields="{{ $debtor->invoices()->with('payments')->get() }}"
 			   action="{{ action('Admin\DebtorInvoiceController@create', $debtor) }}" :modal="{
 			   		width: 1000,
