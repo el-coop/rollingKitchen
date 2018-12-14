@@ -1,6 +1,7 @@
 <?php
 
 return [
+	'kitchenName' => "Kitchen name",
 	'application' => 'Application',
 	'submitConfirmSubtitle' => 'You will not be able to modify your application anymore.',
 	'submitConfirmTitle' => 'Submit for review?',

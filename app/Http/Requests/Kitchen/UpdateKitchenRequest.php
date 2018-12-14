@@ -44,7 +44,7 @@ class UpdateKitchenRequest extends FormRequest {
 				'kitchen.4' => 'required|min:2',
 				'kitchen.5' => 'required|min:2',
 				'application' => 'required|array',
-				'application.8' => 'required|digits_between:4,10',
+				'application.8' => 'required|numeric|min:1250',
 				'application.9' => 'required|min:10',
 				'services' => 'array',
 				'socket' => 'required|numeric',
@@ -67,6 +67,14 @@ class UpdateKitchenRequest extends FormRequest {
 		}
 
 		return $rules->toArray();
+	}
+
+	public function withValidator($validator) {
+		$validator->after(function ($validator) {
+			if ($this->input('review') && ! $this->application->hasMenu()) {
+				$validator->errors()->add('menu', __('kitchen/products.menuError'));
+			}
+		});
 	}
 
 	public function messages() {

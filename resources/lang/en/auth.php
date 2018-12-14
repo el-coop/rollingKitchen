@@ -26,6 +26,6 @@ return [
 	'rememberMe' => 'Remember me',
 	'forgot' => 'I forgot my password',
 	'new' => 'New Kitchen?',
-	'kitchenName' => 'Kitchen Name',
+	'kitchenName' => "Kitchen name",
 	
 ];

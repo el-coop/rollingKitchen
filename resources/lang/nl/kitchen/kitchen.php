@@ -1,6 +1,7 @@
 <?php
 
 return [
+	'nameKitchen' => 'Naam Keuken',
 	'application' => 'Seizoensgegevens',
 	'submitConfirmSubtitle' => 'Je kunt de gegevens niet meer aanpassen.',
 	'submitConfirmTitle' => 'Indienen voor beoordeling?',
