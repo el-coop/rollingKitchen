@@ -1,18 +1,20 @@
 @extends('layouts.dashboard')
 
+@section('title',__("admin/fields.{$type}"))
+
 @section('content')
-    <div class="card">
-        <div class="card-content">
-            <h4 class="title is-4">
-                @lang("admin/fields.{$type}")
-            </h4>
-            <div class="subtitle">
-                <a href="{{ $indexLink }}">@lang('admin/fields.back')</a>
-            </div>
-            <hr>
-        </div>
-        <div class="card-content">
-            <dynamic-table :init-fields="{{ $fields }}" :columns="[{
+	<div class="card">
+		<div class="card-content">
+			<h4 class="title is-4">
+				@lang("admin/fields.{$type}")
+			</h4>
+			<div class="subtitle">
+				<a href="{{ $indexLink }}">@lang('admin/fields.back')</a>
+			</div>
+			<hr>
+		</div>
+		<div class="card-content">
+			<dynamic-table :init-fields="{{ $fields }}" :columns="[{
 					name: 'name_nl',
 					label: '@lang('admin/fields.name_nl')'
 				},{
@@ -53,7 +55,7 @@
 					form: '{{ str_replace('\\','\\\\',$class) }}',
 				}" :sortable="true">
 
-            </dynamic-table>
-        </div>
-    </div>
+			</dynamic-table>
+		</div>
+	</div>
 @endsection

@@ -9,9 +9,9 @@ return [
 	'type' => 'Type',
 	'text' => 'Tekst',
 	'textarea' => 'Tekstveld',
-	'protected' => 'TBT',
-	'required' => 'TBT',
-	'none' => 'TBT',
-	'placeholder_nl' => 'TBT',
-	'placeholder_en' => 'TBT'
+	'protected' => 'Beschermd',
+	'required' => 'Vereist',
+	'none' => 'Geen',
+	'placeholder_nl' => 'Plaatshouder NL',
+	'placeholder_en' => 'Plaatshouder EN'
 ];

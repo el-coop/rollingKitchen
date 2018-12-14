@@ -17,7 +17,7 @@
 		<img class="img-rounded" height="{{ $invoice->logo_height }}" src="{{ $invoice->logo }}">
 	</div>
 	<div style="margin-left:300pt;">
-		<b>@lang('admin/invoices.date',[],$invoice->language): </b> {{ ucwords($invoice->date->isoFormat('dddd DD MMMM Y')) }}
+		<b>@lang('admin/invoices.date',[],$invoice->language): </b> {{ ucfirst($invoice->date->isoFormat('dddd DD MMMM Y')) }}
 		<br/>
 		@if ($invoice->number)
 			<b>@lang('admin/invoices.invoice',[],$invoice->language) #: </b> {{ $invoice->number }}
