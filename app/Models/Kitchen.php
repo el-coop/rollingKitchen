@@ -48,7 +48,7 @@ class Kitchen extends Model {
 		$fullData = collect([
 			[
 				'name' => 'name',
-				'label' => __('global.name'),
+				'label' => __('kitchen/kitchen.kitchenName'),
 				'type' => 'text',
 				'value' => $this->user->name
 			], [
