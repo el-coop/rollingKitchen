@@ -19,6 +19,9 @@ class CreateFieldsTable extends Migration
             $table->string('name_nl');
             $table->string('type');
             $table->string('form');
+            $table->string('status');
+			$table->string('placeholder_en')->nullable();
+			$table->string('placeholder_nl')->nullable();
             $table->integer('order')->default(0);
             $table->json('options')->nullable();
             $table->timestamps();
