@@ -13,7 +13,7 @@ return [
 	|
 	*/
 
-	'failed' => 'Deze inlogegevens komen niet overeen met onze bestanden.',
+	'failed' => 'Deze inlogegevens komen niet overeen met onze gegevens.',
 	'throttle' => 'Te veel inlogpogingen. Probeer het opnieuw in: seconden seconden.',
 	'resetVerify' => 'Verifieer je e-mailadres',
 	'resetSent' => 'Er is een nieuwe verificatielink verzonden naar uw e-mailadres.',

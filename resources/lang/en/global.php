@@ -20,7 +20,7 @@ return [
 	'email' => 'Email',
 	'password' => 'Password',
 	'password_confirm' => 'Confirm Password',
-	'login' => 'Log in',
+	'login' => 'Login',
 	'logout' => 'Log out',
 	'register' => 'Register',
 	'language' => 'Language',
