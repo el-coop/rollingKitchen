@@ -1,7 +1,7 @@
 <template>
-	<div>
+	<div v-if="fields.length > 0">
 		<h5 class="title is-5" v-text="`${filtersText}:`"></h5>
-		<div v-for="field in fields" class="field" v-if="field.visible !== false">
+		<div v-for="field in fields" class="field">
 			<label class="label" v-text="field.title || field.name"></label>
 			<div class="control">
 				<div v-if="typeof field.filter === 'object'" class="select is-fullwidth">
@@ -51,7 +51,7 @@
 		data() {
 			return {
 				fields: this.tableFields.filter((field) => {
-					return typeof field.filter === "undefined" || field.filter
+					return (typeof field.filter === "undefined" || field.filter) && (typeof field.visible === "undefined" || field.visible);
 				}),
 				filters: this.initFilters
 			};

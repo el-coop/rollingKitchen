@@ -11,18 +11,19 @@ namespace App\Services;
 use App\Models\Application;
 use App\Models\Service;
 use App\Services\IndividualTaxInvoice as InvoiceFile;
+use Carbon\Carbon;
 use DB;
 
 
 class InvoiceService {
-
+	
 	protected $application;
 	protected $recipient;
 	protected $language;
-
+	
 	public function __construct($recipient) {
 		$this->recipient = $recipient;
-
+		
 		if ($recipient instanceof Application) {
 			$this->application = $recipient;
 			$this->recipient = $recipient->kitchen->user;
@@ -32,16 +33,13 @@ class InvoiceService {
 		}
 		$this->language = $this->recipient->language;
 	}
-
-
-	public function generate($number, $items, $tax = null) {
+	
+	
+	public function generate($number, $items, $tax = null, $date = null) {
 		$settings = app('settings');
-
-		$locale = 'en';
-		if ($this->language === 'nl') {
-			$locale = 'nl_NL';
-		}
+		
 		$invoice = InvoiceFile::make()
+			->date($date ?? Carbon::now())
 			->language($this->language)
 			->logo(asset('/images/logo.png'))
 			->number($number)
@@ -58,7 +56,7 @@ class InvoiceService {
 				'zip' => $this->recipient->data[3],
 				'city' => $this->recipient->data[4],
 			]);
-
+		
 		foreach ($items as $item) {
 			if (is_array($item)) {
 				$invoice->addItem($item['item'], $item['unitPrice'], $item['quantity'], $item['tax'] ?? 0);
@@ -68,7 +66,7 @@ class InvoiceService {
 		}
 		return $invoice;
 	}
-
+	
 	public function getOptions() {
 		$result = Service::where('category', '!=', 'socket')->get()->map(function ($service) {
 			return [
@@ -76,16 +74,16 @@ class InvoiceService {
 				'unitPrice' => $service->price
 			];
 		});
-
+		
 		$result = $result->concat($this->getApplicationData());
 		return $result;
 	}
-
+	
 	public function getOutstandingItems() {
 		$result = [];
 		if (!$this->application->invoices()->count()) {
 			$result = $this->getApplicationData();
-
+			
 		}
 		$invoicedServices = $this->application->invoicedItems()->select('service_id', DB::raw('SUM(quantity) as quantity'))->where('service_id', '!=', null)->groupBy('service_id')->get();
 		foreach ($this->application->services as $service) {
@@ -102,7 +100,7 @@ class InvoiceService {
 		}
 		return $result;
 	}
-
+	
 	protected function getApplicationData(): array {
 		return [[
 			'quantity' => 1,
