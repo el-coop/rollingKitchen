@@ -37,7 +37,18 @@
 					    none: '@lang('admin/fields.none')',
 					},
 					translate: true
-				}]
+				},
+				{
+					name: 'placeholder_nl',
+					label: '@lang('admin/fields.placeholder_nl')',
+					invisible: true
+				},{
+					name: 'placeholder_en',
+					label: '@lang('admin/fields.placeholder_en')',
+					invisible: true
+
+				},
+				]
 	            " action="{{ action('Admin\FieldController@create') }}" :extra-data="{
 					form: '{{ str_replace('\\','\\\\',$class) }}',
 				}" :sortable="true">

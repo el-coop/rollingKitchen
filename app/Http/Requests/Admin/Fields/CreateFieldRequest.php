@@ -42,7 +42,9 @@ class CreateFieldRequest extends FormRequest {
         $field->type = $this->input('type');
         $field->name_nl = $this->input('name_nl');
         $field->status = $this->input('status');
-        // maybe we implement some kind of switch case or a function that will do that when we have more model fields
+        $field->placeholder_nl = $this->input('placeholder_nl');
+		$field->placeholder_en = $this->input('placeholder_en');
+		// maybe we implement some kind of switch case or a function that will do that when we have more model fields
         $field->order = Kitchen::getLastFieldOrder() + 1;
         if ($field->type == 'checkbox') {
             $field->options = $this->input('options');

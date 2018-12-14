@@ -11,5 +11,7 @@ return [
 	'textarea' => 'Textarea',
 	'protected' => 'Protected',
 	'required' => 'Required',
-	'none' => 'None'
+	'none' => 'None',
+	'placeholder_nl' => 'Dutch Placeholder',
+	'placeholder_en' => 'English Placeholder'
 ];

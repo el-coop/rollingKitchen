@@ -38,6 +38,8 @@ class EditFieldRequest extends FormRequest {
 		$this->field->name_nl = $this->input('name_nl');
 		$this->field->type = $this->input('type');
 		$this->field->status = $this->input('status');
+		$this->field->placeholder_nl = $this->input('placeholder_nl');
+		$this->field->placeholder_en = $this->input('placeholder_en');
 		if ($this->field->type == 'checkbox') {
 			$this->field->options = $this->input('options');
 		}

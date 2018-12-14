@@ -146,7 +146,6 @@
 
 			valueDisplay(column, value) {
 				if (column.translate) {
-				    console.log(value,column);
 					return this.$translations[value];
 				}
 				if (column.callback) {
