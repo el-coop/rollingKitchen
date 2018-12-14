@@ -44,5 +44,8 @@ return [
 	'amount' => 'Bedrag',
 	'deleteConfirmTitle' => 'Weet je zeker dat je dit wil verwijderen?',
 	'sessionExpired' => 'TBT',
-	'generalError' => 'TBT'
+	'generalError' => 'TBT',
+	'protected' => 'TBT',
+	'required' => 'TBT',
+	'none' => 'TBT'
 ];

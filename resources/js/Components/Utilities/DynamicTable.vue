@@ -21,6 +21,7 @@
 						<td v-if="action && deleteAllowed">
 							<button class="button is-danger" type="button"
 									:class="{'is-loading' : deleteing === field.id}"
+									:disabled="field.status === 'protected'"
 									@click="destroy(field)" v-text="$translations.delete">
 							</button>
 						</td>

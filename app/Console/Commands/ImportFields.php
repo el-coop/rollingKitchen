@@ -14,15 +14,15 @@ class ImportFields extends Command {
 	 * @var string
 	 */
 	protected $signature = 'import:fields';
-	
+
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
 	protected $description = 'Imports fields from field.json file in storage';
-	
-	
+
+
 	/**
 	 * Create a new command instance.
 	 *
@@ -31,7 +31,7 @@ class ImportFields extends Command {
 	public function __construct() {
 		parent::__construct();
 	}
-	
+
 	/**
 	 * Execute the console command.
 	 *
@@ -44,16 +44,16 @@ class ImportFields extends Command {
 		foreach ($fieldsJson as $fieldType => $fields) {
 			$order = 0;
 			$this->info("Importing {$fieldType} fields");
-			
+
 			$type = $this->getFieldTypeName($fieldType);
-			
+
 			foreach ($fields as $field) {
 				$field['form'] = $type;
 				$field['order'] = $order++;
 				Field::forceCreate($field);
 			}
-			
-			
+
+
 			$this->alert("Import {$fieldType} Complete");
 		}
 
@@ -61,13 +61,14 @@ class ImportFields extends Command {
 			'name_en' => 'Instagram',
 			'name_nl' => 'Instagram',
 			'type' => 'text',
+			'status' => 'protected',
 			'order' =>  Kitchen::getLastFieldOrder() + 1,
 			'form' => Kitchen::class,
 		]);
 
 
 	}
-	
+
 	protected function getFieldTypeName($type) {
 		switch ($type) {
 			case 'kitchen':
