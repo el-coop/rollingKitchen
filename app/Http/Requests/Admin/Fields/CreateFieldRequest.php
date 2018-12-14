@@ -30,7 +30,9 @@ class CreateFieldRequest extends FormRequest {
             'form' => 'required|string|in:' . Kitchen::class . ',' . Application::class,
             'options' => 'required_if:type,checkbox|array',
 			'status' => 'required|string|in:protected,required,none',
-            'name_nl' => 'required:string'
+            'name_nl' => 'required:string',
+			'placeholder_nl' => 'string',
+			'placeholder_en' => 'string'
         ];
     }
 

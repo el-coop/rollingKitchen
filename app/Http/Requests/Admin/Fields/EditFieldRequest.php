@@ -29,7 +29,9 @@ class EditFieldRequest extends FormRequest {
 			'name_nl' => 'required|string',
 			'type' => 'required|string|in:text,textarea,checkbox',
 			'status' => 'required|string|in:protected,required,none',
-			'options' => 'required_if:type,checkbox|array'
+			'options' => 'required_if:type,checkbox|array',
+			'placeholder_nl' => 'string',
+			'placeholder_en' => 'string'
 		];
 	}
 
