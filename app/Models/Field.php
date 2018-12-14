@@ -14,7 +14,7 @@ class Field extends Model {
 			$requiredFields = Field::where('status', 'required')->whereIn('form', $models)->get();
 			 return $requiredFields->mapWithKeys(function ($field) use (&$rules){
 				$dataName = strtolower(substr($field->form, strrpos($field->form, '\\') + 1));
-					return ["$dataName.$field->id" => 'required'];
+					return ["{$dataName}.{$field->id}" => 'required'];
 			});
 	}
 
