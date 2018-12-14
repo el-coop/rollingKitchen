@@ -47,6 +47,7 @@ return [
 	'generalError' => 'An Error Has Occurred Please Try Again Later',
 	'protected' => 'Protected',
 	'required' => 'Required',
-	'none' => 'None'
+	'none' => 'None',
+	'noData' => 'No data available'
 
 ];

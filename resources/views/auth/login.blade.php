@@ -18,7 +18,7 @@
 						@csrf
 						<text-field
 								:field="{label: '@lang('global.email')',name: 'email', subType: 'email'}"
-								:error="{{ $errors->count() ? collect(["The credentials don't match our records"]): 'null'}}"></text-field>
+								:error="{{ $errors->count() ? collect([__('auth.failed')]): 'null'}}"></text-field>
 						<text-field
 								:field="{label: '@lang('global.password')',name: 'password', subType: 'password'}"></text-field>
             <div class="field">

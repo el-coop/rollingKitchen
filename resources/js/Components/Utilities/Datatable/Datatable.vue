@@ -19,6 +19,7 @@
                               :css="css"
                               :append-params="params"
                               :per-page="perPage"
+                              :no-data-template="$translations.noData"
                               @vuetable:cell-clicked="cellClicked"
                               @vuetable:row-clicked="rowClicked"
                               @vuetable:pagination-data="paginationData"
