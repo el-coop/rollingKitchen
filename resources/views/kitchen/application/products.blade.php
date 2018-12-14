@@ -19,6 +19,9 @@
 					   :extra-data="{category: '{{$category}}'}">
 		</dynamic-table>
 	</div>
+	@if($errors->has($category))
+		<p class="help is-danger">{{$errors->first($category)}}</p>
+		@endif
 	@if(! $loop->last)
 		<hr>
 	@endif

@@ -110,4 +110,10 @@ class Application extends Model {
 			]]);
 		}
 	}
+
+	public function hasMenu(){
+
+		return $this->products()->where('category', 'menu')->exists();
+
+	}
 }

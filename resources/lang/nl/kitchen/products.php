@@ -4,5 +4,7 @@ return [
 	'product' => 'Product',
 	'price' => 'Prijs',
 	'menu' => 'Menu',
-	'other' => 'Overig'
+	'other' => 'Overig',
+	'menuError' => 'Menu moet tenminste één product bevatten.',
+
 ];

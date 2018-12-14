@@ -1,1 +1,66 @@
-{"kitchen":[{"name_en":"Contact Person","name_nl":"Contactpersoon","type":"text"},{"name_en":"Billing Address","name_nl":"Factuuradres ","type":"text"},{"name_en":"Zip Code","name_nl":"Postcode","type":"text"},{"name_en":"City","name_nl":"Plaats","type":"text"},{"name_en":"Phone Number","name_nl":"Mobiel","type":"text"},{"name_en":"Website","name_nl":"Website","type":"text"},{"name_en":"Facebook","name_nl":"Facebook","type":"text"}],"application":[{"name_en":"Fee (excl. VAT) (minimum of \u20ac 1250,-)","name_nl":"Vul hier het bedrag in (minimaal \u20ac 1250,- excl. BTW)","type":"text"},{"name_en":"Explanation","name_nl":"Motivatie Inschrijfgeld","type":"textarea"},{"name_en":"Entertainment programme\/live music, etc. (without live entertainment, application is not possible).","name_nl":"Randprogrammering\/live muziek, etc. (zonder live randprogrammering is aanmelding niet mogelijk).","type":"textarea"}]}
+{
+  "kitchen": [
+    {
+      "name_en": "Contact Person",
+      "name_nl": "Contactpersoon",
+      "type": "text",
+      "status": "protected"
+    },
+    {
+      "name_en": "Billing Address",
+      "name_nl": "Factuuradres ",
+      "type": "text",
+      "status": "protected"
+    },
+    {
+      "name_en": "Zip Code",
+      "name_nl": "Postcode",
+      "type": "text",
+      "status": "protected"
+    },
+    {
+      "name_en": "City",
+      "name_nl": "Plaats",
+      "type": "text",
+      "status": "protected"
+    },
+    {
+      "name_en": "Phone Number",
+      "name_nl": "Mobiel",
+      "type": "text",
+      "status": "protected"
+    },
+    {
+      "name_en": "Website",
+      "name_nl": "Website",
+      "type": "text",
+      "status": "protected"
+    },
+    {
+      "name_en": "Facebook",
+      "name_nl": "Facebook",
+      "type": "text",
+      "status": "protected"
+    }
+  ],
+  "application": [
+    {
+      "name_en": "Fee (excl. VAT) (minimum of \u20ac 1250,-)",
+      "name_nl": "Vul hier het bedrag in (minimaal \u20ac 1250,- excl. BTW)",
+      "type": "text",
+      "status": "protected"
+    },
+    {
+      "name_en": "Explanation",
+      "name_nl": "Motivatie Inschrijfgeld",
+      "type": "textarea",
+      "status": "protected"
+    },
+    {
+      "name_en": "Entertainment programme\/live music, etc. (without live entertainment, application is not possible).",
+      "name_nl": "Randprogrammering\/live muziek, etc. (zonder live randprogrammering is aanmelding niet mogelijk).",
+      "type": "textarea",
+      "status": "protected"
+    }
+  ]
+}

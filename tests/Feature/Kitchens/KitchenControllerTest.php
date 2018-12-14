@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Application;
 use App\Models\Kitchen;
 use App\Models\Photo;
+use App\Models\Product;
 use App\Models\Service;
 use App\Models\User;
 use App\Notifications\Admin\ApplicationResubmittedNotification;
@@ -385,6 +386,11 @@ class KitchenControllerTest extends TestCase {
 			'status' => 'new',
 		]);
 		$this->user->user->applications()->save($application);
+
+		$application->products()->save(factory(Product::class)->make([
+			'category' => 'menu'
+		]));
+
 		$this->actingAs($this->user)->patch(action('Kitchen\KitchenController@update', $this->user->user), [
 			'name' => 'test',
 			'email' => 'test@best.rest',
@@ -486,6 +492,11 @@ class KitchenControllerTest extends TestCase {
 		]);
 		
 		$this->user->user->applications()->save($application);
+
+		$application->products()->save(factory(Product::class)->make([
+			'category' => 'menu'
+		]));
+
 		$this->actingAs($this->user)->patch(action('Kitchen\KitchenController@update', $this->user->user), [
 			'name' => 'test',
 			'email' => 'test@best.rest',

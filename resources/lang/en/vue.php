@@ -41,6 +41,12 @@ return [
 	'next' => 'Next &raquo;',
 	'socket' => 'Socket',
 	'date' => 'Date',
-	'amount' => 'Amount'
+	'amount' => 'Amount',
+	'deleteConfirmTitle' => 'Are you sure you want to delete this?',
+	'sessionExpired' => 'Session Expired Please Refresh',
+	'generalError' => 'An Error Has Occurred Please Try Again Later',
+	'protected' => 'Protected',
+	'required' => 'Required',
+	'none' => 'None'
 
 ];

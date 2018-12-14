@@ -25,4 +25,5 @@ return [
 	'totalPaid' => 'Betaald bedrag',
 	'managePayments' => 'Beheer betalingen',
 	'invoiceSent' => 'Factuur verstuurd',
+	'amountLeft' => 'Resterend bedrag',
 ];

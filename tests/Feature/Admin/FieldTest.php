@@ -53,11 +53,13 @@ class FieldTest extends TestCase {
 			'name_nl' => 'test',
 			'type' => 'text',
 			'form' => Kitchen::class,
+			'status' => 'required'
 		])->assertSuccessful()->assertJson([
 			'name_en' => 'test',
 			'name_nl' => 'test',
 			'type' => 'text',
 			'form' => Kitchen::class,
+			'status' => 'required'
 		]);
 		$this->assertDatabaseHas('fields', [
 			'name_en' => 'test',
@@ -107,12 +109,14 @@ class FieldTest extends TestCase {
 		$this->actingAs($this->admin)->patch(action('Admin\FieldController@edit', $this->fields->first()), [
 			'name_en' => 'new name',
 			'name_nl' => 'new name nl',
-			'type' => 'text'
+			'type' => 'text',
+			'status' => 'required'
 		])->assertSuccessful();
 		$this->assertDatabaseHas('fields', [
 			'name_en' => 'new name',
 			'name_nl' => 'new name nl',
-			'type' => 'text'
+			'type' => 'text',
+			'status' => 'required'
 		]);
 	}
 

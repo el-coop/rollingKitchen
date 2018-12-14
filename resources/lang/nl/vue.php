@@ -41,5 +41,11 @@ return [
 	'next' => 'Volgende &raquo;',
 	'socket' => 'Aansluiting',
 	'date' => 'Datum',
-	'amount' => 'Bedrag'
+	'amount' => 'Bedrag',
+	'deleteConfirmTitle' => 'Weet je zeker dat je dit wil verwijderen?',
+	'sessionExpired' => 'TBT',
+	'generalError' => 'TBT',
+	'protected' => 'TBT',
+	'required' => 'TBT',
+	'none' => 'TBT'
 ];
