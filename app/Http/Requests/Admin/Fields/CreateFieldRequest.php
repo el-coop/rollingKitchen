@@ -29,8 +29,8 @@ class CreateFieldRequest extends FormRequest {
             'type' => 'required|string|in:text,textarea,checkbox',
             'form' => 'required|string|in:' . Kitchen::class . ',' . Application::class,
             'options' => 'required_if:type,checkbox|array',
+			'status' => 'required|string|in:protected,required,none',
             'name_nl' => 'required:string'
-
         ];
     }
 
@@ -41,6 +41,7 @@ class CreateFieldRequest extends FormRequest {
         $field->name_en = $this->input('name_en');
         $field->type = $this->input('type');
         $field->name_nl = $this->input('name_nl');
+        $field->status = $this->input('status');
         // maybe we implement some kind of switch case or a function that will do that when we have more model fields
         $field->order = Kitchen::getLastFieldOrder() + 1;
         if ($field->type == 'checkbox') {

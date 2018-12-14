@@ -8,5 +8,8 @@ return [
 	'name_en' => 'Engelse naam',
 	'type' => 'Type',
 	'text' => 'Tekst',
-	'textarea' => 'Tekstveld'
+	'textarea' => 'Tekstveld',
+	'protected' => 'TBT',
+	'required' => 'TBT',
+	'none' => 'TBT'
 ];

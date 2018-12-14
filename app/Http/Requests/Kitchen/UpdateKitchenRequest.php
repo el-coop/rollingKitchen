@@ -4,6 +4,9 @@ namespace App\Http\Requests\Kitchen;
 
 use App\Events\Kitchen\ApplicationResubmitted;
 use App\Events\Kitchen\ApplicationSubmitted;
+use App\Models\Application;
+use App\Models\Field;
+use App\Models\Kitchen;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateKitchenRequest extends FormRequest {
@@ -64,8 +67,9 @@ class UpdateKitchenRequest extends FormRequest {
 				]);
 
 			}
+			$fieldRules = Field::getRequiredFields(Application::class,Kitchen::class);
+			$rules = $rules->merge($fieldRules);
 		}
-
 		return $rules->toArray();
 	}
 

@@ -8,6 +8,7 @@ $factory->define(\App\Models\Field::class, function (Faker $faker) {
 		'name_nl' => $faker->name,
 		'type' => $faker->randomElement(['text', 'textarea']),
 		'form' => \App\Models\Kitchen::class,
-		'order' => $faker->unique()->numberBetween(0,100)
+		'order' => $faker->unique()->numberBetween(0,100),
+		'status' => 'protected'
 	];
 });
