@@ -14,13 +14,12 @@
 			_token: '{{csrf_token()}}'
 		}" :init-images="{{ $kitchen->photos }}" delete-url="/kitchen/{{ $kitchen->id }}/photo">
 		</image-manager>
-		<dynamic-fields class="mt-1" :fields="{{ $kitchen->fulldata->map(function($item) use($errors){
+		<dynamic-fields class="mt-1" :fields="{{ $kitchen->fulldata->whereIn('name',['kitchen[6]','kitchen[7]','kitchen[11]'])->map(function($item) use($errors){
 			$fieldName = str_replace(']','',str_replace('[','.',$item['name']));
 
 			$item['value'] = old($fieldName, $item['value']);
 			$item['error'] = $errors->has($fieldName) ? $errors->get($fieldName): null;
 			return $item;
-		}) }}"
-						:hide="['status','name','language','email','kitchen[1]','kitchen[2]','kitchen[3]','kitchen[4]','kitchen[5]']"></dynamic-fields>
+		}) }}"></dynamic-fields>
 	</div>
 </div>
