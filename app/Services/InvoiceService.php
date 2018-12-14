@@ -35,7 +35,7 @@ class InvoiceService {
 	}
 	
 	
-	public function generate($number, $items, $date = null, $tax = null) {
+	public function generate($number, $items, $tax = null, $date = null) {
 		$settings = app('settings');
 		
 		$invoice = InvoiceFile::make()
