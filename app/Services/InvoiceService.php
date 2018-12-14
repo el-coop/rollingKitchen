@@ -11,19 +11,18 @@ namespace App\Services;
 use App\Models\Application;
 use App\Models\Service;
 use App\Services\IndividualTaxInvoice as InvoiceFile;
-use Carbon\Carbon;
 use DB;
 
 
 class InvoiceService {
-	
+
 	protected $application;
 	protected $recipient;
 	protected $language;
-	
+
 	public function __construct($recipient) {
 		$this->recipient = $recipient;
-		
+
 		if ($recipient instanceof Application) {
 			$this->application = $recipient;
 			$this->recipient = $recipient->kitchen->user;
@@ -33,46 +32,43 @@ class InvoiceService {
 		}
 		$this->language = $this->recipient->language;
 	}
-	
-	
+
+
 	public function generate($number, $items, $tax = null) {
 		$settings = app('settings');
-		
+
 		$locale = 'en';
 		if ($this->language === 'nl') {
 			$locale = 'nl_NL';
 		}
-		
-		return Carbon::executeWithLocale($locale, function () use ($settings, $number, $items, $tax) {
-			$invoice = InvoiceFile::make()
-				->language($this->language)
-				->logo(asset('/images/logo.png'))
-				->number($number)
-				->taxType($tax !== null ? 'percentage' : 'individual')
-				->tax($tax)
-				->notes($settings->get("invoices_notes_{$this->language}"))
-				->business(str_replace(PHP_EOL, '<br>', $settings->get("invoices_business_details")))
-				->notes(str_replace(PHP_EOL, '<br>', $settings->get("invoices_notes_{$this->language}")))
-				->footnote(str_replace(PHP_EOL, '<br>', $settings->get("invoices_footer_{$this->language}")))
-				->customer([
-					'name' => $this->recipient->name,
-					'phone' => $this->recipient->data[5],
-					'location' => $this->recipient->data[2],
-					'zip' => $this->recipient->data[3],
-					'city' => $this->recipient->data[4],
-				]);
-			
-			foreach ($items as $item) {
-				if (is_array($item)) {
-					$invoice->addItem($item['item'], $item['unitPrice'], $item['quantity'], $item['tax'] ?? 0);
-				} else {
-					$invoice->addItem($item->name, $item->unit_price, $item->quantity, $item->tax ?? 0);
-				}
+		$invoice = InvoiceFile::make()
+			->language($this->language)
+			->logo(asset('/images/logo.png'))
+			->number($number)
+			->taxType($tax !== null ? 'percentage' : 'individual')
+			->tax($tax)
+			->notes($settings->get("invoices_notes_{$this->language}"))
+			->business(str_replace(PHP_EOL, '<br>', $settings->get("invoices_business_details")))
+			->notes(str_replace(PHP_EOL, '<br>', $settings->get("invoices_notes_{$this->language}")))
+			->footnote(str_replace(PHP_EOL, '<br>', $settings->get("invoices_footer_{$this->language}")))
+			->customer([
+				'name' => $this->recipient->name,
+				'phone' => $this->recipient->data[5],
+				'location' => $this->recipient->data[2],
+				'zip' => $this->recipient->data[3],
+				'city' => $this->recipient->data[4],
+			]);
+
+		foreach ($items as $item) {
+			if (is_array($item)) {
+				$invoice->addItem($item['item'], $item['unitPrice'], $item['quantity'], $item['tax'] ?? 0);
+			} else {
+				$invoice->addItem($item->name, $item->unit_price, $item->quantity, $item->tax ?? 0);
 			}
-			return $invoice;
-		});
+		}
+		return $invoice;
 	}
-	
+
 	public function getOptions() {
 		$result = Service::where('category', '!=', 'socket')->get()->map(function ($service) {
 			return [
@@ -80,16 +76,16 @@ class InvoiceService {
 				'unitPrice' => $service->price
 			];
 		});
-		
+
 		$result = $result->concat($this->getApplicationData());
 		return $result;
 	}
-	
+
 	public function getOutstandingItems() {
 		$result = [];
 		if (!$this->application->invoices()->count()) {
 			$result = $this->getApplicationData();
-			
+
 		}
 		$invoicedServices = $this->application->invoicedItems()->select('service_id', DB::raw('SUM(quantity) as quantity'))->where('service_id', '!=', null)->groupBy('service_id')->get();
 		foreach ($this->application->services as $service) {
@@ -106,7 +102,7 @@ class InvoiceService {
 		}
 		return $result;
 	}
-	
+
 	protected function getApplicationData(): array {
 		return [[
 			'quantity' => 1,
