@@ -16,7 +16,7 @@ class SettingsServiceProvider extends ServiceProvider {
      * @return void
      */
     public function boot() {
-        if (today() > Carbon::create(date('Y'), 12, 15)) {
+        if (today() > Carbon::create(date('Y'), 12, 14)) {
             $year = date('Y') + 1;
         } else {
             $year = date('Y');
