@@ -24,7 +24,7 @@
 
 		mounted() {
 			if (this.startOpen) {
-				this.$parent.selected = this.index();
+				this.$parent.selected = this.index;
 			}
 		},
 	}
