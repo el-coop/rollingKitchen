@@ -1,7 +1,7 @@
 <dynamic-fields :fields="[{
 	name: 'length',
 	label: '@lang('kitchen/dimensions.length')',
-	value: '{{ old('length', $application->length) }}',
+	value: '{{ old('length', $application->length != 0 ? $application->length  : '') }}',
 	readonly: {{ !$application->isOpen() ? 'true' : 'false'}},
 	type: 'text',
 	subType: 'number',
@@ -10,7 +10,7 @@
 },{
 	name : 'width',
 	label : '@lang('kitchen/dimensions.width')',
-	value: '{{ old('width', $application->width) }}',
+	value: '{{ old('width', $application->length != 0 ? $application->length  : '') }}',
 	readonly: {{ ! $application->isOpen() ? 'true' : 'false'}},
 	type: 'text',
 	subType: 'number',
