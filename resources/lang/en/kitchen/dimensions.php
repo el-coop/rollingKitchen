@@ -7,5 +7,6 @@ return [
 	'terraceLength' => 'Terrace Length',
 	'terraceWidth' => 'Terrace Width',
 	'terraceSeats' => 'Terrace Seats',
-	'inMeters' => 'In meters'
+	'inMeters' => 'In meters',
+	'terraceSeatsPlaceholder' => 'benches, standing tables, picnic benches, etc',
 ];
