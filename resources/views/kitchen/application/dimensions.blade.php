@@ -41,6 +41,7 @@
 	readonly: {{ ! $application->isOpen() ? 'true' : 'false'}},
 	type: 'text',
 	subType: 'number',
+	placeholder: '@lang('kitchen/dimensions.terraceSeatsPlaceholder')',
     error: {{ $errors->has('seats') ? collect($errors->get('seats')) : 'null'}},
 }]">
 </dynamic-fields>

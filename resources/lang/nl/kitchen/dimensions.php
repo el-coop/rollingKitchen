@@ -7,5 +7,6 @@ return [
 	'terraceLength' => 'Lengte Terras',
 	'terraceWidth' => 'Breedte terras',
 	'terraceSeats' => 'Aantal plaatsen',
-	'inMeters' => 'In meters'
+	'inMeters' => 'In meters',
+	'terraceSeatsPlaceholder' => 'banken, statafels, picknickbanken, etc.',
 ];
