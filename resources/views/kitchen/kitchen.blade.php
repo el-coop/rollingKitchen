@@ -20,6 +20,6 @@
 			$item['value'] = old($fieldName, $item['value']);
 			$item['error'] = $errors->has($fieldName) ? $errors->get($fieldName): null;
 			return $item;
-		}) }}"></dynamic-fields>
+		})->values() }}"></dynamic-fields>
 	</div>
 </div>
