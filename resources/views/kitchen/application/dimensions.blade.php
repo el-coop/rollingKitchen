@@ -34,5 +34,5 @@
 	subType: 'number',
 	placeholder: '@lang('kitchen/dimensions.inMeters')',
     error: {{ $errors->has('terrace_width') ? collect($errors->get('terrace_width')) : 'null'}},
-}D]">
+}]">
 </dynamic-fields>
