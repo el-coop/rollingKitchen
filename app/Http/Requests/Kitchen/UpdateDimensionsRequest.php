@@ -29,7 +29,6 @@ class UpdateDimensionsRequest extends FormRequest
 			'width' => 'required|numeric',
 			'terrace_length' => 'numeric|nullable',
 			'terrace_width' => 'numeric|nullable',
-			'seats' => 'numeric|nullable'
         ];
     }
 
@@ -38,7 +37,6 @@ class UpdateDimensionsRequest extends FormRequest
 		$this->application->width = $this->input('width');
 		$this->application->terrace_length = $this->input('terrace_length');
 		$this->application->terrace_width = $this->input('terrace_width');
-		$this->application->seats = $this->input('seats');
 		$this->application->save();
     }
 }

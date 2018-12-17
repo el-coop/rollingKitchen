@@ -13,7 +13,6 @@ $factory->define(\App\Models\Application::class, function (Faker $faker) {
 		'width' => $faker->randomFloat(2, 0, 15),
 		'terrace_length' => $terrace ? $faker->randomFloat(2, 0, 15) : null,
 		'terrace_width' => $terrace ? $faker->randomFloat(2, 0, 15) : null,
-		'seats' => $terrace ? $faker->numberBetween(0, 50) : null,
 		'data' => []
 	];
 });

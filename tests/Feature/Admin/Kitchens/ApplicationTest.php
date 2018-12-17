@@ -184,7 +184,6 @@ class ApplicationTest extends TestCase {
 			'width' => '20',
 			'terrace_length' => '10',
 			'terrace_width' => '20',
-			'seats' => null
 		]);
 	}
 

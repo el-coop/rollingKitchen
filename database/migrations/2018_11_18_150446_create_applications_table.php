@@ -22,7 +22,6 @@ class CreateApplicationsTable extends Migration {
 			$table->double('width');
 			$table->double('terrace_length')->nullable();
 			$table->double('terrace_width')->nullable();
-			$table->integer('seats')->nullable();
 			$table->timestamps();
 			
 			$table->foreign('kitchen_id')
