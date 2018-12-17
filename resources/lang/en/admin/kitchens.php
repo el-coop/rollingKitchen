@@ -5,5 +5,6 @@ return [
 	'motherlist' => 'Motherlist',
 	'new' => 'New',
 	'fields' => 'Fields',
-	'kitchen' => 'Kitchen'
+	'kitchen' => 'Kitchen',
+	'updatedAt' => 'Updated At'
 ];

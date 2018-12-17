@@ -7,7 +7,7 @@ return [
 		['kitchens', 'users.user_id', 'kitchens.id'],
 		['photos', 'photos.kitchen_id', 'kitchens.id']
 	],
-
+	
 	'fields' => [[
 		'name' => 'id',
 		'table' => 'kitchens',
@@ -29,6 +29,12 @@ return [
 			'motherlist' => 'admin/kitchens.motherlist'
 		],
 		'callback' => 'translate'
+	], [
+		'name' => 'updated_at',
+		'table' => 'users',
+		'title' => 'admin/kitchens.updatedAt',
+		'callback' => 'date',
+		'sortField' => 'updated_at',
 	], [
 		'name' => 'count(kitchen_id)',
 		'sortField' => 'count(kitchen_id)',
