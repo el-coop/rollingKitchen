@@ -5,11 +5,17 @@
 				<img :src="photo.url">
 			</figure>
 		</div>
-		<div class="arrow previous" @click="changePhoto(-1)">
-			<
-		</div>
-		<div class="arrow next" @click="changePhoto(+1)">
-			>
+		<div v-if="Object.keys(photos).length > 0">
+			<div class="arrow previous" @click="changePhoto(-1)">
+				<div v-if="Object.keys(photos).length > 1">
+					<
+				</div>
+			</div>
+			<div class="arrow next" @click="changePhoto(+1)">
+				<div v-if="Object.keys(photos).length > 1">
+					>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>

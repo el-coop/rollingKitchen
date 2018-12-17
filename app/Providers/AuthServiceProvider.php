@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Admin;
 use App\Models\Application;
 use App\Models\Debtor;
+use App\Models\Developer;
 use App\Models\Error;
 use App\Models\Field;
 use App\Models\Invoice;
@@ -41,7 +42,7 @@ class AuthServiceProvider extends ServiceProvider {
 		Debtor::class => DebtorPolicy::class,
 		InvoicePayment::class => InvoicePaymentPolicy::class
 	];
-	
+
 	/**
 	 * Register any authentication / authorization services.
 	 *
@@ -50,7 +51,7 @@ class AuthServiceProvider extends ServiceProvider {
 	public function boot() {
 		$this->registerPolicies();
 		Gate::define('update-settings', function ($user) {
-			return $user->user_type == Admin::class;
+			return $user->user_type == Admin::class || $user->user_type == Developer::class;
 		});
 	}
 }
