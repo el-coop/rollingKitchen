@@ -27,10 +27,10 @@ function vueErrorReport(err, vm, info) {
         lineNo: err.lineNumber,
         colNo: err.colNumber,
         trace: err.stack,
-        vm: JSON.stringify(JSON.stringify({
+        vm: JSON.stringify({
             props: vm.$options.propsData,
             data: vm._data
-        }))
+        })
     })
 }
 
