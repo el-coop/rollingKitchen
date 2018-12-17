@@ -34,14 +34,5 @@
 	subType: 'number',
 	placeholder: '@lang('kitchen/dimensions.inMeters')',
     error: {{ $errors->has('terrace_width') ? collect($errors->get('terrace_width')) : 'null'}},
-},{
-	name : 'seats',
-	label : '@lang('kitchen/dimensions.terraceSeats')',
-	value: '{{ old('seats', $application->seats) }}',
-	readonly: {{ ! $application->isOpen() ? 'true' : 'false'}},
-	type: 'text',
-	subType: 'number',
-	placeholder: '@lang('kitchen/dimensions.terraceSeatsPlaceholder')',
-    error: {{ $errors->has('seats') ? collect($errors->get('seats')) : 'null'}},
-}]">
+}D]">
 </dynamic-fields>

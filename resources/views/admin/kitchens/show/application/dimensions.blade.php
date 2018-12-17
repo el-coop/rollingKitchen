@@ -26,11 +26,5 @@
 	type: 'text',
 	placeholder: '@lang('kitchen/dimensions.inMeters')',
 	subType: 'number'
-},{
-	'name' : 'seats',
-	'label' : '@lang('kitchen/dimensions.terraceSeats')',
-	'value' : '{{ $application->seats }}',
-	type: 'text',
-	subType: 'number'
 }]" button-class="is-info" url="{{ action('Admin\ApplicationController@updateDimensions', $application) }}">
 </dynamic-form>
