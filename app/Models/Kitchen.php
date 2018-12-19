@@ -8,6 +8,23 @@ class Kitchen extends Model {
 
 	protected static function boot() {
 		parent::boot();
+		static::deleting(function($kitchen){
+			if ($kitchen->has('applications')) {
+				$applications = $kitchen->applications;
+				$applications->each(function ($application) use ($kitchen) {
+					if ($application->has('invoices')) {
+						$deletedOwner = DeletedInvoiceOwner::firstOrCreate([
+							'name' => $kitchen->user->name,
+							'email' => $kitchen->user->email,
+							'language' => $kitchen->user->language
+						]);
+						$application->invoices->each(function ($invoice) use ($deletedOwner) {
+							$deletedOwner->invoices()->save($invoice);
+						});
+					}
+				});
+			}
+		});
 		static::deleted(function ($kitchen) {
 			$kitchen->user->delete();
 			$kitchen->applications->each->delete();
