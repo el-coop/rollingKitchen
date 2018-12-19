@@ -6,11 +6,12 @@ return [
 		['applications', 'invoices.owner_id', '=', 'applications.id', 'invoices.owner_type', '=', \App\Models\Application::class],
 		['debtors', 'invoices.owner_id', '=', 'debtors.id', 'invoices.owner_type', '=', \App\Models\Debtor::class],
 		['users', 'applications.kitchen_id', '=', 'users.user_id', 'users.user_type', '=', \App\Models\Kitchen::class],
+		['deleted_invoice_owners',  'invoices.owner_id', '=', 'deleted_invoice_owners.id', 'invoices.owner_type', '=', \App\Models\DeletedInvoiceOwner::class]
 	],
 	'cases' => [
-		'WHEN debtors.name IS NULL THEN users.name ELSE debtors.name END as name'
+		'WHEN debtors.name IS NULL AND users.name IS NULL THEN deleted_invoice_owners.name WHEN debtors.name IS NULL THEN users.name ELSE debtors.name END as name'
 	],
-	
+
 	'fields' => [[
 		'name' => 'id',
 		'table' => 'invoices',
@@ -40,7 +41,7 @@ return [
 		'title' => 'admin/invoices.number',
 		'filter' => false,
 		'sortField' => 'number',
-	
+
 	], [
 		'name' => 'name',
 		'noTable' => true,
