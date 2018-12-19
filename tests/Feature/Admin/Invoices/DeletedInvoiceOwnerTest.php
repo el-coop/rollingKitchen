@@ -60,11 +60,14 @@ class DeletedInvoiceOwnerTest extends TestCase {
 	public function test_deleted_owner_created_on_kitchen_delete() {
         $this->actingAs($this->user)->delete(action('Admin\KitchenController@destroy', $this->kitchen->user));
         $this->assertDatabaseHas('invoices', ['id' => $this->applicationInvoice->id, 'owner_type' => DeletedInvoiceOwner::class]);
+        $this->assertDatabaseHas('deleted_invoice_owners', ['email' => $this->kitchen->email, 'name' => $this->kitchen->name]);
     }
 
 	public function test_deleted_owner_created_on_debtor_delete() {
 		$this->actingAs($this->user)->delete(action('Admin\DebtorController@destroy', $this->debtor));
 		$this->assertDatabaseHas('invoices', ['id' => $this->debtorInvoice->id, 'owner_type' => DeletedInvoiceOwner::class]);
+		$this->assertDatabaseHas('deleted_invoice_owners', ['email' => $this->debtor->email, 'name' => $this->debtor->name]);
+
 	}
 
 	public function test_guest_cant_get_deleted_invoice_owner(){
