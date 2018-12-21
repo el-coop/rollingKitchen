@@ -25,7 +25,6 @@ class Error extends Model {
 				'type' => 'text',
 				'value' => $this->error_type,
 				'readonly' => true
-
 			],
 			[
 				'name' => 'message',
@@ -33,14 +32,12 @@ class Error extends Model {
 				'type' => strlen($this->error->message) < 25 ? 'text' : 'textarea',
 				'value' => $this->error->message,
 				'readonly' => true
-
 			],
 			[
 				'name' => 'exception',
 				'label' => __('developer/errors.exception'),
 				'type' => 'json',
 				'value' => $this->error->exception,
-
 			]
 
 		]);

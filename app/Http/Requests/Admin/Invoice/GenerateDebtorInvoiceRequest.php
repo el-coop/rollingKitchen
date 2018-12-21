@@ -39,13 +39,22 @@ class GenerateDebtorInvoiceRequest extends FormRequest {
 		return $rules->toArray();
 	}
 	
+	public function withValidator($validator) {
+		$this->debtor = $this->route('debtor');
+		
+		$validator->after(function ($validator) {
+			if (!isset($this->debtor->data[5]) || !isset($this->debtor->data[2]) || !isset($this->debtor->data[3]) || !isset($this->debtor->data[4])) {
+				$validator->errors()->add('help', __('admin/invoices.billingDetailsMissing'));
+			}
+		});
+	}
+	
 	public function commit() {
-		$debtor = $this->route('debtor');
 		$number = Invoice::getNumber();
 		$prefix = app('settings')->get('registration_year');
 		
 		if ($this->input('file_download', false)) {
-			$invoiceService = new InvoiceService($debtor);
+			$invoiceService = new InvoiceService($this->debtor);
 			$invoice = $invoiceService->generate("{$prefix}-{$number}", $this->input('items'));
 			return $invoice->download("{$prefix}-{$number}");
 		}
@@ -53,7 +62,7 @@ class GenerateDebtorInvoiceRequest extends FormRequest {
 		$invoice->prefix = $prefix;
 		$invoice->number = $number;
 		$invoice->tax = 0;
-		$debtor->invoices()->save($invoice);
+		$this->debtor->invoices()->save($invoice);
 		$total = 0;
 		foreach ($this->input('items') as $item) {
 			$invoiceItem = new InvoiceItem;

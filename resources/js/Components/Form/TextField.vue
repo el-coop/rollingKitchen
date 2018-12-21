@@ -21,7 +21,3 @@
 		mixins: [FieldMixin]
 	}
 </script>
-
-<style scoped>
-
-</style>

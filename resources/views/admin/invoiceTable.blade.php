@@ -10,10 +10,10 @@
 			@slot('editWidth',1000)
 			<template slot-scope="{object, onUpdate}" v-if="object">
 				<div class="title is-7 has-text-centered">
-					<a :href="`/admin/${object.owner_type.substring(11).toLowerCase()}s/${object.owner_id}`">
+					<component :is="object.owner_type.substring(11).toLowerCase() === 'deletedinvoiceowner' ? 'div' : 'a'" :href="`/admin/${object.owner_type.substring(11).toLowerCase()}s/${object.owner_id}`">
 						<span class="is-size-3" v-text="object.name"></span>
-						<font-awesome-icon icon="link"></font-awesome-icon>
-					</a>
+						<font-awesome-icon icon="link" v-if="object.owner_type.substring(11).toLowerCase() !== 'deletedinvoiceowner'"></font-awesome-icon>
+					</component>
 				</div>
 				<dynamic-form
 						:url="`{{Request::url() }}/${object.owner_type.substring(11).toLowerCase()}/${object.owner_id}/${object.id}`"

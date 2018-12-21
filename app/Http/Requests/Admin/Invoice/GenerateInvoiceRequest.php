@@ -18,7 +18,7 @@ class GenerateInvoiceRequest extends FormRequest {
 	public function authorize() {
 		return $this->user()->can('create', Invoice::class);
 	}
-
+	
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -40,14 +40,25 @@ class GenerateInvoiceRequest extends FormRequest {
 		}
 		return $rules->toArray();
 	}
-
+	
+	public function withValidator($validator) {
+		$this->application = $this->route('application');
+		$kitchen = $this->application->kitchen;
+		
+		$validator->after(function ($validator) use ($kitchen) {
+			if (!isset($kitchen->data[5]) || !isset($kitchen->data[2]) || !isset($kitchen->data[3]) || !isset($kitchen->data[4])) {
+				$validator->errors()->add('help', __('admin/invoices.billingDetailsMissing'));
+			}
+		});
+	}
+	
+	
 	public function commit() {
-		$application = $this->route('application');
 		$number = Invoice::getNumber();
 		$prefix = app('settings')->get('registration_year');
-
+		
 		if ($this->input('file_download', false)) {
-			$invoiceService = new InvoiceService($application);
+			$invoiceService = new InvoiceService($this->application);
 			$invoice = $invoiceService->generate("{$prefix}-{$number}", $this->input('items'), $this->input('tax'));
 			return $invoice->download("{$prefix}-{$number}");
 		}
@@ -55,7 +66,7 @@ class GenerateInvoiceRequest extends FormRequest {
 		$invoice->prefix = $prefix;
 		$invoice->number = $number;
 		$invoice->tax = $this->input('tax');
-		$application->invoices()->save($invoice);
+		$this->application->invoices()->save($invoice);
 		$total = 0;
 		foreach ($this->input('items') as $item) {
 			$invoiceItem = new InvoiceItem;
@@ -65,18 +76,18 @@ class GenerateInvoiceRequest extends FormRequest {
 			if ($service = Service::where("name_en", $item['item'])->orWhere("name_nl", $item['item'])->first()) {
 				$invoiceItem->service_id = $service->id;
 			}
-
+			
 			$invoice->items()->save($invoiceItem);
-
+			
 			if ($invoiceItem->service_id) {
-				$application->registerNewServices($service);
+				$this->application->registerNewServices($service);
 			}
 			$total += $item['quantity'] * $item['unitPrice'];
 		}
-
+		
 		$invoice->amount = $total;
 		$invoice->save();
-
+		
 		if (!$this->application->number) {
 			$this->application->setNumber();
 		}
@@ -84,7 +95,7 @@ class GenerateInvoiceRequest extends FormRequest {
 			$this->input('bcc', false),
 			$this->input('accountant', false) ? app('settings')->get('invoices_accountant') : false
 		])->filter());
-
+		
 		return $invoice->load('payments');
 	}
 }

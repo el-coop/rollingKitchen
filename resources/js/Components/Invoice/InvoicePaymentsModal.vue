@@ -65,7 +65,7 @@
 		methods: {
 			updateInvoice(total) {
 				this.invoice.totalPaid = total;
-				this.invoice.amountLeft = this.invoice.amount - total;
+				this.invoice.amountLeft = this.invoice.total - total;
 				this.onAdd(this.invoice);
 			},
 			async setUp(field, onUpdate) {

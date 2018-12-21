@@ -16,7 +16,7 @@ class Handler extends ExceptionHandler {
 	protected $dontReport = [
 		//
 	];
-
+	
 	/**
 	 * A list of the inputs that are never flashed for validation exceptions.
 	 *
@@ -26,7 +26,7 @@ class Handler extends ExceptionHandler {
 		'password',
 		'password_confirmation',
 	];
-
+	
 	/**
 	 * Report or log an exception.
 	 *
@@ -39,7 +39,7 @@ class Handler extends ExceptionHandler {
 		}
 		parent::report($exception);
 	}
-
+	
 	/**
 	 * Render an exception into an HTTP response.
 	 *
@@ -50,7 +50,7 @@ class Handler extends ExceptionHandler {
 	public function render($request, Exception $exception) {
 		return parent::render($request, $exception);
 	}
-
+	
 	protected function logException(Exception $exception) {
 		$request = request();
 		$error = new Error;
@@ -60,16 +60,16 @@ class Handler extends ExceptionHandler {
 		}
 		$error->page = $request->fullUrl();
 		$phpError->message = $exception->getMessage();
-		$phpError->exception = json_encode([
+		$phpError->exception = [
 			'class' => get_class($exception),
 			'message' => $exception->getMessage(),
 			'code' => $exception->getCode(),
 			'file' => $exception->getFile(),
 			'line' => $exception->getLine(),
 			'trace' => $exception->getTrace(),
-		]);
-
-		$phpError->request = json_encode([
+		];
+		
+		$phpError->request = [
 			'method' => $request->method(),
 			'input' => $request->all(),
 			'server' => $request->server(),
@@ -77,7 +77,7 @@ class Handler extends ExceptionHandler {
 			'cookies' => $request->cookie(),
 			'session' => $request->hasSession() ? $request->session()->all() : '',
 			'locale' => $request->getLocale(),
-		]);
+		];
 		$phpError->save();
 		$phpError->error()->save($error);
 	}

@@ -26,4 +26,5 @@ return [
 	'managePayments' => 'Manage Payments',
 	'invoiceSent' => 'Invoice Sent',
 	'amountLeft' => 'Left to pay',
+	'billingDetailsMissing' => 'Invoice generation failed because some of the billing details are missing',
 ];

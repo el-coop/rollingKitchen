@@ -15,7 +15,7 @@ class LogErrorRequest extends FormRequest {
 	public function authorize() {
 		return $this->ajax();
 	}
-
+	
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -26,8 +26,8 @@ class LogErrorRequest extends FormRequest {
 			//
 		];
 	}
-
-	public function commit(){
+	
+	public function commit() {
 		$error = new Error;
 		$jsError = new JsError;
 		if ($this->user()) {
@@ -35,12 +35,12 @@ class LogErrorRequest extends FormRequest {
 		}
 		$error->page = $this->input('page');
 		$jsError->message = $this->input('message');
-		$jsError->exception = json_encode([
+		$jsError->exception = [
 			'message' => $this->input('message'),
 			'source' => $this->input('source'),
 			'line_number' => $this->input('lineNo'),
 			'trace' => $this->input('trace'),
-		]);
+		];
 		$jsError->user_agent = $this->input('userAgent');
 		$jsError->vm = $this->input('vm');
 		$jsError->save();
