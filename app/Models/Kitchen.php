@@ -28,6 +28,7 @@ class Kitchen extends Model {
 						$application->invoices->each(function ($invoice) use ($deletedOwner) {
 							$invoice->items->each(function ($item) {
 								$item->tax = 21;
+								$item->save();
 							});
 							$deletedOwner->invoices()->save($invoice);
 						});
