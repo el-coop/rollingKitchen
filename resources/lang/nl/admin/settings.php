@@ -38,8 +38,8 @@ return [
 	
 	'invoices_default_subject_nl' => 'Standaard onderwerp email factuur NL',
 	'invoices_default_subject_en' => 'Standaard onderwerp email factuur EN',
-	'invoices_default_email_nl' => 'Standaard onderwerp email factuur NL',
-	'invoices_default_email_en' => 'Standaard onderwerp email factuur EN',
+	'invoices_default_email_nl' => 'Standaard tekst email factuur NL',
+	'invoices_default_email_en' => 'Standaard tekst email factuur EN',
 	
 	'invoices_default_resend_subject_nl' => 'Standaard onderwerp  email vervolg factuur NL',
 	'invoices_default_resend_subject_en' => 'Standaard onderwerp email vervolg factuur EN',

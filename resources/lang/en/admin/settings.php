@@ -41,8 +41,8 @@ return [
 	'invoices_default_email_nl' => 'Invoice creation default email NL',
 	'invoices_default_email_en' => 'Invoice creation default email en',
 	
-	'invoices_default_resend_subject_nl' => 'Invoice resent default subject NL',
-	'invoices_default_resend_subject_en' => 'Invoice resent default subject EN',
+	'invoices_default_resend_subject_nl' => 'Invoice resend default subject NL',
+	'invoices_default_resend_subject_en' => 'Invoice resend default subject EN',
 	'invoices_default_resend_email_nl' => 'Invoice resend default email NL',
 	'invoices_default_resend_email_en' => 'Invoice resend default email en',
 ];
