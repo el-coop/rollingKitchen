@@ -223,6 +223,24 @@ class InvoicingTest extends TestCase {
 		Queue::assertNotPushed(SendDebtorInvoice::class);
 	}
 	
+	public function test_new_invoice_business_details_validation() {
+		
+		Queue::fake();
+		
+		$this->debtor->data = [];
+		$this->debtor->save();
+		
+		$this->actingAs($this->user)->post(action('Admin\DebtorInvoiceController@store', $this->debtor), [
+			'recipient' => 'test',
+			'bcc' => 'test',
+			'message' => '',
+			'subject' => '',
+			'items' => 'test'
+		])->assertRedirect()->assertSessionHasErrors(['help']);
+		
+		Queue::assertNotPushed(SendDebtorInvoice::class);
+	}
+	
 	public function test_guest_cant_see_existing_invoice_form() {
 		$this->get(action('Admin\DebtorInvoiceController@edit', [
 			'debtor' => $this->debtor,
@@ -417,6 +435,28 @@ class InvoicingTest extends TestCase {
 			'subject' => '',
 			'items' => 'test'
 		])->assertRedirect()->assertSessionHasErrors(['recipient', 'bcc', 'message', 'subject', 'items']);
+		
+		Queue::assertNotPushed(SendDebtorInvoice::class);
+		
+	}
+	
+	public function test_edit_invoice_business_details_validation() {
+		
+		Queue::fake();
+		$invoice = $this->invoices->first();
+		$this->debtor->data = [];
+		$this->debtor->save();
+		
+		$this->actingAs($this->user)->patch(action('Admin\DebtorInvoiceController@update', [
+			'debtor' => $this->debtor,
+			'invoice' => $invoice
+		]), [
+			'recipient' => 'test',
+			'bcc' => 'test',
+			'message' => '',
+			'subject' => '',
+			'items' => 'test'
+		])->assertRedirect()->assertSessionHasErrors(['help']);
 		
 		Queue::assertNotPushed(SendDebtorInvoice::class);
 		

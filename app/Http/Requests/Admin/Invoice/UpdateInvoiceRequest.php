@@ -43,6 +43,18 @@ class UpdateInvoiceRequest extends FormRequest {
 		return $rules->toArray();
 	}
 	
+	
+	public function withValidator($validator) {
+		$application = $this->invoice->owner;
+		$kitchen = $application->kitchen;
+		
+		$validator->after(function ($validator) use ($kitchen) {
+			if (!isset($kitchen->data[5]) || !isset($kitchen->data[2]) || !isset($kitchen->data[3]) || !isset($kitchen->data[4])) {
+				$validator->errors()->add('help', __('admin/invoices.billingDetailsMissing'));
+			}
+		});
+	}
+	
 	public function commit() {
 		$this->invoice = $this->route('invoice');
 		$application = $this->invoice->owner;

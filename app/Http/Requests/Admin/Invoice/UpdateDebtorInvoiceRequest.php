@@ -41,6 +41,17 @@ class UpdateDebtorInvoiceRequest extends FormRequest {
 		return $rules->toArray();
 	}
 	
+	public function withValidator($validator) {
+		$debtor = $this->invoice->owner;
+		
+		$validator->after(function ($validator) use($debtor) {
+			if (!isset($debtor->data[5]) || !isset($debtor->data[2]) || !isset($debtor->data[3]) || !isset($debtor->data[4])) {
+				$validator->errors()->add('help', __('admin/invoices.billingDetailsMissing'));
+			}
+		});
+	}
+	
+	
 	public function commit() {
 		$this->invoice = $this->route('invoice');
 		$debtor = $this->invoice->owner;

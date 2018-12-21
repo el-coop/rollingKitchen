@@ -95,14 +95,18 @@
 				try {
 					response = await axios[this.realMethod](this.action, data, options);
 				} catch (error) {
-					response = error.response;
+					if (options.responseType === 'blob') {
+						response = await this.handleBlobError(error.response)
+					} else {
+						response = error.response;
+					}
 					if (response.data.errors) {
 						this.formatErrors(response.data.errors);
-					} else  {
-					    if (response.status === 419 ) {
-					        this.$toast.error(this.$translations.sessionExpired);
-                        } else {
-					        this.$toast.error(this.$translations.generalError);
+					} else {
+						if (response.status === 419) {
+							this.$toast.error(this.$translations.sessionExpired);
+						} else {
+							this.$toast.error(this.$translations.generalError);
 						}
 					}
 				}
@@ -119,6 +123,31 @@
 			clearErrors(errors) {
 				this.errors = {};
 				this.$emit('errors', this.errors);
+			},
+
+			async handleBlobError(response) {
+				try {
+					const parsedData = await new Promise((resolve, reject) => {
+						const reader = new FileReader();
+						reader.addEventListener('abort', (error) => {
+							reject(error);
+						});
+						reader.addEventListener('error', (error) => {
+							reject(error);
+						});
+						reader.addEventListener('loadend', (event) => {
+							resolve(reader.result);
+						});
+						reader.readAsText(response.data)
+					});
+					response.data = JSON.parse(parsedData);
+					return response;
+				} catch (error) {
+					return {
+						data: {},
+						status: 500
+					};
+				}
 			}
 		},
 	}

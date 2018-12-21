@@ -398,6 +398,26 @@ class ApplicationInvoiceTest extends TestCase {
 		
 	}
 	
+	public function test_new_invoice_business_details_validation() {
+		
+		Queue::fake();
+		
+		$this->kitchen->user->data = [];
+		$this->kitchen->user->save();
+		
+		$this->actingAs($this->user)->post(action('Admin\ApplicationInvoiceController@store', $this->application), [
+			'tax' => '',
+			'recipient' => 'test',
+			'bcc' => 'test',
+			'message' => '',
+			'subject' => '',
+			'items' => 'test'
+		])->assertRedirect()->assertSessionHasErrors(['help']);
+		
+		Queue::assertNotPushed(SendApplicationInvoice::class);
+		
+	}
+	
 	public function test_guest_cant_see_existing_invoice_form() {
 		$this->get(action('Admin\ApplicationInvoiceController@edit', [
 			'application' => $this->application,
@@ -698,6 +718,31 @@ class ApplicationInvoiceTest extends TestCase {
 		$this->assertCount(2, $invoice->items);
 		
 		$this->assertEquals(3, $this->application->serviceQuantity($service));
+	}
+	
+	public function test_edit_invoice_business_details_validation() {
+		
+		Queue::fake();
+		$invoice = $this->invoices->first();
+		
+		$this->kitchen->user->data = [];
+		$this->kitchen->user->save();
+		
+		
+		$this->actingAs($this->user)->patch(action('Admin\ApplicationInvoiceController@update', [
+			'application' => $this->application,
+			'invoice' => $invoice
+		]), [
+			'tax' => '',
+			'recipient' => 'test',
+			'bcc' => 'test',
+			'message' => '',
+			'subject' => '',
+			'items' => 'test'
+		])->assertRedirect()->assertSessionHasErrors(['help']);
+		
+		Queue::assertNotPushed(SendApplicationInvoice::class);
+		
 	}
 	
 	public function test_edit_invoice_validation() {

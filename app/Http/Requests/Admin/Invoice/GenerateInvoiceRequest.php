@@ -43,9 +43,10 @@ class GenerateInvoiceRequest extends FormRequest {
 	
 	public function withValidator($validator) {
 		$this->application = $this->route('application');
+		$kitchen = $this->application->kitchen;
 		
-		$validator->after(function ($validator) {
-			if (!isset($this->application[5]) || !isset($this->application[2]) || !isset($this->application[3]) || !isset($this->application[4])) {
+		$validator->after(function ($validator) use ($kitchen) {
+			if (!isset($kitchen->data[5]) || !isset($kitchen->data[2]) || !isset($kitchen->data[3]) || !isset($kitchen->data[4])) {
 				$validator->errors()->add('help', __('admin/invoices.billingDetailsMissing'));
 			}
 		});

@@ -4,31 +4,29 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDeletedInvoiceOwnersTable extends Migration
-{
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('deleted_invoice_owners', function (Blueprint $table) {
-            $table->increments('id');
+class CreateDeletedInvoiceOwnersTable extends Migration {
+	/**
+	 * Run the migrations.
+	 *
+	 * @return void
+	 */
+	public function up() {
+		Schema::create('deleted_invoice_owners', function (Blueprint $table) {
+			$table->increments('id');
 			$table->string('name');
 			$table->string('email');
 			$table->string('language', 2);
+			$table->json('data');
 			$table->timestamps();
-        });
-    }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('deleted_invoice_owners');
-    }
+		});
+	}
+	
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @return void
+	 */
+	public function down() {
+		Schema::dropIfExists('deleted_invoice_owners');
+	}
 }
