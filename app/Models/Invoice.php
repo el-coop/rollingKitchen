@@ -133,6 +133,10 @@ class Invoice extends Model {
 			'options' => $options,
 			'taxOptions' => $taxOptions
 		], [
+			'name' => 'help',
+			'label' => '',
+			'type' => 'help',
+		], [
 			'name' => 'file_download',
 			'label' => __('admin/invoices.preview'),
 			'type' => 'alternative-submit',

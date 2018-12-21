@@ -26,4 +26,5 @@ return [
 	'managePayments' => 'Beheer betalingen',
 	'invoiceSent' => 'Factuur verstuurd',
 	'amountLeft' => 'Resterend bedrag',
+	'billingDetailsMissing' => 'Invoice generation failed because some of the billing details are missing',
 ];

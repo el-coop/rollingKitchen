@@ -39,3 +39,4 @@ Vue.component('CheckboxField', require('./Form/CheckboxField').default);
 Vue.component('InvoiceField', require('./Form/InvoiceField').default);
 Vue.component('AlternativeSubmitField', require('./Form/AlternativeSubmitField').default);
 Vue.component('JsonField', require('./Form/JsonField').default);
+Vue.component('HelpField', require('./Form/HelpField').default);
