@@ -1,6 +1,6 @@
 <?php
 
-namespace valuestore;
+namespace ElCoop\valuestore;
 
 
 class Valuestore {
@@ -12,16 +12,19 @@ class Valuestore {
 			if ((substr($fileName, -5) === '.json')) {
 				return $this->fileName = $fileName;
 			}
-			throw new \Exception('El-Coop Valuestore: File is not json');
+			throw new \Exception('File is not json');
 		}
-		throw new \Exception('El-Coop Valuestore: Settings file not found');
+		throw new \Exception('Settings file not found');
 	}
 
 	public function all() {
 		return json_decode(file_get_contents($this->fileName), true);
 	}
 
-	public function put(string $name, $value) {
+	public function put($name, $value) {
+		if (!is_string($name)) {
+			throw new \Exception('Name has to be string');
+		}
 		$all = $this->all();
 		$all[$name] = $value;
 		$this->setContent($all);
@@ -46,6 +49,6 @@ class Valuestore {
 		if (isset($all[$name])) {
 			return $all[$name];
 		}
-		throw new \Exception('El-Coop Valuestore: Setting ' . $name . ' is missing');
+		throw new \Exception('Setting ' . $name . ' is missing');
 	}
 }

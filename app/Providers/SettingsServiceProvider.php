@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Carbon\Carbon;
+use ElCoop\valuestore\Valuestore;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 
@@ -30,7 +31,7 @@ class SettingsServiceProvider extends ServiceProvider {
      */
     public function register() {
         $this->app->singleton('settings', function ($app) {
-            return new \valuestore\Valuestore(database_path('settings.json'));
+            return new Valuestore(database_path('settings.json'));
         });
     }
 }
