@@ -5,7 +5,6 @@ namespace App\Providers;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
-use Spatie\Valuestore\Valuestore;
 
 class SettingsServiceProvider extends ServiceProvider {
 
@@ -31,7 +30,7 @@ class SettingsServiceProvider extends ServiceProvider {
      */
     public function register() {
         $this->app->singleton('settings', function ($app) {
-            return Valuestore::make(database_path('settings.json'));
+            return new \valuestore\Valuestore(database_path('settings.json'));
         });
     }
 }

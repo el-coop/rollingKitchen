@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e71c2b5e4b8730b70f5000b3fbc62631",
+    "content-hash": "2b819be2f6de8f4b386b699d1682406d",
     "packages": [
         {
             "name": "consoletvs/invoices",
@@ -384,6 +384,31 @@
                 "validator"
             ],
             "time": "2018-12-04T22:38:24+00:00"
+        },
+        {
+            "name": "el-coop/valuestore",
+            "version": "dev-package/coop-valuestore",
+            "dist": {
+                "type": "path",
+                "url": "ElCoop/valuestore",
+                "reference": "314db6a2efdebb79a745d18fa6eb7a55d0bf569c",
+                "shasum": null
+            },
+            "type": "valuestore",
+            "autoload": {
+                "psr-4": {
+                    "valuestore\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "el-coop",
+                    "email": "contact@elcoop.io"
+                }
+            ]
         },
         {
             "name": "erusev/parsedown",
@@ -5686,7 +5711,9 @@
         }
     ],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "el-coop/valuestore": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
