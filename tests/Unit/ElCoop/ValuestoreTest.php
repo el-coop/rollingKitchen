@@ -25,9 +25,9 @@ class ValuestoreTest extends TestCase {
 	}
 
 	public function test_file_doesnt_exists() {
-		$this->expectExceptionMessage('Settings file not found');
-		$valuestore = new Valuestore('nofile');
-
+		$file = Storage::path('nofile.json');
+		$valuestore = new Valuestore($file);
+		Storage::disk('local')->assertExists('nofile.json');
 	}
 
 	public function test_file_not_json() {

@@ -8,13 +8,15 @@ class Valuestore {
 	private $fileName;
 
 	public function __construct(string $fileName) {
-		if (file_exists($fileName)) {
-			if ((substr($fileName, -5) === '.json')) {
-				return $this->fileName = $fileName;
-			}
+		$info = pathinfo($fileName);
+		if ($info['extension'] !== 'json') {
 			throw new \Exception('File is not json');
+
 		}
-		throw new \Exception('Settings file not found');
+		if (!file_exists($fileName)){
+			file_put_contents($fileName, "");
+		}
+		$this->fileName = $fileName;
 	}
 
 	public function all() {
