@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\ElCoop;
 
-use ElCoop\valuestore\Valuestore;
+use ElCoop\Valuestore\Valuestore;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;

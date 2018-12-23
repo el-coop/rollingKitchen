@@ -7,7 +7,7 @@ use App\Models\Kitchen;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
-use ElCoop\valuestore\Valuestore;
+use ElCoop\Valuestore\Valuestore;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

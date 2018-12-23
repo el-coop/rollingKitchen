@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "41a3f4f788fd51db78e22fa1b971f122",
+    "content-hash": "b5ceb3386017d124e73bcceca3d919ec",
     "packages": [
         {
             "name": "consoletvs/invoices",
@@ -390,20 +390,26 @@
             "time": "2018-12-04T22:38:24+00:00"
         },
         {
-            "name": "el-coop/valuestore",
-            "version": "dev-package/coop-valuestore",
+            "name": "elcoop/valuestore",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/el-coop/Valuestore.git",
+                "reference": "f2bba6a62df6961c42ae327fd2e497fb713fec1b"
+            },
             "dist": {
-                "type": "path",
-                "url": "ElCoop/valuestore",
-                "reference": "341c94364679c83b791e4d33f65295557e70f405",
-                "shasum": null
+                "type": "zip",
+                "url": "https://api.github.com/repos/el-coop/Valuestore/zipball/f2bba6a62df6961c42ae327fd2e497fb713fec1b",
+                "reference": "f2bba6a62df6961c42ae327fd2e497fb713fec1b",
+                "shasum": ""
             },
             "type": "valuestore",
             "autoload": {
                 "psr-4": {
-                    "ElCoop\\valuestore\\": "src"
+                    "ElCoop\\Valuestore\\": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -412,7 +418,8 @@
                     "name": "el-coop",
                     "email": "contact@elcoop.io"
                 }
-            ]
+            ],
+            "time": "2018-12-23T00:19:41+00:00"
         },
         {
             "name": "erusev/parsedown",
@@ -5663,7 +5670,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
-        "el-coop/valuestore": 20
+        "elcoop/valuestore": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

@@ -7,7 +7,7 @@ use App\Models\Application;
 use App\Models\ElectricDevice;
 use App\Models\Kitchen;
 use App\Models\User;
-use ElCoop\valuestore\Valuestore;
+use ElCoop\Valuestore\Valuestore;
 use Storage;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;

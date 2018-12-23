@@ -11,7 +11,7 @@ use App\Models\Service;
 use App\Models\User;
 use App\Notifications\Admin\ApplicationResubmittedNotification;
 use App\Notifications\Kitchen\ApplicationSubmittedNotification;
-use ElCoop\valuestore\Valuestore;
+use ElCoop\Valuestore\Valuestore;
 use Image;
 use Illuminate\Http\UploadedFile;
 use Storage;

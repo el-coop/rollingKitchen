@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Carbon\Carbon;
-use ElCoop\valuestore\Valuestore;
+use ElCoop\Valuestore\Valuestore;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 
