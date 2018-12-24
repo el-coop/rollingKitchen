@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b5ceb3386017d124e73bcceca3d919ec",
+    "content-hash": "a97b630f41d94b22720178f9c6106943",
     "packages": [
         {
             "name": "consoletvs/invoices",
@@ -391,17 +391,20 @@
         },
         {
             "name": "elcoop/valuestore",
-            "version": "dev-master",
+            "version": "1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/el-coop/Valuestore.git",
-                "reference": "f2bba6a62df6961c42ae327fd2e497fb713fec1b"
+                "reference": "47a8e4b8093321227a61379a87433478371c73ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/el-coop/Valuestore/zipball/f2bba6a62df6961c42ae327fd2e497fb713fec1b",
-                "reference": "f2bba6a62df6961c42ae327fd2e497fb713fec1b",
+                "url": "https://api.github.com/repos/el-coop/Valuestore/zipball/47a8e4b8093321227a61379a87433478371c73ad",
+                "reference": "47a8e4b8093321227a61379a87433478371c73ad",
                 "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "7"
             },
             "type": "valuestore",
             "autoload": {
@@ -419,7 +422,7 @@
                     "email": "contact@elcoop.io"
                 }
             ],
-            "time": "2018-12-23T00:19:41+00:00"
+            "time": "2018-12-24T21:26:55+00:00"
         },
         {
             "name": "erusev/parsedown",
@@ -5669,9 +5672,7 @@
         }
     ],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "elcoop/valuestore": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
