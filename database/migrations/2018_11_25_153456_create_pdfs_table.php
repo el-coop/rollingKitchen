@@ -16,10 +16,12 @@ class CreatePdfsTable extends Migration {
 			$table->string('file');
 			$table->string('name');
 			$table->integer('visibility');
+			$table->boolean('default_send_invoice')->default(false);
+			$table->boolean('default_resend_invoice')->default(false);
 			$table->timestamps();
 		});
 	}
-	
+
 	/**
 	 * Reverse the migrations.
 	 *
