@@ -23,7 +23,7 @@ class UpdatePDFRequest extends FormRequest {
 	 */
 	public function rules() {
 		return [
-			'name' => 'required|string|unique:pdfs',
+			'name' => 'required|string|unique:pdfs,name,' . $this->pdf->id,
 			'visibility' => 'required|in:0,1,2'
 		];
 	}
