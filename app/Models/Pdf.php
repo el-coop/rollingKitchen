@@ -17,4 +17,30 @@ class Pdf extends Model {
             \Storage::delete("public/pdf/{$pdf->file}");
         });
     }
+
+    public static function allForFirstInvoice(){
+    	$options = [];
+    	$pdfs = Pdf::all();
+		foreach ($pdfs as $pdf) {
+			$checked = false;
+			if ($pdf->default_send_invoice == true){
+				$checked = true;
+			}
+			$options[$pdf->id] = ['name' => $pdf->name, 'checked' => $checked];
+    	}
+    	return $options;
+	}
+
+	public static function allForResendInvoice(){
+		$options = [];
+		$pdfs = Pdf::all();
+		foreach ($pdfs as $pdf) {
+			$checked = false;
+			if ($pdf->default_resend_invoice == true){
+				$checked = true;
+			}
+			$options[$pdf->id] = ['name' => $pdf->name, 'checked' => $checked];
+		}
+		return $options;
+	}
 }

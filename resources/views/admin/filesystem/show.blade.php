@@ -26,12 +26,16 @@
 },{
 	name: 'default_send_invoice',
 	label: '@lang('admin/settings.default_send_invoice')',
+	fromDatatable: false,
 	type: 'checkbox',
+	options: [{name: '@lang('admin/settings.default_send_invoice')', checked: false}]
 
 },{
 	name: 'default_resend_invoice',
 	label: '@lang('admin/settings.default_resend_invoice')',
-	type: 'checkbox'
+	fromDatatable: false,
+	type: 'checkbox',
+	options: [{name: '@lang('admin/settings.default_resend_invoice')', checked: false}]
 }]" :init-fields="{{$pdfs}}" action="{{action('Admin\PDFController@upload')}}"
                        :headers="{'Content-Type': 'multipart/form-data'}">
         </dynamic-table>

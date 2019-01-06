@@ -1,17 +1,23 @@
 <template>
-    <div class="field">
-        <label class="checkbox">
-            <input type="checkbox" v-model="value"" :name="field.name">
-            {{field.label}}
+    <div class="field" v-if="Object.keys(field.options).length">
+        <label class="label" v-text="field.label" v-if="field.label && field.fromDatatable"></label>
+        <label class="checkbox" v-for="(option, index) in field.options" :key="index">
+            <input type="checkbox" :name="`${field.name}[]`" :value="index" :checked="option.checked"
+                   @keypress.enter.prevent>
+            <span v-text="option.name"></span>&nbsp;&nbsp;
         </label>
-        <p v-if="error" class="help is-danger" v-text="errorText"></p>
     </div>
 </template>
+
 <script>
     import FieldMixin from './FieldMixin';
-
     export default {
         name: "CheckboxField",
         mixins: [FieldMixin]
     }
 </script>
+<style scoped>
+    .checkbox + .checkbox {
+        margin-left: .5em;
+    }
+</style>

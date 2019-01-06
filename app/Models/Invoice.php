@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Auth;
 
 class Invoice extends Model {
-	
+
 	protected $appends = [
 		'total',
 		'taxAmount',
@@ -16,14 +16,14 @@ class Invoice extends Model {
 		'totalPaid',
 		'amountLeft'
 	];
-	
+
 	protected static function boot() {
 		parent::boot();
 		static::deleted(function ($invoice) {
 			$invoice->items->each->delete();
 		});
 	}
-	
+
 	static function getNumber() {
 		$year = app('settings')->get('registration_year');
 		$number = static::where('prefix', $year)->count() + 1;
@@ -36,7 +36,7 @@ class Invoice extends Model {
 		}
 		return "{$padding}{$number}";
 	}
-	
+
 	public function getFormattedNumberAttribute() {
 		$padding = '';
 		if (strlen($this->number) == 1) {
@@ -44,22 +44,22 @@ class Invoice extends Model {
 		} else if (strlen($this->number) == 2) {
 			$padding = '0';
 		}
-		
+
 		return "{$this->prefix}-{$padding}{$this->number}";
 	}
-	
+
 	public function getTaxAmountAttribute() {
 		return $this->amount * $this->tax / 100;
 	}
-	
+
 	public function getTotalAttribute() {
 		return $this->amount + $this->taxAmount;
 	}
-	
+
 	public function getFullDataAttribute() {
 		$language = $this->owner instanceof Application ? $this->owner->kitchen->user->language : $this->owner->language;
 		$settings = app('settings');
-		
+
 		$pdfs = collect([]);
 		$options = collect([]);
 		$items = $this->formattedItems;
@@ -79,17 +79,18 @@ class Invoice extends Model {
 			$individualTax = false;
 			$invoiceService = new InvoiceService($this->owner);
 			$options = $invoiceService->getOptions($language);
-			$pdfs = Pdf::all()->pluck('name', 'id');
 			if ($this->exists) {
 				$subject = $settings->get("invoices_default_resend_subject_{$language}", '');
 				$message = $settings->get("invoices_default_resend_email_{$language}", '');
+				$pdfs = Pdf::allForFirstInvoice();
 			} else {
 				$items = $invoiceService->getOutstandingItems($language);
 				$subject = $settings->get("invoices_default_subject_{$language}", '');
 				$message = $settings->get("invoices_default_email_{$language}", '');
+				$pdfs = Pdf::allForResendInvoice();
 			}
 		}
-		
+
 		return [[
 			'name' => 'recipient',
 			'label' => __('admin/invoices.recipient'),
@@ -103,11 +104,12 @@ class Invoice extends Model {
 		], [
 			'name' => 'accountant',
 			'label' => false,
+			'fromDatatable' => true,
 			'type' => 'checkbox',
-			'checked' => true,
-			'options' => [
-				'true' => __('admin/invoices.accountant')
-			],
+			'options' => [[
+				'name' => __('admin/invoices.accountant'),
+				'checked' => true
+			]],
 		], [
 			'name' => 'subject',
 			'label' => __('admin/invoices.subject'),
@@ -122,6 +124,7 @@ class Invoice extends Model {
 		], [
 			'name' => 'attachments',
 			'label' => __('admin/invoices.attachments'),
+			'fromDatatable' => true,
 			'type' => 'checkbox',
 			'options' => $pdfs
 		], [
@@ -143,15 +146,15 @@ class Invoice extends Model {
 			'value' => true
 		]];
 	}
-	
+
 	public function owner() {
 		return $this->morphTo();
 	}
-	
+
 	public function items() {
 		return $this->hasMany(InvoiceItem::class);
 	}
-	
+
 	public function getFormattedItemsAttribute() {
 		return $this->items->map(function ($item) {
 			return [
@@ -162,19 +165,19 @@ class Invoice extends Model {
 			];
 		});
 	}
-	
+
 	public function services() {
 		return $this->hasManyThrough(Service::class, InvoiceItem::class);
 	}
-	
+
 	public function payments() {
 		return $this->hasMany(InvoicePayment::class);
 	}
-	
+
 	public function getTotalPaidAttribute() {
 		return $this->payments()->sum('amount');
 	}
-	
+
 	public function getAmountLeftAttribute() {
 		return $this->total - $this->totalPaid;
 	}
