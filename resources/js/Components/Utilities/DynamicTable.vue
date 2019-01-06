@@ -218,6 +218,9 @@
 				for (const prop in this.columns) {
 					const column = this.columns[prop];
 					if (!Object.keys(this.object).length || column.edit !== false) {
+					    if (column.type === 'checkbox'){
+
+						}
 						fields.push({
 							name: column.name,
 							label: column.label,
