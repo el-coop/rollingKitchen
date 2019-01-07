@@ -79,15 +79,14 @@ class Invoice extends Model {
 			$individualTax = false;
 			$invoiceService = new InvoiceService($this->owner);
 			$options = $invoiceService->getOptions($language);
+			$pdfs = Pdf::allForInvoice($this->exists);
 			if ($this->exists) {
 				$subject = $settings->get("invoices_default_resend_subject_{$language}", '');
 				$message = $settings->get("invoices_default_resend_email_{$language}", '');
-				$pdfs = Pdf::allForFirstInvoice();
 			} else {
 				$items = $invoiceService->getOutstandingItems($language);
 				$subject = $settings->get("invoices_default_subject_{$language}", '');
 				$message = $settings->get("invoices_default_email_{$language}", '');
-				$pdfs = Pdf::allForResendInvoice();
 			}
 		}
 
@@ -104,7 +103,6 @@ class Invoice extends Model {
 		], [
 			'name' => 'accountant',
 			'label' => false,
-			'fromDatatable' => true,
 			'type' => 'checkbox',
 			'options' => [[
 				'name' => __('admin/invoices.accountant'),
@@ -124,7 +122,6 @@ class Invoice extends Model {
 		], [
 			'name' => 'attachments',
 			'label' => __('admin/invoices.attachments'),
-			'fromDatatable' => true,
 			'type' => 'checkbox',
 			'options' => $pdfs
 		], [

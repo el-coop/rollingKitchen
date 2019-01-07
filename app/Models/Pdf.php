@@ -18,29 +18,23 @@ class Pdf extends Model {
         });
     }
 
-    public static function allForFirstInvoice(){
+    public static function allForInvoice($exists){
     	$options = [];
     	$pdfs = Pdf::all();
 		foreach ($pdfs as $pdf) {
 			$checked = false;
-			if ($pdf->default_send_invoice == true){
-				$checked = true;
+			if ($exists){
+				if ($pdf->default_send_invoice == true){
+					$checked = true;
+				}
+			} else {
+				if ($pdf->default_resend_invoice == true){
+					$checked = true;
+				}
 			}
+
 			$options[$pdf->id] = ['name' => $pdf->name, 'checked' => $checked];
     	}
     	return $options;
-	}
-
-	public static function allForResendInvoice(){
-		$options = [];
-		$pdfs = Pdf::all();
-		foreach ($pdfs as $pdf) {
-			$checked = false;
-			if ($pdf->default_resend_invoice == true){
-				$checked = true;
-			}
-			$options[$pdf->id] = ['name' => $pdf->name, 'checked' => $checked];
-		}
-		return $options;
 	}
 }
