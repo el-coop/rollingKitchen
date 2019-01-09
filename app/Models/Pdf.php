@@ -8,33 +8,26 @@ class Pdf extends Model {
 
 	protected $casts = [
 		'default_send_invoice' => 'boolean',
-		'default_resend_invoice' => 'boolean'
+		'default_resend_invoice' => 'boolean',
 	];
 
-    protected static function boot() {
-        parent::boot();
-        static::deleted(function ($pdf) {
-            \Storage::delete("public/pdf/{$pdf->file}");
-        });
-    }
-
-    public static function allForInvoice($exists){
-    	$options = [];
-    	$pdfs = Pdf::all();
-		foreach ($pdfs as $pdf) {
-			$checked = false;
-			if ($exists){
-				if ($pdf->default_send_invoice == true){
-					$checked = true;
-				}
+	public static function allForInvoice($exists) {
+		$pdfs = Pdf::all()->mapWithKeys(function ($pdf) use ($exists) {
+			if (! $exists) {
+				$checked = $pdf->default_send_invoice;
 			} else {
-				if ($pdf->default_resend_invoice == true){
-					$checked = true;
-				}
+				$checked = $pdf->default_resend_invoice;
 			}
 
-			$options[$pdf->id] = ['name' => $pdf->name, 'checked' => $checked];
-    	}
-    	return $options;
+			return [$pdf->id => ['name' => $pdf->name, 'checked' => $checked]];
+		});
+		return $pdfs;
+	}
+
+	protected static function boot() {
+		parent::boot();
+		static::deleted(function ($pdf) {
+			\Storage::delete("public/pdf/{$pdf->file}");
+		});
 	}
 }

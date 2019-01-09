@@ -104,6 +104,7 @@ class Invoice extends Model {
 			'name' => 'accountant',
 			'label' => false,
 			'type' => 'checkbox',
+			'fromDatatable' => true,
 			'options' => [[
 				'name' => __('admin/invoices.accountant'),
 				'checked' => true
@@ -123,6 +124,7 @@ class Invoice extends Model {
 			'name' => 'attachments',
 			'label' => __('admin/invoices.attachments'),
 			'type' => 'checkbox',
+			'fromDatatable' => true,
 			'options' => $pdfs
 		], [
 			'name' => 'items',

@@ -27,11 +27,13 @@
 	name: 'default_send_invoice',
 	label: '@lang('admin/settings.default_send_invoice')',
 	type: 'checkbox',
+	fromDatatable: false,
 	options: [{name: '@lang('admin/settings.default_send_invoice')'}]
 
 },{
 	name: 'default_resend_invoice',
 	label: '@lang('admin/settings.default_resend_invoice')',
+	fromDatatable: false,
 	type: 'checkbox',
 	options: [{name: '@lang('admin/settings.default_resend_invoice')'}]
 }]" :init-fields="{{$pdfs}}" action="{{action('Admin\PDFController@upload')}}"
