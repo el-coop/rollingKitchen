@@ -99,7 +99,6 @@ class ApplicationInvoiceTest extends TestCase {
 				'name' => 'attachments',
 				'label' => __('admin/invoices.attachments'),
 				'type' => 'checkbox',
-				'fromDatatable' => true,
 				'options' => [
 					$defaultPdf->id => [
 						'name' => $defaultPdf->name,
@@ -475,7 +474,6 @@ class ApplicationInvoiceTest extends TestCase {
 			'name' => 'attachments',
 			'label' => __('admin/invoices.attachments'),
 			'type' => 'checkbox',
-			'fromDatatable' => true,
 			'options' => [
 				$defaultPdf->id => [
 					'name' => $defaultPdf->name,

@@ -67,10 +67,25 @@ class FileSystemTest extends TestCase {
 	}
 
 	public function test_admin_can_update_pdf() {
-		$this->actingAs($this->admin->user)->patch(action('Admin\PDFController@update', $this->pdf), ['name' => 'test', 'visibility' => 2])->assertSuccessful();
+		$this->actingAs($this->admin->user)->patch(action('Admin\PDFController@update', $this->pdf), [
+			'name' => 'test',
+			'visibility' => 2,
+			'default_resend_invoice' => true,
+			'default_send_invoice' => true
+			])->assertSuccessful();
 		$this->assertDatabaseHas('pdfs', [
 			'visibility' => 2,
 			'name' => 'test',
+			'default_resend_invoice' => true,
+			'default_send_invoice' => true
+		]);
+	}
+
+	public function test_admin_can_update_pdf_keeping_same_name(){
+		$this->actingAs($this->admin->user)->patch(action('Admin\PDFController@update', $this->pdf), ['name' => $this->pdf->name, 'visibility' => 2])->assertSuccessful();
+		$this->assertDatabaseHas('pdfs', [
+			'visibility' => 2,
+			'name' => 'first',
 		]);
 	}
 
