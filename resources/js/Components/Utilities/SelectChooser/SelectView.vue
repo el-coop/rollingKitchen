@@ -1,5 +1,5 @@
 <template>
-	<div v-if="active">
+	<div v-show="active">
 		<slot></slot>
 	</div>
 </template>
