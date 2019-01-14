@@ -25,8 +25,8 @@ class UpdateServiceRequest extends FormRequest {
 	 */
 	public function rules() {
 		return [
-			'name_nl' => 'required|min:2',
-			'name_en' => 'required|min:2',
+			'name_nl' => 'required|min:2|unique:services,name_nl' . $this->service->id,
+			'name_en' => 'required|min:2|unique:services,name_en' . $this->service->id,
 			'category' => 'required|in:safety,electrical,misc,socket',
 			'type' => 'required|in:0,1',
 			'price' => 'required|numeric',

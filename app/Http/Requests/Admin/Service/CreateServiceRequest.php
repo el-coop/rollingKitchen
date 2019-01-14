@@ -22,8 +22,8 @@ class CreateServiceRequest extends FormRequest {
 	 */
 	public function rules() {
 		return [
-			'name_nl' => 'required|min:2',
-			'name_en' => 'required|min:2',
+			'name_nl' => 'required|min:2|unique:services',
+			'name_en' => 'required|min:2|unique:services',
 			'category' => 'required|in:safety,electrical,misc,socket',
 			'type' => 'required|in:0,1',
 			'price' => 'required|numeric',

@@ -26,9 +26,9 @@ class UpdateKitchenRequest extends FormRequest {
 	public function rules() {
 		return [
 			'status' => 'required|in:new,motherlist',
-			'name' => 'required|min:2',
+			'name' => 'required|min:2|unique:users,name' . $this->kitchen->user->id,
 			'language' => 'required|in:en,nl',
-			'email' => 'required|email',
+			'email' => 'required|email|unique:users,email' . $this->kitchen->user->id,
 			'kitchen' => 'required|array'
 		];
 	}

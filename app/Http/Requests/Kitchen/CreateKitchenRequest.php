@@ -23,7 +23,7 @@ class CreateKitchenRequest extends FormRequest {
 	 */
 	public function rules() {
 		return [
-			'name' => 'required|string|min:2',
+			'name' => 'required|string|min:2|unique:users',
 			'email' => 'required|string|email|unique:users',
 			'password' => 'required|string|min:6|confirmed',
 			'language' => 'required|in:en,nl'

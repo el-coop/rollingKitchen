@@ -22,8 +22,8 @@ class CreateDebtorRequest extends FormRequest {
 	 */
 	public function rules() {
 		return [
-			'name' => 'required|min:2',
-			'email' => 'required|email',
+			'name' => 'required|min:2|unique:debtors',
+			'email' => 'required|email|unique:debtors',
 			'language' => 'required|in:en,nl',
 			'kitchen' => 'required|array',
 			'kitchen.1' => 'required',
