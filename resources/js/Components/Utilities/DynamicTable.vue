@@ -226,6 +226,7 @@
 							subType: column.subType || '',
 							options: column.options || {},
 							icon: column.icon || false,
+							hideLabel: column.hideLabel || false
 						});
 					}
 				}

@@ -3,8 +3,8 @@
 @section('title',__('admin/settings.files'))
 
 @section('content')
-	<div class="box">
-		<dynamic-table :columns="[{
+    <div class="box">
+        <dynamic-table :columns="[{
 	name: 'name',
 	label: '@lang('global.name')'
 },{
@@ -23,8 +23,21 @@
     type: 'file',
     invisible: true,
     edit: false
+},{
+	name: 'default_send_invoice',
+	label: '@lang('admin/settings.default_send_invoice')',
+	type: 'checkbox',
+	hideLabel: true,
+	options: [{name: '@lang('admin/settings.default_send_invoice')'}]
+
+},{
+	name: 'default_resend_invoice',
+	label: '@lang('admin/settings.default_resend_invoice')',
+	type: 'checkbox',
+	hideLabel: true,
+	options: [{name: '@lang('admin/settings.default_resend_invoice')'}]
 }]" :init-fields="{{$pdfs}}" action="{{action('Admin\PDFController@upload')}}"
-					   :headers="{'Content-Type': 'multipart/form-data'}">
-		</dynamic-table>
-	</div>
+                       :headers="{'Content-Type': 'multipart/form-data'}">
+        </dynamic-table>
+    </div>
 @endsection

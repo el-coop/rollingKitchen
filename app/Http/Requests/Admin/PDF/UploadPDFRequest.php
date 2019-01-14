@@ -15,7 +15,7 @@ class UploadPDFRequest extends FormRequest {
 	public function authorize() {
 		return $this->user()->can('create', Pdf::class);
 	}
-	
+
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -28,13 +28,15 @@ class UploadPDFRequest extends FormRequest {
 			'visibility' => 'required|in:0,1,2'
 		];
 	}
-	
+
 	public function commit() {
 		$path = $this->file('file')->store('public/pdf');
 		$pdf = new Pdf;
 		$pdf->file = basename($path);
 		$pdf->name = $this->input('name');
 		$pdf->visibility = $this->input('visibility');
+		$pdf->default_send_invoice = $this->has('default_send_invoice');
+		$pdf->default_resend_invoice = $this->has('default_resend_invoice');
 		$pdf->save();
 		return $pdf;
 	}
