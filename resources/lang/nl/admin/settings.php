@@ -10,8 +10,8 @@ return [
 	'allKitchens' => 'Alle Keukens',
 	'acceptedKitchens' => 'Geaccepteerde Keukens',
 	'noKitchens' => 'Niet zichtbaar',
-	'default_send_invoice' => 'TBT',
-	'default_resend_invoice' => 'TBT',
+	'default_send_invoice' => 'Standaard document factuur',
+	'default_resend_invoice' => 'Standaard documents factuur (opnieuw versturen)',
 
 	'registration_year' => 'Aanmeldingsjaar',
 	'general_registration_status' => 'Registratie openen',
