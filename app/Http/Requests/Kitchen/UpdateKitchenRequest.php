@@ -33,8 +33,8 @@ class UpdateKitchenRequest extends FormRequest {
 		
 		$this->application = $this->kitchen->getCurrentApplication();
 		$rules = collect([
-			'name' => 'required|min:2',
-			'email' => 'required|email',
+			'name' => 'required|min:2|unique:users,name,' . $this->kitchen->user->id,
+			'email' => 'required|email|unique:users,email,' . $this->kitchen->user->id,
 			'language' => 'required|in:en,nl',
 			'kitchen' => 'required|array',
 		]);
