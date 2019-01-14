@@ -24,8 +24,8 @@ class UpdateDebtorRequest extends FormRequest {
 	 */
 	public function rules() {
 		return [
-			'name' => 'required|min:2|unique:debtors,name' . $this->debtor->id,
-			'email' => 'required|email|unique:debtors,email' . $this->debtor->id,
+			'name' => 'required|min:2|unique:debtors,name,' . $this->debtor->id,
+			'email' => 'required|email|unique:debtors,email,' . $this->debtor->id,
 			'language' => 'required|in:en,nl',
 			'kitchen' => 'required|array',
 			'kitchen.1' => 'required',
