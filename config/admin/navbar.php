@@ -8,6 +8,9 @@ return [
 		'admin/debtors.debtors' => 'Admin\DebtorController@index',
 		'admin/invoices.invoices' => 'Admin\ApplicationInvoiceController@index',
 	],
+	'admin/workers.workers' => [
+		'admin/workers.workplaces' => 'Admin\WorkplaceController@index'
+	],
 	'admin/settings.title' => [
 		'admin/settings.settings' => 'Admin\SettingsController@show',
 		'admin/settings.files' => 'Admin\PDFController@index'

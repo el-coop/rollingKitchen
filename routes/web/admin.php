@@ -93,5 +93,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 			Route::delete('/delete/{debtor}', 'DebtorController@destroy');
 			Route::get('/{debtor}', 'DebtorController@show');
 		});
+
+		Route::group(['prefix' => 'workers'], function (){
+			Route::get('/workplaces', 'WorkplaceController@index');
+			Route::get('/workplaces/edit/{workplace}', 'WorkplaceController@edit');
+			Route::patch('/workplaces/edit/{workplace}', 'WorkplaceController@update');
+			Route::get('/workplaces/edit', 'WorkplaceController@create');
+			Route::post('/workplaces/edit', 'WorkplaceController@store');
+		});
 	});
 });

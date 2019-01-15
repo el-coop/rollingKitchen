@@ -13,6 +13,7 @@ use App\Models\InvoicePayment;
 use App\Models\Kitchen;
 use App\Models\Pdf;
 use App\Models\Service;
+use App\Models\Workplace;
 use App\Policies\ApplicationPolicy;
 use App\Policies\DebtorPolicy;
 use App\Policies\ErrorPolicy;
@@ -22,6 +23,7 @@ use App\Policies\KitchenPolicy;
 use App\Policies\InvoicePaymentPolicy;
 use App\Policies\PDFPOlicy;
 use App\Policies\ServicePolicy;
+use App\Policies\WorkplacePolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -40,7 +42,8 @@ class AuthServiceProvider extends ServiceProvider {
 		Error::class => ErrorPolicy::class,
 		Service::class => ServicePolicy::class,
 		Debtor::class => DebtorPolicy::class,
-		InvoicePayment::class => InvoicePaymentPolicy::class
+		InvoicePayment::class => InvoicePaymentPolicy::class,
+		Workplace::class => WorkplacePolicy::class
 	];
 
 	/**
