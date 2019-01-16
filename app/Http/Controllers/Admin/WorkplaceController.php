@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\Admin\Workplace\AddWorkFunctionRequest;
 use App\Http\Requests\Admin\Workplace\CreateWorkplaceRequest;
+use App\Http\Requests\Admin\Workplace\DeleteWorkFunctionRequest;
 use App\Http\Requests\Admin\Workplace\DeleteWorkplaceRequest;
 use App\Http\Requests\Admin\Workplace\UpdateWorkFunctionRequest;
 use App\Http\Requests\Admin\Workplace\UpdateWorkplaceRequest;
@@ -39,7 +40,7 @@ class WorkplaceController extends Controller {
 		return $request->commit();
 	}
 
-	public function destroyWorkFunction(DeleteWorkplaceRequest $request, Workplace $workplace, WorkFunction $workFunction) {
+	public function destroyWorkFunction(DeleteWorkFunctionRequest $request, Workplace $workplace, WorkFunction $workFunction) {
 		$request->commit();
 		return ['success' => true];
 	}

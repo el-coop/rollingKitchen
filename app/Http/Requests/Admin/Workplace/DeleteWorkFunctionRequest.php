@@ -29,4 +29,8 @@ class DeleteWorkFunctionRequest extends FormRequest {
 			//
 		];
 	}
+
+	public function commit(){
+		$this->workFunction->delete();
+	}
 }

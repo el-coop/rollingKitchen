@@ -24,13 +24,13 @@
                     },{
                         name: 'payment_per_hour_before_tax',
                         label: '@lang('admin/workers.payment_per_hour_before_tax')',
-                        subtype: 'number',
+                        subType: 'number',
                         callback: 'localNumber',
 
                     }, {
                         name: 'payment_per_hour_after_tax',
                         label: '@lang('admin/workers.payment_per_hour_after_tax')',
-                        subtype: 'number',
+                        subType: 'number',
                         callback: 'localNumber',
                     }]" :init-fields="fields[1].value" class="mb-1" :action="`/admin/workers/workplaces/${object.id}`">
                         </dynamic-table>
