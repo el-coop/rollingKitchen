@@ -58,7 +58,7 @@ class WorkplacePolicy {
 	 * @return mixed
 	 */
 	public function delete(User $user, Workplace $workplace) {
-		//
+		return $user->user_type == Admin::class;
 	}
 
 	/**

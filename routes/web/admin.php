@@ -96,10 +96,18 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 
 		Route::group(['prefix' => 'workers'], function (){
 			Route::get('/workplaces', 'WorkplaceController@index');
-			Route::get('/workplaces/edit/{workplace}', 'WorkplaceController@edit');
-			Route::patch('/workplaces/edit/{workplace}', 'WorkplaceController@update');
+
 			Route::get('/workplaces/edit', 'WorkplaceController@create');
 			Route::post('/workplaces/edit', 'WorkplaceController@store');
+			Route::delete('/workplaces/delete/{workplace}', 'WorkplaceController@destroy');
+
+			Route::get('/workplaces/edit/{workplace}', 'WorkplaceController@edit');
+			Route::patch('/workplaces/edit/{workplace}', 'WorkplaceController@update');
+
+			Route::post('/workplaces/{workplace}', 'WorkplaceController@addWorkFunction');
+			Route::delete('/workplaces/{workplace}/{workFunction}', 'WorkplaceController@destroyWorkFunction');
+			Route::patch('/workplaces/{workplace}/{workFunction}', 'WorkplaceController@updateWorkFunction');
+
 		});
 	});
 });

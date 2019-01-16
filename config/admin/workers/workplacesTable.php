@@ -2,6 +2,7 @@
 return [
 	'model' => \App\Models\Workplace::class,
 
+
 	'fields' => [[
 		'name' => 'id',
 		'title' => 'id',

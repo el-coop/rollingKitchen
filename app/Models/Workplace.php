@@ -16,6 +16,9 @@ class Workplace extends Model {
 			'label' => __('global.name'),
 			'type' => 'text',
 			'value' => $this->name
+		], [
+			'name' => 'workFunctions',
+			'value' => $this->workFunctions
 		]]);
 	}
 }
