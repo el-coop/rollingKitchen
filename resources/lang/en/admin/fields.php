@@ -2,6 +2,7 @@
 
 return [
 	'Kitchen' => 'Business information fields',
+	'worker' => 'Personal Information',
 	'Application' => 'Kitchen information fields',
 	'back' => 'Back to list',
 	'name_nl' => 'Dutch Name',
