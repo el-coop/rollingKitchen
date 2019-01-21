@@ -2,6 +2,8 @@
 
 return [
 	'workers' => 'Workers',
+	'createWorker' => 'CreateWorkers',
+	'makeSupervisor' => 'Create as supervisor',
 	'workplaces' => 'Workplaces',
 	'addWorkplace' => 'Add Workplace',
 	'createWorkplace' => 'Create Workplace',
