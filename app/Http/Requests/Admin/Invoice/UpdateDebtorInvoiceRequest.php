@@ -44,7 +44,7 @@ class UpdateDebtorInvoiceRequest extends FormRequest {
 	public function withValidator($validator) {
 		$debtor = $this->invoice->owner;
 		
-		$validator->after(function ($validator) use($debtor) {
+		$validator->after(function ($validator) use ($debtor) {
 			if (!isset($debtor->data[5]) || !isset($debtor->data[2]) || !isset($debtor->data[3]) || !isset($debtor->data[4])) {
 				$validator->errors()->add('help', __('admin/invoices.billingDetailsMissing'));
 			}
@@ -81,7 +81,7 @@ class UpdateDebtorInvoiceRequest extends FormRequest {
 		
 		SendDebtorInvoice::dispatch($this->invoice, $this->input('recipient'), $this->input('subject'), $this->input('message'), collect([
 			$this->input('bcc', false),
-			$this->input('accountant', false) ? app('settings')->get('invoices_accountant') : false
+			$this->filled('accountant') ? app('settings')->get('invoices_accountant') : false
 		])->filter());
 		
 		return $this->invoice->load('payments');

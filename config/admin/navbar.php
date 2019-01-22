@@ -9,7 +9,8 @@ return [
 		'admin/invoices.invoices' => 'Admin\ApplicationInvoiceController@index',
 	],
 	'admin/workers.workers' => [
-		'admin/workers.workplaces' => 'Admin\WorkplaceController@index'
+		'admin/workers.workers' => 'Admin\WorkerController@index',
+		'admin/workers.workplaces' => 'Admin\WorkplaceController@index',
 	],
 	'admin/settings.title' => [
 		'admin/settings.settings' => 'Admin\SettingsController@show',

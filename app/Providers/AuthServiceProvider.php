@@ -13,6 +13,7 @@ use App\Models\InvoicePayment;
 use App\Models\Kitchen;
 use App\Models\Pdf;
 use App\Models\Service;
+use App\Models\Worker;
 use App\Models\WorkFunction;
 use App\Models\Workplace;
 use App\Policies\ApplicationPolicy;
@@ -24,6 +25,7 @@ use App\Policies\KitchenPolicy;
 use App\Policies\InvoicePaymentPolicy;
 use App\Policies\PDFPOlicy;
 use App\Policies\ServicePolicy;
+use App\Policies\WorkerPolicy;
 use App\Policies\WorkFunctionPolicy;
 use App\Policies\WorkplacePolicy;
 use Illuminate\Support\Facades\Gate;
@@ -46,9 +48,10 @@ class AuthServiceProvider extends ServiceProvider {
 		Debtor::class => DebtorPolicy::class,
 		InvoicePayment::class => InvoicePaymentPolicy::class,
 		Workplace::class => WorkplacePolicy::class,
-		WorkFunction::class => WorkFunctionPolicy::class
+		WorkFunction::class => WorkFunctionPolicy::class,
+		Worker::class => WorkerPolicy::class
 	];
-
+	
 	/**
 	 * Register any authentication / authorization services.
 	 *

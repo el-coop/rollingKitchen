@@ -88,7 +88,7 @@ class UpdateInvoiceRequest extends FormRequest {
 		$this->invoice->save();
 		SendApplicationInvoice::dispatch($this->invoice, $this->input('recipient'), $this->input('subject'), $this->input('message'), $this->input('attachments', []), collect([
 			$this->input('bcc', false),
-			$this->input('accountant', false) ? app('settings')->get('invoices_accountant') : false
+			$this->filled('accountant') ? app('settings')->get('invoices_accountant') : false
 		])->filter());
 		
 		return $this->invoice->load('payments');
