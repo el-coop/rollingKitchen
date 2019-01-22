@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Workplace extends Model {
-
+	
 	public function workFunctions() {
 		return $this->hasMany(WorkFunction::class);
 	}
-
+	
 	public function getFullDataAttribute() {
 		return collect([[
 			'name' => 'name',
@@ -20,5 +20,9 @@ class Workplace extends Model {
 			'name' => 'workFunctions',
 			'value' => $this->workFunctions
 		]]);
+	}
+	
+	public function workers() {
+		return $this->belongsToMany(Worker::class)->withPivot('function');
 	}
 }

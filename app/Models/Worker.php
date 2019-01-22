@@ -34,6 +34,16 @@ class Worker extends Model {
 				'type' => 'text',
 				'value' => $this->email
 			], [
+				'name' => 'type',
+				'label' => __('admin/workers.type'),
+				'type' => 'select',
+				'options' => [
+					__('admin/workers.payroll'),
+					__('admin/workers.freelance'),
+					__('admin/workers.volunteer'),
+				],
+				'value' => $this->type
+			], [
 				'name' => 'language',
 				'label' => __('global.language'),
 				'type' => 'select',
@@ -61,5 +71,8 @@ class Worker extends Model {
 		return $fullData;
 	}
 	
+	public function workplaces() {
+		return $this->belongsToMany(Worker::class)->withPivot('function');
+	}
 }
 

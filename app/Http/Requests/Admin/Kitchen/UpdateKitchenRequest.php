@@ -34,7 +34,6 @@ class UpdateKitchenRequest extends FormRequest {
 	}
 	
 	public function commit() {
-		
 		$this->kitchen->user->name = $this->input('name');
 		$this->kitchen->user->email = $this->input('email');
 		$this->kitchen->user->language = $this->input('language');
