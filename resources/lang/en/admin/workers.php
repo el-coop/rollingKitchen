@@ -8,6 +8,7 @@ return [
 	'payroll' => 'Payroll',
 	'freelance' => 'Freelancer',
 	'volunteer' => 'Volunteer',
+	'completed' => 'Completed',
 	'workplaces' => 'Workplaces',
 	'addWorkplace' => 'Add Workplace',
 	'createWorkplace' => 'Create Workplace',

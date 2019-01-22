@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder {
 		$this->call(ElectricDeviceSeeder::class);
 		$this->call(InvoiceSeeder::class);
 		$this->call(WorkplaceSeeder::class);
-		
+		$this->call(WorkerSeeder::class);
+
+
 	}
 }

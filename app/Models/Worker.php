@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Worker extends Model {
 	use HasFields;
+
+	protected $appends = [
+		'workplacesList',
+	];
 	
 	protected $casts = [
 		'data' => 'array'
@@ -72,7 +76,13 @@ class Worker extends Model {
 	}
 	
 	public function workplaces() {
-		return $this->belongsToMany(Workplace::class)->withPivot('function');
+		return $this->belongsToMany(Workplace::class)->withTimestamps();
+	}
+
+	public function getWorkplacesListAttribute () {
+		return $this->workplaces->implode('name', ', ');
+
+
 	}
 }
 

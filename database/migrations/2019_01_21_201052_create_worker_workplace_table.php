@@ -15,8 +15,7 @@ class CreateWorkerWorkplaceTable extends Migration {
 			$table->increments('id');
 			$table->integer('worker_id')->unsigned();
 			$table->integer('workplace_id')->unsigned();
-			$table->integer('function_id')->unsigned();
-			
+
 			$table->timestamps();
 			
 			

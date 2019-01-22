@@ -23,6 +23,6 @@ class Workplace extends Model {
 	}
 	
 	public function workers() {
-		return $this->belongsToMany(Worker::class)->withPivot('function');
+		return $this->belongsToMany(Worker::class)->withTimestamps();
 	}
 }
