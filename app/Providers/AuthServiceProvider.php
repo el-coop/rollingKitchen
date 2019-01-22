@@ -14,6 +14,7 @@ use App\Models\Kitchen;
 use App\Models\Pdf;
 use App\Models\Service;
 use App\Models\Worker;
+use App\Models\WorkerPhoto;
 use App\Models\WorkFunction;
 use App\Models\Workplace;
 use App\Policies\ApplicationPolicy;
@@ -25,6 +26,7 @@ use App\Policies\KitchenPolicy;
 use App\Policies\InvoicePaymentPolicy;
 use App\Policies\PDFPOlicy;
 use App\Policies\ServicePolicy;
+use App\Policies\WorkerPhotoPolicy;
 use App\Policies\WorkerPolicy;
 use App\Policies\WorkFunctionPolicy;
 use App\Policies\WorkplacePolicy;
@@ -49,7 +51,8 @@ class AuthServiceProvider extends ServiceProvider {
 		InvoicePayment::class => InvoicePaymentPolicy::class,
 		Workplace::class => WorkplacePolicy::class,
 		WorkFunction::class => WorkFunctionPolicy::class,
-		Worker::class => WorkerPolicy::class
+		Worker::class => WorkerPolicy::class,
+		WorkerPhoto::class => WorkerPhotoPolicy::class
 	];
 	
 	/**

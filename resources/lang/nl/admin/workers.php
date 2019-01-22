@@ -14,5 +14,5 @@ return [
 	'createWorkplace' => 'TBT',
 	'payment_per_hour_before_tax' => 'TBT',
 	'payment_per_hour_after_tax' => 'TBT',
-	'fillProfile' => 'TBT'
+	'fillProfile' => 'TBT',
 ];

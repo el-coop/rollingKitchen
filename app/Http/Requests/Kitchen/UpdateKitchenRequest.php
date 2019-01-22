@@ -85,8 +85,6 @@ class UpdateKitchenRequest extends FormRequest {
 			'kitchen.6.required_without_all' => __('kitchen/kitchen.photoValidation'),
 			'kitchen.7.required_without_all' => __('kitchen/kitchen.photoValidation'),
 			'kitchen.11.required_without_all' => __('kitchen/kitchen.photoValidation'),
-		
-		
 		];
 	}
 	

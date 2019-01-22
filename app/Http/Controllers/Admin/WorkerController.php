@@ -11,8 +11,9 @@ class WorkerController extends Controller {
 	public function index() {
 		$title = __('admin/workers.workers');
 		$createTitle = __('admin/workers.createWorker');
+		$fieldType = "Worker";
 		
-		return view('admin.datatableWithNew', compact('title', 'createTitle'));
+		return view('admin.datatableWithNew', compact('title', 'createTitle', 'fieldType'));
 		
 	}
 	

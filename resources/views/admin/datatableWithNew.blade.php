@@ -8,6 +8,10 @@
 			@slot('deleteButton', true)
 			@slot('buttons')
 				<button class="button is-light" @click="actions.newObjectForm">@lang('vue.add')</button>
+				@isset($fieldType)
+					<a class="button is-light"
+					   href="{{ action('Admin\FieldController@index', $fieldType) }}">@lang('admin/kitchens.fields')</a>
+				@endisset
 			@endslot
 			<template slot-scope="{object, onUpdate}" v-if="object">
 				<div class="title is-7 has-text-centered">

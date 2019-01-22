@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Worker extends Model {
 	use HasFields;
-
+	
 	protected $appends = [
 		'workplacesList',
 	];
@@ -21,6 +21,10 @@ class Worker extends Model {
 		return action('Admin\KitchenController@index', [], false);
 	}
 	
+	public function homePage() {
+		return action('Worker\WorkerController@index', $this);
+	}
+	
 	public function user() {
 		return $this->morphOne(User::class, 'user');
 	}
@@ -31,22 +35,12 @@ class Worker extends Model {
 				'name' => 'name',
 				'label' => __('global.name'),
 				'type' => 'text',
-				'value' => $this->name
+				'value' => $this->user->name
 			], [
 				'name' => 'email',
 				'label' => __('global.email'),
 				'type' => 'text',
-				'value' => $this->email
-			], [
-				'name' => 'type',
-				'label' => __('admin/workers.type'),
-				'type' => 'select',
-				'options' => [
-					__('admin/workers.payroll'),
-					__('admin/workers.freelance'),
-					__('admin/workers.volunteer'),
-				],
-				'value' => $this->type
+				'value' => $this->user->email
 			], [
 				'name' => 'language',
 				'label' => __('global.language'),
@@ -56,6 +50,20 @@ class Worker extends Model {
 					'en' => __('global.en'),
 				],
 				'value' => $this->language ?? 'nl'
+			],
+		]);
+		
+		if (!$this->exists) {
+			$fullData = $fullData->concat([[
+				'name' => 'type	',
+				'label' => __('admin/workers.type'),
+				'type' => 'select',
+				'options' => [
+					__('admin/workers.payroll'),
+					__('admin/workers.freelance'),
+					__('admin/workers.volunteer'),
+				],
+				'value' => $this->type
 			], [
 				'name' => 'workplaces',
 				'type' => 'multiselect',
@@ -69,8 +77,10 @@ class Worker extends Model {
 				'options' => [[
 					'name' => __('admin/workers.makeSupervisor')
 				]]
-			]
-		]);
+			]]);
+		} else {
+			$fullData = $fullData->concat($this->getFieldsData());
+		}
 		
 		return $fullData;
 	}
@@ -78,11 +88,14 @@ class Worker extends Model {
 	public function workplaces() {
 		return $this->belongsToMany(Workplace::class)->withTimestamps();
 	}
-
-	public function getWorkplacesListAttribute () {
+	
+	public function getWorkplacesListAttribute() {
 		return $this->workplaces->implode('name', ', ');
-
-
+		
+	}
+	
+	public function photos() {
+		return $this->hasMany(WorkerPhoto::class);
 	}
 }
 
