@@ -42,8 +42,10 @@ class CreateWorkerRequest extends FormRequest {
 		$user->email = $this->input('email');
 		$user->name = $this->input('name');
 		$user->language = $this->input('language');
+		$user->password = '';
 		$worker->supervisor = $this->filled('supervisor');
 		$worker->type = $this->input('type');
+		$worker->data = [];
 		$worker->save();
 		$worker->user()->save($user);
 		
@@ -53,6 +55,8 @@ class CreateWorkerRequest extends FormRequest {
 			['email' => $user->email]
 		);
 		
-		return $worker;
+		$worker->name = $user->name;
+		
+		return $worker->load('user');
 	}
 }

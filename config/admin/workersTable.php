@@ -13,6 +13,7 @@ return [
 		'visible' => false,
 	], [
 		'name' => 'name',
+		'table' => 'users',
 		'title' => 'global.name',
 		'sortField' => 'name',
 	], [
