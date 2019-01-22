@@ -14,6 +14,7 @@ class CreateWorkersTable extends Migration {
 		Schema::create('workers', function (Blueprint $table) {
 			$table->increments('id');
 			$table->tinyInteger('type');
+			$table->boolean('supervisor');
 			$table->json('data');
 			$table->timestamps();
 		});

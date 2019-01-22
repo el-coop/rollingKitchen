@@ -19,6 +19,10 @@ function generalJsErrorReport(message, source, lineNo, colno, trace) {
 }
 
 function vueErrorReport(err, vm, info) {
+	if (process.env.MIX_APP_ENV === 'local') {
+		console.log(err);
+		return;
+	}
 	axios.post('/developer/error/jsError', {
 		page: window.location.href,
 		userAgent: navigator.userAgent,

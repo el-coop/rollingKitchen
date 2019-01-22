@@ -63,7 +63,7 @@ class Worker extends Model {
 				'type' => 'Checkbox',
 				'value' => $this->supervisor,
 				'options' => [[
-					'name' => __('admin/workers.supervisor')
+					'name' => __('admin/workers.makeSupervisor')
 				]]
 			]
 		]);
@@ -72,7 +72,7 @@ class Worker extends Model {
 	}
 	
 	public function workplaces() {
-		return $this->belongsToMany(Worker::class)->withPivot('function');
+		return $this->belongsToMany(Workplace::class)->withPivot('function');
 	}
 }
 

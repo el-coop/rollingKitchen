@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Notifications\Worker\UserCreated;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use JustBetter\PaginationWithHavings\PaginationWithHavings;
+use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
+
 
 class User extends Authenticatable implements HasLocalePreference {
 	use Notifiable;
@@ -34,4 +37,14 @@ class User extends Authenticatable implements HasLocalePreference {
 	public function preferredLocale() {
 		return $this->language;
 	}
+	
+	public function sendPasswordResetNotification($token) {
+		if ($this->password !== '' || $this->user_type !== Worker::class) {
+			$this->notify(new ResetPasswordNotification($token));
+			return;
+		}
+		
+		$this->notify(new UserCreated($token));
+	}
+	
 }
