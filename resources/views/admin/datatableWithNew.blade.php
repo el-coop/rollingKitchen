@@ -10,7 +10,8 @@
                 <button class="button is-light" @click="actions.newObjectForm">@lang('vue.add')</button>
                 @isset($buttons)
                     @foreach($buttons as $button)
-                        {{$button}}
+                        {!! $button !!}
+                    @endforeach
                 @endisset
             @endslot
             <template slot-scope="{object, onUpdate}" v-if="object">
