@@ -49,7 +49,7 @@ class WorkplaceTest extends TestCase {
 	}
 
 	public function test_datatable_gets_data() {
-		$response = $this->actingAs($this->admin->user)->get(action('DatatableController@list', ['table' => 'admin.workers.workplacesTable', 'per_page' => 20]));
+		$response = $this->actingAs($this->admin->user)->get(action('DatatableController@list', ['table' => 'admin.workplacesTable', 'per_page' => 20]));
 		foreach ($this->workplaces as $workplace) {
 			$response->assertJsonFragment([
 				'id' => $workplace->id,

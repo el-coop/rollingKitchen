@@ -32,7 +32,7 @@
                         label: '@lang('admin/workers.payment_per_hour_after_tax')',
                         subType: 'number',
                         callback: 'localNumber',
-                    }]" :init-fields="fields[1].value" class="mb-1" :action="`/admin/workers/workplaces/${object.id}`">
+                    }]" :init-fields="fields[1].value" class="mb-1" :action="`/admin/workplaces/${object.id}`">
                         </dynamic-table>
                     </template>
 
