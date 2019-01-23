@@ -19,8 +19,12 @@ class ServiceController extends Controller {
     use Exportable;
 
     public function index() {
+    	$buttons = ['<a href="' . action('Admin\ServiceController@export') .   '" class="button is-info">' . __('admin/services.download_application_services') . '</a>'];
 
-        return view('admin.services.index');
+		$title = __('kitchen/kitchen.services');
+		$createTitle = __('admin/services.createService');
+
+		return view('admin.datatableWithNew', compact('title', 'createTitle', 'buttons'));
 
     }
 
