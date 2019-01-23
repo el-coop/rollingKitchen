@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kitchen;
 use App\Models\Photo;
 use App\Models\WorkerPhoto;
+use Crypt;
 use Illuminate\Http\Request;
 use Storage;
 
@@ -15,7 +16,7 @@ class PhotoController extends Controller {
 	
 	public function worker(WorkerPhoto $photo) {
 		$encryptedContents = Storage::get("public/photos/{$photo->file}");
-		$decryptedContents = decrypt($encryptedContents);
+		$decryptedContents = Crypt::decrypt($encryptedContents);
 		
 		
 		return response()->make($decryptedContents, 200, [

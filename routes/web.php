@@ -20,7 +20,7 @@ Auth::routes([
 
 Route::get('/language/{language}','LocaleController@set');
 Route::get('/images/{photo}','PhotoController@show');
-Route::get('/images/worker/{photo}','PhotoController@worker')->middleware('can:view,photo');
+Route::get('/images/worker/{photo}','PhotoController@worker')->middleware(['auth','can:view,photo']);
 Route::group(['middleware' => ['auth', 'userType:' . \App\Models\Admin::class]], function (){
 	Route::get('datatable/list', 'DatatableController@list');
 	Route::get('datatable/export', 'DatatableController@export');

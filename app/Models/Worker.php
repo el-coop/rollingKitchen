@@ -35,12 +35,12 @@ class Worker extends Model {
 				'name' => 'name',
 				'label' => __('global.name'),
 				'type' => 'text',
-				'value' => $this->user->name
+				'value' => $this->user->name ?? ''
 			], [
 				'name' => 'email',
 				'label' => __('global.email'),
 				'type' => 'text',
-				'value' => $this->user->email
+				'value' => $this->user->email ?? ''
 			], [
 				'name' => 'language',
 				'label' => __('global.language'),

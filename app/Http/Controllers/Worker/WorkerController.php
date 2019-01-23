@@ -6,6 +6,7 @@ use App\Http\Requests\Worker\StorePhotoRequest;
 use App\Http\Requests\Worker\UpdateWorkerRequest;
 use App\Models\Worker;
 use App\Models\WorkerPhoto;
+use Auth;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -14,8 +15,6 @@ use Illuminate\Support\Facades\Password;
 class WorkerController extends Controller {
 	
 	use ResetsPasswords;
-	
-	protected $redirectTo = '/worker';
 	
 	public function index(Worker $worker) {
 		return view('worker.worker', compact('worker'));
@@ -50,5 +49,10 @@ class WorkerController extends Controller {
 	
 	public function broker() {
 		return Password::broker('workers');
+	}
+	
+	
+	public function redirectTo() {
+		return Auth::user()->user->homePage();
 	}
 }
