@@ -48,7 +48,7 @@ class UserCreated extends Notification {
 			$email->line($line);
 		}
 		
-		$email->action(__('admin/workers.fillProfile', [], $notifiable->language), url(config('app.url') . route('password.reset', $this->token, false)));
+		$email->action(__('admin/workers.fillProfile', [], $notifiable->language), action('Worker\WorkerController@showResetForm', $this->token, true));
 		
 		return $email;
 	}

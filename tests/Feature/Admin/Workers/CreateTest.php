@@ -17,7 +17,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class CreateTest extends TestCase {
 	
 	use RefreshDatabase;
-	use WithFaker;
 	protected $admin;
 	protected $kitchen;
 	protected $workplaces;
