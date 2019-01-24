@@ -16,7 +16,10 @@ class DebtorController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index() {
-		return view('admin.debtors.index');
+		$title = __('admin/debtors.debtors');
+		$createTitle = __('admin/debtors.createDebtor');
+
+		return view('admin.datatableWithNew', compact('title', 'createTitle'));
 	}
 	
 	/**
