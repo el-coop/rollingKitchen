@@ -18,7 +18,7 @@ class Shift extends Model {
 			'name' => 'date',
 			'label' => __('admin/shifts.date'),
 			'type' => 'text',
-			'subType' => 'Date',
+			'subType' => 'date',
 			'value' => $this->date
 		], [
 			'name' => 'workplace',
