@@ -31,7 +31,7 @@ class CreateWorkerRequest extends FormRequest {
 			'language' => 'required|in:en,nl',
 			'supervisor' => 'boolean',
 			'workplaces' => 'required|array',
-			'workplaces.*' => 'required|in:' . WorkPlace::select('id')->get()->implode('id', ',')
+			'workplaces.*' => 'required|exists:workplaces,id'
 		];
 	}
 	

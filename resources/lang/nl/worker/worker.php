@@ -5,4 +5,5 @@ return [
 	'profile' => 'TBT',
 	'shifts' => 'TBT',
 	'workedHours' => 'TBT',
+	'workplace' => 'TBT',
 ];

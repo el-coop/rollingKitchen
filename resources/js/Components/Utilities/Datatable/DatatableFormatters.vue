@@ -7,6 +7,12 @@
 				}
 				return `<span class="tag is-danger">${this.$translations.no}</span>`;
 			},
+			boolean(value) {
+				if (value) {
+					return `<span class="tag is-success">${this.$translations.yes}</span>`;
+				}
+				return `<span class="tag is-danger">${this.$translations.no}</span>`;
+			},
 
 			translate(value) {
 				return this.$translations[value];
