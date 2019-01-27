@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Admin;
 use App\Models\Developer;
 use App\Models\User;
+use App\Models\Worker;
 use App\Models\WorkFunction;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -35,7 +36,7 @@ class WorkFunctionPolicy {
 	 * @return mixed
 	 */
 	public function create(User $user) {
-		return $user->user_type == Admin::class;
+		return $user->user_type == Admin::class ||  ($user->user_type == Worker::class && $user->user->isSupervisor());
 	}
 
 	/**
@@ -46,7 +47,7 @@ class WorkFunctionPolicy {
 	 * @return mixed
 	 */
 	public function update(User $user, WorkFunction $workFunction) {
-		return $user->user_type == Admin::class;
+		return $user->user_type == Admin::class || ($workFunction->workplace->workers->contains($user->user) && $user->user->isSupervisor());
 	}
 
 	/**
@@ -57,7 +58,7 @@ class WorkFunctionPolicy {
 	 * @return mixed
 	 */
 	public function delete(User $user, WorkFunction $workFunction) {
-		return $user->user_type == Admin::class;
+		return $user->user_type == Admin::class || ($workFunction->workplace->workers->contains($user->user) && $user->user->isSupervisor());
 	}
 
 	/**

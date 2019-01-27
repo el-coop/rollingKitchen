@@ -25,4 +25,17 @@ class Workplace extends Model {
 	public function workers() {
 		return $this->belongsToMany(Worker::class)->withTimestamps();
 	}
+
+	public function getWorkersForSupervisorAttribute(){
+		$workers = $this->workers->where('supervisor', false);
+		$workers = $workers->map(function ($worker){
+			return [
+				'name' => $worker->user->name,
+				'email' => $worker->user->email,
+				'language' => $worker->user->language,
+				'type' => $worker->type
+			];
+		});
+		return $workers;
+	}
 }

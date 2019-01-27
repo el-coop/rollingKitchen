@@ -35,7 +35,6 @@
                     }]" :init-fields="fields[1].value" class="mb-1" :action="`/admin/workplaces/${object.id}`">
                         </dynamic-table>
                     </template>
-
                 </dynamic-form>
             </template>
         @endcomponent
