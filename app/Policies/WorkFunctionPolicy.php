@@ -47,7 +47,7 @@ class WorkFunctionPolicy {
 	 * @return mixed
 	 */
 	public function update(User $user, WorkFunction $workFunction) {
-		return $user->user_type == Admin::class || ($workFunction->workplace->workers->contains($user->user) && $user->user->isSupervisor());
+		return $user->user_type == Admin::class || ($workFunction->workplace->hasWorker($user->user) && $user->user->isSupervisor());
 	}
 
 	/**

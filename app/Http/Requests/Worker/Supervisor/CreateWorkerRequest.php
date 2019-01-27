@@ -17,7 +17,7 @@ class CreateWorkerRequest extends FormRequest {
 	 */
 	public function authorize() {
 		$this->workplace = $this->route('workplace');
-		return $this->user()->can('create', Worker::class) && $this->workplace->workers->contains($this->user()->user) && $this->user()->user->isSupervisor();
+		return $this->user()->can('create', Worker::class) && $this->workplace->hasWorker($this->user()->user) && $this->user()->user->isSupervisor();
 	}
 
 	/**

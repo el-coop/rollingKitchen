@@ -14,11 +14,7 @@ class SupervisorMiddleware {
 	 * @return mixed
 	 */
 	public function handle($request, Closure $next) {
-		if ($request->user()->user_type != Worker::class){
-			return abort(403, 'Access denied');
-
-		}
-		if (!$request->user()->user->isSupervisor()){
+		if ($request->user()->user_type != Worker::class || !$request->user()->user->isSupervisor()){
 			return abort(403, 'Access denied');
 
 		}
