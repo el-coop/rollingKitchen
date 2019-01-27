@@ -23,7 +23,10 @@ Route::group(['prefix' => 'worker', 'namespace' => 'Worker'], function () {
 			Route::post('workplace/{workplace}/workFunctions', 'SupervisorController@addWorkFunction');
 			Route::delete('workplace/{workplace}/workFunctions/{workFunction}', 'SupervisorController@destroyWorkFunction');
 			Route::patch('workplace/{workplace}/workFunctions/{workFunction}', 'SupervisorController@updateWorkFunction');
-			Route::post('workplace/{workplace}/addWorker', 'SupervisorController@storeWorker');
+
+			Route::get('workplace/{workplace}/worker', 'SupervisorController@createWorker');
+			Route::post('workplace/{workplace}/worker', 'SupervisorController@storeWorker');
+
 		});
 	});
 });

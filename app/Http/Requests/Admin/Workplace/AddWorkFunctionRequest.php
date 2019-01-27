@@ -16,7 +16,7 @@ class AddWorkFunctionRequest extends FormRequest {
 	 */
 	public function authorize() {
 		$this->workplace = $this->route('workplace');
-		return $this->user()->can('create',$this->workplace, WorkFunction::class) && $this->user()->can('update', $this->workplace);
+		return $this->user()->can('create', WorkFunction::class) && $this->user()->can('update', $this->workplace);
 	}
 
 	/**

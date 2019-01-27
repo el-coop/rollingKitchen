@@ -27,37 +27,4 @@
             </dynamic-form>
         </div>
     </div>
-    <div class="tile is-parent">
-        <div class="tile is-child">
-            <dynamic-table :columns="[{
-                        name: 'name',
-                        label: '@lang('global.name')'
-                    },{
-                        name: 'email',
-                        label: '@lang('global.email')',
-
-                    }, {
-                        name: 'language',
-                        label: '@lang('global.language')',
-					    type: 'select',
-                        options: {
-						en: '@lang('global.en')',
-						nl: '@lang('global.nl')',
-					    },
-					    translate: true
-						},{
-						 name: 'type',
-						 label: '@lang('admin/workers.type')',
-					     type: 'select',
-						 options: {
-						      0: '@lang('admin/workers.payroll')',
-						      1: '@lang('admin/workers.freelance')',
-						      2: '@lang('admin/workers.volunteer')'
-						    },
-						 translate: true
-						    }]" :init-fields="{{$workplace->workersForSupervisor}}" class="mb-1"
-                           action="{{action('Worker\SupervisorController@storeWorker', $workplace)}}">
-            </dynamic-table>
-        </div>
-    </div>
 </div>
