@@ -47,7 +47,7 @@ class UpdateTest extends TestCase {
 		$this->actingAs($this->worker)->get(action('Worker\WorkerController@index', $this->worker->user))->assertSuccessful();
 	}
 	
-	public function test_admin_cant_see_own_page() {
+	public function test_admin_can_see_worker_page() {
 		$this->actingAs($this->admin)->get(action('Worker\WorkerController@index', $this->worker->user))->assertSuccessful();
 	}
 	
