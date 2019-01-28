@@ -305,7 +305,7 @@ class SupervisorTest extends TestCase {
 		$this->actingAs($this->worker)->get(action('DatatableController@supervisorList', ['table' => json_encode($this->workplace->workersForSupervisor), 'per_page' => 20, 'sort' => 'name|asc']))->assertForbidden();
 	}
 
-	public function test_supervisor_cant_get_supervisor_datatable(){
+	public function test_supervisor_can_get_supervisor_datatable(){
 		$table = str_replace('\\\\','\\',json_encode($this->workplace->workersForSupervisor));
 		$response = $this->actingAs($this->supervisor)->get(action('DatatableController@supervisorList', ['table' =>$table, 'per_page' => 20, 'sort' => 'name|asc']))->assertSuccessful();
 		$response->assertJsonFragment([
