@@ -15,7 +15,10 @@ class DatatableController extends Controller {
 
 	public function export(Excel $excel, Request $request, DatatableService $datatableService) {
 		return $excel->download($datatableService, "{$request->input('name')}.xls");
+	}
 
+	public function supervisorList(Request $request, DatatableService $datatableService){
+		return $this->list($request,$datatableService);
 	}
 
 }

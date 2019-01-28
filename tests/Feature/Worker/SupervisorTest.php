@@ -289,4 +289,29 @@ class SupervisorTest extends TestCase {
 		]);
 	}
 
+	public function test_guest_cant_get_supervisor_datatable(){
+		$this->get(action('DatatableController@supervisorList', ['table' => json_encode($this->workplace->workersForSupervisor), 'per_page' => 20, 'sort' => 'name|asc']))->assertRedirect(action('Auth\LoginController@login'));
+	}
+
+	public function test_admin_cant_get_supervisor_datatable(){
+		$this->actingAs($this->admin)->get(action('DatatableController@supervisorList', ['table' => json_encode($this->workplace->workersForSupervisor), 'per_page' => 20, 'sort' => 'name|asc']))->assertForbidden();
+	}
+
+	public function test_kitchen_cant_get_supervisor_datatable(){
+		$this->actingAs($this->kitchen)->get(action('DatatableController@supervisorList', ['table' => json_encode($this->workplace->workersForSupervisor), 'per_page' => 20, 'sort' => 'name|asc']))->assertForbidden();
+	}
+
+	public function test_worker_cant_get_supervisor_datatable(){
+		$this->actingAs($this->worker)->get(action('DatatableController@supervisorList', ['table' => json_encode($this->workplace->workersForSupervisor), 'per_page' => 20, 'sort' => 'name|asc']))->assertForbidden();
+	}
+
+	public function test_a_cant_get_supervisor_datatable(){
+		$table = str_replace('\\\\','\\',json_encode($this->workplace->workersForSupervisor));
+		$response = $this->actingAs($this->supervisor)->get(action('DatatableController@supervisorList', ['table' =>$table, 'per_page' => 20, 'sort' => 'name|asc']))->assertSuccessful();
+		$response->assertJsonFragment([
+			'name' => $this->worker->name,
+			'id' => $this->worker->user->id,
+		]);
+	}
+
 }
