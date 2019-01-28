@@ -55,7 +55,7 @@ class Worker extends Model {
 		
 		if (!$this->exists) {
 			$fullData = $fullData->concat([[
-				'name' => 'type	',
+				'name' => 'type',
 				'label' => __('admin/workers.type'),
 				'type' => 'select',
 				'options' => [
@@ -96,6 +96,10 @@ class Worker extends Model {
 	
 	public function photos() {
 		return $this->hasMany(WorkerPhoto::class);
+	}
+
+	public function isSupervisor(){
+		return $this->supervisor;
 	}
 }
 

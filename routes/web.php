@@ -25,6 +25,7 @@ Route::group(['middleware' => ['auth', 'userType:' . \App\Models\Admin::class]],
 	Route::get('datatable/list', 'DatatableController@list');
 	Route::get('datatable/export', 'DatatableController@export');
 });
+Route::get('supervisorDatatable/list', 'DatatableController@list')->middleware(['auth', 'supervisor']);
 
 foreach (\File::allFiles(__DIR__ . "/web") as $routeFile) {
     include $routeFile;

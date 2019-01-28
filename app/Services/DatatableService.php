@@ -17,7 +17,7 @@ use DB;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class DatatableService implements FromCollection, WithHeadings {
-	
+
 	use Exportable;
 	
 	private $queryConfig;
@@ -25,7 +25,7 @@ class DatatableService implements FromCollection, WithHeadings {
 	
 	public function __construct(Request $request) {
 		$this->request = $request;
-		$this->queryConfig = config($this->request->input('table'));
+		$this->queryConfig = config($this->request->input('table')) ?? json_decode(str_replace('\\','\\\\',$this->request->input('table')), true);
 	}
 	
 	public function query() {
