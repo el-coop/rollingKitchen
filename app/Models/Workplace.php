@@ -9,7 +9,11 @@ class Workplace extends Model {
 	public function workFunctions() {
 		return $this->hasMany(WorkFunction::class);
 	}
-
+	
+	public function shifts() {
+		return $this->hasMany(Shift::class);
+	}
+	
 	public function getFullDataAttribute() {
 		return collect([[
 			'name' => 'name',
