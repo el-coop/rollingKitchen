@@ -43,7 +43,7 @@ class UpdateTest extends TestCase {
 		$this->actingAs($worker)->get(action('Worker\WorkerController@index', $this->worker->user))->assertForbidden();
 	}
 	
-	public function test_worker_cant_see_own_page() {
+	public function test_worker_can_see_own_page() {
 		$this->actingAs($this->worker)->get(action('Worker\WorkerController@index', $this->worker->user))->assertSuccessful();
 	}
 	
