@@ -25,7 +25,7 @@
 
 		data() {
 			return {
-				selected: null
+				selected: this.field.value
 			}
 		}
 	}

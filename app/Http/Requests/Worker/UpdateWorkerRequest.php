@@ -27,7 +27,7 @@ class UpdateWorkerRequest extends FormRequest {
 	 */
 	public function rules() {
 		$rules = collect([
-			'name' => 'required|min:2|unique:users,name,' . $this->worker->user->id,
+			'name' => 'required|min:2',
 			'email' => 'required|email|unique:users,email,' . $this->worker->user->id,
 			'language' => 'required|in:en,nl',
 			'worker' => 'required|array',
