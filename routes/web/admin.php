@@ -98,6 +98,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 			Route::get('/', 'WorkerController@index');
 			Route::get('/edit', 'WorkerController@create');
 			Route::post('/edit', 'WorkerController@store');
+			Route::get('/edit/{worker}', 'WorkerController@edit');
+			Route::patch('/edit/{worker}', 'WorkerController@update');
+
 		});
 		Route::group(['prefix' => 'shifts'], function () {
 			Route::get('/', 'ShiftController@index');
