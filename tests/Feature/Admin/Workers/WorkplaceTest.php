@@ -13,7 +13,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class WorkplaceTest extends TestCase {
 	use RefreshDatabase;
-	use WithFaker;
 	protected $admin;
 	protected $kitchen;
 	protected $workplaces;

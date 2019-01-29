@@ -11,6 +11,7 @@ return [
 	'admin/workers.workers' => [
 		'admin/workers.workers' => 'Admin\WorkerController@index',
 		'admin/workers.workplaces' => 'Admin\WorkplaceController@index',
+		'worker/worker.shifts' => 'Admin\ShiftController@index',
 	],
 	'admin/settings.title' => [
 		'admin/settings.settings' => 'Admin\SettingsController@show',

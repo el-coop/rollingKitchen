@@ -38,7 +38,7 @@ class WorkerPolicy {
 	 * @return mixed
 	 */
 	public function create(User $user) {
-		return $user->user_type == Admin::class;
+		return $user->user_type == Admin::class || ($user->user_type == Worker::class && $user->user->isSupervisor());
 	}
 	
 	/**
