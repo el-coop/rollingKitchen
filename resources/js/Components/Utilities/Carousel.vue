@@ -3,6 +3,11 @@
 		<div v-for="(photo, index) in photos" :key="index" v-show="active == index" class="card-image">
 			<figure class="image is-5by3">
 				<img :src="photo.url">
+				<a :href="photo.url" target="_blank">
+					<button class="button is-primary">
+						<font-awesome-icon icon="external-link-square-alt"></font-awesome-icon>
+					</button>
+				</a>
 			</figure>
 		</div>
 		<div v-if="Object.keys(photos).length > 0">
@@ -37,12 +42,12 @@
 		},
 
 		methods: {
-			changePhoto(direction){
+			changePhoto(direction) {
 				this.active += direction;
-				if(this.active < 0){
+				if (this.active < 0) {
 					this.active = this.photos.length - 1;
 				}
-				if(this.active > this.photos.length-1){
+				if (this.active > this.photos.length - 1) {
 					this.active = 0;
 				}
 			}
@@ -80,6 +85,22 @@
 	.previous {
 		left: 0;
 	}
+
+	.image {
+		position: relative;
+
+		> a {
+			opacity: 0.6;
+			position: absolute;
+			right: 1em;
+			bottom: 1em;
+
+			&:hover {
+				opacity: 0.8;
+			}
+		}
+	}
+
 	.next {
 		right: 0;
 	}
