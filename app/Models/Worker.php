@@ -97,8 +97,8 @@ class Worker extends Model {
 	public function photos() {
 		return $this->hasMany(WorkerPhoto::class);
 	}
-
-	public function isSupervisor(){
+	
+	public function isSupervisor() {
 		return $this->supervisor;
 	}
 }

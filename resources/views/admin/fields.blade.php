@@ -35,10 +35,11 @@
 					type: 'select',
 					options: {
 					    protected: '@lang('admin/fields.protected')',
+					    encrypted: '@lang('admin/fields.encrypted')',
 					    required: '@lang('admin/fields.required')',
 					    none: '@lang('admin/fields.none')',
 					},
-					translate: true
+					callback: 'numerateOptions'
 				},
 				{
 					name: 'placeholder_nl',
