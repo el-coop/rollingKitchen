@@ -17,12 +17,13 @@ import {
 	faBars,
 	faFileUpload,
 	faTimesCircle,
-	faEuroSign
+	faEuroSign,
+	faExternalLinkSquareAlt
 } from '@fortawesome/free-solid-svg-icons'
 
 require('./ErrorHandler');
 
-library.add(faLink, faSignOutAlt, faBars, faFileUpload, faTimesCircle, faEuroSign);
+library.add(faLink, faSignOutAlt, faBars, faFileUpload, faTimesCircle, faEuroSign, faExternalLinkSquareAlt);
 
 Vue.use(VModal);
 Vue.use(VueIziToast);
