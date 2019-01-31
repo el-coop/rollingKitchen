@@ -11,7 +11,7 @@ use Storage;
 
 class PhotoController extends Controller {
 	public function show(Photo $photo) {
-		return Storage::download("public/photos/{$photo->file}");
+		return Storage::response("public/photos/{$photo->file}");
 	}
 	
 	public function worker(WorkerPhoto $photo) {

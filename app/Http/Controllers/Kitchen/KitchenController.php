@@ -84,7 +84,7 @@ class KitchenController extends Controller {
 		if (!$application->isOpen()) {
 			$message = app('settings')->get("application_success_text_{$locale}");
 		}
-		return view('kitchen.edit', compact('kitchen', 'application', 'application', 'services', 'message', 'pastApplications', 'sockets', 'countableServices', 'checkableServices', 'pdfs'));
+		return view('kitchen.edit', compact('kitchen', 'application', 'application', 'message', 'pastApplications', 'sockets', 'countableServices', 'checkableServices', 'pdfs'));
 	}
 	
 	/**
