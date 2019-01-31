@@ -27,6 +27,9 @@ Route::group(['prefix' => 'worker', 'namespace' => 'Worker'], function () {
 			Route::get('workplace/{workplace}/worker', 'SupervisorController@createWorker');
 			Route::post('workplace/{workplace}/worker', 'SupervisorController@storeWorker');
 
+			Route::get('workplace/{workplace}/worker/{worker}', 'SupervisorController@editWorker');
+			Route::patch('workplace/{workplace}/worker/{worker}', 'SupervisorController@updateWorker');
+
 		});
 	});
 });
