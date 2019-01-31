@@ -221,7 +221,7 @@ class SupervisorTest extends TestCase {
 		]);
 	}
 
-	public function test_gest_cant_create_worker() {
+	public function test_guest_cant_create_worker() {
 		$this->get(action('Worker\SupervisorController@createWorker', $this->workplace))->assertRedirect(action('Auth\LoginController@login'));
 	}
 
@@ -270,11 +270,11 @@ class SupervisorTest extends TestCase {
 
 	public function test_supervisor_can_store_worker() {
 		$this->actingAs($this->supervisor)->post(action('Worker\SupervisorController@storeWorker', [
-				$this->workplace,
-				'name' => 'name',
-				'email' => 'test@test.com',
-				'type' => 0,
-				'language' => 'en']))->assertSuccessful()
+			$this->workplace,
+			'name' => 'name',
+			'email' => 'test@test.com',
+			'type' => 0,
+			'language' => 'en']))->assertSuccessful()
 			->assertJsonFragment([
 				'name' => 'name',
 				'email' => 'test@test.com',
@@ -289,29 +289,110 @@ class SupervisorTest extends TestCase {
 		]);
 	}
 
-	public function test_guest_cant_get_supervisor_datatable(){
+	public function test_guest_cant_get_supervisor_datatable() {
 		$this->get(action('DatatableController@supervisorList', ['table' => json_encode($this->workplace->workersForSupervisor), 'per_page' => 20, 'sort' => 'name|asc']))->assertRedirect(action('Auth\LoginController@login'));
 	}
 
-	public function test_admin_cant_get_supervisor_datatable(){
+	public function test_admin_cant_get_supervisor_datatable() {
 		$this->actingAs($this->admin)->get(action('DatatableController@supervisorList', ['table' => json_encode($this->workplace->workersForSupervisor), 'per_page' => 20, 'sort' => 'name|asc']))->assertForbidden();
 	}
 
-	public function test_kitchen_cant_get_supervisor_datatable(){
+	public function test_kitchen_cant_get_supervisor_datatable() {
 		$this->actingAs($this->kitchen)->get(action('DatatableController@supervisorList', ['table' => json_encode($this->workplace->workersForSupervisor), 'per_page' => 20, 'sort' => 'name|asc']))->assertForbidden();
 	}
 
-	public function test_worker_cant_get_supervisor_datatable(){
+	public function test_worker_cant_get_supervisor_datatable() {
 		$this->actingAs($this->worker)->get(action('DatatableController@supervisorList', ['table' => json_encode($this->workplace->workersForSupervisor), 'per_page' => 20, 'sort' => 'name|asc']))->assertForbidden();
 	}
 
-	public function test_supervisor_can_get_supervisor_datatable(){
-		$table = str_replace('\\\\','\\',json_encode($this->workplace->workersForSupervisor));
-		$response = $this->actingAs($this->supervisor)->get(action('DatatableController@supervisorList', ['table' =>$table, 'per_page' => 20, 'sort' => 'name|asc']))->assertSuccessful();
+	public function test_supervisor_can_get_supervisor_datatable() {
+		$table = str_replace('\\\\', '\\', json_encode($this->workplace->workersForSupervisor));
+		$response = $this->actingAs($this->supervisor)->get(action('DatatableController@supervisorList', ['table' => $table, 'per_page' => 20, 'sort' => 'name|asc']))->assertSuccessful();
 		$response->assertJsonFragment([
 			'name' => $this->worker->name,
 			'id' => $this->worker->user->id,
 		]);
 	}
 
+	public function test_guest_cant_get_worker() {
+		$this->get(action('Worker\SupervisorController@editWorker', [$this->workplace, $this->worker->user]))->assertRedirect(action('Auth\LoginController@login'));
+	}
+
+	public function test_kitchen_cant_get_worker() {
+		$this->actingAs($this->kitchen)->get(action('Worker\SupervisorController@editWorker', [$this->workplace, $this->worker->user]))->assertForbidden();
+	}
+
+	public function test_admin_cant_get_worker() {
+		$this->actingAs($this->admin)->get(action('Worker\SupervisorController@editWorker', [$this->workplace, $this->worker->user]))->assertForbidden();
+	}
+
+	public function test_worker_cant_get_worker() {
+		$this->actingAs($this->worker)->get(action('Worker\SupervisorController@editWorker', [$this->workplace, $this->worker->user]))->assertForbidden();
+	}
+
+	public function test_supervisor_can_get_worker() {
+		$this->actingAs($this->supervisor)->get(action('Worker\SupervisorController@editWorker', [
+			$this->workplace,
+			$this->worker->user]))
+			->assertJsonFragment([
+				'name' => 'name',
+				'label' => __('global.name'),
+				'type' => 'text',
+				'value' => $this->worker->name,
+			])->assertJsonFragment([
+				'name' => 'email',
+				'label' => __('global.email'),
+				'type' => 'text',
+				'value' => $this->worker->email,
+			]);
+	}
+
+	public function test_guest_cant_update_worker() {
+		$this->patch(action('Worker\SupervisorController@updateWorker', [$this->workplace, $this->worker->user]))->assertRedirect(action('Auth\LoginController@login'));
+	}
+
+	public function test_kitchen_cant_update_worker() {
+		$this->actingAs($this->kitchen)->patch(action('Worker\SupervisorController@updateWorker', [$this->workplace, $this->worker->user]))->assertForbidden();
+	}
+
+	public function test_admin_cant_update_worker() {
+		$this->actingAs($this->admin)->patch(action('Worker\SupervisorController@updateWorker', [$this->workplace, $this->worker->user]))->assertForbidden();
+	}
+
+	public function test_worker_cant_update_worker() {
+		$this->actingAs($this->worker)->patch(action('Worker\SupervisorController@updateWorker', [$this->workplace, $this->worker->user]))->assertForbidden();
+	}
+
+	public function test_supervisor_can_update_worker() {
+		$this->actingAs($this->supervisor)->patch(action('Worker\SupervisorController@updateWorker', [$this->workplace,
+			$this->worker->user]), [
+
+			'name' => 'name',
+			'email' => 'test@best.com',
+			'type' => 1,
+			'language' => 'en',
+			'worker' => [
+				'data' => 'bata',
+			],
+			'workplaces' => [$this->workplace->id],
+		])->assertJsonFragment([
+			'name' => 'name',
+			'id' => $this->worker->user->id,
+		]);
+		$this->assertDatabaseHas('users', [
+			'id' => $this->worker->id,
+			'name' => 'name',
+			'email' => 'test@best.com',
+			'language' => 'en',
+			'user_type' => Worker::class,
+		]);
+
+		$this->assertDatabaseHas('workers', [
+			'supervisor' => false,
+			'type' => 1,
+			'data' => json_encode([
+				'data' => 'bata',
+			]),
+		]);
+	}
 }

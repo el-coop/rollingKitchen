@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Admin\Worker;
+namespace App\Http\Requests\Worker\Supervisor;
 
 use App\Models\Field;
 use App\Models\Worker;
@@ -11,12 +11,11 @@ class UpdateWorkerRequest extends FormRequest
 	protected $worker;
 
 	/**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
+	 * Determine if the user is authorized to make this request.
+	 *
+	 * @return bool
+	 */
 	public function authorize() {
-
 		$this->worker = $this->route('worker');
 		return $this->user()->can('update', $this->worker);
 	}
@@ -26,22 +25,21 @@ class UpdateWorkerRequest extends FormRequest
 	 *
 	 * @return array
 	 */
-		public function rules() {
-			$rules = collect([
+	public function rules() {
+		$rules = collect([
 
-				'name' => 'required',
-				'email' => 'required|email|unique:users,email,' . $this->worker->user->id,
-				'type' => 'required|in:0,1,2',
-				'language' => 'required|in:en,nl',
-				'supervisor' => 'boolean',
-				'worker' => 'required|array',
-				'workplaces' => 'required|array',
-				'workplaces.*' => 'required|exists:workplaces,id'
-			]);
+			'name' => 'required',
+			'email' => 'required|email|unique:users,email,' . $this->worker->user->id,
+			'type' => 'required|in:0,1,2',
+			'language' => 'required|in:en,nl',
+			'worker' => 'required|array',
+			'workplaces' => 'required|array',
+			'workplaces.*' => 'required|exists:workplaces,id'
+		]);
 
-			$fieldRules = Field::getRequiredFields(Worker::class);
-			$rules = $rules->merge($fieldRules);
-			return $rules->toArray();
+		$fieldRules = Field::getRequiredFields(Worker::class);
+		$rules = $rules->merge($fieldRules);
+		return $rules->toArray();
 	}
 
 	public function commit() {
@@ -50,7 +48,6 @@ class UpdateWorkerRequest extends FormRequest
 		$this->worker->user->email = $this->input('email');
 		$this->worker->type = $this->input('type');
 		$this->worker->user->language = $this->input('language');
-		$this->worker->supervisor = $this->input('supervisor');
 
 		$this->worker->data = $this->input('worker');
 

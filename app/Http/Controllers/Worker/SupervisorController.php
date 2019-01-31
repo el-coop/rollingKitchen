@@ -7,9 +7,11 @@ use App\Http\Requests\Admin\Workplace\DeleteWorkFunctionRequest;
 use App\Http\Requests\Admin\Workplace\UpdateWorkFunctionRequest;
 use App\Http\Requests\Admin\Workplace\UpdateWorkplaceRequest;
 use App\Http\Requests\Worker\Supervisor\CreateWorkerRequest;
+use App\Http\Requests\Worker\Supervisor\UpdateWorkerRequest;
 use App\Models\Worker;
 use App\Models\WorkFunction;
 use App\Models\Workplace;
+use function foo\func;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -44,6 +46,18 @@ class SupervisorController extends Controller {
 	}
 
 	public function storeWorker(CreateWorkerRequest $request, Workplace $workplace) {
+		return $request->commit();
+	}
+
+	public function editWorker(Workplace $workplace, Worker $worker) {
+
+		return $worker->fullData->reject(function ($value){
+			return $value['name'] == 'Supervisor';
+		});
+
+	}
+
+	public function updateWorker(UpdateWorkerRequest $request,Workplace $workplace, Worker $worker) {
 		return $request->commit();
 	}
 

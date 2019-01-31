@@ -17,6 +17,11 @@ class SupervisorSeeder extends Seeder {
 		$supervisor->user()->save($user);
 		$workplaces = Workplace::inRandomOrder()->limit(2)->get();
 		$supervisor->workplaces()->attach($workplaces);
+		factory(Worker::class, 5)->create()->each(function ($worker) use ($workplaces){
+			$user = factory(User::class)->make();
+			$worker->user()->save($user);
+			$worker->workplaces()->attach($workplaces);
+		});
 
 	}
 }

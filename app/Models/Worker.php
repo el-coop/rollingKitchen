@@ -101,5 +101,17 @@ class Worker extends Model {
 	public function isSupervisor() {
 		return $this->supervisor;
 	}
+
+	public function isMySupervisor(User $user){
+		$user = $user->user;
+		if ($user->isSupervisor()){
+			foreach ($this->workplaces as $workplace){
+				if ($workplace->hasWorker($user)){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }
 
