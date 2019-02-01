@@ -29,7 +29,7 @@ class SupervisorTest extends TestCase {
 		$this->worker = factory(User::class)->make();
 		factory(Worker::class)->create()->user()->save($this->worker);
 		$this->workplace = factory(Workplace::class)->create();
-		$workFunctions = factory(WorkFunction::class, 3)->make()->each(function ($workFunction) {
+		factory(WorkFunction::class, 3)->make()->each(function ($workFunction) {
 			$workplace = Workplace::first();
 			$workplace->workFunctions()->save($workFunction);
 		});

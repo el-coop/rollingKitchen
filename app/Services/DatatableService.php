@@ -17,7 +17,7 @@ use DB;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class DatatableService implements FromCollection, WithHeadings {
-
+	
 	use Exportable;
 	
 	private $queryConfig;
@@ -25,7 +25,7 @@ class DatatableService implements FromCollection, WithHeadings {
 	
 	public function __construct(Request $request) {
 		$this->request = $request;
-		$this->queryConfig = config($this->request->input('table')) ?? json_decode(str_replace('\\','\\\\',$this->request->input('table')), true);
+		$this->queryConfig = config($this->request->input('table')) ?? json_decode(str_replace('\\', '\\\\', $this->request->input('table')), true);
 	}
 	
 	public function query() {
@@ -43,7 +43,6 @@ class DatatableService implements FromCollection, WithHeadings {
 		$this->addJoins($query, $this->queryConfig);
 		$this->addJoinOn($query, $this->queryConfig);
 		$this->addSelects($query, $this->queryConfig);
-		
 		$query->groupBy("{$tableName}.id");
 		
 		if ($this->request->filled('sort')) {
@@ -52,10 +51,10 @@ class DatatableService implements FromCollection, WithHeadings {
 		} else {
 			if (isset($this->queryConfig['orderBy'])) {
 				$query->orderBy("{$tableName}.{$this->queryConfig['orderBy']}");
-
+				
 			} else {
 				$query->orderBy("{$tableName}.created_at", 'desc');
-
+				
 			}
 		}
 		
@@ -79,13 +78,15 @@ class DatatableService implements FromCollection, WithHeadings {
 		});
 		foreach ($selectFields as $field) {
 			$fieldName = $field['name'];
-			
-			if (strpos($fieldName, 'count') !== 0) {
+			if (strpos($fieldName, 'count') !== 0 && !($field['raw'] ?? false)) {
 				$tableName = isset($field['table']) ? "{$field['table']}." : '';
 				$selects[] = "{$tableName}{$fieldName}";
 			} else {
-				
-				$selects[] = DB::raw("$fieldName");
+				if (($field['raw'] ?? false)) {
+					$selects[] = DB::raw($field['raw']);
+				} else {
+					$selects[] = DB::raw("$fieldName");
+				}
 			}
 		}
 		
@@ -121,6 +122,7 @@ class DatatableService implements FromCollection, WithHeadings {
 		if ($where = $queryConfig['where'] ?? false) {
 			$query->where($where);
 		}
+		
 		return $query;
 	}
 	
@@ -134,7 +136,18 @@ class DatatableService implements FromCollection, WithHeadings {
 				if ($filterConfig['filterDefinitions'] ?? false) {
 					$filterConfig = $filterConfig['filterDefinitions'][$filter];
 					$query->having($field, $filterConfig[0], $filterConfig[1]);
+				} else if ($filterConfig['filterFields'] ?? false) {
+					$fields = $filterConfig['filterFields'];
+					$query->where(function ($query) use ($fields, $filter) {
+						$filterVal = "%{$filter}%";
+						foreach ($fields as $field) {
+							$query->orWhere($field, 'like', $filterVal);
+						}
+					});
 				} else {
+					if ($filterConfig['table'] ?? false) {
+						$field = "{$filterConfig['table']}.{$field}";
+					}
 					$filterVal = "%{$filter}%";
 					$query->where($field, 'like', $filterVal);
 				}
