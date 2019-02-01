@@ -35,6 +35,7 @@ return [
 		'title' => 'admin/kitchens.updatedAt',
 		'callback' => 'date',
 		'sortField' => 'updated_at',
+		'filter' => false
 	], [
 		'name' => 'count(kitchen_id)',
 		'sortField' => 'count(kitchen_id)',

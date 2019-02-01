@@ -4,9 +4,11 @@ return [
 	'where' => [['user_type', \App\Models\Worker::class]],
 	'joins' => [
 		['users', 'users.user_id', 'workers.id'],
+		['worker_workplace', 'workers.id', 'worker_id'],
+		['workplaces', 'worker_workplace.workplace_id', 'workplaces.id'],
 	],
-
-
+	
+	
 	'fields' => [[
 		'name' => 'workers.id',
 		'title' => 'id',
@@ -18,7 +20,8 @@ return [
 		'sortField' => 'name',
 	], [
 		'name' => 'workplacesList',
-		'noTable' => true,
+		'raw' => 'GROUP_CONCAT(workplaces.name, ", ") as workplacesList',
+		'filterFields' => ['workplaces.name'],
 		'title' => 'admin/workers.workplaces',
 	], [
 		'name' => 'completed',

@@ -101,12 +101,17 @@ class MotherlistTest extends TestCase {
 	}
 
 	public function test_datatable_get_table_data_filtered() {
+		$newKitchen = $this->kitchens->first();
+		$newKitchen->status = 'new';
+		$newKitchen->save();
+		
 		$response = $this->actingAs($this->admin->user)
 			->get(action('DatatableController@list', ['table' => 'admin.kitchensTable', 'per_page' => 20, 'filter' => '{"status":"new"}']));
 
 		$kitchens = $this->kitchens->filter(function ($kitchen) {
 			return $kitchen->status == 'new';
 		});
+		$this->assertCount($kitchens->count(), $response->decodeResponseJson()['data']);
 
 		foreach ($kitchens as $kitchen) {
 			$response->assertJsonFragment([

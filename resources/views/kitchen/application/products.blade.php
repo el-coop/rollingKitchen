@@ -15,13 +15,14 @@
 	callbackOptions: {prefix: '€'},
 	callback: 'localNumber|prefix'
 }]" :init-fields="{{ $application->products()->where('category',$category)->get() }}"
-					   @if($application->isOpen()) action="/kitchen/applications/{{$application->id}}/products" @endif
+					   @can('update',$application) action="/kitchen/applications/{{$application->id}}/products"
+					   @endcan
 					   :extra-data="{category: '{{$category}}'}">
 		</dynamic-table>
 	</div>
 	@if($errors->has($category))
 		<p class="help is-danger">{{$errors->first($category)}}</p>
-		@endif
+	@endif
 	@if(! $loop->last)
 		<hr>
 	@endif
