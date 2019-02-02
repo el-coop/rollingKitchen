@@ -135,7 +135,7 @@ class DatatableService implements FromCollection, WithHeadings {
 				});
 				if ($filterConfig['filterDefinitions'] ?? false) {
 					$filterConfig = $filterConfig['filterDefinitions'][$filter];
-					$query->having($field, $filterConfig[0], $filterConfig[1]);
+					$query->having($field, $filterConfig[0], is_callable($filterConfig[1]) ? $filterConfig[1]() : $filterConfig[1]);
 				} else if ($filterConfig['filterFields'] ?? false) {
 					$fields = $filterConfig['filterFields'];
 					$query->where(function ($query) use ($fields, $filter) {

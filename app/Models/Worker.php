@@ -4,31 +4,33 @@ namespace App\Models;
 
 use App\Models\Traits\HasFields;
 use Illuminate\Database\Eloquent\Model;
+use JustBetter\PaginationWithHavings\PaginationWithHavings;
 
 
 class Worker extends Model {
 	use HasFields;
-
+	use PaginationWithHavings;
+	
 	protected $appends = [
 		'workplacesList',
 	];
-
+	
 	protected $casts = [
 		'data' => 'array',
 	];
-
+	
 	static function indexPage() {
 		return action('Admin\KitchenController@index', [], false);
 	}
-
+	
 	public function homePage() {
 		return action('Worker\WorkerController@index', $this);
 	}
-
+	
 	public function user() {
 		return $this->morphOne(User::class, 'user');
 	}
-
+	
 	public function getFullDataAttribute() {
 		$fullData = collect([
 			[
@@ -67,9 +69,9 @@ class Worker extends Model {
 				'label' => __('admin/workers.workplaces'),
 				'options' => Workplace::select('name', 'id')->get(),
 				'optionsLabel' => 'name',
-				'value' => $this->workplaces()->select('name','workplaces.id')->get(),
+				'value' => $this->workplaces()->select('name', 'workplaces.id')->get(),
 			], [
-				'name' => 'Supervisor',
+				'name' => 'supervisor',
 				'type' => 'Checkbox',
 				'value' => $this->supervisor,
 				'options' => [[
@@ -77,23 +79,31 @@ class Worker extends Model {
 				]],
 			],
 		]);
-
+		
 		if ($this->exists) {
+			$fullData = $fullData->push([
+				'name' => 'approved',
+				'type' => 'Checkbox',
+				'value' => $this->approved,
+				'options' => [[
+					'name' => __('admin/workers.approved'),
+				]],
+			]);
 			$fullData = $fullData->concat($this->getFieldsData());
 		}
-
+		
 		return $fullData;
 	}
-
+	
 	public function workplaces() {
 		return $this->belongsToMany(Workplace::class)->withTimestamps();
 	}
-
+	
 	public function getWorkplacesListAttribute() {
 		return $this->workplaces->implode('name', ', ');
-
+		
 	}
-
+	
 	public function photos() {
 		return $this->hasMany(WorkerPhoto::class);
 	}
@@ -101,12 +111,12 @@ class Worker extends Model {
 	public function isSupervisor() {
 		return $this->supervisor;
 	}
-
-	public function isMySupervisor(User $user){
+	
+	public function isMySupervisor(User $user) {
 		$user = $user->user;
-		if ($user->isSupervisor()){
-			foreach ($this->workplaces as $workplace){
-				if ($workplace->hasWorker($user)){
+		if ($user->isSupervisor()) {
+			foreach ($this->workplaces as $workplace) {
+				if ($workplace->hasWorker($user)) {
 					return true;
 				}
 			}

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Worker;
 
 use App\Http\Requests\Worker\StorePhotoRequest;
 use App\Http\Requests\Worker\UpdateWorkerRequest;
+use App\Models\Field;
 use App\Models\Worker;
 use App\Models\WorkerPhoto;
 use Auth;
@@ -17,7 +18,10 @@ class WorkerController extends Controller {
 	use ResetsPasswords;
 	
 	public function index(Worker $worker) {
-		return view('worker.worker', compact('worker'));
+		$formattersData = [
+			'totalDataCount' => Field::where('form', Worker::class)->count()
+		];
+		return view('worker.worker', compact('worker', 'formattersData'));
 	}
 	
 	public function showResetForm(Request $request, $token = null) {

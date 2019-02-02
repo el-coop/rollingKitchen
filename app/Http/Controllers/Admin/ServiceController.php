@@ -16,44 +16,45 @@ use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Excel;
 
 class ServiceController extends Controller {
-    use Exportable;
-
-    public function index() {
-    	$buttons = ['<a href="' . action('Admin\ServiceController@export') .   '" class="button is-info">' . __('admin/services.download_application_services') . '</a>'];
-
+	use Exportable;
+	
+	public function index() {
+		$buttons = ['<a href="' . action('Admin\ServiceController@export') . '" class="button is-info">' . __('admin/services.download_application_services') . '</a>'];
+		
 		$title = __('kitchen/kitchen.services');
 		$createTitle = __('admin/services.createService');
-
-		return view('admin.datatableWithNew', compact('title', 'createTitle', 'buttons'));
-
-    }
-
-    public function create() {
-
-        return (new Service)->fulldata;
-    }
-
-    public function store(CreateServiceRequest $request) {
-
-        return $request->commit();
-
-    }
-
-    public function edit(Service $service) {
-
-        return $service->fulldata;
-    }
-
-    public function update(UpdateServiceRequest $request, Service $service) {
-        return $request->commit();
-    }
-
-    public function export(Excel $excel, KitchenServicesService $kitchenServicesService){
-        return $excel->download($kitchenServicesService, __('admin/services.kitchenServices') . '.xls');
-    }
-
-    public function destroy(DestroyServiceRequest $request, Service $service){
+		$withEditLink = false;
+		
+		return view('admin.datatableWithNew', compact('title', 'createTitle', 'buttons', 'withEditLink'));
+		
+	}
+	
+	public function create() {
+		
+		return (new Service)->fulldata;
+	}
+	
+	public function store(CreateServiceRequest $request) {
+		
+		return $request->commit();
+		
+	}
+	
+	public function edit(Service $service) {
+		
+		return $service->fulldata;
+	}
+	
+	public function update(UpdateServiceRequest $request, Service $service) {
+		return $request->commit();
+	}
+	
+	public function export(Excel $excel, KitchenServicesService $kitchenServicesService) {
+		return $excel->download($kitchenServicesService, __('admin/services.kitchenServices') . '.xls');
+	}
+	
+	public function destroy(DestroyServiceRequest $request, Service $service) {
 		$request->commit();
 	}
-
+	
 }

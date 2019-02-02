@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use JustBetter\PaginationWithHavings\PaginationWithHavings;
 
 class Workplace extends Model {
-
+	use PaginationWithHavings;
+	
 	public function workFunctions() {
 		return $this->hasMany(WorkFunction::class);
 	}
@@ -25,11 +27,11 @@ class Workplace extends Model {
 			'value' => $this->workFunctions
 		]]);
 	}
-
+	
 	public function workers() {
 		return $this->belongsToMany(Worker::class)->withTimestamps();
 	}
-
+	
 	public function getWorkersForSupervisorAttribute() {
 		return [
 			'model' => Worker::class,
@@ -56,12 +58,12 @@ class Workplace extends Model {
 				'noTable' => true,
 				'title' => __('admin/workers.completed'),
 			]],
-
+		
 		];
-
+		
 	}
-
-	public function hasWorker(Worker $worker){
+	
+	public function hasWorker(Worker $worker) {
 		return $this->workers->contains($worker);
 	}
 }
