@@ -36,7 +36,7 @@ class ShiftPolicy {
 	 * @return mixed
 	 */
 	public function create(User $user) {
-		return $user->user_type == Admin::class || ($user->user_type == Worker::class && $user->user->isSupervisor());
+		return $user->user_type == Admin::class;
 	}
 
 	/**

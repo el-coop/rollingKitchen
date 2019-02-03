@@ -62,7 +62,7 @@ class SupervisorController extends Controller {
 
 	}
 
-	public function updateWorker(UpdateWorkerRequest $request,Workplace $workplace, Shift $worker) {
+	public function updateWorker(UpdateWorkerRequest $request,Workplace $workplace, Worker $worker) {
 		return $request->commit();
 	}
 
@@ -75,9 +75,9 @@ class SupervisorController extends Controller {
 			$shift = $worker->shifts->find($shift);
 			return [
 				'id' => $worker->id,
-				'name' => $worker->id,
-				'start-time'  => date('H:i',strtotime($worker->shifts->find($shift)->pivot->start_time)),
-				'end-time'  => date('H:i',strtotime($worker->shifts->find($shift)->pivot->end_time))
+				'worker' => $worker->id,
+				'start-time'  => date('H:i',strtotime($shift->pivot->start_time)),
+				'end-time'  => date('H:i',strtotime($shift->pivot->end_time))
 
 			];
 		});

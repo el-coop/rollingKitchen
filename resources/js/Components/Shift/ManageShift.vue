@@ -4,7 +4,7 @@
         </dynamic-fields>
         <dynamic-table :columns="[
         {
-            name: 'name',
+            name: 'worker',
             label: this.$translations.name,
             type: 'select',
             options: this.workers,

@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<component v-if="hide.indexOf(field.name) === -1 || field.hide"
+		<component v-if="hide.indexOf(field.name) === -1"
 				   :error="field.error || null"
 				   v-for="(field,key) in renderFields" :is="`${field.type}-field`"
 				   :field="field" :key="key">

@@ -24,20 +24,20 @@ class UpdateWorkerShiftRequest extends FormRequest {
 	 */
 	public function rules() {
 		return [
-			'name' => 'required|integer',
+			'worker' => 'required|integer',
 			'start-time' => 'required|date_format:H:i',
 			'end-time' => 'required|date_format:H:i'
 		];
 	}
 
 	public function commit() {
-		$this->shift->workers()->updateExistingPivot($this->input('name'), [
+		$this->shift->workers()->updateExistingPivot($this->input('worker'), [
 			'start_time' => $this->input('start-time'),
 			'end_time' => $this->input('end-time')
 		]);
 		return [
-			'id' => $this->input('name'),
-			'name' => $this->input('name'),
+			'id' => $this->input('worker'),
+			'worker' => $this->input('worker'),
 			'start-time' => $this->input('start-time'),
 			'end-time' => $this->input('end-time')
 		];
