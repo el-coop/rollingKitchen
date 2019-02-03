@@ -82,6 +82,7 @@ class UpdateTest extends TestCase {
 			'worker' => [
 				'data' => 'bata',
 			],
+			'approved' => true,
 			'workplaces' => $workplaces->toArray(),
 		])->assertSuccessful();
 
@@ -96,7 +97,7 @@ class UpdateTest extends TestCase {
 		$this->assertDatabaseHas('workers', [
 			'supervisor' => false,
 			'type' => 1,
-			'approved' => 0,
+			'approved' => true,
 			'data' => json_encode([
 				'data' => 'bata',
 			]),
@@ -117,6 +118,7 @@ class UpdateTest extends TestCase {
 			'type' => 3,
 			'language' => 'dl',
 			'supervisor' => 'asd',
+			'approved' => 'asd',
 			'workplaces' => 'asd'
 		])->assertRedirect()->assertSessionHasErrors([
 			'name',
@@ -124,6 +126,7 @@ class UpdateTest extends TestCase {
 			'type',
 			'language',
 			'supervisor',
+			'approved',
 			'worker',
 			'workplaces'
 		]);
