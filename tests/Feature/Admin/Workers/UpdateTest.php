@@ -82,7 +82,6 @@ class UpdateTest extends TestCase {
 			'worker' => [
 				'data' => 'bata',
 			],
-			'supervisor' => false,
 			'workplaces' => $workplaces->toArray(),
 		])->assertSuccessful();
 
@@ -97,6 +96,7 @@ class UpdateTest extends TestCase {
 		$this->assertDatabaseHas('workers', [
 			'supervisor' => false,
 			'type' => 1,
+			'approved' => 0,
 			'data' => json_encode([
 				'data' => 'bata',
 			]),

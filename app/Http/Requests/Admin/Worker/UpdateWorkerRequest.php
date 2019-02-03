@@ -47,8 +47,8 @@ class UpdateWorkerRequest extends FormRequest {
 		$this->worker->user->email = $this->input('email');
 		$this->worker->type = $this->input('type');
 		$this->worker->user->language = $this->input('language');
-		$this->worker->supervisor = $this->input('supervisor');
-		$this->worker->approved = $this->input('approved');
+		$this->worker->supervisor = $this->filled('supervisor');
+		$this->worker->approved = $this->filled('approved');
 		
 		$this->worker->data = array_filter($this->input('worker'));
 		
