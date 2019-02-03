@@ -48,6 +48,7 @@ return [
 	'protected' => 'Protected',
 	'required' => 'Required',
 	'none' => 'None',
-	'noData' => 'No data available'
+	'noData' => 'No data available',
+	'name' => 'Name'
 
 ];

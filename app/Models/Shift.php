@@ -34,4 +34,14 @@ class Shift extends Model {
 			'value' => $this->hours
 		]]);
 	}
+
+	public function workers(){
+		return $this->belongsToMany(Worker::class)->withPivot('start_time', 'end_time');
+	}
+
+	public function getWorkersUsersAttribute(){
+		return $this->workers->map(function ($worker) {
+			return $worker->user;
+		}) ?? [];
+	}
 }

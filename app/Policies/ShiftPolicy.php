@@ -6,17 +6,18 @@ use App\Models\Admin;
 use App\Models\Developer;
 use App\Models\User;
 use App\Models\Shift;
+use App\Models\Worker;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ShiftPolicy {
 	use HandlesAuthorization;
-	
+
 	public function before($user, $ability) {
 		if ($user->user_type == Developer::class) {
 			return true;
 		}
 	}
-	
+
 	/**
 	 * Determine whether the user can view the shift.
 	 *
@@ -27,7 +28,7 @@ class ShiftPolicy {
 	public function view(User $user, Shift $shift) {
 		//
 	}
-	
+
 	/**
 	 * Determine whether the user can create shifts.
 	 *
@@ -35,9 +36,9 @@ class ShiftPolicy {
 	 * @return mixed
 	 */
 	public function create(User $user) {
-		return $user->user_type == Admin::class;
+		return $user->user_type == Admin::class || ($user->user_type == Worker::class && $user->user->isSupervisor());
 	}
-	
+
 	/**
 	 * Determine whether the user can update the shift.
 	 *
@@ -46,9 +47,9 @@ class ShiftPolicy {
 	 * @return mixed
 	 */
 	public function update(User $user, Shift $shift) {
-		//
+		return $user->user_type == Worker::class && $user->user->isSupervisor() && $shift->workplace->hasWorker($user->user);
 	}
-	
+
 	/**
 	 * Determine whether the user can delete the shift.
 	 *
@@ -59,7 +60,7 @@ class ShiftPolicy {
 	public function delete(User $user, Shift $shift) {
 		//
 	}
-	
+
 	/**
 	 * Determine whether the user can restore the shift.
 	 *
@@ -70,7 +71,7 @@ class ShiftPolicy {
 	public function restore(User $user, Shift $shift) {
 		//
 	}
-	
+
 	/**
 	 * Determine whether the user can permanently delete the shift.
 	 *

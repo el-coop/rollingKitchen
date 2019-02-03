@@ -1,12 +1,7 @@
 <div class="tile is-ancestor">
     <div class="tile is-parent">
         <div class="tile is-child">
-            <dynamic-form :init-field="{{$workplace->fullData->except('workFunctions')}}"
-                          url="{{action('Worker\SupervisorController@editWorkplace', $workplace)}}"
-                          :hide="['workFunctions']"
-            >
-                <template>
-                    <dynamic-table :columns="[{
+            <dynamic-table :columns="[{
                         name: 'name',
                         label: '@lang('global.name')'
                     },{
@@ -21,10 +16,8 @@
                         subType: 'number',
                         callback: 'localNumber',
                     }]" :init-fields="{{$workplace->workFunctions}}" class="mb-1"
-                                   action="{{action('Worker\SupervisorController@addWorkFunction', $workplace)}}">
-                    </dynamic-table>
-                </template>
-            </dynamic-form>
+                           action="{{action('Worker\SupervisorController@addWorkFunction', $workplace)}}">
+            </dynamic-table>
         </div>
     </div>
 </div>
