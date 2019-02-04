@@ -73,7 +73,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 			Route::patch('/', 'SettingsController@update');
 		});
 		
-		Route::group(['prefix' => 'fielsystem'], function () {
+		Route::group(['prefix' => 'filesystem'], function () {
 			Route::get('/', 'PDFController@index');
 			Route::post('/', 'PDFController@upload');
 			Route::patch('/{pdf}', 'PDFController@update');
@@ -106,6 +106,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 			Route::get('/', 'ShiftController@index');
 			Route::get('/edit', 'ShiftController@create');
 			Route::post('/edit', 'ShiftController@store');
+			Route::get('/edit/{shift}', 'ShiftController@edit');
+			Route::patch('/edit/{shift}', 'ShiftController@update');
 		});
 		
 		Route::group(['prefix' => 'workplaces'], function () {
