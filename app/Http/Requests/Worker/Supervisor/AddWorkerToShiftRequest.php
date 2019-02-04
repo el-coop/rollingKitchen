@@ -20,7 +20,7 @@ class AddWorkerToShiftRequest extends FormRequest {
 		$this->shift = $this->route('shift');
 		$this->workplace = $this->route('workplace');
 		$this->worker = Worker::find($this->input('worker'));
-		return $this->user()->can('update', $this->shift) && $this->workplace->hasWorker($this->worker);
+		return $this->user()->can('update', $this->shift) && $this->workplace->hasWorker($this->worker) && !$this->shift->closed;
 	}
 
 	/**
@@ -31,18 +31,20 @@ class AddWorkerToShiftRequest extends FormRequest {
 	public function rules() {
 		return [
 			'worker' => 'required|integer',
-			'start-time' => 'required|date_format:H:i',
-			'end-time' => 'required|date_format:H:i'
+			'startTime' => 'required|date_format:H:i',
+			'endTime' => 'required|date_format:H:i',
+			'workFunction' => 'required|integer'
 		];
 	}
 
 	public  function commit(){
-		$this->shift->workers()->attach($this->worker, ['start_time' => $this->input('start-time'), 'end_time' => $this->input('end-time')]);
+		$this->shift->workers()->attach($this->worker, ['start_time' => $this->input('startTime'), 'end_time' => $this->input('endTime'), 'work_function_id' => $this->input('workFunction')]);
 		return [
 			'id' => $this->worker->id,
 			'worker' =>  $this->worker->id,
-			'start-time' => $this->input('start-time'),
-			'end-time' => $this->input('end-time')
+			'startTime' => $this->input('startTime'),
+			'endTime' => $this->input('endTime'),
+			'workFunction' => $this->input('workFunction')
 		];
 	}
 }

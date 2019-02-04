@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\Workplace\DeleteWorkFunctionRequest;
 use App\Http\Requests\Admin\Workplace\UpdateWorkFunctionRequest;
 use App\Http\Requests\Admin\Workplace\UpdateWorkplaceRequest;
 use App\Http\Requests\Worker\Supervisor\AddWorkerToShiftRequest;
+use App\Http\Requests\Worker\Supervisor\CloseShiftRequest;
 use App\Http\Requests\Worker\Supervisor\CreateShiftRequest;
 use App\Http\Requests\Worker\Supervisor\CreateWorkerRequest;
 use App\Http\Requests\Worker\Supervisor\RemoveWorkerFromShiftRequest;
@@ -21,15 +22,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class SupervisorController extends Controller {
-
-	public function editWorkplace(Workplace $workplace) {
-		return $workplace->fullData;
-	}
-
-	public function updateWorkplace(UpdateWorkplaceRequest $request, Workplace $workplace) {
-		return $request->commit();
-
-	}
 
 	public function addWorkFunction(AddWorkFunctionRequest $request, Workplace $workplace) {
 		return $request->commit();
@@ -70,23 +62,32 @@ class SupervisorController extends Controller {
 		$fields = $shift->fullData->map(function ($value){
 			$value['readonly'] = true;
 			return $value;
-		});
+		})->push([
+			'name' => 'closed',
+			'value' => $shift->closed,
+		]);
 		$shiftWorkers = $shift->workers->map(function ($worker) use ($shift){
 			$shift = $worker->shifts->find($shift);
 			return [
 				'id' => $worker->id,
 				'worker' => $worker->id,
-				'start-time'  => date('H:i',strtotime($shift->pivot->start_time)),
-				'end-time'  => date('H:i',strtotime($shift->pivot->end_time))
+				'startTime'  => date('H:i',strtotime($shift->pivot->start_time)),
+				'endTime'  => date('H:i',strtotime($shift->pivot->end_time)),
+				'workFunction' => $worker->pivot->work_function_id
 
 			];
 		});
 		return [
 			'shift' => $fields->toArray(),
 			'workers' => $workplace->workers()->with('user')->get()->pluck('user.name', 'id'),
-			'shiftWorkers' => $shiftWorkers
+			'shiftWorkers' => $shiftWorkers,
+			'workFunctions' => $workplace->workFunctions->pluck('name', 'id')
 
 		];
+	}
+
+	public function closeShift(CloseShiftRequest $request, Workplace $workplace, Shift $shift){
+		return $request->commit();
 	}
 
 	public function addWorkerToShift(AddWorkerToShiftRequest $request, Workplace $workplace, Shift $shift){

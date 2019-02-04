@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateWorkerShiftRequest extends FormRequest {
 	protected $shift;
+	protected $worker;
 
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -14,7 +15,8 @@ class UpdateWorkerShiftRequest extends FormRequest {
 	 */
 	public function authorize() {
 		$this->shift = $this->route('shift');
-		return $this->user()->can('update', $this->shift);
+		$this->worker = $this->route('worker');
+		return $this->user()->can('update', $this->shift) && !$this->shift->closed;
 	}
 
 	/**
@@ -24,22 +26,24 @@ class UpdateWorkerShiftRequest extends FormRequest {
 	 */
 	public function rules() {
 		return [
-			'worker' => 'required|integer',
-			'start-time' => 'required|date_format:H:i',
-			'end-time' => 'required|date_format:H:i'
+			'startTime' => 'required|date_format:H:i',
+			'endTime' => 'required|date_format:H:i',
+			'workFunction' => 'required|integer'
 		];
 	}
 
 	public function commit() {
-		$this->shift->workers()->updateExistingPivot($this->input('worker'), [
-			'start_time' => $this->input('start-time'),
-			'end_time' => $this->input('end-time')
+		$this->shift->workers()->updateExistingPivot($this->worker, [
+			'start_time' => $this->input('startTime'),
+			'end_time' => $this->input('endTime'),
+			'work_function_id' => $this->input('workFunction')
 		]);
 		return [
-			'id' => $this->input('worker'),
-			'worker' => $this->input('worker'),
-			'start-time' => $this->input('start-time'),
-			'end-time' => $this->input('end-time')
+			'id' => $this->worker->id,
+			'worker' => $this->worker->id,
+			'startTime' => $this->input('startTime'),
+			'endTime' => $this->input('endTime'),
+			'workFunction' => $this->input('workFunction')
 		];
 	}
 

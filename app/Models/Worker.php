@@ -115,7 +115,7 @@ class Worker extends Model {
 	}
 
 	public function shifts(){
-		return $this->belongsToMany(Shift::class)->withPivot('start_time', 'end_time');
+		return $this->belongsToMany(Shift::class)->withPivot('start_time', 'end_time', 'work_function_id');
 	}
 }
 

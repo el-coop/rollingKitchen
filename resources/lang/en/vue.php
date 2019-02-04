@@ -49,6 +49,7 @@ return [
 	'required' => 'Required',
 	'none' => 'None',
 	'noData' => 'No data available',
-	'name' => 'Name'
-
+	'name' => 'Name',
+	'workFunctions' => 'Work Function',
+	'closeShift' => 'Close Shift'
 ];

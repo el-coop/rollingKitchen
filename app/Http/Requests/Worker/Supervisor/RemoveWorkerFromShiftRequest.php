@@ -16,7 +16,7 @@ class RemoveWorkerFromShiftRequest extends FormRequest {
 	public function authorize() {
 		$this->shift = $this->route('shift');
 		$this->worker = $this->route('worker');
-		return $this->user()->can('update', $this->shift);
+		return $this->user()->can('update', $this->shift) && !$this->shift->closed;
 	}
 
 	/**

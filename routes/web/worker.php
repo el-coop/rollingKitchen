@@ -17,9 +17,6 @@ Route::group(['prefix' => 'worker', 'namespace' => 'Worker'], function () {
 			Route::delete('/{worker}/photo/{photo}', 'WorkerController@destroyPhoto');
 		});
 		route::group(['middleware' => 'supervisor'], function () {
-			Route::get('workplace/{workplace}', 'SupervisorController@editWorkplace');
-			Route::patch('workplace/{workplace}', 'SupervisorController@updateWorkplace');
-
 			Route::post('workplace/{workplace}/workFunctions', 'SupervisorController@addWorkFunction');
 			Route::delete('workplace/{workplace}/workFunctions/{workFunction}', 'SupervisorController@destroyWorkFunction');
 			Route::patch('workplace/{workplace}/workFunctions/{workFunction}', 'SupervisorController@updateWorkFunction');
@@ -31,11 +28,11 @@ Route::group(['prefix' => 'worker', 'namespace' => 'Worker'], function () {
 			Route::patch('workplace/{workplace}/worker/{worker}', 'SupervisorController@updateWorker');
 
 			Route::get('workplace/{workplace}/shift/{shift}', 'SupervisorController@editShift');
-			Route::patch('workplace/{workplace}/shift/{shift}', 'SupervisorController@updateShift');
+			Route::patch('workplace/{workplace}/shift/{shift}', 'SupervisorController@closeShift');
 
 			Route::post('workplace/{workplace}/shift/{shift}/worker', 'SupervisorController@addWorkerToShift');
 			Route::delete('workplace/{workplace}/shift/{shift}/worker/{worker}', 'SupervisorController@removeWorkerFromShift');
-			Route::PATCH('workplace/{workplace}/shift/{shift}/worker/{worker}', 'SupervisorController@updateWorkerShift');
+			Route::patch('workplace/{workplace}/shift/{shift}/worker/{worker}', 'SupervisorController@updateWorkerShift');
 
 		});
 	});

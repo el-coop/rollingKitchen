@@ -17,6 +17,7 @@ class CreateShiftWorkerTable extends Migration
             $table->increments('id');
 			$table->integer('worker_id')->unsigned();
 			$table->integer('shift_id')->unsigned();
+			$table->integer('work_function_id')->unsigned();
 			$table->time('start_time');
 			$table->time('end_time');
 			$table->timestamps();
