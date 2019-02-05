@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Developer;
 use App\Models\User;
 use App\Models\Shift;
+use App\Models\Worker;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ShiftPolicy {
@@ -49,7 +50,7 @@ class ShiftPolicy {
 	 * @return mixed
 	 */
 	public function update(User $user, Shift $shift) {
-		return $user->user_type == Admin::class;
+		return $user->user_type == Worker::class && $user->user->isSupervisor() && $shift->workplace->hasWorker($user->user);
 	}
 
 	/**

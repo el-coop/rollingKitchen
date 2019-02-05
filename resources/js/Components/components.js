@@ -10,6 +10,7 @@ Vue.component('toast', require('./Global/Toast').default);
 Vue.component('FireworksModal', require('./Global/FireworksModal').default);
 Vue.component('ConfirmationSubmit', require('./Global/ConfirmationSubmit').default);
 Vue.component('InvoicePaymentsModal', require('./Invoice/InvoicePaymentsModal').default);
+Vue.component('ManageShift', require('./Shift/ManageShift').default);
 
 // utilities
 Vue.component('Drawer', require('./Utilities/Drawer').default);
