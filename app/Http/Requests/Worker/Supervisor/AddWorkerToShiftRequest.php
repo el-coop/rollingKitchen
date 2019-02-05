@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests\Worker\Supervisor;
 
-use App\Models\Shift;
-use App\Models\User;
 use App\Models\Worker;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -19,7 +17,7 @@ class AddWorkerToShiftRequest extends FormRequest {
 	public function authorize() {
 		$this->shift = $this->route('shift');
 		$this->workplace = $this->route('workplace');
-		$this->worker = Worker::find($this->input('worker'));
+		$this->worker = Worker::findOrFail($this->input('worker'));
 		return $this->user()->can('update', $this->shift) && $this->workplace->hasWorker($this->worker) && !$this->shift->closed;
 	}
 

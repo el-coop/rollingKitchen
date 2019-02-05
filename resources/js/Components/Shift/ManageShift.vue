@@ -30,7 +30,7 @@
         ]" :init-fields="shiftWorkers" :action="tableAction">
         </dynamic-table>
         <div class="mt-1" v-if="!shift[3].value">
-            <ajax-form method="patch" :action="url">
+            <ajax-form method="patch" :action="url" @submitted="setObjects">
                 <button class="button is-danger" type="submit" v-text="$translations.closeShift"></button>
             </ajax-form>
         </div>
@@ -68,18 +68,22 @@
         methods: {
             async setUp(){
                 const response = await axios.get(this.url);
+                this.setObjects(response);
+
+
+            },
+            setObjects(response){
                 this.shiftWorkers = response.data.shiftWorkers;
                 this.shift = response.data.shift;
                 this.workers = response.data.workers;
                 this.workFunctions = response.data.workFunctions;
-
             }
         },
         created() {
             this.setUp()
         },
         computed: {
-            tableAction: function () {
+            tableAction() {
                 if ( this.shift[3].value === true){
                     return '';
                 }

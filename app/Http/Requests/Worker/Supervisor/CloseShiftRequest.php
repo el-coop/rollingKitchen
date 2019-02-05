@@ -36,7 +36,10 @@ class CloseShiftRequest extends FormRequest {
 		$fields = $this->shift->fullData->map(function ($value){
 			$value['readonly'] = true;
 			return $value;
-		});
+		})->push([
+			'name' => 'closed',
+			'value' => true,
+		]);
 		$shiftWorkers = $this->shift->workers->map(function ($worker){
 			$shift = $worker->shifts->find($this->shift);
 			return [
@@ -53,7 +56,6 @@ class CloseShiftRequest extends FormRequest {
 			'workers' => $this->workplace->workers()->with('user')->get()->pluck('user.name', 'id'),
 			'shiftWorkers' => $shiftWorkers,
 			'workFunctions' => $this->workplace->workFunctions->pluck('name', 'id')
-
 		];
 	}
 }
