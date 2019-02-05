@@ -63,7 +63,6 @@ class Workplace extends Model {
 		
 	}
   
-workers
 	public function hasWorker(Worker $worker) {
 		return $this->workers->contains($worker);
 	}
