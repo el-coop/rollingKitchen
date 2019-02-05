@@ -83,16 +83,17 @@ class SupervisorTest extends TestCase {
 	}
 
 	public function test_supervisor_can_add_workFunction() {
-		$response = $this->actingAs($this->supervisor)->post(action('Worker\SupervisorController@addWorkFunction', [
-			$this->workplace,
+		$response = $this->actingAs($this->supervisor)->post(action('Worker\SupervisorController@addWorkFunction',
+			$this->workplace
+		), [
 			'name' => 'name',
 			'payment_per_hour_before_tax' => 12,
 			'payment_per_hour_after_tax' => 10,
-		]))->assertSuccessful();
+		])->assertSuccessful();
 		$response->assertJsonFragment([
 			'name' => 'name',
-			'payment_per_hour_after_tax' => "10",
-			'payment_per_hour_before_tax' => "12",
+			'payment_per_hour_after_tax' => 10,
+			'payment_per_hour_before_tax' => 12,
 			'workplace_id' => 1
 		]);
 
@@ -124,14 +125,15 @@ class SupervisorTest extends TestCase {
 		$response = $this->actingAs($this->supervisor)->patch(action('Worker\SupervisorController@updateWorkFunction', [
 			$this->workplace,
 			$this->workplace->workFunctions->first(),
+		]), [
 			'name' => 'name',
 			'payment_per_hour_before_tax' => 12,
 			'payment_per_hour_after_tax' => 10,
-		]))->assertSuccessful();
+		])->assertSuccessful();
 		$response->assertJsonFragment([
 			'name' => 'name',
-			'payment_per_hour_after_tax' => "10",
-			'payment_per_hour_before_tax' => "12",
+			'payment_per_hour_after_tax' => 10,
+			'payment_per_hour_before_tax' => 12,
 			'id' => $this->workplace->workFunctions->first()->id,
 		]);
 
@@ -220,16 +222,18 @@ class SupervisorTest extends TestCase {
 	}
 
 	public function test_supervisor_can_store_worker() {
-		$this->actingAs($this->supervisor)->post(action('Worker\SupervisorController@storeWorker', [
-			$this->workplace,
-			'name' => 'name',
-			'email' => 'test@test.com',
-			'type' => 0,
-			'language' => 'en']))->assertSuccessful()
+		$this->actingAs($this->supervisor)->post(action('Worker\SupervisorController@storeWorker',
+			$this->workplace),
+			[
+				'name' => 'name',
+				'email' => 'test@test.com',
+				'type' => 0,
+				'language' => 'en'
+			])->assertSuccessful()
 			->assertJsonFragment([
 				'name' => 'name',
 				'email' => 'test@test.com',
-				'type' => "0",
+				'type' => 0,
 				'language' => 'en',
 			]);
 
@@ -241,24 +245,50 @@ class SupervisorTest extends TestCase {
 	}
 
 	public function test_guest_cant_get_supervisor_datatable() {
-		$this->get(action('DatatableController@supervisorList', ['table' => json_encode($this->workplace->workersForSupervisor), 'per_page' => 20, 'sort' => 'name|asc']))->assertRedirect(action('Auth\LoginController@login'));
+		$this->get(action('DatatableController@supervisorList'),
+			['table' => json_encode($this->workplace->workersForSupervisor),
+				'per_page' => 20,
+				'sort' => 'name|asc'
+			]
+		)->assertRedirect(action('Auth\LoginController@login'));
 	}
 
 	public function test_admin_cant_get_supervisor_datatable() {
-		$this->actingAs($this->admin)->get(action('DatatableController@supervisorList', ['table' => json_encode($this->workplace->workersForSupervisor), 'per_page' => 20, 'sort' => 'name|asc']))->assertForbidden();
+		$this->actingAs($this->admin)->get(action('DatatableController@supervisorList'),
+			['table' => json_encode($this->workplace->workersForSupervisor),
+				'per_page' => 20,
+				'sort' => 'name|asc'
+			]
+		)->assertForbidden();
 	}
 
 	public function test_kitchen_cant_get_supervisor_datatable() {
-		$this->actingAs($this->kitchen)->get(action('DatatableController@supervisorList', ['table' => json_encode($this->workplace->workersForSupervisor), 'per_page' => 20, 'sort' => 'name|asc']))->assertForbidden();
+		$this->actingAs($this->kitchen)->get(action('DatatableController@supervisorList'),
+			['table' => json_encode($this->workplace->workersForSupervisor),
+				'per_page' => 20,
+				'sort' => 'name|asc'
+			]
+		)->assertForbidden();
 	}
 
 	public function test_worker_cant_get_supervisor_datatable() {
-		$this->actingAs($this->worker)->get(action('DatatableController@supervisorList', ['table' => json_encode($this->workplace->workersForSupervisor), 'per_page' => 20, 'sort' => 'name|asc']))->assertForbidden();
+		$this->actingAs($this->worker)->get(action('DatatableController@supervisorList'),
+			['table' => json_encode($this->workplace->workersForSupervisor),
+				'per_page' => 20,
+				'sort' => 'name|asc'
+			]
+		)->assertForbidden();
 	}
 
 	public function test_supervisor_can_get_supervisor_datatable() {
 		$table = str_replace('\\\\', '\\', json_encode($this->workplace->workersForSupervisor));
-		$response = $this->actingAs($this->supervisor)->get(action('DatatableController@supervisorList', ['table' => $table, 'per_page' => 20, 'sort' => 'name|asc']))->assertSuccessful();
+		$response = $this->actingAs($this->supervisor)->get(action('DatatableController@supervisorList', [
+				'table' => $table,
+				'per_page' => 20,
+				'sort' => 'name|asc'
+			])
+
+		)->assertSuccessful();
 		$response->assertJsonFragment([
 			'name' => $this->worker->name,
 			'id' => $this->worker->user->id,
@@ -317,7 +347,6 @@ class SupervisorTest extends TestCase {
 	public function test_supervisor_can_update_worker() {
 		$this->actingAs($this->supervisor)->patch(action('Worker\SupervisorController@updateWorker', [$this->workplace,
 			$this->worker->user]), [
-
 			'name' => 'name',
 			'email' => 'test@best.com',
 			'type' => 1,
@@ -405,61 +434,66 @@ class SupervisorTest extends TestCase {
 	public function test_guest_cant_add_worker_to_shift() {
 		$this->post(action('Worker\SupervisorController@addWorkerToShift', [
 			$this->workplace,
-			$this->shift,
+			$this->shift
+		]), [
 			'worker' => $this->worker->user->id,
 			'startTime' => '20:00',
 			'endTime' => '22:00',
 			'workFunction' => $this->workplace->workFunctions->first()->id
-		]))->assertRedirect(action('Auth\LoginController@login'));
+		])->assertRedirect(action('Auth\LoginController@login'));
 	}
 
 	public function test_kitchen_cant_add_worker_to_shift() {
 		$this->actingAs($this->kitchen)->post(action('Worker\SupervisorController@addWorkerToShift', [
-			$this->workplace, $this->shift,
-			$this->worker,
+			$this->workplace,
+			$this->shift
+		]), [
 			'worker' => $this->worker->user->id,
 			'startTime' => '20:00',
 			'endTime' => '22:00',
 			'workFunction' => $this->workplace->workFunctions->first()->id
-		]))->assertForbidden();
+		])->assertForbidden();
 	}
 
 	public function test_admin_cant_add_worker_to_shift() {
 		$this->actingAs($this->admin)->post(action('Worker\SupervisorController@addWorkerToShift', [
-			$this->workplace, $this->shift,
-			$this->worker,
+			$this->workplace,
+			$this->shift
+		]), [
 			'worker' => $this->worker->user->id,
 			'startTime' => '20:00',
 			'endTime' => '22:00',
 			'workFunction' => $this->workplace->workFunctions->first()->id
-		]))->assertForbidden();
+		])->assertForbidden();
 	}
 
 	public function test_worker_cant_add_worker_to_shift() {
 		$this->actingAs($this->worker)->post(action('Worker\SupervisorController@addWorkerToShift', [
-			$this->workplace, $this->shift,
-			$this->worker,
+			$this->workplace,
+			$this->shift
+		]), [
 			'worker' => $this->worker->user->id,
 			'startTime' => '20:00',
 			'endTime' => '22:00',
 			'workFunction' => $this->workplace->workFunctions->first()->id
-		]))->assertForbidden();
+		])->assertForbidden();
 	}
 
 	public function test_supervisor_can_add_worker_to_shift() {
 		$this->actingAs($this->supervisor)->post(action('Worker\SupervisorController@addWorkerToShift', [
 			$this->workplace,
-			$this->shift,
+			$this->shift
+		]), [
 			'worker' => $this->worker->user->id,
 			'startTime' => '20:00',
 			'endTime' => '22:00',
 			'workFunction' => $this->workplace->workFunctions->first()->id
-		]))->assertSuccessful()
+		])->assertSuccessful()
 			->assertJsonFragment([
 				'worker' => $this->worker->user->id,
 				'startTime' => '20:00',
 				'endTime' => '22:00',
-				'workFunction' => "{$this->workplace->workFunctions->first()->id}"
+				'workFunction' => $this->workplace->workFunctions->first()->id
 			]);
 		$this->assertDatabaseHas('shift_worker', [
 			'worker_id' => $this->worker->user->id,
@@ -474,13 +508,14 @@ class SupervisorTest extends TestCase {
 		$this->shift->closed = true;
 		$this->shift->save();
 		$this->actingAs($this->kitchen)->post(action('Worker\SupervisorController@addWorkerToShift', [
-			$this->workplace, $this->shift,
-			$this->worker,
+			$this->workplace,
+			$this->shift
+		]), [
 			'worker' => $this->worker->user->id,
 			'startTime' => '20:00',
 			'endTime' => '22:00',
 			'workFunction' => $this->workplace->workFunctions->first()->id
-		]))->assertForbidden();
+		])->assertForbidden();
 	}
 
 	public function test_guest_cant_remove_worker_from_shift() {
@@ -543,10 +578,11 @@ class SupervisorTest extends TestCase {
 			$this->workplace,
 			$this->shift,
 			$this->shiftWorker->user,
+		]), [
 			'startTime' => '20:00',
 			'endTime' => '22:00',
 			'workFunction' => $this->workplace->workFunctions->first()->id
-		]))->assertRedirect(action('Auth\LoginController@login'));
+		])->assertRedirect(action('Auth\LoginController@login'));
 	}
 
 	public function test_kitchen_cant_update_shift_worker() {
@@ -554,10 +590,11 @@ class SupervisorTest extends TestCase {
 			$this->workplace,
 			$this->shift,
 			$this->shiftWorker->user,
+		]), [
 			'startTime' => '20:00',
 			'endTime' => '22:00',
 			'workFunction' => $this->workplace->workFunctions->first()->id
-		]))->assertForbidden();
+		])->assertForbidden();
 	}
 
 	public function test_admin_cant_update_shift_worker() {
@@ -565,10 +602,11 @@ class SupervisorTest extends TestCase {
 			$this->workplace,
 			$this->shift,
 			$this->shiftWorker->user,
+		]), [
 			'startTime' => '20:00',
 			'endTime' => '22:00',
 			'workFunction' => $this->workplace->workFunctions->first()->id
-		]))->assertForbidden();
+		])->assertForbidden();
 	}
 
 	public function test_worker_cant_update_shift_worker() {
@@ -576,17 +614,19 @@ class SupervisorTest extends TestCase {
 			$this->workplace,
 			$this->shift,
 			$this->shiftWorker->user,
+		]), [
 			'startTime' => '20:00',
 			'endTime' => '22:00',
 			'workFunction' => $this->workplace->workFunctions->first()->id
-		]))->assertForbidden();
+		])->assertForbidden();
 	}
 
 	public function test_supervisor_can_update_shift_worker() {
-		$this->actingAs($this->supervisor)->patch(action('Worker\SupervisorController@updateWorkerShift',[
+		$this->actingAs($this->supervisor)->patch(action('Worker\SupervisorController@updateWorkerShift', [
 			$this->workplace,
 			$this->shift,
-			$this->shiftWorker->user]),[
+			$this->shiftWorker->user,
+		]), [
 			'startTime' => '10:00',
 			'endTime' => '19:00',
 			'workFunction' => $this->workplace->workFunctions->first()->id
@@ -609,23 +649,28 @@ class SupervisorTest extends TestCase {
 	public function test_supervisor_cant_update_closed_shift_worker() {
 		$this->shift->closed = true;
 		$this->shift->save();
-		$this->actingAs($this->supervisor)->patch(action('Worker\SupervisorController@updateWorkerShift',[
+		$this->actingAs($this->supervisor)->patch(action('Worker\SupervisorController@updateWorkerShift', [
 			$this->workplace,
 			$this->shift,
-			$this->shiftWorker->user]),[
-			'startTime' => '10:00',
-			'endTime' => '19:00',
+			$this->shiftWorker->user,
+		]), [
+			'startTime' => '20:00',
+			'endTime' => '22:00',
 			'workFunction' => $this->workplace->workFunctions->first()->id
 		])->assertForbidden();
 	}
 
-		public function test_supervisor_can_get_shift_datatable() {
-			$table = str_replace('\\\\', '\\', json_encode($this->workplace->shiftsForSupervisor));
-			$response = $this->actingAs($this->supervisor)->get(action('DatatableController@supervisorList', ['table' => $table, 'per_page' => 20, 'sort' => 'name|asc']))->assertSuccessful();
-			$response->assertJsonFragment([
-				'date' => $this->shift->date,
-				'id' => $this->shift->id,
-				'hours' => "{$this->shift->hours}"
-			]);
-		}
+	public function test_supervisor_can_get_shift_datatable() {
+		$table = str_replace('\\\\', '\\', json_encode($this->workplace->shiftsForSupervisor));
+		$response = $this->actingAs($this->supervisor)->get(action('DatatableController@supervisorList', [
+			'table' => $table,
+			'per_page' => 20,
+			'sort' => 'name|asc'
+		]))->assertSuccessful();
+		$response->assertJsonFragment([
+			'date' => $this->shift->date,
+			'id' => $this->shift->id,
+			'hours' => "{$this->shift->hours}"
+		]);
+	}
 }
