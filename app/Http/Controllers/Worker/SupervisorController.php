@@ -41,7 +41,7 @@ class SupervisorController extends Controller {
 
 	public function createWorker() {
 		return (new Worker)->fullData->reject(function ($value){
-			return $value['name'] == 'workplaces' || $value['name'] == 'Supervisor';
+			return $value['name'] == 'workplaces' || $value['name'] == 'supervisor';
 		});
 	}
 
@@ -52,7 +52,7 @@ class SupervisorController extends Controller {
 	public function editWorker(Workplace $workplace, Worker $worker) {
 
 		return $worker->fullData->reject(function ($value){
-			return $value['name'] == 'Supervisor';
+			return $value['name'] == 'supervisor';
 		});
 
 	}

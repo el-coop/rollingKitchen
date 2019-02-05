@@ -3,7 +3,7 @@
 return [
 	'workers' => 'Workers',
 	'createWorker' => 'Create Worker',
-	'makeSupervisor' => 'Create as supervisor',
+	'makeSupervisor' => 'Is supervisor',
 	'type' => 'Type',
 	'payroll' => 'Payroll',
 	'freelance' => 'Freelancer',
@@ -17,4 +17,5 @@ return [
 	'fillProfile' => 'Fill your profile',
 	'workplace' => 'Workplace',
 	'createShift' => 'Create Shift',
+	'approved' => 'Approved'
 ];

@@ -47,6 +47,10 @@
 				day = day.length > 1 ? day : '0' + day;
 
 				return day + '/' + month + '/' + year;
+			},
+
+			dataCompleted(value) {
+				return `${100 * value / this.formattersData.totalDataCount}%`;
 			}
 		}
 	}
