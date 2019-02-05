@@ -12,6 +12,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class KitchenViewTest extends TestCase {
+	use RefreshDatabase;
 	private $admin;
 	private $kitchen;
 	private $application;

@@ -83,7 +83,10 @@ class DatatableService implements FromCollection, WithHeadings {
 				$selects[] = "{$tableName}{$fieldName}";
 			} else {
 				if (($field['raw'] ?? false)) {
-					$selects[] = DB::raw($field['raw']);
+					// JSON functions is not supported by sqlite
+					if (env('APP_ENV' !== 'testing') || strpos($field['raw'], 'JSON_') !== 0) {
+						$selects[] = DB::raw($field['raw']);
+					}
 				} else {
 					$selects[] = DB::raw("$fieldName");
 				}
@@ -135,7 +138,7 @@ class DatatableService implements FromCollection, WithHeadings {
 				});
 				if ($filterConfig['filterDefinitions'] ?? false) {
 					$filterConfig = $filterConfig['filterDefinitions'][$filter];
-					$query->having($field, $filterConfig[0], $filterConfig[1]);
+					$query->having($field, $filterConfig[0], is_callable($filterConfig[1]) ? $filterConfig[1]() : $filterConfig[1]);
 				} else if ($filterConfig['filterFields'] ?? false) {
 					$fields = $filterConfig['filterFields'];
 					$query->where(function ($query) use ($fields, $filter) {

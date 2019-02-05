@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Shift\CreateShiftRequest;
+use App\Http\Requests\Admin\Shift\UpdateShiftRequest;
 use App\Models\Shift;
 use Illuminate\Http\Request;
 
@@ -55,7 +56,9 @@ class ShiftController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function edit(Shift $shift) {
-		//
+
+		return $shift->fulldata;
+
 	}
 	
 	/**
@@ -65,10 +68,11 @@ class ShiftController extends Controller {
 	 * @param  \App\Models\Shift $shift
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(Request $request, Shift $shift) {
-		//
+	public function update(UpdateShiftRequest $request, Shift $shift) {
+
+		return $request->commit();
 	}
-	
+
 	/**
 	 * Remove the specified resource from storage.
 	 *

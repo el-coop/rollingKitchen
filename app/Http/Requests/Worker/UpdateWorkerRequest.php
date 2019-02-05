@@ -45,7 +45,7 @@ class UpdateWorkerRequest extends FormRequest {
 		$this->worker->user->save();
 		
 		
-		$this->worker->data = $this->input('worker');
+		$this->worker->data = array_filter($this->input('worker'));
 		$this->worker->save();
 	}
 }
