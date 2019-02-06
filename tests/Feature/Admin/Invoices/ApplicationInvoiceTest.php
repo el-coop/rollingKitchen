@@ -11,6 +11,7 @@ use App\Models\Kitchen;
 use App\Models\Pdf;
 use App\Models\Service;
 use App\Models\User;
+use App\Models\Worker;
 use ConsoleTVs\Invoices\Classes\Invoice as InvoiceFile;
 use Exception;
 use Queue;
@@ -29,10 +30,57 @@ class ApplicationInvoiceTest extends TestCase {
 	private $invoice;
 	private $invoices;
 	private $payment;
+	private $worker;
+
+	public function setUp() {
+		parent::setUp();
+		$this->user = factory(User::class)->make();
+		factory(Admin::class)->create()->user()->save($this->user);
+		$this->worker = factory(User::class)->make();
+		factory(Worker::class)->create()->user()->save($this->worker);
+		$this->kitchen = factory(User::class)->make();
+		factory(Kitchen::class)->create([
+			'data' => [
+				2 => 'test',
+				3 => 'test',
+				4 => 'test',
+				5 => 'test',
+			],
+		])->user()->save($this->kitchen);
+		$this->application = factory(Application::class)->make([
+			'data' => [
+				8 => '1000',
+			],
+		]);
+		$this->kitchen->user->applications()->save($this->application);
+
+		$this->invoices = factory(Invoice::class, 4)->make();
+		$this->invoices->each(function ($invoice) {
+			$this->application->invoices()->save($invoice);
+			$invoiceItems = rand(1, 4);
+			$total = 0;
+			for ($j = 0; $j < $invoiceItems; $j++) {
+				$invoiceItem = factory(\App\Models\InvoiceItem::class)->make();
+				$invoice->items()->save($invoiceItem);
+				$total = $invoiceItem->unit_price * $invoiceItem->quantity;
+			}
+
+			$invoice->amount = $total;
+			$invoice->save();
+		});
+		$this->payment = factory(InvoicePayment::class)->make();
+		$this->invoices->first()->payments()->save($this->payment);
+
+	}
 
 	public function test_guest_cant_see_invoice_index_page() {
 		$this->get(action('Admin\ApplicationInvoiceController@index'))
 			->assertRedirect(action('Auth\LoginController@login'));
+	}
+
+	public function test_worker_cant_see_invoice_index_page() {
+		$this->actingAs($this->worker)->get(action('Admin\ApplicationInvoiceController@index'))
+			->assertForbidden();
 	}
 
 	public function test_kitchen_cant_see_invoice_index_page() {
@@ -48,6 +96,11 @@ class ApplicationInvoiceTest extends TestCase {
 	public function test_guest_cant_see_new_invoice_form() {
 		$this->get(action('Admin\ApplicationInvoiceController@create', $this->application))
 			->assertRedirect(action('Auth\LoginController@login'));
+	}
+
+	public function test_worker_cant_see_new_invoice_form() {
+		$this->actingAs($this->worker)->get(action('Admin\ApplicationInvoiceController@create', $this->application))
+			->assertForbidden();
 	}
 
 	public function test_kitchen_cant_see_new_invoice_form() {
@@ -102,14 +155,14 @@ class ApplicationInvoiceTest extends TestCase {
 				'options' => [
 					$defaultPdf->id => [
 						'name' => $defaultPdf->name,
-						'checked' => true
+						'checked' => true,
 					],
 					$pdf->id => [
 						'name' => $pdf->name,
-						'checked' => false
+						'checked' => false,
 					],
 
-				]
+				],
 			]);
 
 	}
@@ -190,6 +243,30 @@ class ApplicationInvoiceTest extends TestCase {
 
 		Queue::assertNotPushed(SendApplicationInvoice::class);
 	}
+
+	public function test_worker_cant_create_new_invoice() {
+		Queue::fake();
+
+		$this->actingAs($this->worker)->post(action('Admin\ApplicationInvoiceController@store', $this->application), [
+			'tax' => 21,
+			'recipient' => $this->kitchen->email,
+			'bcc' => $this->user->email,
+			'message' => 'test',
+			'subject' => 'test subject',
+			'items' => [[
+				'quantity' => 1,
+				'unitPrice' => 1,
+				'item' => 'test',
+			], [
+				'quantity' => 2,
+				'unitPrice' => 2,
+				'item' => 'test2',
+			]],
+		])->assertForbidden();
+
+		Queue::assertNotPushed(SendApplicationInvoice::class);
+	}
+
 
 	public function test_kitchen_cant_create_new_invoice() {
 		Queue::fake();
@@ -413,6 +490,14 @@ class ApplicationInvoiceTest extends TestCase {
 		]))->assertRedirect(action('Auth\LoginController@login'));
 	}
 
+	public function test_worker_cant_see_existing_invoice_form() {
+		$this->actingAs($this->worker)->get(action('Admin\ApplicationInvoiceController@edit', [
+			'application' => $this->application,
+			'invoice' => $this->invoices->first(),
+		]))->assertForbidden();
+	}
+
+
 	public function test_kitchen_cant_see_existing_invoice_form() {
 		$this->actingAs($this->kitchen)->get(action('Admin\ApplicationInvoiceController@edit', [
 			'application' => $this->application,
@@ -477,14 +562,14 @@ class ApplicationInvoiceTest extends TestCase {
 			'options' => [
 				$defaultPdf->id => [
 					'name' => $defaultPdf->name,
-					'checked' => true
+					'checked' => true,
 				],
 				$pdf->id => [
 					'name' => $pdf->name,
-					'checked' => false
+					'checked' => false,
 				],
 
-			]
+			],
 		]);
 
 		foreach ($items as $item) {
@@ -518,6 +603,34 @@ class ApplicationInvoiceTest extends TestCase {
 
 		Queue::assertNotPushed(SendApplicationInvoice::class);
 	}
+
+	public function test_worker_cant_edit_invoice() {
+		Queue::fake();
+		$invoice = $this->invoices->first();
+
+		$this->actingAs($this->worker)->patch(action('Admin\ApplicationInvoiceController@update', [
+			'application' => $this->application,
+			'invoice' => $invoice,
+		]), [
+			'tax' => 21,
+			'recipient' => $this->kitchen->email,
+			'bcc' => $this->user->email,
+			'message' => 'test',
+			'subject' => 'test subject',
+			'items' => [[
+				'quantity' => 1,
+				'unitPrice' => 1,
+				'item' => 'test',
+			], [
+				'quantity' => 2,
+				'unitPrice' => 2,
+				'item' => 'test2',
+			]],
+		])->assertForbidden();
+
+		Queue::assertNotPushed(SendApplicationInvoice::class);
+	}
+
 
 	public function test_kitchen_cant_edit_invoice() {
 		Queue::fake();
@@ -785,6 +898,13 @@ class ApplicationInvoiceTest extends TestCase {
 
 	}
 
+	public function test_worker_cant_add_payment() {
+
+		$invoice = $this->invoices->first();
+
+		$this->actingAs($this->worker)->post(action('Admin\ApplicationInvoiceController@addPayment', $invoice))->assertForbidden();
+	}
+
 	public function test_kitchen_cant_add_payment() {
 
 		$invoice = $this->invoices->first();
@@ -815,6 +935,11 @@ class ApplicationInvoiceTest extends TestCase {
 
 	}
 
+	public function test_worker_cant_update_payment() {
+		$invoice = $this->invoices->first();
+		$this->actingAs($this->worker)->patch(action('Admin\ApplicationInvoiceController@updatePayment', [$invoice, $this->payment]))->assertForbidden();
+	}
+
 	public function test_kitchen_cant_update_payment() {
 		$invoice = $this->invoices->first();
 		$this->actingAs($this->kitchen)->patch(action('Admin\ApplicationInvoiceController@updatePayment', [$invoice, $this->payment]))->assertForbidden();
@@ -840,6 +965,11 @@ class ApplicationInvoiceTest extends TestCase {
 
 	}
 
+	public function test_worker_cant_destroy_payment() {
+		$invoice = $this->invoices->first();
+		$this->actingAs($this->worker)->delete(action('Admin\ApplicationInvoiceController@destroyPayment', [$invoice, $this->payment]))->assertForbidden();
+	}
+
 	public function test_kitchen_cant_destroy_payment() {
 		$invoice = $this->invoices->first();
 		$this->actingAs($this->kitchen)->delete(action('Admin\ApplicationInvoiceController@destroyPayment', [$invoice, $this->payment]))->assertForbidden();
@@ -853,42 +983,5 @@ class ApplicationInvoiceTest extends TestCase {
 		]);
 	}
 
-	protected function setUp() {
-		parent::setUp();
-		$this->user = factory(User::class)->make();
-		factory(Admin::class)->create()->user()->save($this->user);
-		$this->kitchen = factory(User::class)->make();
-		factory(Kitchen::class)->create([
-			'data' => [
-				2 => 'test',
-				3 => 'test',
-				4 => 'test',
-				5 => 'test',
-			],
-		])->user()->save($this->kitchen);
-		$this->application = factory(Application::class)->make([
-			'data' => [
-				8 => '1000',
-			],
-		]);
-		$this->kitchen->user->applications()->save($this->application);
 
-		$this->invoices = factory(Invoice::class, 4)->make();
-		$this->invoices->each(function ($invoice) {
-			$this->application->invoices()->save($invoice);
-			$invoiceItems = rand(1, 4);
-			$total = 0;
-			for ($j = 0; $j < $invoiceItems; $j++) {
-				$invoiceItem = factory(\App\Models\InvoiceItem::class)->make();
-				$invoice->items()->save($invoiceItem);
-				$total = $invoiceItem->unit_price * $invoiceItem->quantity;
-			}
-
-			$invoice->amount = $total;
-			$invoice->save();
-		});
-		$this->payment = factory(InvoicePayment::class)->make();
-		$this->invoices->first()->payments()->save($this->payment);
-
-	}
 }

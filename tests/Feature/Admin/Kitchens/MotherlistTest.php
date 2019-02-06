@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Developer;
 use App\Models\Kitchen;
 use App\Models\User;
+use App\Models\Worker;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,6 +15,7 @@ class MotherlistTest extends TestCase {
 	use RefreshDatabase;
 	use WithFaker;
 
+	protected $worker;
 	private $admin;
 	private $kitchens;
 	private $developer;
@@ -23,6 +25,8 @@ class MotherlistTest extends TestCase {
 		$this->admin = factory(Admin::class)->create();
 		$this->admin->user()->save(factory(User::class)->make());
 		factory(\App\Models\Field::class, 5)->create();
+		$this->worker = factory(User::class)->make();
+		factory(Worker::class)->create()->user()->save($this->worker);
 		$this->developer = factory(Developer::class)->create();
 		$this->developer->user()->save(factory(User::class)->make());
 
@@ -39,7 +43,7 @@ class MotherlistTest extends TestCase {
 					return [$field->name_en => $value];
 
 				});
-			}
+			},
 		])->each(function ($kitchen) {
 			$kitchen->user()->save(factory(User::class)->make());
 		});
@@ -49,6 +53,9 @@ class MotherlistTest extends TestCase {
 		$this->get(action('Admin\KitchenController@index'))->assertRedirect(action('Auth\LoginController@login'));
 	}
 
+	public function test_worker_cant_see_page() {
+		$this->actingAs($this->worker)->get(action('Admin\KitchenController@index'))->assertForbidden();
+	}
 
 	public function test_kitchen_cant_see_page() {
 		$this->actingAs($this->kitchens->first()->user)->get(action('Admin\KitchenController@index'))->assertForbidden();
@@ -75,6 +82,10 @@ class MotherlistTest extends TestCase {
 
 	public function test_guest_cant_get_list() {
 		$this->get(action('DatatableController@list'))->assertRedirect(action('Auth\LoginController@login'));
+	}
+
+	public function test_worker_cant_get_list() {
+		$this->actingAs($this->worker)->get(action('DatatableController@list'))->assertForbidden();
 	}
 
 
@@ -104,7 +115,7 @@ class MotherlistTest extends TestCase {
 		$newKitchen = $this->kitchens->first();
 		$newKitchen->status = 'new';
 		$newKitchen->save();
-		
+
 		$response = $this->actingAs($this->admin->user)
 			->get(action('DatatableController@list', ['table' => 'admin.kitchensTable', 'per_page' => 20, 'filter' => '{"status":"new"}']));
 
@@ -129,6 +140,11 @@ class MotherlistTest extends TestCase {
 		$this->get(action('Admin\KitchenController@edit', $kitchen))->assertRedirect(action('Auth\LoginController@login'));
 	}
 
+	public function test_worker_cant_get_kitchen_fields_with_values() {
+		$kitchen = $this->kitchens->random();
+		$this->actingAs($this->worker)
+			->get(action('Admin\KitchenController@edit', $kitchen))->assertForbidden();
+	}
 
 	public function test_kitchen_cant_get_kitchen_fields_with_values() {
 		$kitchen = $this->kitchens->random();
@@ -136,7 +152,7 @@ class MotherlistTest extends TestCase {
 			->get(action('Admin\KitchenController@edit', $kitchen))->assertForbidden();
 	}
 
-	public function test_can_get_kitchen_fields_with_values() {
+	public function test_admin_can_get_kitchen_fields_with_values() {
 		$kitchen = $this->kitchens->random();
 		$this->actingAs($this->admin->user)
 			->get(action('Admin\KitchenController@edit', $kitchen))
@@ -148,6 +164,11 @@ class MotherlistTest extends TestCase {
 		$this->patch(action('Admin\KitchenController@update', $kitchen))->assertRedirect(action('Auth\LoginController@login'));
 	}
 
+	public function test_worker_cant_edit_kitchen() {
+		$kitchen = $this->kitchens->random();
+		$this->actingAs($this->worker)
+			->patch(action('Admin\KitchenController@update', $kitchen))->assertForbidden();
+	}
 
 	public function test_kitchen_cant_edit_kitchen() {
 		$kitchen = $this->kitchens->random();
@@ -165,8 +186,8 @@ class MotherlistTest extends TestCase {
 				'status' => 'motherlist',
 				'kitchen' => [
 					'test' => 'best',
-					'jest' => 'rest'
-				]
+					'jest' => 'rest',
+				],
 			])->assertSuccessful();
 
 		$this->assertDatabaseHas('users', [
@@ -174,7 +195,7 @@ class MotherlistTest extends TestCase {
 			'user_id' => $kitchen->id,
 			'name' => 'testname',
 			'email' => 'bla@gla.gla',
-			'language' => 'nl'
+			'language' => 'nl',
 		]);
 
 
@@ -183,8 +204,8 @@ class MotherlistTest extends TestCase {
 			'status' => 'motherlist',
 			'data' => json_encode([
 				'test' => 'best',
-				'jest' => 'rest'
-			])
+				'jest' => 'rest',
+			]),
 		]);
 
 	}
@@ -195,20 +216,24 @@ class MotherlistTest extends TestCase {
 			->patch(action('Admin\KitchenController@update', $kitchen), [
 				'name' => '',
 				'email' => 'bla',
-				'status' => 'zla'
+				'status' => 'zla',
 			])->assertRedirect()->assertSessionHasErrors(['name', 'email', 'status']);
 	}
 
-	public function test_guest_cant_delete_kitchen(){
+	public function test_guest_cant_delete_kitchen() {
 		$this->delete(action('Admin\KitchenController@destroy', $this->kitchens->first()))->assertRedirect(action('Auth\LoginController@login'));
 	}
 
-	public function test_kitchen_cant_delete_another_kitchen(){
+	public function test_worker_cant_delete_another_kitchen() {
+		$this->actingAs($this->worker)->delete(action('Admin\KitchenController@destroy', $this->kitchens->first()))->assertForbidden();
+	}
+
+	public function test_kitchen_cant_delete_another_kitchen() {
 		$kitchen = Kitchen::find(2);
 		$this->actingAs($kitchen->user)->delete(action('Admin\KitchenController@destroy', $this->kitchens->first()))->assertForbidden();
 	}
 
-	public function test_admin_can_delete_kitchen(){
+	public function test_admin_can_delete_kitchen() {
 		$kitchen = $this->kitchens->first();
 		$user = $kitchen->user;
 		$this->actingAs($this->admin->user)->delete(action('Admin\KitchenController@destroy', $kitchen))->assertSuccessful();
@@ -217,7 +242,7 @@ class MotherlistTest extends TestCase {
 
 	}
 
-	public function test_developer_can_delete_kitchen(){
+	public function test_developer_can_delete_kitchen() {
 		$kitchen = $this->kitchens->first();
 		$user = $kitchen->user;
 		$this->actingAs($this->developer->user)->delete(action('Admin\KitchenController@destroy', $kitchen))->assertSuccessful();
