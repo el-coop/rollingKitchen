@@ -133,7 +133,7 @@ class ErrorTest extends TestCase {
 	}
 
 	public function test_store_js_error(){
-		$this->actingAs($this->kitchen->user)->post(action('Developer\ErrorController@storeJsError', [
+		$this->actingAs($this->kitchen->user)->post(action('Developer\ErrorController@storeJsError'), [
 			'page' => 'test.com',
 			'message' => 'test',
 			'source' => 'test',
@@ -141,7 +141,7 @@ class ErrorTest extends TestCase {
 			'trace' => 'test',
 			'userAgent' => 'test',
 			'vm' => 'vm'
-		]),[] ,array('HTTP_X-Requested-With' => 'XMLHttpRequest'));
+		] ,array('HTTP_X-Requested-With' => 'XMLHttpRequest'));
 		$this->assertDatabaseHas('errors', ['user_id' => $this->kitchen->user->id]);
 		$this->assertDatabaseHas('js_errors', ['message' => 'test']);
 	}

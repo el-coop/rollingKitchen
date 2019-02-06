@@ -45,16 +45,16 @@ class WorkFunctionTest extends TestCase {
 	}
 
 	public function test_admin_can_create_workFunction() {
-		$response = $this->actingAs($this->admin->user)->post(action('Admin\WorkplaceController@addWorkFunction', [
-			'workplace' => $this->workplace,
+		$response = $this->actingAs($this->admin->user)->post(action('Admin\WorkplaceController@addWorkFunction',
+			$this->workplace), [
 			'name' => 'name',
 			'payment_per_hour_before_tax' => 12,
 			'payment_per_hour_after_tax' => 10,
-		]))->assertSuccessful();
+		])->assertSuccessful();
 		$response->assertJsonFragment([
 			'name' => 'name',
-			'payment_per_hour_after_tax' => "10",
-			'payment_per_hour_before_tax' => "12",
+			'payment_per_hour_after_tax' => 10,
+			'payment_per_hour_before_tax' => 12,
 			'workplace_id' => 1
 		]);
 
@@ -100,16 +100,16 @@ class WorkFunctionTest extends TestCase {
 		$response = $this->actingAs($this->admin->user)->patch(action('Admin\WorkplaceController@updateWorkFunction', [
 			$this->workplace,
 			$this->workFunction,
+		]), [
 			'name' => 'new name',
 			'payment_per_hour_after_tax' => 15,
 			'payment_per_hour_before_tax' => 20
-
-		]))->assertSuccessful();
+		])->assertSuccessful();
 		$response->assertJsonFragment([
 			'id' => $this->workFunction->id,
 			'name' => 'new name',
-			'payment_per_hour_after_tax' => '15',
-			'payment_per_hour_before_tax' => '20',
+			'payment_per_hour_after_tax' => 15,
+			'payment_per_hour_before_tax' => 20,
 		]);
 		$this->assertDatabaseHas('work_functions', [
 			'id' => $this->workFunction->id,
