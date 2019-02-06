@@ -87,9 +87,9 @@ class WorkplaceTest extends TestCase {
 	}
 
 	public function test_admin_can_store_workplace() {
-		$this->actingAs($this->admin->user)->post(action('Admin\WorkplaceController@store', [
+		$this->actingAs($this->admin->user)->post(action('Admin\WorkplaceController@store'), [
 			'name' => 'new workplace'
-		]))->assertSuccessful()
+		])->assertSuccessful()
 			->assertJsonFragment([
 				'name' => 'new workplace'
 			]);
@@ -145,10 +145,11 @@ class WorkplaceTest extends TestCase {
 	}
 
 	public function test_admin_can_update_workplace() {
-		$this->actingAs($this->admin->user)->patch(action('Admin\WorkplaceController@update', [
-			'workplace' => $this->workplaces->first(),
+		$this->actingAs($this->admin->user)->patch(action('Admin\WorkplaceController@update',
+			$this->workplaces->first()
+		), [
 			'name' => 'new name'
-		]))->assertSuccessful()
+		])->assertSuccessful()
 			->assertJsonFragment([
 				'name' => 'new name',
 				'id' => $this->workplaces->first()->id
