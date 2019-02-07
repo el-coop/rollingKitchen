@@ -19,6 +19,9 @@
            @isset($deleteButton)
            :delete-slot="true"
            @endif
+           @isset($formattersData)
+           :formatters-data="{{$formattersData}}"
+           @endif
            @isset($deleteButtonTxt)
            delete-btn="{{$deleteButtonTxt}}"
         @endisset
