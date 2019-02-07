@@ -245,54 +245,65 @@ class SupervisorTest extends TestCase {
 	}
 	
 	public function test_guest_cant_get_supervisor_datatable() {
-		$this->get(action('DatatableController@supervisorList'),
-			['table' => json_encode($this->workplace->workersForSupervisor),
-				'per_page' => 20,
-				'sort' => 'name|asc'
-			]
-		)->assertRedirect(action('Auth\LoginController@login'));
+		$this->get(action('DatatableController@supervisorList', [
+			'workplace' => $this->workplace,
+			'attribute' => 'shiftsForSupervisor',
+			'per_page' => 20,
+			'sort' => 'name|asc'
+		]))->assertRedirect(action('Auth\LoginController@login'));
 	}
 	
 	public function test_admin_cant_get_supervisor_datatable() {
-		$this->actingAs($this->admin)->get(action('DatatableController@supervisorList'),
-			['table' => json_encode($this->workplace->workersForSupervisor),
-				'per_page' => 20,
-				'sort' => 'name|asc'
-			]
-		)->assertForbidden();
+		$this->actingAs($this->admin)->get(action('DatatableController@supervisorList', [
+			'workplace' => $this->workplace,
+			'attribute' => 'shiftsForSupervisor',
+			'per_page' => 20,
+			'sort' => 'name|asc'
+		]))->assertForbidden();
 	}
 	
 	public function test_kitchen_cant_get_supervisor_datatable() {
-		$this->actingAs($this->kitchen)->get(action('DatatableController@supervisorList'),
-			['table' => json_encode($this->workplace->workersForSupervisor),
-				'per_page' => 20,
-				'sort' => 'name|asc'
-			]
-		)->assertForbidden();
+		$this->actingAs($this->kitchen)->get(action('DatatableController@supervisorList', [
+			'workplace' => $this->workplace,
+			'attribute' => 'shiftsForSupervisor',
+			'per_page' => 20,
+			'sort' => 'name|asc'
+		]))->assertForbidden();
 	}
 	
 	public function test_worker_cant_get_supervisor_datatable() {
-		$this->actingAs($this->worker)->get(action('DatatableController@supervisorList'),
-			['table' => json_encode($this->workplace->workersForSupervisor),
-				'per_page' => 20,
-				'sort' => 'name|asc'
-			]
-		)->assertForbidden();
+		$this->actingAs($this->worker)->get(action('DatatableController@supervisorList', [
+			
+			'workplace' => $this->workplace,
+			'attribute' => 'shiftsForSupervisor',
+			'per_page' => 20,
+			'sort' => 'name|asc'
+		]))->assertForbidden();
 	}
 	
 	public function test_supervisor_can_get_supervisor_datatable() {
-		$table = str_replace('\\\\', '\\', json_encode($this->workplace->workersForSupervisor));
 		$response = $this->actingAs($this->supervisor)->get(action('DatatableController@supervisorList', [
-				'table' => $table,
-				'per_page' => 20,
-				'sort' => 'name|asc'
-			])
-		
-		)->assertSuccessful();
+			'workplace' => $this->workplace,
+			'attribute' => 'WorkersForSupervisor',
+			'per_page' => 20,
+			'sort' => 'name|asc'
+		]))->assertSuccessful();
 		$response->assertJsonFragment([
 			'name' => $this->worker->name,
 			'id' => $this->worker->user->id,
 		]);
+	}
+	
+	public function test_supervisor_cant_get_workers_datatable_for_other_workplace() {
+		$supervisor = factory(User::class)->make();
+		factory(Worker::class)->create(['supervisor' => true])->user()->save($supervisor);
+		
+		$this->actingAs($supervisor)->get(action('DatatableController@supervisorList', [
+			'workplace' => $this->workplace,
+			'attribute' => 'WorkersForSupervisor',
+			'per_page' => 20,
+			'sort' => 'name|asc'
+		]))->assertForbidden();
 	}
 	
 	public function test_guest_cant_get_worker() {
@@ -381,7 +392,11 @@ class SupervisorTest extends TestCase {
 	}
 	
 	public function test_kitchen_cant_get_shift() {
-		$this->actingAs($this->kitchen)->get(action('Worker\SupervisorController@editShift', $this->shift))->assertForbidden();
+		$this->actingAs($this->kitchen)->get(action('Worker\SupervisorController@editShift', [$this->workplace, $this->shift]))->assertForbidden();
+	}
+	
+	public function test_admin_cant_get_shift() {
+		$this->actingAs($this->admin)->get(action('Worker\SupervisorController@editShift', [$this->workplace, $this->shift]))->assertForbidden();
 	}
 	
 	public function test_worker_cant_get_shift() {
@@ -401,8 +416,7 @@ class SupervisorTest extends TestCase {
 				'workers' => $this->workplace->workers()->where('approved', true)->with('user')->get()->pluck('name', 'id')
 			]);
 	}
-	
-	
+
 	public function test_guest_cant_close_shift() {
 		$this->patch(action('Worker\SupervisorController@closeShift', $this->shift))->assertRedirect(action('Auth\LoginController@login'));
 	}
@@ -424,8 +438,7 @@ class SupervisorTest extends TestCase {
 		$this->actingAs($this->admin)->patch(action('Worker\SupervisorController@closeShift', $this->shift))->assertSuccessful();
 		$this->assertDatabaseHas('shifts', ['id' => $this->shift->id, 'closed' => true]);
 	}
-	
-	
+
 	public function test_supervisor_cant_close_closed_shift() {
 		$this->shift->closed = true;
 		$this->shift->save();
@@ -511,7 +524,7 @@ class SupervisorTest extends TestCase {
 			'endTime' => '22:00',
 			'workFunction' => $this->workplace->workFunctions->first()->id
 		])->assertRedirect()->assertSessionHasErrors(['worker']);
-		
+
 	}
 	
 	public function test_admin_can_add_approved_worker_to_shift() {
@@ -538,7 +551,7 @@ class SupervisorTest extends TestCase {
 		]);
 	}
 	
-	public function test_admin_can_add_worker_to_closed_shift() {
+	public function test_admin_cant_add_worker_to_closed_shift() {
 		$this->shift->closed = true;
 		$this->shift->save();
 		$this->actingAs($this->admin)->post(action('Worker\SupervisorController@addWorkerToShift', $this->shift), [
@@ -582,7 +595,7 @@ class SupervisorTest extends TestCase {
 			'worker_id' => $this->shiftWorker->user->id
 		]);
 	}
-	
+
 	public function test_supervisor_cant_remove_worker_from_closed_shift() {
 		$this->shift->closed = true;
 		$this->shift->save();
@@ -612,7 +625,6 @@ class SupervisorTest extends TestCase {
 			'worker' => $this->shiftWorker->user
 		]))->assertForbidden();
 	}
-	
 	
 	public function test_guest_cant_update_shift_worker() {
 		$this->patch(action('Worker\SupervisorController@updateWorkerShift', [
@@ -722,9 +734,9 @@ class SupervisorTest extends TestCase {
 	}
 	
 	public function test_supervisor_can_get_shift_datatable() {
-		$table = str_replace('\\\\', '\\', json_encode($this->workplace->shiftsForSupervisor));
 		$response = $this->actingAs($this->supervisor)->get(action('DatatableController@supervisorList', [
-			'table' => $table,
+			'workplace' => $this->workplace,
+			'attribute' => 'shiftsForSupervisor',
 			'per_page' => 20,
 			'sort' => 'name|asc'
 		]))->assertSuccessful();
@@ -733,5 +745,17 @@ class SupervisorTest extends TestCase {
 			'id' => $this->shift->id,
 			'hours' => "{$this->shift->hours}"
 		]);
+	}
+	
+	public function test_supervisor_cant_get_different_workplace_shift_datatable() {
+		$supervisor = factory(User::class)->make();
+		factory(Worker::class)->create(['supervisor' => true])->user()->save($supervisor);
+		
+		$this->actingAs($supervisor)->get(action('DatatableController@supervisorList', [
+			'workplace' => $this->workplace,
+			'attribute' => 'shiftsForSupervisor',
+			'per_page' => 20,
+			'sort' => 'name|asc'
+		]))->assertForbidden();
 	}
 }

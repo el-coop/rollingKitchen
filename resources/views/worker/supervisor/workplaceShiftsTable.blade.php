@@ -1,7 +1,7 @@
 @component('components.nonConfigDatatable', [
-    'table' => $shiftsTable,
+    'attribute' => 'shiftsForSupervisor',
     'fields' => $shiftsTable['fields'],
-    'url' => 'supervisorDatatable'
+    'url' => "/supervisorDatatable/{$workplace->id}"
 ])
 	<template slot-scope="{object, onUpdate}" v-if="object">
 

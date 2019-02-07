@@ -23,13 +23,16 @@ class DatatableService implements FromCollection, WithHeadings {
 	private $queryConfig;
 	private $request;
 	
-	public function __construct(Request $request) {
+	public function __construct(Request $request, ?array $queryConfig = null) {
 		$this->request = $request;
-		$this->queryConfig = config($this->request->input('table')) ?? json_decode(str_replace('\\', '\\\\', $this->request->input('table')), true);
+		if (!$queryConfig) {
+			$this->queryConfig = config($this->request->input('table'));
+		} else {
+			$this->queryConfig = $queryConfig;
+		}
 	}
 	
 	public function query() {
-		
 		if ($this->queryConfig['table'] ?? false) {
 			$tableName = $this->queryConfig['table'];
 			$query = DB::table($this->queryConfig['table']);
