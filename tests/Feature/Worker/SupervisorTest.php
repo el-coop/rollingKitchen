@@ -395,10 +395,6 @@ class SupervisorTest extends TestCase {
 		$this->actingAs($this->kitchen)->get(action('Worker\SupervisorController@editShift', [$this->workplace, $this->shift]))->assertForbidden();
 	}
 	
-	public function test_admin_cant_get_shift() {
-		$this->actingAs($this->admin)->get(action('Worker\SupervisorController@editShift', [$this->workplace, $this->shift]))->assertForbidden();
-	}
-	
 	public function test_worker_cant_get_shift() {
 		$this->actingAs($this->worker)->get(action('Worker\SupervisorController@editShift', $this->shift))->assertForbidden();
 	}
