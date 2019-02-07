@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'date' => 'TBT',
-	'hours' => 'TBT',
-	'closed' => 'TBT',
+	'date' => 'Datum',
+	'hours' => 'Uren',
+	'closed' => 'Gesloten',
 ];

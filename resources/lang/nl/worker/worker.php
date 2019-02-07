@@ -1,10 +1,10 @@
 <?php
 
 return [
-	'setPassword' => 'TBT',
-	'profile' => 'TBT',
-	'shifts' => 'TBT',
-	'workedHours' => 'TBT',
-	'workplace' => 'TBT',
+	'setPassword' => 'Wachtwoord instellen',
+	'profile' => 'Profiel',
+	'shifts' => 'Shift',
+	'workedHours' => 'Gewerkte uren',
+	'workplace' => 'Werkplek',
 	'workerNotApproved' => 'TBT'
 ];
