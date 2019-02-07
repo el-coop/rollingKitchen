@@ -17,7 +17,9 @@ class ShiftController extends Controller {
 	public function index() {
 		$title = __('worker/worker.shifts');
 		$createTitle = __('admin/workers.createShift');
-		return view('admin.datatableWithNew', compact('title', 'createTitle'));
+		$extraSlotView = 'admin.shift.manage';
+		$withEditLink = false;
+		return view('admin.datatableWithNew', compact('title', 'createTitle', 'extraSlotView', 'withEditLink'));
 	}
 	
 	/**
@@ -56,9 +58,9 @@ class ShiftController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function edit(Shift $shift) {
-
+		
 		return $shift->fulldata;
-
+		
 	}
 	
 	/**
@@ -69,10 +71,10 @@ class ShiftController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function update(UpdateShiftRequest $request, Shift $shift) {
-
+		
 		return $request->commit();
 	}
-
+	
 	/**
 	 * Remove the specified resource from storage.
 	 *

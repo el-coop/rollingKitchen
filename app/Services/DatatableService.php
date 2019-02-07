@@ -84,7 +84,7 @@ class DatatableService implements FromCollection, WithHeadings {
 			} else {
 				if (($field['raw'] ?? false)) {
 					// JSON functions is not supported by sqlite
-					if (env('APP_ENV' !== 'testing') || strpos($field['raw'], 'JSON_') !== 0) {
+					if (env('APP_ENV') !== 'testing' || strpos($field['raw'], 'JSON_') !== 0) {
 						$selects[] = DB::raw($field['raw']);
 					}
 				} else {

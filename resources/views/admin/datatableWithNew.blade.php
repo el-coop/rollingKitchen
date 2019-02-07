@@ -38,6 +38,9 @@
 							  :on-data-update="onUpdate"
 							  :method="object.id ? 'patch' : 'post'"
 				></dynamic-form>
+				@isset($extraSlotView)
+					@include($extraSlotView)
+				@endif
 			</template>
 		@endcomponent
 	</div>

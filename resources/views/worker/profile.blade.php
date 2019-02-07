@@ -9,7 +9,7 @@
 	$item['value'] = old($fieldName, $item['value']);
 	$item['error'] = $errors->has($fieldName) ? $errors->get($fieldName): null;
 	return $item;
-}) }}" class="mb-1"></dynamic-fields>
+}) }}" class="mb-1" :hide="{{ collect(['supervisor','approved','workplaces']) }}"></dynamic-fields>
 			<button class="button is-success">@lang('global.save')</button>
 		</form>
 	</div>

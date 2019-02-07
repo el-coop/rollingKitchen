@@ -8,8 +8,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class AddWorkerToShiftRequest extends FormRequest {
 	protected $shift;
-	protected $workplace;
 	protected $worker;
+	
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
@@ -17,11 +17,10 @@ class AddWorkerToShiftRequest extends FormRequest {
 	 */
 	public function authorize() {
 		$this->shift = $this->route('shift');
-		$this->workplace = $this->route('workplace');
 		$this->worker = Worker::findOrFail($this->input('worker'));
-		return $this->user()->can('update', $this->shift) && $this->workplace->hasWorker($this->worker) && !$this->shift->closed;
+		return $this->user()->can('update', $this->shift) && $this->shift->workplace->hasWorker($this->worker) && !$this->shift->closed;
 	}
-
+	
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -35,12 +34,12 @@ class AddWorkerToShiftRequest extends FormRequest {
 			'workFunction' => 'required|integer'
 		];
 	}
-
-	public  function commit(){
+	
+	public function commit() {
 		$this->shift->workers()->attach($this->worker, ['start_time' => $this->input('startTime'), 'end_time' => $this->input('endTime'), 'work_function_id' => $this->input('workFunction')]);
 		return [
 			'id' => $this->worker->id,
-			'worker' =>  $this->worker->id,
+			'worker' => $this->worker->id,
 			'startTime' => $this->input('startTime'),
 			'endTime' => $this->input('endTime'),
 			'workFunction' => $this->input('workFunction')

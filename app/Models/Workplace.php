@@ -7,15 +7,15 @@ use JustBetter\PaginationWithHavings\PaginationWithHavings;
 
 class Workplace extends Model {
 	use PaginationWithHavings;
-
+	
 	public function workFunctions() {
 		return $this->hasMany(WorkFunction::class);
 	}
-
+	
 	public function shifts() {
 		return $this->hasMany(Shift::class);
 	}
-
+	
 	public function getFullDataAttribute() {
 		return collect([[
 			'name' => 'name',
@@ -27,11 +27,11 @@ class Workplace extends Model {
 			'value' => $this->workFunctions
 		]]);
 	}
-
+	
 	public function workers() {
 		return $this->belongsToMany(Worker::class)->withTimestamps();
 	}
-
+	
 	public function getWorkersForSupervisorAttribute() {
 		return [
 			'model' => Worker::class,
@@ -54,7 +54,7 @@ class Workplace extends Model {
 				'name' => 'workplacesList',
 				'noTable' => true,
 				'title' => __('admin/workers.workplaces'),
-				'filter' => ''
+				'filter' => false
 			], [
 				'name' => 'completed',
 				'noTable' => true,
@@ -101,11 +101,11 @@ class Workplace extends Model {
 		];
 
 	}
-
+	
 	public function hasWorker(Worker $worker) {
 		return $this->workers->contains($worker);
 	}
-
+	
 	public function getShiftsForSupervisorAttribute() {
 		return [
 			'model' => Shift::class,
@@ -114,7 +114,7 @@ class Workplace extends Model {
 				'name' => 'id',
 				'title' => 'id',
 				'visible' => false,
-			], [
+			],[
 				'name' => 'date',
 				'title' => __('admin/shifts.date'),
 				'sortField' => 'date',
