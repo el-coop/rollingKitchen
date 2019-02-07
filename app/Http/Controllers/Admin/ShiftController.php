@@ -18,7 +18,8 @@ class ShiftController extends Controller {
 		$title = __('worker/worker.shifts');
 		$createTitle = __('admin/workers.createShift');
 		$extraSlotView = 'admin.shift.manage';
-		return view('admin.datatableWithNew', compact('title', 'createTitle', 'extraSlotView'));
+		$withEditLink = false;
+		return view('admin.datatableWithNew', compact('title', 'createTitle', 'extraSlotView', 'withEditLink'));
 	}
 	
 	/**

@@ -49,7 +49,7 @@ class UpdateWorkerRequest extends FormRequest {
 		$this->worker->type = $this->input('type');
 		$this->worker->user->language = $this->input('language');
 		$this->worker->approved = $this->filled('approved');
-
+		
 		$this->worker->data = array_filter($this->input('worker'));
 		
 		$this->worker->user->save();
@@ -62,8 +62,8 @@ class UpdateWorkerRequest extends FormRequest {
 			'id' => $this->worker->id,
 			'name' => $this->input('name'),
 			'workplacesList' => $this->worker->workplacesList,
-			'completed' => null
-		
+			'completed' => count($this->worker->data),
+			'approved' => $this->worker->approved
 		];
 	}
 }

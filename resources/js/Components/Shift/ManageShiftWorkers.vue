@@ -1,8 +1,5 @@
 <template>
-	<div v-if="shift">
-		<dynamic-fields :fields="shift" :hide="['closed']">
-		</dynamic-fields>
-		<dynamic-table :columns="[
+	<dynamic-table v-if="! loading" :columns="[
         {
             name: 'worker',
             label: this.$translations.name,
@@ -27,13 +24,10 @@
             label: 'end time',
             subType: 'time',
         }
-        ]" :init-fields="shiftWorkers" :action="tableAction">
-		</dynamic-table>
-		<div class="mt-1" v-if="!shift[3].value">
-			<ajax-form method="patch" :action="url" @submitted="updateData">
-				<button class="button is-danger" type="submit" v-text="$translations.closeShift"></button>
-			</ajax-form>
-		</div>
+        ]" :init-fields="shiftWorkers" :action="shift.closed ? '' : `${this.url}/worker`">
+	</dynamic-table>
+	<div v-else class="has-text-centered">
+		<a class="button is-loading"></a>
 	</div>
 </template>
 <script>
@@ -42,68 +36,46 @@
 	import AjaxForm from '../Form/AjaxForm';
 
 	export default {
-		name: "ManageShift",
+		name: "ManageShiftWorkers",
 		components: {
 			DynamicFields,
 			DynamicTable,
 			AjaxForm,
 		},
 		props: {
+			shift: {
+				type: Object,
+				required: true
+			},
+
 			url: {
 				type: String,
 				required: true
 			},
-			action: {
-				type: String,
-				required: true
-			},
-			onUpdate: {
-				type: Function
-			}
 		},
 		data() {
 			return {
-				shift: null,
+				loading: true,
 				workers: [],
 				shiftWorkers: [],
 				workFunctions: []
 			}
 		},
-		methods: {
-			async setUp() {
+		async created() {
+			try {
 				const response = await axios.get(this.url);
-				this.setObjects(response);
-
-
-			},
-			updateData(response) {
-				this.setObjects(response);
-				if (this.onUpdate) {
-					this.onUpdate(response.data.newShift);
-				}
-			},
-
-			setObjects(response) {
 				this.shiftWorkers = response.data.shiftWorkers;
-				this.shift = response.data.shift;
-				this.workers = response.data.workers;
 				this.workFunctions = response.data.workFunctions;
-			}
-		},
-		created() {
-			this.setUp()
-		},
-		computed: {
-			tableAction() {
-				if (this.shift[3].value === true) {
-					return '';
+				this.workers = response.data.workers;
+
+			} catch (error) {
+				if (response.status === 419) {
+					this.$toast.error(this.$translations.sessionExpired);
+				} else {
+					this.$toast.error(this.$translations.generalError);
 				}
-				return this.action;
 			}
-		}
+			this.loading = false;
+		},
 	}
 </script>
-
-<style scoped>
-
-</style>

@@ -114,7 +114,7 @@ class Workplace extends Model {
 				'name' => 'id',
 				'title' => 'id',
 				'visible' => false,
-			], [
+			],[
 				'name' => 'date',
 				'title' => __('admin/shifts.date'),
 				'sortField' => 'date',
@@ -124,13 +124,8 @@ class Workplace extends Model {
 				'title' => __('admin/shifts.hours'),
 				'sortField' => 'hours',
 				'callback' => 'localNumber',
-				'filter' => false,
-			], [
-				'name' => 'closed',
-				'title' => __('admin/shifts.closed'),
-				'callback' => 'boolean'
-			]],
-		
+				'filter' => false,]],
+
 		];
 	}
 }

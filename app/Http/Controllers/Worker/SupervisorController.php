@@ -20,6 +20,7 @@ use App\Models\Workplace;
 use function foo\func;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class SupervisorController extends Controller {
 	
@@ -59,10 +60,6 @@ class SupervisorController extends Controller {
 	}
 	
 	public function editShift(Shift $shift) {
-		$fields = $shift->fullData->map(function ($value) {
-			$value['readonly'] = true;
-			return $value;
-		});
 		$shiftWorkers = $shift->workers->map(function ($worker) use ($shift) {
 			$shift = $worker->shifts->find($shift);
 			return [
@@ -75,11 +72,9 @@ class SupervisorController extends Controller {
 			];
 		});
 		return [
-			'shift' => $fields->toArray(),
-			'workers' => $workplace->workers()->where('approved', true)->with('user')->get()->pluck('user.name', 'id'),
+			'workers' => $shift->workplace->workers()->where('approved', true)->with('user')->get()->pluck('user.name', 'id'),
 			'shiftWorkers' => $shiftWorkers,
 			'workFunctions' => $shift->workplace->workFunctions->pluck('name', 'id')
-		
 		];
 	}
 	
