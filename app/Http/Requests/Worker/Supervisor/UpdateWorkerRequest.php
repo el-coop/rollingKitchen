@@ -33,7 +33,8 @@ class UpdateWorkerRequest extends FormRequest {
 			'language' => 'required|in:en,nl',
 			'worker' => 'required|array',
 			'workplaces' => 'required|array',
-			'workplaces.*' => 'required|exists:workplaces,id'
+			'workplaces.*' => 'required|exists:workplaces,id',
+			'approved' => 'boolean',
 		]);
 		
 		$fieldRules = Field::getRequiredFields(Worker::class);
@@ -47,7 +48,8 @@ class UpdateWorkerRequest extends FormRequest {
 		$this->worker->user->email = $this->input('email');
 		$this->worker->type = $this->input('type');
 		$this->worker->user->language = $this->input('language');
-		
+		$this->worker->approved = $this->filled('approved');
+
 		$this->worker->data = array_filter($this->input('worker'));
 		
 		$this->worker->user->save();

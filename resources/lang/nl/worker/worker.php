@@ -6,4 +6,5 @@ return [
 	'shifts' => 'TBT',
 	'workedHours' => 'TBT',
 	'workplace' => 'TBT',
+	'workerNotApproved' => 'TBT'
 ];

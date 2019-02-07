@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Worker\Supervisor;
 
 use App\Models\Worker;
+use App\Rules\WorkerApproved;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AddWorkerToShiftRequest extends FormRequest {
@@ -27,7 +28,7 @@ class AddWorkerToShiftRequest extends FormRequest {
 	 */
 	public function rules() {
 		return [
-			'worker' => 'required|integer',
+			'worker' => ['required','integer', new WorkerApproved],
 			'startTime' => 'required|date_format:H:i',
 			'endTime' => 'required|date_format:H:i',
 			'workFunction' => 'required|integer'
