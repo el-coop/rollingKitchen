@@ -5,5 +5,6 @@ return [
 	'profile' => 'Profile',
 	'shifts' => 'Shifts',
 	'workedHours' => 'Worked Hours',
-	'workplace' => 'Workplace'
+	'workplace' => 'Workplace',
+	'workerNotApproved' => 'Worker Not Approved'
 ];
