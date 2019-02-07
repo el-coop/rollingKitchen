@@ -49,8 +49,8 @@ return [
 	'invoices_default_resend_email_nl' => 'Standaard tekst email vervolg factuur NL',
 	'invoices_default_resend_email_en' => 'Standaard tekst email vervolg factuur EN',
 	
-	'workers_user_created_subject_nl' => 'TBT',
-	'workers_user_created_subject_en' => 'TBT',
-	'workers_user_created_nl' => 'TBT',
-	'workers_user_created_en' => 'TBT'
+	'workers_user_created_subject_nl' => 'Werknemers gecreëerd email onderwerp NL',
+	'workers_user_created_subject_en' => 'Werknemers gecreëerd email onderwerp EN',
+	'workers_user_created_nl' => 'Werknemers gecreëerd email tekst NL',
+	'workers_user_created_en' => 'Werknemers gecreëerd email onderwerp EN'
 ];

@@ -2,7 +2,7 @@
 
 return [
 	'Kitchen' => 'Berijfsgegevens velden',
-	'Worker' => 'TBT',
+	'Worker' => 'Werknemer',
 	'Application' => 'Keukengegevens velden',
 	'back' => 'Terug naar lijst',
 	'name_nl' => 'Nederlandse naam',
@@ -12,8 +12,8 @@ return [
 	'textarea' => 'Tekstveld',
 	'protected' => 'Beschermd',
 	'required' => 'Vereist',
-	'encrypted' => 'TBT',
-	'none' => 'Geen',
+	'encrypted' => 'Encrypted',
+	'none' => 'Medewerker',
 	'placeholder_nl' => 'Plaatshouder NL',
 	'placeholder_en' => 'Plaatshouder EN'
 ];

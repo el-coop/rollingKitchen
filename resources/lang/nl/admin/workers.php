@@ -1,20 +1,20 @@
 <?php
 
 return [
-	'workers' => 'TBT',
-	'createWorker' => 'TBT',
-	'makeSupervisor' => 'TBT',
-	'type' => 'TBT',
-	'payroll' => 'TBT',
-	'freelance' => 'TBT',
-	'volunteer' => 'TBT',
+	'workers' => 'Medewerkers',
+	'createWorker' => 'Medewerkers creëren',
+	'makeSupervisor' => 'Is supervisor',
+	'type' => 'Type',
+	'payroll' => 'Loonlijst',
+	'freelance' => 'Freelancer',
+	'volunteer' => 'Vrijwilliger',
 	'completed' => 'Completed',
-	'workplaces' => 'TBT',
-	'addWorkplace' => 'TBT',
-	'createWorkplace' => 'TBT',
-	'payment_per_hour_before_tax' => 'TBT',
-	'payment_per_hour_after_tax' => 'TBT',
-	'fillProfile' => 'TBT',
-	'createShift' => 'TBT',
-	'approved' => 'TBT'
+	'workplaces' => 'Werkplekken',
+	'addWorkplace' => 'Werkplek toevoegen',
+	'createWorkplace' => 'Werkplek creëren ',
+	'payment_per_hour_before_tax' => 'Bruto Uurloon',
+	'payment_per_hour_after_tax' => 'Netto Uurloon',
+	'fillProfile' => 'Profiel invullen',
+	'createShift' => 'Shift creëren',
+	'approved' => 'Goedgekeurd'
 ];
