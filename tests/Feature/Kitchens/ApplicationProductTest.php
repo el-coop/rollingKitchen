@@ -7,6 +7,7 @@ use App\Models\Application;
 use App\Models\Kitchen;
 use App\Models\Product;
 use App\Models\User;
+use App\Models\Worker;
 use ElCoop\Valuestore\Valuestore;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
@@ -16,6 +17,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class ApplicationProductTest extends TestCase {
 	use RefreshDatabase;
 
+	protected $worker;
 	private $admin;
 	private $application;
 	private $kitchen;
@@ -38,6 +40,9 @@ class ApplicationProductTest extends TestCase {
 		$this->admin = factory(User::class)->make();
 		factory(Admin::class)->create()->user()->save($this->admin);
 
+		$this->worker = factory(User::class)->make();
+		factory(Worker::class)->create()->user()->save($this->worker);
+
 		$this->kitchen2 = factory(User::class)->make();
 		$this->kitchen2->user()->save(factory(Kitchen::class)->create());
 
@@ -58,6 +63,13 @@ class ApplicationProductTest extends TestCase {
 			'name' => 'test',
 			'price' => 2.5
 		])->assertRedirect(action('Auth\LoginController@login'));
+	}
+
+	public function test_a_different_worker_cant_create_product() {
+		$this->actingAs($this->worker)->post(action('Kitchen\ApplicationProductController@create', $this->application), [
+			'name' => 'test',
+			'price' => 2.5
+		])->assertForbidden();
 	}
 
 	public function test_a_different_kitchen_cant_create_product() {
@@ -99,6 +111,21 @@ class ApplicationProductTest extends TestCase {
 		]);
 	}
 
+	public function test_worker_cant_create_product_on_submitted_application() {
+		$this->actingAs($this->worker)->post(action('Kitchen\ApplicationProductController@create', $this->application), [
+			'name' => 'test',
+			'price' => 2.5,
+			'category' => 'drinks'
+		])->assertForbidden();
+
+		$this->assertDatabaseMissing('products', [
+			'application_id' => $this->application->id,
+			'name' => 'test',
+			'price' => 2.5,
+			'category' => 'drinks'
+		]);
+	}
+
 	public function test_kitchen_cant_create_product_on_submitted_application() {
 		$this->actingAs($this->kitchen)->post(action('Kitchen\ApplicationProductController@create', $this->application), [
 			'name' => 'test',
@@ -133,6 +160,13 @@ class ApplicationProductTest extends TestCase {
 			'name' => 'test',
 			'price' => 0.01
 		])->assertRedirect(action('Auth\LoginController@login'));
+	}
+
+	public function test_a_different_worker_cant_edit_product() {
+		$this->actingAs($this->worker)->patch(action('Kitchen\ApplicationProductController@update', ['application' => $this->application, 'product' => $this->product]), [
+			'name' => 'test',
+			'price' => 0.01
+		])->assertForbidden();
 	}
 
 	public function test_a_different_kitchen_cant_edit_product() {
@@ -206,6 +240,11 @@ class ApplicationProductTest extends TestCase {
 	public function test_a_guest_cant_delete_product() {
 		$this->delete(action('Kitchen\ApplicationProductController@destroy', ['application' => $this->application, 'product' => $this->product]))
 			->assertRedirect(action('Auth\LoginController@login'));
+	}
+
+	public function test_a_different_worker_cant_delete_product() {
+		$this->actingAs($this->kitchen2)->delete(action('Kitchen\ApplicationProductController@destroy', ['application' => $this->application, 'product' => $this->product]))
+			->assertForbidden();
 	}
 
 	public function test_a_different_kitchen_cant_delete_product() {
