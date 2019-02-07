@@ -79,7 +79,7 @@ class SupervisorController extends Controller {
 		});
 		return [
 			'shift' => $fields->toArray(),
-			'workers' => $workplace->workers()->with('user')->get()->pluck('user.name', 'id'),
+			'workers' => $workplace->workers()->where('approved', true)->with('user')->get()->pluck('user.name', 'id'),
 			'shiftWorkers' => $shiftWorkers,
 			'workFunctions' => $workplace->workFunctions->pluck('name', 'id')
 
