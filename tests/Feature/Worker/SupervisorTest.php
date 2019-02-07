@@ -400,8 +400,11 @@ class SupervisorTest extends TestCase {
 			'name' => 'closed',
 			'value' => $this->shift->closed,
 		]);
-		$this->actingAs($this->supervisor)->get(action('Worker\SupervisorController@editShift', [$this->workplace, $this->shift]))
-			->assertSuccessful();;
+		$response = $this->actingAs($this->supervisor)->get(action('Worker\SupervisorController@editShift', [$this->workplace, $this->shift]))
+			->assertSuccessful();
+		$response->assertJsonFragment([
+			'workers' => $this->workplace->workers()->where('approved', true)->with('user')->get()->pluck('name', 'id')
+		]);
 	}
 
 	public function test_guest_cant_close_shift() {
@@ -479,7 +482,22 @@ class SupervisorTest extends TestCase {
 		])->assertForbidden();
 	}
 
-	public function test_supervisor_can_add_worker_to_shift() {
+	public function test_supervisor_cant_add_unapproved_worker_to_shift() {
+		$this->actingAs($this->supervisor)->post(action('Worker\SupervisorController@addWorkerToShift', [
+			$this->workplace,
+			$this->shift
+		]), [
+			'worker' => $this->worker->user->id,
+			'startTime' => '20:00',
+			'endTime' => '22:00',
+			'workFunction' => $this->workplace->workFunctions->first()->id
+		])->assertRedirect()->assertSessionHasErrors(['worker']);
+
+	}
+
+	public function test_supervisor_can_add_approved_worker_to_shift() {
+		$this->worker->user->approved = true;
+		$this->worker->user->save();
 		$this->actingAs($this->supervisor)->post(action('Worker\SupervisorController@addWorkerToShift', [
 			$this->workplace,
 			$this->shift

@@ -7,6 +7,7 @@ use App\Models\Application;
 use App\Models\ElectricDevice;
 use App\Models\Kitchen;
 use App\Models\User;
+use App\Models\Worker;
 use ElCoop\Valuestore\Valuestore;
 use Storage;
 use Tests\TestCase;
@@ -16,6 +17,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class ApplicationDeviceTest extends TestCase {
 	use RefreshDatabase;
 
+	protected $worker;
 	private $admin;
 	private $application;
 	private $kitchen;
@@ -38,6 +40,9 @@ class ApplicationDeviceTest extends TestCase {
 
 		$this->admin = factory(User::class)->make();
 		factory(Admin::class)->create()->user()->save($this->admin);
+
+		$this->worker = factory(User::class)->make();
+		factory(Worker::class)->create()->user()->save($this->worker);
 
 		$this->kitchen2 = factory(User::class)->make();
 		$this->kitchen2->user()->save(factory(Kitchen::class)->create());
@@ -62,7 +67,12 @@ class ApplicationDeviceTest extends TestCase {
 			'watts' => 3
 		])->assertRedirect(action('Auth\LoginController@login'));
 	}
-
+	public function test_a_different_worker_cant_create_device() {
+		$this->actingAs($this->worker)->post(action('Kitchen\ApplicationDeviceController@create', $this->application), [
+			'name' => 'test',
+			'watts' => 3
+		])->assertForbidden();
+	}
 	public function test_a_different_kitchen_cant_create_device() {
 		$this->actingAs($this->kitchen2)->post(action('Kitchen\ApplicationDeviceController@create', $this->application), [
 			'name' => 'test',

@@ -34,12 +34,21 @@ class FieldTest extends TestCase {
 	public function test_guest_cant_see_any_field_list() {
 		$this->get(action('Admin\FieldController@index', 'Kitchen'))->assertRedirect(action('Auth\LoginController@login'));
 		$this->get(action('Admin\FieldController@index', 'Application'))->assertRedirect(action('Auth\LoginController@login'));
+		$this->get(action('Admin\FieldController@index', 'Worker'))->assertRedirect(action('Auth\LoginController@login'));
+
+	}
+
+	public function test_worker_cant_see_any_field_list() {
+		$this->actingAs($this->worker)->get(action('Admin\FieldController@index', 'Kitchen'))->assertForbidden();
+		$this->actingAs($this->worker)->get(action('Admin\FieldController@index', 'Application'))->assertForbidden();
+		$this->actingAs($this->worker)->get(action('Admin\FieldController@index', 'Worker'))->assertForbidden();
 
 	}
 
 	public function test_kitchen_cant_see_any_field_list() {
 		$this->actingAs($this->kitchen)->get(action('Admin\FieldController@index', 'Kitchen'))->assertForbidden();
 		$this->actingAs($this->kitchen)->get(action('Admin\FieldController@index', 'Application'))->assertForbidden();
+		$this->actingAs($this->kitchen)->get(action('Admin\FieldController@index', 'Worker'))->assertForbidden();
 
 	}
 
@@ -73,6 +82,8 @@ class FieldTest extends TestCase {
 			'form' => Application::class,
 		])->assertRedirect(action('Auth\LoginController@login'));
 	}
+
+
 
 	public function test_kitchen_cant_create_field() {
 		$this->actingAs($this->kitchen)->post(action('Admin\FieldController@create'), [
@@ -160,6 +171,13 @@ class FieldTest extends TestCase {
 		$this->patch(action('Admin\FieldController@saveOrder', [
 			'order' => $newOrder->toArray(),
 		]))->assertRedirect(action('Auth\LoginController@login'));
+	}
+
+	public function test_worker_cant_order_list() {
+		$newOrder = $this->fields->sortByDesc('id')->pluck('id');
+		$this->actingAs($this->worker)->patch(action('Admin\FieldController@saveOrder', [
+			'order' => $newOrder->toArray(),
+		]))->assertForbidden();
 	}
 
 	public function test_kitchen_cant_order_list() {
