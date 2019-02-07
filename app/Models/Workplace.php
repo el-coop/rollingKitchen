@@ -11,11 +11,11 @@ class Workplace extends Model {
 	public function workFunctions() {
 		return $this->hasMany(WorkFunction::class);
 	}
-
+	
 	public function shifts() {
 		return $this->hasMany(Shift::class);
 	}
-
+	
 	public function getFullDataAttribute() {
 		return collect([[
 			'name' => 'name',
@@ -62,11 +62,11 @@ class Workplace extends Model {
 		];
 		
 	}
-  
+	
 	public function hasWorker(Worker $worker) {
 		return $this->workers->contains($worker);
 	}
-
+	
 	public function getShiftsForSupervisorAttribute() {
 		return [
 			'model' => Shift::class,
@@ -75,7 +75,7 @@ class Workplace extends Model {
 				'name' => 'id',
 				'title' => 'id',
 				'visible' => false,
-			],[
+			], [
 				'name' => 'date',
 				'title' => __('admin/shifts.date'),
 				'sortField' => 'date',
@@ -85,8 +85,13 @@ class Workplace extends Model {
 				'title' => __('admin/shifts.hours'),
 				'sortField' => 'hours',
 				'callback' => 'localNumber',
-				'filter' => false,]],
-
+				'filter' => false,
+			], [
+				'name' => 'closed',
+				'title' => __('admin/shifts.closed'),
+				'callback' => 'boolean'
+			]],
+		
 		];
 	}
 }

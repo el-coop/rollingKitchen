@@ -3,12 +3,13 @@
     'fields' => $shiftsTable['fields'],
     'url' => 'supervisorDatatable'
 ])
-    <template slot-scope="{object, onUpdate}" v-if="object">
-        <manage-shift
-                :url="'workplace/{{$workplace->id}}/shift' + (object.id ? `/${object.id}` : '')"
-                :action="'workplace/{{$workplace->id}}/shift' + (object.id ? `/${object.id}` : '') + '/worker'"
-        >
+	<template slot-scope="{object, onUpdate}" v-if="object">
+		<manage-shift
+				:on-update="onUpdate"
+				:url="`/worker/shift/${object.id}`"
+				:action="`/worker/shift/${object.id}/worker`"
+		>
 
-        </manage-shift>
-    </template>
+		</manage-shift>
+	</template>
 @endcomponent

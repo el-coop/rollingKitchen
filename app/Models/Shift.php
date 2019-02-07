@@ -32,10 +32,17 @@ class Shift extends Model {
 			'type' => 'text',
 			'subType' => 'number',
 			'value' => $this->hours
+		], [
+			'name' => 'closed',
+			'type' => 'checkbox',
+			'value' => $this->closed,
+			'options' => [[
+				'name' => __('admin/settings.closed')
+			]]
 		]]);
 	}
-
-	public function workers(){
+	
+	public function workers() {
 		return $this->belongsToMany(Worker::class)->withPivot('start_time', 'end_time', 'work_function_id');
 	}
 }
