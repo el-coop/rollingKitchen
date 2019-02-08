@@ -20,7 +20,7 @@ class Worker extends Model {
 	];
 	
 	static function indexPage() {
-		return action('Admin\KitchenController@index', [], false);
+		return action('Admin\WorkerController@index', [], false);
 	}
 	
 	public function homePage() {
@@ -123,8 +123,8 @@ class Worker extends Model {
 		}
 		return false;
 	}
-
-	public function shifts(){
+	
+	public function shifts() {
 		return $this->belongsToMany(Shift::class)->withPivot('start_time', 'end_time', 'work_function_id');
 	}
 }
