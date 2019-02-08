@@ -110,6 +110,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 			Route::post('/edit', 'ShiftController@store');
 			Route::get('/edit/{shift}', 'ShiftController@edit');
 			Route::patch('/edit/{shift}', 'ShiftController@update');
+
+			Route::group(['prefix' => 'workedHours'], function () {
+				Route::patch('/order', 'WorkedHoursExportColumnController@saveOrder');
+				Route::post('/', 'WorkedHoursExportColumnController@create');
+				Route::patch('/{workedHoursExportColumn}', 'WorkedHoursExportColumnController@update');
+				Route::delete('/{workedHoursExportColumn}', 'WorkedHoursExportColumnController@destroy');
+				Route::get('/export', 'WorkedHoursExportColumnController@export');
+			});
 		});
 		
 		Route::group(['prefix' => 'workplaces'], function () {

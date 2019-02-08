@@ -51,5 +51,9 @@ return [
 	'noData' => 'No data available',
 	'name' => 'Name',
 	'workFunctions' => 'Work Function',
-	'closeShift' => 'Close Shift'
+	'closeShift' => 'Close Shift',
+	'field' => 'Field',
+	'startTime' => 'Start Time',
+	'endTime' => 'End Time',
+	'export' => 'Export'
 ];

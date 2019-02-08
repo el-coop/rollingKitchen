@@ -269,5 +269,4 @@ class TableTest extends TestCase {
 		$this->assertDatabaseMissing('application_service', ['service_id' => $service->id]);
 
 	}
-
 }

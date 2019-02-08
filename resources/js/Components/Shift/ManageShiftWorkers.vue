@@ -16,12 +16,12 @@
         },
         {
             name: 'startTime',
-            label: 'start time',
+            label: this.$translations.startTime,
             subType: 'time',
         },
         {
             name: 'endTime',
-            label: 'end time',
+            label: this.$translations.endTime,
             subType: 'time',
         }
         ]" :init-fields="shiftWorkers" :action="shift.closed ? '' : `${this.url}/worker`">

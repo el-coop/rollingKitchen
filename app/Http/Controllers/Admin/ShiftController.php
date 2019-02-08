@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Shift\CreateShiftRequest;
 use App\Http\Requests\Admin\Shift\UpdateShiftRequest;
+use App\Models\Field;
 use App\Models\Shift;
+use App\Models\WorkedHoursExportColumn;
+use App\Models\Worker;
 use Illuminate\Http\Request;
 
 class ShiftController extends Controller {
@@ -15,11 +18,16 @@ class ShiftController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index() {
+
+		$workedHoursOptions = WorkedHoursExportColumn::getOptionsAttribute();
+		$workedHours = WorkedHoursExportColumn::all();
 		$title = __('worker/worker.shifts');
 		$createTitle = __('admin/workers.createShift');
+		$buttons = ['<button class="button is-info" @click="$modal.show(' . "'worked-hours'" .')">' .__('admin/shifts.exportWorkedHours') . '</button>'];
 		$extraSlotView = 'admin.shift.manage';
 		$withEditLink = false;
-		return view('admin.datatableWithNew', compact('title', 'createTitle', 'extraSlotView', 'withEditLink'));
+		$extraPartials = 'admin.shift.exportWorkedHours';
+		return view('admin.datatableWithNew', compact( 'title','createTitle','withEditLink','extraSlotView', 'workedHoursOptions', 'workedHours', 'buttons', 'extraPartials'));
 	}
 	
 	/**
