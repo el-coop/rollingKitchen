@@ -48,5 +48,11 @@ return [
 	'protected' => 'Beschermd',
 	'required' => 'Vereist',
 	'none' => 'Geen',
-	'noData' => 'Geen data beschikbaar'
+	'noData' => 'Geen data beschikbaar',
+	'name' => 'TBT',
+	'workFunctions' => 'TBT',
+	'closeShift' => 'TBT',
+	'field' => 'TBT',
+	'startTime' => 'TBT',
+	'endTime' => 'TBT'
 ];

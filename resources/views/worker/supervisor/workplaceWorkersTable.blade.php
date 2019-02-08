@@ -3,6 +3,7 @@
     'fields' => $workersTable['fields'],
     'url' => "/supervisorDatatable/{$workplace->id}"
 ])
+	@slot('exportButton', false)
 	@slot('deleteButton', true)
 	@slot('buttons')
 		<button class="button is-light" @click="actions.newObjectForm">@lang('vue.add')</button>

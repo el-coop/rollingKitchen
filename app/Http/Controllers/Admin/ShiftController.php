@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Shift\CreateShiftRequest;
 use App\Http\Requests\Admin\Shift\UpdateShiftRequest;
 use App\Models\Shift;
+use App\Models\User;
+use App\Models\WorkedHoursExportColumn;
 use Illuminate\Http\Request;
 
 class ShiftController extends Controller {
@@ -19,7 +21,9 @@ class ShiftController extends Controller {
 		$createTitle = __('admin/workers.createShift');
 		$extraSlotView = 'admin.shift.manage';
 		$withEditLink = false;
-		return view('admin.datatableWithNew', compact('title', 'createTitle', 'extraSlotView', 'withEditLink'));
+		$workedHoursOptions = WorkedHoursExportColumn::getOptionsAttribute();
+		$buttons = ['<button class="button is-info" @click="$bus.$emit(' . "open-worked-hours" . ')">' . __('admin/shifts.exportWorkedHours') . '</button>'];
+		return view('admin.datatableWithNew', compact('title', 'createTitle', 'extraSlotView', 'withEditLink', 'workedHoursOptions', 'buttons'));
 	}
 	
 	/**

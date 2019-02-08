@@ -4,7 +4,7 @@
 			<div class="field is-grouped">
 				<div class="buttons">
 					<slot name="buttons" :actions="buttonActions"></slot>
-					<a :href="`${this.url}/export?${exportOptions}`" class="button is-dark"
+					<a v-if="exportButton" :href="`${this.url}/export?${exportOptions}`" class="button is-dark"
 					   v-text="$translations.download"></a>
 				</div>
 			</div>
@@ -135,6 +135,12 @@
 				type: Boolean,
 				default() {
 					return false
+				}
+			},
+			exportButton: {
+				type: Boolean,
+				default(){
+					return true
 				}
 			}
 		},

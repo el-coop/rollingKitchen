@@ -3,6 +3,7 @@
     'fields' => $shiftsTable['fields'],
     'url' => "/supervisorDatatable/{$workplace->id}"
 ])
+	@slot('exportButton', false)
 	<template slot-scope="{object, onUpdate}" v-if="object">
 
 		<dynamic-fields v-if="object" :fields="[{
