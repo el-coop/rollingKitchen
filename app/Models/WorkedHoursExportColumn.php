@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 
 class WorkedHoursExportColumn extends Model {
 
-	static public function getOptionsAttribute(){
+	static public function getOptionsAttribute() {
 		$options = collect([
 			'user.name' => __('global.name'),
 			'shift.date' => __('admin/shifts.date'),
@@ -17,13 +17,11 @@ class WorkedHoursExportColumn extends Model {
 			'shift_worker.work_function_id' => __('worker/supervisor.workFunctions'),
 			'worker.type' => __('admin/workers.type'),
 			'shift.workplace_id' => __('admin/workers.workplace'),
-			]);
-		$workerColumns = Field::where('form', Worker::class)->get()->pluck('name_nl');
-		foreach ($workerColumns as $workerColumn){
+		]);
+		Field::where('form', Worker::class)->get()->each(function ($workerColumn) use ($options) {
 			$options->put(
-				'worker.' . $workerColumn, $workerColumn
-			);
-		}
+				'worker.' . $workerColumn->id, $workerColumn->name_nl);
+		});
 		return $options;
 	}
 }

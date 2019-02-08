@@ -5,6 +5,7 @@ namespace App\Http\Requests\Admin\WorkedHoursExportColumn;
 use App\Models\Field;
 use App\Models\WorkedHoursExportColumn;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateWorkedHoursExportColumnRequest extends FormRequest {
 	/**
@@ -22,13 +23,14 @@ class CreateWorkedHoursExportColumnRequest extends FormRequest {
 	 * @return array
 	 */
 	public function rules() {
+		$columnOptions = array_keys(WorkedHoursExportColumn::getOptionsAttribute()->toArray());
 		return [
-			'column' => 'required|string|unique:worked_hours_export_columns',
-			'name' => 'required|string|unique:worked_hours_export_columns'
+			'column' => ['required', 'string', Rule::in($columnOptions)],
+			'name' => 'required|string'
 		];
 	}
 
-	public function commit(){
+	public function commit() {
 		$workedHoursColumn = new WorkedHoursExportColumn;
 		$workedHoursColumn->column = $this->input('column');
 		$workedHoursColumn->name = $this->input('name');

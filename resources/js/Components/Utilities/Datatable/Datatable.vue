@@ -133,15 +133,11 @@
 			},
 			deleteSlot: {
 				type: Boolean,
-				default() {
-					return false
-				}
+				default: false
 			},
 			exportButton: {
 				type: Boolean,
-				default(){
-					return true
-				}
+				default: true
 			}
 		},
 

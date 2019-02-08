@@ -43,7 +43,7 @@ class WorkedHoursService implements FromCollection, WithHeadings {
 								$workedHourRow->push($worker->type);
 
 							} else {
-								$column = Field::where(['form' => Worker::class, 'name_nl' => $column])->first()->id;
+								$column = Field::find($column)->id;
 								$workedHourRow->push($worker->data[$column]);
 							}
 							break;
