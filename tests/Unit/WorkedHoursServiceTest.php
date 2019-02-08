@@ -15,8 +15,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class WorkedHoursServiceTest extends TestCase {
 	use RefreshDatabase;
-	protected $shift;
-	protected $workplace;
+	protected $shifts;
+	protected $workplaces;
 	protected $workedHoursColumns;
 	protected $workedHoursService;
 
