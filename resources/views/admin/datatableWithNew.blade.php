@@ -40,13 +40,11 @@
                 ></dynamic-form>
                 @isset($extraSlotView)
                     @include($extraSlotView)
-                @endif
+                @endisset
             </template>
         @endcomponent
-        @if($title == __('worker/worker.shifts'))
-            <export-worked-hours url="{{action('Admin\WorkedHoursExportColumnController@create')}}"
-                                 :column-options="{{$workedHoursOptions}}"
-                                 :fields="{{collect($workedHours)}}"></export-worked-hours>
-        @endif
+        @isset($extraPartials)
+            @include($extraPartials)
+        @endisset
     </div>
 @endsection

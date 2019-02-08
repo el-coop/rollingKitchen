@@ -26,7 +26,8 @@ class ShiftController extends Controller {
 		$buttons = ['<button class="button is-info" @click="$modal.show(' . "'worked-hours'" .')">' .__('admin/shifts.exportWorkedHours') . '</button>'];
 		$extraSlotView = 'admin.shift.manage';
 		$withEditLink = false;
-		return view('admin.datatableWithNew', compact( 'title','createTitle','withEditLink','extraSlotView', 'workedHoursOptions', 'workedHours', 'buttons'));
+		$extraPartials = 'admin.shift.exportWorkedHours';
+		return view('admin.datatableWithNew', compact( 'title','createTitle','withEditLink','extraSlotView', 'workedHoursOptions', 'workedHours', 'buttons', 'extraPartials'));
 	}
 	
 	/**

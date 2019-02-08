@@ -15,7 +15,7 @@ class UpdateWorkedHoursExportColumnRequest extends FormRequest {
 	 */
 	public function authorize() {
 		$this->workedHoursColumn = $this->route('workedHoursExportColumn');
-		return $this->user()->can('update', WorkedHoursExportColumn::class);
+		return $this->user()->can('update',$this->workedHoursColumn);
 	}
 
 	/**

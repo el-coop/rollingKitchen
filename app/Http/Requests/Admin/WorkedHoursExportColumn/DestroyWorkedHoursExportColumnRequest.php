@@ -14,7 +14,7 @@ class DestroyWorkedHoursExportColumnRequest extends FormRequest {
 	 */
 	public function authorize() {
 		$this->workedHoursColumn = $this->route('workedHoursExportColumn');
-		return $this->user()->can('delete', WorkedHoursExportColumn::class);
+		return $this->user()->can('delete',$this->workedHoursColumn);
 	}
 
 	/**
