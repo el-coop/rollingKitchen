@@ -54,5 +54,6 @@ return [
 	'closeShift' => 'Close Shift',
 	'field' => 'Field',
 	'startTime' => 'Start Time',
-	'endTime' => 'End Time'
+	'endTime' => 'End Time',
+	'export' => 'Export'
 ];

@@ -43,10 +43,5 @@
                 @endif
             </template>
         @endcomponent
-        @if($title == __('worker/worker.shifts'))
-            <export-worked-hours :column-options="[]" :fields="[]" url="bla/bla">
-
-            </export-worked-hours>
-        @endif
     </div>
 @endsection

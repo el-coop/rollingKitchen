@@ -84,4 +84,12 @@ class WorkedHoursExportColumnPolicy {
 	public function forceDelete(User $user, WorkedHoursExportColumn $workedHoursExportColumn) {
 		//
 	}
+
+	/**
+	 * @param User $user
+	 * @return bool
+	 */
+	public function order(User $user){
+		return $user->user_type == Admin::class;
+	}
 }

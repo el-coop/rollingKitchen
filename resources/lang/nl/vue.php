@@ -54,5 +54,6 @@ return [
 	'closeShift' => 'TBT',
 	'field' => 'TBT',
 	'startTime' => 'TBT',
-	'endTime' => 'TBT'
+	'endTime' => 'TBT',
+	'export' => 'TBT'
 ];

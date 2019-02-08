@@ -10,6 +10,7 @@ class WorkedHoursExportColumn extends Model {
 	static public function getOptionsAttribute(){
 		$options = collect([
 			'user.name' => __('global.name'),
+			'shift.date' => __('admin/shifts.date'),
 			'user.email' => __('global.email'),
 			'shift_worker.start_time' => __('admin/shifts.startTime'),
 			'shift_worker.end_time' => __('admin/shifts.endTime'),
@@ -23,6 +24,6 @@ class WorkedHoursExportColumn extends Model {
 				'worker.' . $workerColumn, $workerColumn
 			);
 		}
-		return $options->toArray();
+		return $options;
 	}
 }
