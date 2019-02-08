@@ -14,6 +14,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class WorkedHoursServiceTest extends TestCase {
+	use RefreshDatabase;
 	protected $shift;
 	protected $workplace;
 	protected $workedHoursColumns;
