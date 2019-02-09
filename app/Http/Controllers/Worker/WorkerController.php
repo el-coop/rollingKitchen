@@ -8,6 +8,7 @@ use App\Models\Field;
 use App\Models\Worker;
 use App\Models\WorkerPhoto;
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -21,7 +22,10 @@ class WorkerController extends Controller {
 		$formattersData = [
 			'totalDataCount' => Field::where('form', Worker::class)->count()
 		];
-		return view('worker.worker', compact('worker', 'formattersData'));
+
+		$futureShifts = $worker->shifts()->where('date', '>', Carbon::yesterday())->with('workplace.workFunctions')->get();
+
+		return view('worker.worker', compact('worker', 'futureShifts', 'formattersData'));
 	}
 	
 	public function showResetForm(Request $request, $token = null) {
