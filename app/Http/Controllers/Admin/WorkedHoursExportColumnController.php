@@ -37,6 +37,6 @@ class WorkedHoursExportColumnController extends Controller {
 	}
 
 	public function export(Excel $excel,  WorkedHoursService $workedHoursService) {
-		return $excel->download($workedHoursService, 'workedHours.csv');
+		return $excel->download($workedHoursService, 'workedHours.xls');
 	}
 }
