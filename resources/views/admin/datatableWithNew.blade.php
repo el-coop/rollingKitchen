@@ -43,8 +43,5 @@
                 @endisset
             </template>
         @endcomponent
-        @isset($extraPartials)
-            @include($extraPartials)
-        @endisset
     </div>
 @endsection

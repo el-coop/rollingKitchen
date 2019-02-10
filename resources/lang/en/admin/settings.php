@@ -53,5 +53,6 @@ return [
 	'workers_user_created_subject_nl' => 'Workers created mail subject NL',
 	'workers_user_created_subject_en' => 'Workers created mail subject EN',
 	'workers_user_created_nl' => 'Workers created mail body NL',
-	'workers_user_created_en' => 'Workers created mail body EN'
+	'workers_user_created_en' => 'Workers created mail body EN',
+	'workedHours' => 'Worked Hours'
 ];

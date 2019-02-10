@@ -15,6 +15,7 @@ return [
 	],
 	'admin/settings.title' => [
 		'admin/settings.settings' => 'Admin\SettingsController@show',
-		'admin/settings.files' => 'Admin\PDFController@index'
+		'admin/settings.files' => 'Admin\PDFController@index',
+		'admin/settings.workedHours' => 'Admin\WorkedHoursExportColumnController@show'
 	]
 ];

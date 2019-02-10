@@ -13,13 +13,13 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class WorkedHoursService implements FromCollection, WithHeadings {
-	
+
 	use  Exportable;
-	
+
 	public function headings(): array {
 		return WorkedHoursExportColumn::orderBy('order')->get()->pluck('name')->toArray();
 	}
-	
+
 	public function collection() {
 		$shifts = Shift::where('closed', true)->get();
 		$fields = WorkedHoursExportColumn::orderBy('order')->get()->pluck('column');
@@ -34,27 +34,33 @@ class WorkedHoursService implements FromCollection, WithHeadings {
 						case 'shift':
 							if ($column == 'workplace_id') {
 								$workedHourRow->push($shift->workplace->name);
-								
+
 							} else {
 								$workedHourRow->push($shift->$column);
 							}
 							break;
 						case 'worker':
-							if ($column == 'type') {
-								switch ($worker->type) {
-									case 0:
-										$workedHourRow->push(__('admin/workers.payroll'));
-										break;
-									case 1:
-										$workedHourRow->push(__('admin/workers.freelance'));
-										break;
-									default:
-										$workedHourRow->push(__('admin/workers.volunteer'));
-								}
-								
-							} else {
-								$column = Field::find($column)->id;
-								$workedHourRow->push($worker->data[$column] ?? '');
+							switch ($column) {
+								case 'type':
+									switch ($worker->type) {
+										case 0:
+											$workedHourRow->push(__('admin/workers.payroll'));
+											break;
+										case 1:
+											$workedHourRow->push(__('admin/workers.freelance'));
+											break;
+										default:
+											$workedHourRow->push(__('admin/workers.volunteer'));
+											break;
+									}
+									break;
+								case 'workedHours':
+									$workedHourRow->push($worker->workedHours);
+									break;
+								default:
+									$column = Field::find($column)->id;
+									$workedHourRow->push($worker->data[$column] ?? '');
+									break;
 							}
 							break;
 						case 'shift_worker':
@@ -90,7 +96,7 @@ class WorkedHoursService implements FromCollection, WithHeadings {
 				return $item[$dateIndex];
 			}
 			return $item;
-			
+
 		});
 	}
 }

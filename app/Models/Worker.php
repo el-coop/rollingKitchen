@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\HasFields;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use JustBetter\PaginationWithHavings\PaginationWithHavings;
 
@@ -126,6 +127,16 @@ class Worker extends Model {
 	
 	public function shifts() {
 		return $this->belongsToMany(Shift::class)->withPivot('start_time', 'end_time', 'work_function_id');
+	}
+
+	public function getWorkedHoursAttribute(){
+		$shifts = $this->shifts;
+		$workedHours = $shifts->map(function ($shift) {
+			$endTime = new Carbon($shift->pivot->end_time);
+			$startTime = new Carbon( $shift->pivot->start_time);
+			return $endTime->diffInHours($startTime);
+		});
+		return $workedHours->sum();
 	}
 }
 

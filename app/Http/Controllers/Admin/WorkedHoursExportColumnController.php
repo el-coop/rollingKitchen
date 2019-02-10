@@ -14,6 +14,12 @@ use Maatwebsite\Excel\Excel;
 
 class WorkedHoursExportColumnController extends Controller {
 
+	public function show(){
+		$workedHoursOptions = WorkedHoursExportColumn::getOptionsAttribute();
+		$workedHours = WorkedHoursExportColumn::all();
+		return view('admin.workedHours.show', compact('workedHours', 'workedHoursOptions'));
+	}
+
 	public function create(CreateWorkedHoursExportColumnRequest $request){
 		return $request->commit();
 	}
