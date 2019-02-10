@@ -43,6 +43,6 @@ class Shift extends Model {
 	}
 	
 	public function workers() {
-		return $this->belongsToMany(Worker::class)->withPivot('start_time', 'end_time', 'work_function_id');
+		return $this->belongsToMany(Worker::class)->using(ShiftWorker::class)->withPivot('start_time', 'end_time', 'work_function_id');
 	}
 }

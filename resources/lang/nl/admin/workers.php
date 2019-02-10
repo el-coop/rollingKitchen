@@ -16,5 +16,6 @@ return [
 	'payment_per_hour_after_tax' => 'Netto Uurloon',
 	'fillProfile' => 'Profiel invullen',
 	'createShift' => 'Shift creëren',
-	'approved' => 'Goedgekeurd'
+	'approved' => 'Goedgekeurd',
+	'totalHours' => 'TBT'
 ];

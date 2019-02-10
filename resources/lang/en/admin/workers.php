@@ -17,5 +17,6 @@ return [
 	'fillProfile' => 'Fill your profile',
 	'workplace' => 'Workplace',
 	'createShift' => 'Create Shift',
-	'approved' => 'Approved'
+	'approved' => 'Approved',
+	'totalHours' => 'Total hours'
 ];

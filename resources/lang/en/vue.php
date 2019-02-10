@@ -50,7 +50,7 @@ return [
 	'none' => 'None',
 	'noData' => 'No data available',
 	'name' => 'Name',
-	'workFunctions' => 'Work Function',
+	'workFunction' => 'Work Function',
 	'closeShift' => 'Close Shift',
 	'field' => 'Field',
 	'startTime' => 'Start Time',
