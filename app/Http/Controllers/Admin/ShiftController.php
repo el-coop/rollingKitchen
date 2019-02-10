@@ -18,16 +18,11 @@ class ShiftController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index() {
-
-		$workedHoursOptions = WorkedHoursExportColumn::getOptionsAttribute();
-		$workedHours = WorkedHoursExportColumn::all();
 		$title = __('worker/worker.shifts');
 		$createTitle = __('admin/workers.createShift');
-		$buttons = ['<button class="button is-info" @click="$modal.show(' . "'worked-hours'" .')">' .__('admin/shifts.exportWorkedHours') . '</button>'];
 		$extraSlotView = 'admin.shift.manage';
 		$withEditLink = false;
-		$extraPartials = 'admin.shift.exportWorkedHours';
-		return view('admin.datatableWithNew', compact( 'title','createTitle','withEditLink','extraSlotView', 'workedHoursOptions', 'workedHours', 'buttons', 'extraPartials'));
+		return view('admin.datatableWithNew', compact( 'title','createTitle','withEditLink','extraSlotView'));
 	}
 	
 	/**

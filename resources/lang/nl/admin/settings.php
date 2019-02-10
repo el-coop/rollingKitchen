@@ -52,5 +52,7 @@ return [
 	'workers_user_created_subject_nl' => 'Werknemers gecreëerd email onderwerp NL',
 	'workers_user_created_subject_en' => 'Werknemers gecreëerd email onderwerp EN',
 	'workers_user_created_nl' => 'Werknemers gecreëerd email tekst NL',
-	'workers_user_created_en' => 'Werknemers gecreëerd email onderwerp EN'
+	'workers_user_created_en' => 'Werknemers gecreëerd email onderwerp EN',
+
+	'workedHours' => 'TBT'
 ];
