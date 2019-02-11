@@ -17,5 +17,6 @@ return [
 	'fillProfile' => 'Profiel invullen',
 	'createShift' => 'Shift creëren',
 	'approved' => 'Goedgekeurd',
-	'totalHours' => 'TBT'
+	'totalHours' => 'TBT',
+	'pdf' => 'TBT'
 ];
