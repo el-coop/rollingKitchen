@@ -128,15 +128,15 @@ class Worker extends Model {
 	public function shifts() {
 		return $this->belongsToMany(Shift::class)->using(ShiftWorker::class)->withPivot('start_time', 'end_time', 'work_function_id');
 	}
-
-	public function getWorkedHoursAttribute(){
-		$shifts = $this->shifts;
-		$workedHours = $shifts->map(function ($shift) {
-			$endTime = new Carbon($shift->pivot->end_time);
-			$startTime = new Carbon( $shift->pivot->start_time);
-			return $endTime->diffInHours($startTime);
+	
+	public function getWorkedHoursAttribute() {
+		$totalHoursWorked = new Carbon('today');
+		$startOfDay = $totalHoursWorked->clone();
+		$shifts = $this->shifts()->where('closed', true)->get();
+		$shifts->each(function ($shift) use ($totalHoursWorked) {
+			$totalHoursWorked->add($shift->pivot->workedHours);
 		});
-		return $workedHours->sum();
+		return $startOfDay->diffAsCarbonInterval($totalHoursWorked);
 	}
 }
 

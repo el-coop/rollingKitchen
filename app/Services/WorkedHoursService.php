@@ -13,70 +13,26 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class WorkedHoursService implements FromCollection, WithHeadings {
-
+	
 	use  Exportable;
-
+	
 	public function headings(): array {
 		return WorkedHoursExportColumn::orderBy('order')->get()->pluck('name')->toArray();
 	}
-
+	
+	public function individual(Worker $worker) {
+		$fields = WorkedHoursExportColumn::where('column', 'NOT LIKE', 'shift%')->orderBy('order')->get();
+		return $fields->pluck('name')->combine($this->listData($fields->pluck('column'), $worker));
+		
+	}
+	
 	public function collection() {
-		$shifts = Shift::where('closed', true)->get();
+		$shifts = Shift::where('closed', true)->with('workers.user')->get();
 		$fields = WorkedHoursExportColumn::orderBy('order')->get()->pluck('column');
 		$data = collect();
 		foreach ($shifts as $shift) {
 			foreach ($shift->workers as $worker) {
-				$workedHourRow = collect();
-				foreach ($fields as $field) {
-					$model = strtok($field, '.');
-					$column = strtok('.');
-					switch ($model) {
-						case 'shift':
-							if ($column == 'workplace_id') {
-								$workedHourRow->push($shift->workplace->name);
-
-							} else {
-								$workedHourRow->push($shift->$column);
-							}
-							break;
-						case 'worker':
-							switch ($column) {
-								case 'type':
-									switch ($worker->type) {
-										case 0:
-											$workedHourRow->push(__('admin/workers.payroll'));
-											break;
-										case 1:
-											$workedHourRow->push(__('admin/workers.freelance'));
-											break;
-										default:
-											$workedHourRow->push(__('admin/workers.volunteer'));
-											break;
-									}
-									break;
-								case 'workedHours':
-									$workedHourRow->push($worker->workedHours);
-									break;
-								default:
-									$column = Field::find($column)->id;
-									$workedHourRow->push($worker->data[$column] ?? '');
-									break;
-							}
-							break;
-						case 'shift_worker':
-							$pivot = $worker->shifts->find($shift);
-							if ($column == 'work_function_id') {
-								$workedHourRow->push(WorkFunction::find($pivot->pivot->work_function_id)->name);
-							} else {
-								$workedHourRow->push($pivot->pivot->$column);
-							}
-							break;
-						case 'user':
-							$workedHourRow->push($worker->user->$column);
-							break;
-					}
-				}
-				$data->push($workedHourRow);
+				$data->push($this->listData($fields, $worker, $shift));
 			}
 		}
 		$namesIndex = $fields->search(function ($item) {
@@ -96,7 +52,67 @@ class WorkedHoursService implements FromCollection, WithHeadings {
 				return $item[$dateIndex];
 			}
 			return $item;
-
+			
 		});
+	}
+	
+	/**
+	 * @param $fields
+	 * @param $shift
+	 * @param $worker
+	 * @return \Illuminate\Support\Collection
+	 */
+	protected function listData($fields, Worker $worker, ?Shift $shift = null): \Illuminate\Support\Collection {
+		$result = collect();
+		foreach ($fields as $field) {
+			$model = strtok($field, '.');
+			$column = strtok('.');
+			switch ($model) {
+				case 'shift':
+					if ($column == 'workplace_id') {
+						$result->push($shift->workplace->name);
+						
+					} else {
+						$result->push($shift->$column);
+					}
+					break;
+				case 'worker':
+					switch ($column) {
+						case 'type':
+							switch ($worker->type) {
+								case 0:
+									$result->push(__('admin/workers.payroll'));
+									break;
+								case 1:
+									$result->push(__('admin/workers.freelance'));
+									break;
+								default:
+									$result->push(__('admin/workers.volunteer'));
+									break;
+							}
+							break;
+						case 'workedHours':
+							$result->push($worker->workedHours);
+							break;
+						default:
+							$column = Field::find($column)->id;
+							$result->push($worker->data[$column] ?? '');
+							break;
+					}
+					break;
+				case 'shift_worker':
+					$pivot = $worker->shifts->find($shift);
+					if ($column == 'work_function_id') {
+						$result->push(WorkFunction::find($pivot->pivot->work_function_id)->name);
+					} else {
+						$result->push($pivot->pivot->$column);
+					}
+					break;
+				case 'user':
+					$result->push($worker->user->$column);
+					break;
+			}
+		}
+		return $result;
 	}
 }
