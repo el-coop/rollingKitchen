@@ -64,7 +64,7 @@
 			<td></td>
 			<td></td>
 			<td>@lang('admin/workers.totalHours')</td>
-			<td>{{ floor($worker->workedHours->total('hours')) . ":{$worker->workedHours->minutes}" }}</td>
+			<td>{{ floor($worker->workedHours->total('hours')) . ":{$worker->workedHours->format('%M')}" }}</td>
 		</tr>
 		</tbody>
 	</table>
