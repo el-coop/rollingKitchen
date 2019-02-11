@@ -11,27 +11,27 @@ use JustBetter\PaginationWithHavings\PaginationWithHavings;
 class Worker extends Model {
 	use HasFields;
 	use PaginationWithHavings;
-	
+
 	protected $appends = [
 		'workplacesList',
 	];
-	
+
 	protected $casts = [
 		'data' => 'array',
 	];
-	
+
 	static function indexPage() {
 		return action('Admin\WorkerController@index', [], false);
 	}
-	
+
 	public function homePage() {
 		return action('Worker\WorkerController@index', $this);
 	}
-	
+
 	public function user() {
 		return $this->morphOne(User::class, 'user');
 	}
-	
+
 	public function getFullDataAttribute() {
 		$fullData = collect([
 			[
@@ -80,7 +80,7 @@ class Worker extends Model {
 				]],
 			],
 		]);
-		
+
 		if ($this->exists) {
 			$fullData = $fullData->push([
 				'name' => 'approved',
@@ -92,27 +92,27 @@ class Worker extends Model {
 			]);
 			$fullData = $fullData->concat($this->getFieldsData());
 		}
-		
+
 		return $fullData;
 	}
-	
+
 	public function workplaces() {
 		return $this->belongsToMany(Workplace::class)->withTimestamps();
 	}
-	
+
 	public function getWorkplacesListAttribute() {
 		return $this->workplaces->implode('name', ', ');
-		
+
 	}
-	
+
 	public function photos() {
 		return $this->hasMany(WorkerPhoto::class);
 	}
-	
+
 	public function isSupervisor() {
 		return $this->supervisor;
 	}
-	
+
 	public function isMySupervisor(User $user) {
 		$user = $user->user;
 		if ($user->isSupervisor()) {
@@ -124,19 +124,19 @@ class Worker extends Model {
 		}
 		return false;
 	}
-	
+
 	public function shifts() {
 		return $this->belongsToMany(Shift::class)->using(ShiftWorker::class)->withPivot('start_time', 'end_time', 'work_function_id');
 	}
 
-	public function getWorkedHoursAttribute(){
-		$shifts = $this->shifts;
-		$workedHours = $shifts->map(function ($shift) {
-			$endTime = new Carbon($shift->pivot->end_time);
-			$startTime = new Carbon( $shift->pivot->start_time);
-			return $endTime->diffInHours($startTime);
+	public function getWorkedHoursAttribute() {
+		$shifts = $this->shifts()->where('closed', true)->get();
+		$totalHours = new Carbon('today');
+		$startOfDay = $totalHours->clone();
+		$shifts->each(function ($shift) use ($totalHours) {
+			$totalHours->add($shift->pivot->workedHours);
 		});
-		return $workedHours->sum();
+		return $startOfDay->diffAsCarbonInterval($totalHours);
 	}
 }
 
