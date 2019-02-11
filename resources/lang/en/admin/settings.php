@@ -32,7 +32,6 @@ return [
 	'application_success_email_nl' => 'Success email when application submitted NL',
 	'application_success_email_en' => 'Success email when application submitted EN',
 
-	'invoices_accountant' => "Accountant's Email",
 	'invoices_business_details' => "Business details",
 
 	'invoices_notes_nl' => "Invoice notes NL",
@@ -54,5 +53,10 @@ return [
 	'workers_user_created_subject_en' => 'Workers created mail subject EN',
 	'workers_user_created_nl' => 'Workers created mail body NL',
 	'workers_user_created_en' => 'Workers created mail body EN',
-	'workedHours' => 'Worked Hours'
+	'workedHours' => 'Worked Hours',
+
+	'accountant' => 'Accountant',
+	'accountant_accountant_email' => "Accountant's Email",
+	'accountant_accountant_password' => "Accountant's Password",
+
 ];
