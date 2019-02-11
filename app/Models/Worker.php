@@ -137,8 +137,7 @@ class Worker extends Model {
 			$totalHours->add($shift->pivot->workedHours);
 		});
 		$totalHours = $startOfDay->diffAsCarbonInterval($totalHours);
-		$totalHours->format('%H:%M');
-		return $totalHours->format('%H:%M');
+		return $totalHours;
 
 	}
 }
