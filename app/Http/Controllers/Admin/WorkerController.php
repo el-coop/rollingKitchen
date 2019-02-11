@@ -6,8 +6,10 @@ use App\Http\Requests\Admin\Worker\CreateWorkerRequest;
 use App\Http\Requests\Admin\Worker\UpdateWorkerRequest;
 use App\Models\Field;
 use App\Models\Worker;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
+use Dompdf\Dompdf;
+use View;
 
 class WorkerController extends Controller {
 	public function index() {
@@ -20,6 +22,22 @@ class WorkerController extends Controller {
 		
 		return view('admin.datatableWithNew', compact('title', 'createTitle', 'fieldType', 'formattersData'));
 		
+	}
+	
+	public function pdf(Worker $worker) {
+		$totalHoursWorked = new Carbon('today');
+		$startOfDay = $totalHoursWorked->clone();
+		$shifts = $worker->shifts()->where('closed', true)->with('workplace.workFunctions')->orderBy('date', 'desc')->get();
+		$shifts->each(function ($shift) use ($totalHoursWorked) {
+			$totalHoursWorked->add($shift->pivot->workedHours);
+		});
+		$totalHoursWorked = $startOfDay->diffAsCarbonInterval($totalHoursWorked);
+		return view('admin.workers.pdf', compact('worker', 'shifts', 'startOfDay', 'totalHoursWorked'));
+		$pdf = new Dompdf();
+		$pdf->loadHtml(View::make('admin.workers.pdf', compact('worker', 'shifts')));
+		$pdf->render();
+		
+		return $pdf->stream("{$worker->user->name}.pdf");
 	}
 	
 	public function create() {

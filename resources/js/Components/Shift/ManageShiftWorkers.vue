@@ -9,7 +9,7 @@
         },
         {
             name: 'workFunction',
-            label: this.$translations.workFunctions,
+            label: this.$translations.workFunction,
             type: 'select',
             options: this.workFunctions,
             callback: 'numerateOptions'

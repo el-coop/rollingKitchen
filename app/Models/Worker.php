@@ -126,7 +126,7 @@ class Worker extends Model {
 	}
 	
 	public function shifts() {
-		return $this->belongsToMany(Shift::class)->withPivot('start_time', 'end_time', 'work_function_id');
+		return $this->belongsToMany(Shift::class)->using(ShiftWorker::class)->withPivot('start_time', 'end_time', 'work_function_id');
 	}
 
 	public function getWorkedHoursAttribute(){

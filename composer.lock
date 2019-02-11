@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a97b630f41d94b22720178f9c6106943",
+    "content-hash": "d865094df6463ad39361b40e6f8a0d00",
     "packages": [
         {
             "name": "consoletvs/invoices",

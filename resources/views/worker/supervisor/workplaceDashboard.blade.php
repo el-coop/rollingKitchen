@@ -1,5 +1,5 @@
 <select-chooser>
-	<select-view label="@lang('worker/supervisor.workFunctions')">
+	<select-view label="@lang('worker/supervisor.workFunction')">
 		@component('worker.supervisor.workplace', compact('workplace'))
 		@endcomponent
 	</select-view>
