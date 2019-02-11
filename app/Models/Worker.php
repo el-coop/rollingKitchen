@@ -129,6 +129,7 @@ class Worker extends Model {
 		return $this->belongsToMany(Shift::class)->using(ShiftWorker::class)->withPivot('start_time', 'end_time', 'work_function_id');
 	}
 
+
 	public function getWorkedHoursAttribute() {
 		$shifts = $this->shifts()->where('closed', true)->get();
 		$totalHours = new Carbon('today');
