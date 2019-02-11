@@ -136,9 +136,7 @@ class Worker extends Model {
 		$shifts->each(function ($shift) use ($totalHours) {
 			$totalHours->add($shift->pivot->workedHours);
 		});
-		$totalHours = $startOfDay->diffAsCarbonInterval($totalHours);
-		return $totalHours;
-
+		return $startOfDay->diffAsCarbonInterval($totalHours);
 	}
 }
 
