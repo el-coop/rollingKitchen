@@ -91,7 +91,10 @@ class WorkedHoursService implements FromCollection, WithHeadings {
 									break;
 							}
 							break;
-						case 'workedHours':
+            case 'pdf':
+                $workedHourRow->push(action('Admin\WorkerController@pdf', $worker));
+                break;
+            case 'workedHours':
 							$result->push($worker->workedHours);
 							break;
 						default:

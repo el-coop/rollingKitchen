@@ -18,5 +18,6 @@ return [
 	'workplace' => 'Workplace',
 	'createShift' => 'Create Shift',
 	'approved' => 'Approved',
-	'totalHours' => 'Total hours'
+	'totalHours' => 'Total hours',
+	'pdf' => 'Workers PDF'
 ];
