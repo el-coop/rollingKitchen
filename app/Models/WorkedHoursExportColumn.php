@@ -17,7 +17,8 @@ class WorkedHoursExportColumn extends Model {
 			'shift_worker.work_function_id' => __('worker/supervisor.workFunctions'),
 			'worker.type' => __('admin/workers.type'),
 			'shift.workplace_id' => __('admin/workers.workplace'),
-			'worker.workedHours' => __('worker/worker.workedHours')
+			'worker.workedHours' => __('worker/worker.workedHours'),
+			'worker.pdf' => __('admin/workers.pdf')
 		]);
 		Field::where('form', Worker::class)->get()->each(function ($workerColumn) use ($options) {
 			$options->put(

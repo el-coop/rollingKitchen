@@ -59,6 +59,9 @@ class WorkedHoursService implements FromCollection, WithHeadings {
 										floor($worker->workedHours->total('hours')) . ":{$worker->workedHours->format('%M')}"
 									);
 									break;
+								case 'pdf':
+									$workedHourRow->push(action('Admin\WorkerController@pdf', $worker));
+									break;
 								default:
 									$column = Field::find($column)->id;
 									$workedHourRow->push($worker->data[$column] ?? '');
