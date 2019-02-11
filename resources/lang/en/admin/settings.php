@@ -48,7 +48,7 @@ return [
 	'invoices_default_resend_subject_en' => 'Invoice resend default subject EN',
 	'invoices_default_resend_email_nl' => 'Invoice resend default email NL',
 	'invoices_default_resend_email_en' => 'Invoice resend default email en',
-	
+
 	'workers_user_created_subject_nl' => 'Workers created mail subject NL',
 	'workers_user_created_subject_en' => 'Workers created mail subject EN',
 	'workers_user_created_nl' => 'Workers created mail body NL',
@@ -56,7 +56,7 @@ return [
 	'workedHours' => 'Worked Hours',
 
 	'accountant' => 'Accountant',
-	'accountant_accountant_email' => "Accountant's Email",
-	'accountant_accountant_password' => "Accountant's Password",
+	'accountant_email' => "Accountant's Email",
+	'accountant_password' => "Accountant's Password",
 
 ];

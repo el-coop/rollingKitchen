@@ -40,8 +40,8 @@ class SettingsTest extends TestCase {
 		});
 		$faker = $this->faker;
 		$settings = app('settings');
-		$settings->put('accountant_accountant_email', $faker->email);
-		$settings->put('accountant_accountant_password', '');
+		$settings->put('accountant_email', $faker->email);
+		$settings->put('accountant_password', '');
 		$settings->put('general_registration_status', false);
 		$settings->put('general_application_text_en', $faker->text);
 		$settings->put('general_application_text_nl', $faker->text);
@@ -69,7 +69,7 @@ class SettingsTest extends TestCase {
 	public function test_admin_can_see_page() {
 		$this->actingAs($this->admin->user)->get(action('Admin\SettingsController@show'))
 			->assertStatus(200)
-			->assertSee(__('admin/settings.invoices_accountant'));
+			->assertSee(__('admin/settings.accountant'));
 	}
 
 	public function test_guest_cant_update_settings() {
@@ -110,8 +110,8 @@ class SettingsTest extends TestCase {
 
 	public function test_admin_can_update_settings() {
 		$settings = [
-			'accountant_accountant_email' => 'test@test.com',
-			'accountant_accountant_password' => '123456',
+			'accountant_email' => 'test@test.com',
+			'accountant_password' => '123456',
 			'general_application_text_en' => 'test',
 			'general_application_text_nl' => 'testtest',
 			'general_registration_text_en' => 'regtest',
@@ -123,7 +123,7 @@ class SettingsTest extends TestCase {
 		];
 		$this->actingAs($this->admin->user)->patch(action('Admin\SettingsController@update'), $settings)->assertRedirect();
 		$settings['general_registration_status'] = false;
-		$settings['accountant_accountant_password'] = '';
+		$settings['accountant_password'] = '';
 		$this->assertEquals($settings, $this->app->settings->all());
 		$this->assertDatabaseHas('users', [
 			'id' => $this->accountant->user->id,

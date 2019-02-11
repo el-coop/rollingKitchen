@@ -13,7 +13,7 @@ class AccountantSeeder extends Seeder {
 	public function run() {
 		factory(Accountant::class)->create()->each(function ($accountant){
 			$user = factory(User::class)->make([
-				'email' => app('settings')->get('accountant_accountant_email'),
+				'email' => app('settings')->get('accountant_email'),
 				'password' => bcrypt(123456)
 			]);
 			$accountant->user()->save($user);

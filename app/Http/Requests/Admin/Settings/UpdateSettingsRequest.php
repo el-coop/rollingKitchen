@@ -36,25 +36,25 @@ class UpdateSettingsRequest extends FormRequest {
 			$rules[$field] = 'required|string';
 		};
 
-		$rules['accountant_accountant_email'] = 'required|email';
+		$rules['accountant_email'] = 'required|email';
 		unset($rules['general_registration_status']);
-		unset($rules['accountant_accountant_password']);
+		unset($rules['accountant_password']);
 		return $rules;
 	}
 
 	public function commit() {
 		$accountant = User::where('user_type', Accountant::class)->first();
-		if ($this->input('accountant_accountant_password') != '') {
-			$accountant->password = bcrypt($this->input('accountant_accountant_password'));
+		if ($this->input('accountant_password') != '') {
+			$accountant->password = bcrypt($this->input('accountant_password'));
 		}
-		$accountant->email = $this->input('accountant_accountant_email');
+		$accountant->email = $this->input('accountant_email');
 		$accountant->save();
 		foreach ($this->fields as $field) {
 			switch ($field) {
 				case 'general_registration_status':
 					$value = $this->filled($field);
 					break;
-				case 'accountant_accountant_password':
+				case 'accountant_password':
 					$value = '';
 					break;
 				default:

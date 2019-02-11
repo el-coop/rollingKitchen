@@ -28,11 +28,11 @@
                                                     <span class="slider"></span>
                                                 </label>
                                                 @break
-                                                @case('accountant_accountant_email')
+                                                @case('accountant_email')
                                                 <input type="email" name="{{$key}}" class="input"
                                                        value="{{$setting}}" required>
                                                 @break
-                                                @case('accountant_accountant_password')
+                                                @case('accountant_password')
                                                 <input type="password" name="{{$key}}" class="input">
                                                 @break
                                                 @default

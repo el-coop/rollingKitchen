@@ -56,6 +56,6 @@ return [
 	'workedHours' => 'TBT',
 
 	'accountant' => 'TBT',
-	'accountant_accountant_email' => "TBT",
-	'accountant_accountant_password' => "TBT",
+	'accountant_email' => "TBT",
+	'accountant_email' => "TBT",
 ];
