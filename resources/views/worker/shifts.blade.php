@@ -46,5 +46,18 @@
         @endforeach
 
         </tbody>
+        @isset($totalHours)
+        <tfoot>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>@lang('admin/workers.totalHours')</th>
+            <th>
+                {{ floor($totalHours->total('hours')) . ":{$totalHours->format('%M')}" }}
+            </th>
+        </tr>
+        </tfoot>
+            @endisset
     </table>
 </div>

@@ -27,8 +27,15 @@ class WorkerController extends Controller {
 
 		$pastShifts = $worker->shifts()->where('date', '<=', Carbon::yesterday())->with('workplace.workFunctions')->orderBy('date')->get();
 
+		$totalHours = new Carbon('today');
+		$startOfDay = $totalHours->clone();
+		$pastShifts->each(function ($shift) use ($totalHours) {
+			$totalHours->add($shift->pivot->workedHours);
+		});
+		$totalHours =  $startOfDay->diffAsCarbonInterval($totalHours);
 
-		return view('worker.worker', compact('worker', 'futureShifts', 'pastShifts', 'formattersData'));
+
+		return view('worker.worker', compact('worker', 'futureShifts', 'totalHours', 'pastShifts', 'formattersData'));
 	}
 	
 	public function showResetForm(Request $request, $token = null) {
