@@ -23,9 +23,12 @@ class WorkerController extends Controller {
 			'totalDataCount' => Field::where('form', Worker::class)->count()
 		];
 
-		$futureShifts = $worker->shifts()->where('date', '>', Carbon::yesterday())->with('workplace.workFunctions')->get();
+		$futureShifts = $worker->shifts()->where('date', '>', Carbon::yesterday())->with('workplace.workFunctions')->orderBy('date')->get();
 
-		return view('worker.worker', compact('worker', 'futureShifts', 'formattersData'));
+		$pastShifts = $worker->shifts()->where('date', '<=', Carbon::yesterday())->with('workplace.workFunctions')->orderBy('date')->get();
+
+
+		return view('worker.worker', compact('worker', 'futureShifts', 'pastShifts', 'formattersData'));
 	}
 	
 	public function showResetForm(Request $request, $token = null) {
