@@ -8,10 +8,6 @@ class Shift extends Model {
 	protected $casts = [
 		'closed' => 'boolean',
 	];
-
-	protected $dates = [
-		'date'
-	];
 	
 	public function workplace() {
 		return $this->belongsTo(Workplace::class);

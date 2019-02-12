@@ -78,6 +78,7 @@ class CreateTest extends TestCase {
 	}
 	
 	public function test_admin_can_create_a_shift() {
+		$this->withoutExceptionHandling();
 		$workplace = $this->workplaces->random();
 		$this->actingAs($this->admin)->post(action('Admin\ShiftController@store'), [
 			'date' => '1/1/2029',

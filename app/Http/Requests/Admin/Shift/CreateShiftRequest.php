@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin\Shift;
 
 use App\Models\Shift;
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateShiftRequest extends FormRequest {
@@ -30,7 +31,6 @@ class CreateShiftRequest extends FormRequest {
 	
 	public function commit() {
 		$shift = new Shift;
-		
 		$shift->date = $this->input('date');
 		$shift->hours = $this->input('hours');
 		$shift->workplace_id = $this->input('workplace');
