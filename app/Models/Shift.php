@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Shift extends Model {
 	protected $casts = [
-		'closed' => 'boolean'
+		'closed' => 'boolean',
 	];
 	
 	public function workplace() {

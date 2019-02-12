@@ -45,9 +45,21 @@ class WorkerController extends Controller {
 	
 	public function show(Worker $worker) {
 		$worker->load('photos', 'user');
-		$indexPage = action('Admin\WorkerController@index');
-		return view('admin.workers.show', compact('worker', 'indexPage'));
+		$indexLink = action('Admin\WorkerController@index', [], false);
 		
+		$futureShifts = $worker->shifts()->where('date', '>', Carbon::yesterday())->with('workplace.workFunctions')->orderBy('date')->get();
+		
+		
+		$pastShifts = $worker->shifts()->where('date', '<=', Carbon::yesterday())->with('workplace.workFunctions')->orderBy('date')->get();
+		
+		$totalHours = new Carbon('today');
+		$startOfDay = $totalHours->clone();
+		$pastShifts->each(function ($shift) use ($totalHours) {
+			$totalHours->add($shift->pivot->workedHours);
+		});
+		$totalHours = $startOfDay->diffAsCarbonInterval($totalHours);
+		
+		return view('admin.workers.show', compact('worker', 'totalHours', 'futureShifts', 'pastShifts', 'indexLink'));
 	}
 	
 	public function store(CreateWorkerRequest $request) {
