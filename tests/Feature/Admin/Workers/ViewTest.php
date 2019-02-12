@@ -3,6 +3,7 @@
 namespace Tests\Feature\Admin\Workers;
 
 use App\Http\Controllers\Admin\WorkerController;
+use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\Kitchen;
 use App\Models\User;
@@ -24,11 +25,14 @@ class ViewTest extends TestCase {
 	protected $kitchen;
 	protected $workplaces;
 	protected $worker;
+	private $accountant;
 	
 	protected function setUp() {
 		parent::setUp();
 		$this->admin = factory(User::class)->make();
 		factory(Admin::class)->create()->user()->save($this->admin);
+		$this->accountant = factory(User::class)->make();
+		factory(Accountant::class)->create()->user()->save($this->accountant);
 		$this->kitchen = factory(User::class)->make();
 		factory(Kitchen::class)->create()->user()->save($this->kitchen);
 		$this->worker = factory(User::class)->make();
@@ -53,7 +57,7 @@ class ViewTest extends TestCase {
 	}
 	
 	public function test_guest_cant_see_worker_pdf() {
-		$this->get(action('Admin\WorkerController@pdf', $this->worker->user))->assertRedirect(action('Auth\LoginController@login'));
+		$this->get(action('Admin\WorkerController@pdf', $this->worker->user))->assertStatus(401);
 	}
 	
 	public function test_kitchen_cant_see_worker_pdf() {
@@ -65,6 +69,11 @@ class ViewTest extends TestCase {
 	}
 	
 	public function test_admin_can_see_worker_pdf() {
+		//THIS IS IMPOSSIBLE TO TEST
+		$this->assertTrue(true);
+	}
+	
+	public function test_accountant_can_see_worker_pdf() {
 		//THIS IS IMPOSSIBLE TO TEST
 		$this->assertTrue(true);
 	}
