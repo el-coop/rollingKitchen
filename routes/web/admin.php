@@ -96,7 +96,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 
 		Route::group(['prefix' => 'workers'], function () {
 			Route::get('/', 'WorkerController@index');
-			Route::get('/pdf/{worker}', 'WorkerController@pdf');
 			Route::get('/edit', 'WorkerController@create');
 			Route::post('/edit', 'WorkerController@store');
 			Route::get('/edit/{worker}', 'WorkerController@edit');

@@ -150,6 +150,12 @@
 				}
 			}
 		},
+
+		watch: {
+			method(value) {
+				this.realMethod = value;
+			}
+		}
 	}
 </script>
 
