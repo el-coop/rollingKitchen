@@ -80,7 +80,7 @@ class GenerateDebtorInvoiceRequest extends FormRequest {
 		
 		SendDebtorInvoice::dispatch($invoice, $this->input('recipient'), $this->input('subject'), $this->input('message'), collect([
 			$this->input('bcc', false),
-			$this->filled('accountant') ? app('settings')->get('invoices_accountant') : false
+			$this->filled('accountant') ? app('settings')->get('accountant_email') : false
 		])->filter());
 		
 		return $invoice->load('payments');

@@ -19,7 +19,7 @@
 							  :method="object.id ? 'patch' : 'post'"
 							  :hide="['workFunctions']"
 				>
-					<template slot-scope="{fields}">
+					<template slot-scope="{fields}" v-if="object.id">
 						<h4 class="title is-4 mt-1">@lang('worker/supervisor.workFunctions')</h4>
 						<dynamic-table v-if="fields.length > 0" :columns="[{
                         name: 'name',

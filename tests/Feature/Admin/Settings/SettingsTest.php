@@ -74,7 +74,7 @@ class SettingsTest extends TestCase {
 
 	public function test_guest_cant_update_settings() {
 		$this->patch(action('Admin\SettingsController@update'), [
-			'invoices_accountant' => 'test@test.com',
+			'accountant_email' => 'test@test.com',
 			'general_application_text_en' => 'test',
 			'general_application_text_nl' => 'testtest',
 			'general_registration_text_en' => 'regtest',
@@ -86,7 +86,7 @@ class SettingsTest extends TestCase {
 
 	public function test_worker_cant_update_settings() {
 		$this->actingAs($this->worker)->patch(action('Admin\SettingsController@update'), [
-			'invoices_accountant' => 'test@test.com',
+			'accountant_email' => 'test@test.com',
 			'general_application_text_en' => 'test',
 			'general_application_text_nl' => 'testtest',
 			'general_registration_text_en' => 'regtest',
@@ -98,7 +98,7 @@ class SettingsTest extends TestCase {
 
 	public function test_kitchen_cant_update_settings() {
 		$this->actingAs($this->kitchen->user)->patch(action('Admin\SettingsController@update'), [
-			'invoices_accountant' => 'test@test.com',
+			'accountant_email' => 'test@test.com',
 			'general_application_text_en' => 'test',
 			'general_application_text_nl' => 'testtest',
 			'general_registration_text_en' => 'regtest',

@@ -93,7 +93,7 @@ class GenerateInvoiceRequest extends FormRequest {
 		}
 		SendApplicationInvoice::dispatch($invoice, $this->input('recipient'), $this->input('subject'), $this->input('message'), $this->input('attachments', []), collect([
 			$this->input('bcc', false),
-			$this->filled('accountant') ? app('settings')->get('invoices_accountant') : false
+			$this->filled('accountant') ? app('settings')->get('accountant_email') : false
 		])->filter());
 		
 		return $invoice->load('payments');
