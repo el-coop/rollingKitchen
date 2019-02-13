@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class InvoiceSent extends Notification {
+class InvoiceSent extends Notification implements ShouldQueue {
 	use Queueable;
 	/**
 	 * @var string
