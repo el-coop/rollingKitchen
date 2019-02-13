@@ -54,7 +54,7 @@
 				<th></th>
 				<th>@lang('admin/workers.totalHours')</th>
 				<th>
-					{{ floor($totalHours->total('hours')) . ":{$totalHours->format('%M')}" }}
+					{{number_format($totalHours->total('hours'),2,$decimalPoint,$thousandSeparator)}}
 				</th>
 			</tr>
 			</tfoot>

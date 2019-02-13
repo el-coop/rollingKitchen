@@ -13,36 +13,36 @@ use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Excel;
 
 class WorkedHoursExportColumnController extends Controller {
-
-	public function show(){
+	
+	public function show() {
 		$workedHoursOptions = WorkedHoursExportColumn::getOptionsAttribute();
-		$workedHours = WorkedHoursExportColumn::all();
+		$workedHours = WorkedHoursExportColumn::orderBy('order')->get();
 		return view('admin.workedHours.show', compact('workedHours', 'workedHoursOptions'));
 	}
-
-	public function create(CreateWorkedHoursExportColumnRequest $request){
+	
+	public function create(CreateWorkedHoursExportColumnRequest $request) {
 		return $request->commit();
 	}
-
-	public function update(UpdateWorkedHoursExportColumnRequest $request, WorkedHoursExportColumn $workedHoursExportColumn){
+	
+	public function update(UpdateWorkedHoursExportColumnRequest $request, WorkedHoursExportColumn $workedHoursExportColumn) {
 		return $request->commit();
 	}
-
-	public function destroy(DestroyWorkedHoursExportColumnRequest $request, WorkedHoursExportColumn $workedHoursExportColumn){
+	
+	public function destroy(DestroyWorkedHoursExportColumnRequest $request, WorkedHoursExportColumn $workedHoursExportColumn) {
 		$request->commit();
 		return [
 			'success' => true
 		];
 	}
-
-	public function saveOrder(OrderWorkedHoursExportColumnRequest $request){
+	
+	public function saveOrder(OrderWorkedHoursExportColumnRequest $request) {
 		$request->commit();
 		return [
 			'success' => true
 		];
 	}
-
-	public function export(Excel $excel,  WorkedHoursService $workedHoursService) {
+	
+	public function export(Excel $excel, WorkedHoursService $workedHoursService) {
 		return $excel->download($workedHoursService, 'workedHours.xls');
 	}
 }
