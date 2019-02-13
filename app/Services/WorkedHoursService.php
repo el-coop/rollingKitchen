@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App;
 use App\Models\Field;
 use App\Models\Shift;
 use App\Models\WorkedHoursExportColumn;
@@ -95,7 +96,9 @@ class WorkedHoursService implements FromCollection, WithHeadings {
 							$result->push(action('Admin\WorkerController@pdf', $worker));
 							break;
 						case 'workedHours':
-							$result->push($worker->workedHours);
+							$decimalPoint = App::getLocale() == 'nl' ? ',' : '.';
+							$thousandSeparator = App::getLocale() == 'nl' ? '.' : ',';
+							$result->push(number_format($worker->workedHours->total('hours'), 2, $decimalPoint, $thousandSeparator));
 							break;
 						default:
 							$column = Field::find($column)->id;

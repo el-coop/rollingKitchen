@@ -50,10 +50,10 @@ return [
 	'none' => 'Geen',
 	'noData' => 'Geen data beschikbaar',
 	'name' => 'Naam',
-	'workFunctions' => 'Werk functie',
+	'workFunction' => 'Werk functie',
 	'closeShift' => 'Shift sluiten',
 	'field' => 'Veld',
 	'startTime' => 'Begintijd',
 	'endTime' => 'Eindtijd',
-	'export' => 'Exporteren'
+	'export' => 'Exporteren',
 ];

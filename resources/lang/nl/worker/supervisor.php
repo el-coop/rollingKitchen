@@ -2,6 +2,6 @@
 
 return [
 	'manageWorkers' => 'Beheer Medewerkers',
-	'workFunctions' => 'Werk Functie',
+	'workFunctions' => 'Werk Functies',
 	'crew' => 'Crew'
 ];

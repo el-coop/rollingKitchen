@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="box">
+		<div class="box" v-if="(!! $scopedSlots.buttons) || exportButton">
 			<div class="field is-grouped">
 				<div class="buttons">
 					<slot name="buttons" :actions="buttonActions"></slot>
