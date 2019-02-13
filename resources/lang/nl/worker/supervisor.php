@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'manageWorkers' => 'TBT',
-	'workFunctions' => 'TBT',
-	'crew' => 'TBT'
+	'manageWorkers' => 'Beheer Medewerkers',
+	'workFunctions' => 'Werk Functie',
+	'crew' => 'Crew'
 ];

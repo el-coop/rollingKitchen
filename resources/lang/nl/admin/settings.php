@@ -4,14 +4,14 @@ return [
 	'settings' => 'Instellingen'
 	,
 	'files' => 'Documenten',
-	'chooseFile' => 'Choose a file',
+	'chooseFile' => 'Kies een bestand',
 	'closed' => 'Gesloten',
 	'visibleTo' => 'Zichtbaar voor',
 	'allKitchens' => 'Alle Keukens',
 	'acceptedKitchens' => 'Geaccepteerde Keukens',
 	'noKitchens' => 'Niet zichtbaar',
 	'default_send_invoice' => 'Standaard document factuur',
-	'default_resend_invoice' => 'Standaard documents factuur (opnieuw versturen)',
+	'default_resend_invoice' => 'Standaard document factuur (opnieuw versturen)',
 
 	'registration_year' => 'Aanmeldingsjaar',
 	'general_registration_status' => 'Registratie openen',
@@ -22,8 +22,8 @@ return [
 	'general_registration_text_en' => 'Aanmelden Tekst EN',
 	'general_login_text_en' => 'Inloggen Tekst EN',
 
-	'application_text_nl' => 'Aanmeld instructies NL',
-	'application_text_en' => 'Aanmeld instructies EN',
+	'application_text_nl' => 'Aanmeldinstructies NL',
+	'application_text_en' => 'Aanmeldinstructies EN',
 	'application_success_text_nl' => 'Tekst na verzending aanmelding NL',
 	'application_success_text_en' => 'Tekst na verzending aanmelding EN',
 	'application_success_modal_nl' => 'Tekst aanmelding succesvol ingediend NL',
@@ -53,9 +53,9 @@ return [
 	'workers_user_created_nl' => 'Werknemers gecreëerd email tekst NL',
 	'workers_user_created_en' => 'Werknemers gecreëerd email onderwerp EN',
 
-	'workedHours' => 'TBT',
+	'workedHours' => 'Gewerkte Uren',
 
-	'accountant' => 'TBT',
-	'accountant_email' => "TBT",
-	'accountant_email' => "TBT",
+	'accountant' => 'Accountant',
+	'accountant_email' => "Email Accountant",
+	'accountant_email' => "Email Accountant",
 ];

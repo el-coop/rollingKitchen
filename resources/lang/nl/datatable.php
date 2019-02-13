@@ -2,7 +2,7 @@
 
 return [
 
-	'pagination' => 'Displaying {from} to {to} of {total} items',
+	'pagination' => 'Toon {from} tot {to} van {total} items',
 	'noPagination' => 'Geen relevante data beschikbaar',
 	'next' => 'Volgende',
 	'prev' => 'Vorige',

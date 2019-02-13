@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'Kitchen' => 'Berijfsgegevens velden',
+	'Kitchen' => 'Bedrijfsgegevens velden',
 	'Worker' => 'Werknemer',
 	'Application' => 'Keukengegevens velden',
 	'back' => 'Terug naar lijst',

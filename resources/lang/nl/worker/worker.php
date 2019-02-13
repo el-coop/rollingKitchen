@@ -3,8 +3,8 @@
 return [
 	'setPassword' => 'Wachtwoord instellen',
 	'profile' => 'Profiel',
-	'shifts' => 'Shift',
+	'shifts' => 'Diensten',
 	'workedHours' => 'Gewerkte uren',
 	'workplace' => 'Werkplek',
-	'workerNotApproved' => 'TBT'
+	'workerNotApproved' => 'Medewerker niet goedgekeurd'
 ];

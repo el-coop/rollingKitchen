@@ -6,5 +6,5 @@ return [
 	'new' => 'Nieuw',
 	'fields' => 'Velden',
 	'kitchen' => 'Keuken',
-	'updatedAt' => 'Laatst geupdate'
+	'updatedAt' => 'Bewerkt op'
 ];

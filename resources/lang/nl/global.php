@@ -24,7 +24,7 @@ return [
 	'register' => 'Aanmelden',
 	'language' => 'Taal',
 	'year' => 'Jaar',
-	'pdfs' => 'PDFs',
+	'pdfs' => "PDF's",
 
 	'delete' => 'Verwijderen',
 
