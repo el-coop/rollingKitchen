@@ -2,26 +2,32 @@
 
 namespace Tests\Feature;
 
+use ElCoop\Valuestore\Valuestore;
 use Illuminate\Support\Facades\Storage;
-use Spatie\Valuestore\Valuestore;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class HomeControllerTest extends TestCase {
 
+	use WithFaker;
+
 	public function setUp() {
 		parent::setUp();
 
 		Storage::fake('local');
-		Storage::disk('local')->put('test.valuestore', '');
-		$path = Storage::path('test.valuestore');
+		Storage::disk('local')->put('test.valuestore.json', '');
+		$path = Storage::path('test.valuestore.json');
 		$this->app->singleton('settings', function ($app) use ($path) {
-			return Valuestore::make($path . '.json');
+			return new Valuestore($path);
 		});
+		$faker = $this->faker;
 		$settings = app('settings');
 		$settings->put('general_registration_status', true);
-		$this->app->settings->put('registration_year', 2018);
+		$settings->put('registration_year', 2018);
+		$settings->put('general_registration_text_en', $faker->text);
+		$settings->put('general_login_text_en', $faker->text);
+
 
 
 

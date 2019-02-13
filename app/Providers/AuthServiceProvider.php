@@ -13,6 +13,12 @@ use App\Models\InvoicePayment;
 use App\Models\Kitchen;
 use App\Models\Pdf;
 use App\Models\Service;
+use App\Models\Shift;
+use App\Models\WorkedHoursExportColumn;
+use App\Models\Worker;
+use App\Models\WorkerPhoto;
+use App\Models\WorkFunction;
+use App\Models\Workplace;
 use App\Policies\ApplicationPolicy;
 use App\Policies\DebtorPolicy;
 use App\Policies\ErrorPolicy;
@@ -22,6 +28,12 @@ use App\Policies\KitchenPolicy;
 use App\Policies\InvoicePaymentPolicy;
 use App\Policies\PDFPOlicy;
 use App\Policies\ServicePolicy;
+use App\Policies\ShiftPolicy;
+use App\Policies\WorkedHoursExportColumnPolicy;
+use App\Policies\WorkerPhotoPolicy;
+use App\Policies\WorkerPolicy;
+use App\Policies\WorkFunctionPolicy;
+use App\Policies\WorkplacePolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -40,9 +52,15 @@ class AuthServiceProvider extends ServiceProvider {
 		Error::class => ErrorPolicy::class,
 		Service::class => ServicePolicy::class,
 		Debtor::class => DebtorPolicy::class,
-		InvoicePayment::class => InvoicePaymentPolicy::class
+		InvoicePayment::class => InvoicePaymentPolicy::class,
+		Workplace::class => WorkplacePolicy::class,
+		WorkFunction::class => WorkFunctionPolicy::class,
+		Worker::class => WorkerPolicy::class,
+		WorkerPhoto::class => WorkerPhotoPolicy::class,
+		Shift::class => ShiftPolicy::class,
+		WorkedHoursExportColumn::class => WorkedHoursExportColumnPolicy::class
 	];
-
+	
 	/**
 	 * Register any authentication / authorization services.
 	 *

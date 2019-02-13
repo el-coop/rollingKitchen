@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\KitchenRegistrationOpen;
 use App\Http\Middleware\LocaleMiddleware;
+use App\Http\Middleware\SupervisorMiddleware;
 use App\Http\Middleware\UserType;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -65,6 +66,7 @@ class Kernel extends HttpKernel {
 		'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 		'userType' => UserType::class,
 		'kitchenRegistrationOpen' => KitchenRegistrationOpen::class,
+		'supervisor' => SupervisorMiddleware::class,
 	];
 	
 	/**

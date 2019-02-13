@@ -53,7 +53,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 				Route::patch('/{debtor}/{invoice}', 'DebtorInvoiceController@update');
 			});
 
-			Route::group(['prefix' => 'deletedinvoiceowner'], function(){
+			Route::group(['prefix' => 'deletedinvoiceowner'], function () {
 				Route::get('/{deletedinvoiceowner}/{invoice}', 'DeletedInvoiceOwnerController@edit');
 				Route::patch('/{deletedinvoiceowner}/{invoice}', 'DeletedInvoiceOwnerController@update');
 
@@ -73,7 +73,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 			Route::patch('/', 'SettingsController@update');
 		});
 
-		Route::group(['prefix' => 'fielsystem'], function () {
+		Route::group(['prefix' => 'filesystem'], function () {
 			Route::get('/', 'PDFController@index');
 			Route::post('/', 'PDFController@upload');
 			Route::patch('/{pdf}', 'PDFController@update');
@@ -93,5 +93,48 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 			Route::delete('/delete/{debtor}', 'DebtorController@destroy');
 			Route::get('/{debtor}', 'DebtorController@show');
 		});
+
+		Route::group(['prefix' => 'workers'], function () {
+			Route::get('/', 'WorkerController@index');
+			Route::get('/edit', 'WorkerController@create');
+			Route::post('/edit', 'WorkerController@store');
+			Route::get('/edit/{worker}', 'WorkerController@edit');
+			Route::patch('/edit/{worker}', 'WorkerController@update');
+			Route::get('/{worker}', 'WorkerController@show');
+
+
+		});
+		Route::group(['prefix' => 'shifts'], function () {
+			Route::get('/', 'ShiftController@index');
+			Route::get('/edit', 'ShiftController@create');
+			Route::post('/edit', 'ShiftController@store');
+			Route::get('/edit/{shift}', 'ShiftController@edit');
+			Route::patch('/edit/{shift}', 'ShiftController@update');
+		});
+
+		Route::group(['prefix' => 'workplaces'], function () {
+			Route::get('/', 'WorkplaceController@index');
+
+			Route::get('/edit', 'WorkplaceController@create');
+			Route::post('/edit', 'WorkplaceController@store');
+			Route::delete('/delete/{workplace}', 'WorkplaceController@destroy');
+
+			Route::get('/edit/{workplace}', 'WorkplaceController@edit');
+			Route::patch('/edit/{workplace}', 'WorkplaceController@update');
+
+			Route::post('/{workplace}', 'WorkplaceController@addWorkFunction');
+			Route::delete('/{workplace}/{workFunction}', 'WorkplaceController@destroyWorkFunction');
+			Route::patch('/{workplace}/{workFunction}', 'WorkplaceController@updateWorkFunction');
+		});
+
+		Route::group(['prefix' => 'workedHours'], function () {
+			Route::get('/', 'WorkedHoursExportColumnController@show');
+			Route::patch('/order', 'WorkedHoursExportColumnController@saveOrder');
+			Route::post('/', 'WorkedHoursExportColumnController@create');
+			Route::patch('/{workedHoursExportColumn}', 'WorkedHoursExportColumnController@update');
+			Route::delete('/{workedHoursExportColumn}', 'WorkedHoursExportColumnController@destroy');
+			Route::get('/export', 'WorkedHoursExportColumnController@export');
+		});
+
 	});
 });

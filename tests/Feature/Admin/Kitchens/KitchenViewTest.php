@@ -7,11 +7,15 @@ use App\Models\Application;
 use App\Models\Kitchen;
 use App\Models\Product;
 use App\Models\User;
+use App\Models\Worker;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class KitchenViewTest extends TestCase {
+	use RefreshDatabase;
+	
+	protected $worker;
 	private $admin;
 	private $kitchen;
 	private $application;
@@ -22,6 +26,8 @@ class KitchenViewTest extends TestCase {
 		$admin = factory(Admin::class)->create();
 		$admin->user()->save(factory(User::class)->make());
 		$this->admin = $admin->user;
+		$this->worker = factory(User::class)->make();
+		factory(Worker::class)->create()->user()->save($this->worker);
 		$this->kitchen = factory(Kitchen::class)->create();
 		$this->kitchen->user()->save(factory(User::class)->make());
 		$this->application = factory(Application::class)->make();
@@ -35,7 +41,12 @@ class KitchenViewTest extends TestCase {
 		$this->get(action('Admin\KitchenController@show', $this->kitchen))
 			->assertRedirect(action('Auth\LoginController@login'));
 	}
-	
+
+	public function test_worker_cant_view_kitchen_and_application_test() {
+		$this->actingAs($this->worker)->get(action('Admin\KitchenController@show', $this->kitchen))
+			->assertForbidden();
+	}
+
 	public function test_kitchen_cant_view_kitchen_and_application_test() {
 		$this->actingAs($this->kitchen->user)->get(action('Admin\KitchenController@show', $this->kitchen))
 			->assertForbidden();

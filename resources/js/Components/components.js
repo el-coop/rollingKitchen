@@ -10,6 +10,8 @@ Vue.component('toast', require('./Global/Toast').default);
 Vue.component('FireworksModal', require('./Global/FireworksModal').default);
 Vue.component('ConfirmationSubmit', require('./Global/ConfirmationSubmit').default);
 Vue.component('InvoicePaymentsModal', require('./Invoice/InvoicePaymentsModal').default);
+Vue.component('ManageShiftWorkers', require('./Shift/ManageShiftWorkers').default);
+Vue.component('ExportWorkedHours', require('./Shift/ExportWorkedHours').default);
 
 // utilities
 Vue.component('Drawer', require('./Utilities/Drawer').default);
@@ -40,3 +42,4 @@ Vue.component('InvoiceField', require('./Form/InvoiceField').default);
 Vue.component('AlternativeSubmitField', require('./Form/AlternativeSubmitField').default);
 Vue.component('JsonField', require('./Form/JsonField').default);
 Vue.component('HelpField', require('./Form/HelpField').default);
+Vue.component('MultiselectField', require('./Form/MultiselectField').default);

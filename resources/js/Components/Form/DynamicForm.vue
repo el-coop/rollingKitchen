@@ -9,6 +9,8 @@
                    v-for="(field,key) in fields" :is="`${field.type}-field`"
                    :field="field" :loading="alternativeSubmitting" :key="key">
         </component>
+        <slot :fields="fields">
+        </slot>
         <div class="buttons">
             <button v-if="!loading" class="button is-fullwidth" :class="[submitting ? 'is-loading' : '', buttonClass]"
                     type="submit" v-text="buttonText">

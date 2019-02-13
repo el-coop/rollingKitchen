@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Admin\Settings;
 
+use App\Models\Accountant;
+use App\Models\User;
 use Dotenv\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\DB;
@@ -34,19 +36,41 @@ class UpdateSettingsRequest extends FormRequest {
 			$rules[$field] = 'required|string';
 		};
 		
-		$rules['invoices_accountant'] = 'required|email';
+		$rules['accountant_email'] = 'required|email';
 		unset($rules['general_registration_status']);
+		unset($rules['accountant_password']);
 		return $rules;
 	}
 	
 	public function commit() {
+		$this->updateAccountant();
+		$this->fields = array_diff($this->fields, ['accountant_password']);
 		foreach ($this->fields as $field) {
-			if ($field === 'general_registration_status') {
+			if ($field == 'general_registration_status') {
 				$value = $this->filled($field);
 			} else {
 				$value = $this->input($field);
 			}
 			$this->settings->put($field, $value);
+		}
+	}
+	
+	private function updateAccountant(): void {
+		$accountant = User::where(['user_type' => Accountant::class])->first();
+		if (!$accountant) {
+			$accountant = new User;
+			$accountantUser = new Accountant;
+			$accountant->name = 'Accountant';
+		}
+		if ($this->input('accountant_password') != '') {
+			$accountant->password = bcrypt($this->input('accountant_password'));
+		}
+		$accountant->email = $this->input('accountant_email');
+		if (isset($accountantUser)) {
+			$accountantUser->save();
+			$accountantUser->user()->save($accountant);
+		} else {
+			$accountant->save();
 		}
 	}
 }

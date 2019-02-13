@@ -11,9 +11,9 @@ use App\Models\Service;
 use App\Models\User;
 use App\Notifications\Admin\ApplicationResubmittedNotification;
 use App\Notifications\Kitchen\ApplicationSubmittedNotification;
+use ElCoop\Valuestore\Valuestore;
 use Image;
 use Illuminate\Http\UploadedFile;
-use Spatie\Valuestore\Valuestore;
 use Storage;
 use Notification;
 use Tests\TestCase;
@@ -21,33 +21,35 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class KitchenControllerTest extends TestCase {
-	
+
 	use RefreshDatabase;
 	protected $settings;
 	private $user;
 	private $user1;
-	
+
 	public function setUp() {
 		parent::setUp();
 
 		Storage::fake('local');
-		Storage::disk('local')->put('test.valuestore', '');
-		$path = Storage::path('test.valuestore');
+		Storage::disk('local')->put('test.valuestore.json', '');
+		$path = Storage::path('test.valuestore.json');
 		$this->app->singleton('settings', function ($app) use ($path) {
-			return Valuestore::make($path . '.json');
+			return new Valuestore($path);
 		});
 		$settings = app('settings');
 		$settings->put('general_registration_status', true);
 		$settings->put('registration_year', 2018);
+		$settings->put('application_text_en', 'test');
+		$settings->put('application_success_text_en', 'test');
 
 		$this->user = factory(User::class)->make();
 		factory(Kitchen::class)->create()->user()->save($this->user);
 		$this->user1 = factory(User::class)->make();
 		factory(Kitchen::class)->create()->user()->save($this->user1);
 		$this->settings = $this->app->settings;
-		
+
 	}
-	
+
 	public function test_guest_can_view_registration_form() {
 		$this->get(action('Kitchen\KitchenController@create'))->assertSuccessful()
 			->assertViewIs('auth.register');
@@ -59,16 +61,16 @@ class KitchenControllerTest extends TestCase {
 		$this->get(action('Kitchen\KitchenController@create'))->assertRedirect(action('HomeController@show'));
 
 	}
-	
-	
+
+
 	public function test_kitchen_viewing_registration_gets_redirected_to_edit() {
 		$this->actingAs($this->user)->get(action('Kitchen\KitchenController@create'))->assertRedirect(action('Kitchen\KitchenController@edit', $this->user->user));
 	}
-	
+
 	public function test_kitchen_viewing_login_gets_redirected_to_edit() {
 		$this->actingAs($this->user)->get(action('Auth\LoginController@login'))->assertRedirect(action('Kitchen\KitchenController@edit', $this->user->user));
 	}
-	
+
 	public function test_registers_new_kitchen() {
 		$kitchenCount = Kitchen::count();
 		$this->post(action('Kitchen\KitchenController@store'), [
@@ -78,19 +80,19 @@ class KitchenControllerTest extends TestCase {
 			'password' => '123456',
 			'password_confirmation' => '123456',
 		])->assertRedirect();
-		
+
 		$this->assertAuthenticated();
-		
+
 		$this->assertDatabaseHas('users', [
 			'name' => 'test kitchen',
 			'email' => 'test@best.rest',
 			'language' => 'nl',
 		]);
-		
-		
+
+
 		$this->assertCount($kitchenCount + 1, Kitchen::All());
 	}
-	
+
 	public function test_validates_kitchen_registartion() {
 		$this->post(action('Kitchen\KitchenController@store'), [
 			'name' => '1',
@@ -100,11 +102,11 @@ class KitchenControllerTest extends TestCase {
 			'password_confirmation' => 'as',
 		])->assertSessionHasErrors(['name', 'email', 'language', 'password']);
 	}
-	
-	
+
+
 	public function test_kitchen_cant_reregister() {
 		$kitchenCount = Kitchen::count();
-		
+
 		$this->actingAs($this->user)->post(action('Kitchen\KitchenController@store'), [
 			'name' => 'test kitchen',
 			'email' => 'test@best.rest',
@@ -112,13 +114,13 @@ class KitchenControllerTest extends TestCase {
 			'password' => '123456',
 			'password_confirmation' => '123456',
 		])->assertRedirect(action('Kitchen\KitchenController@edit', $this->user->user));
-		
+
 		$this->assertCount($kitchenCount, Kitchen::All());
 	}
-	
+
 	public function test_kitchen_can_upload_photo() {
 		Storage::fake('local');
-		
+
 		$file = UploadedFile::fake()->image('photo.jpg');
 		$this->actingAs($this->user)->post(action('Kitchen\KitchenController@storePhoto', $this->user->user), [
 			'photo' => $file
@@ -126,10 +128,10 @@ class KitchenControllerTest extends TestCase {
 			'kitchen_id' => $this->user->user->id,
 			'file' => $file->hashName()
 		]);
-		
+
 		Storage::disk('local')->assertExists("public/photos/{$file->hashName()}");
 	}
-	
+
 	public function test_kitchen_can_delete_photo() {
 		Storage::fake('local');
 		$file = UploadedFile::fake()->image('photo.jpg');
@@ -138,28 +140,28 @@ class KitchenControllerTest extends TestCase {
 			'kitchen_id' => $this->user->user->id,
 			'file' => $file->hashName(),
 		]);
-		
+
 		$this->actingAs($this->user)->delete(action('Kitchen\KitchenController@destroyPhoto', [
 			'kitchen' => $this->user->user,
 			'photo' => $photo
 		]))->assertSuccessful()->assertJson([
 			'success' => true
 		]);
-		
+
 		Storage::disk('local')->assertMissing("public/photos/{$file->hashName()}");
 	}
-	
+
 	public function test_guest_cant_upload_file() {
 		Storage::fake('local');
-		
+
 		$file = UploadedFile::fake()->image('photo.jpg');
 		$this->post(action('Kitchen\KitchenController@storePhoto', $this->user->user), [
 			'photo' => $file
 		])->assertRedirect(action('Auth\LoginController@login'));
-		
+
 		Storage::disk('local')->assertMissing("public/photos/{$file->hashName()}");
 	}
-	
+
 	public function test_guest_cant_delete_photo() {
 		$file = UploadedFile::fake()->image('photo.jpg');
 		$file->store('public/photos');
@@ -167,27 +169,27 @@ class KitchenControllerTest extends TestCase {
 			'kitchen_id' => $this->user->user->id,
 			'file' => $file->hashName(),
 		]);
-		
+
 		$this->delete(action('Kitchen\KitchenController@destroyPhoto', [
 			'kitchen' => $this->user->user,
 			'photo' => $photo
 		]))->assertRedirect(action('Auth\LoginController@login'));
-		
-		
+
+
 		Storage::disk('local')->assertExists("public/photos/{$file->hashName()}");
 	}
-	
+
 	public function test_other_kitchen_cant_upload_file() {
 		Storage::fake('local');
-		
+
 		$file = UploadedFile::fake()->image('photo.jpg');
 		$this->actingAs($this->user1)->post(action('Kitchen\KitchenController@storePhoto', $this->user->user), [
 			'photo' => $file
 		])->assertForbidden();
-		
+
 		Storage::disk('local')->assertMissing("public/photos/{$file->hashName()}");
 	}
-	
+
 	public function test_other_kitchen_cant_delete_photo() {
 		$file = UploadedFile::fake()->image('photo.jpg');
 		$file->store('public/photos');
@@ -195,38 +197,38 @@ class KitchenControllerTest extends TestCase {
 			'kitchen_id' => $this->user->user->id,
 			'file' => $file->hashName(),
 		]);
-		
+
 		$this->actingAs($this->user1)->delete(action('Kitchen\KitchenController@destroyPhoto', [
 			'kitchen' => $this->user->user,
 			'photo' => $photo
 		]))->assertForbidden();
-		
-		
+
+
 		Storage::disk('local')->assertExists("public/photos/{$file->hashName()}");
 	}
-	
-	
+
+
 	public function test_cant_upload_non_image_file() {
 		Storage::fake('local');
-		
+
 		$file = UploadedFile::fake()->image('photo.pdf');
 		$this->actingAs($this->user)->post(action('Kitchen\KitchenController@storePhoto', $this->user->user), [
 			'photo' => $file
 		])->assertSessionHasErrors('photo');
-		
+
 		Storage::disk('local')->assertMissing("public/photos/{$file->hashName()}");
 	}
-	
-	
+
+
 	public function test_guest_cant_see_kitchen_edit_view() {
 		$this->get(action('Kitchen\KitchenController@edit', $this->user->user))->assertRedirect(action('Auth\LoginController@login'));
-		
+
 	}
-	
+
 	public function test_other_kitchen_cant_see_kitchen_edit_view() {
 		$this->actingAs($this->user1)->get(action('Kitchen\KitchenController@edit', $this->user->user))->assertForbidden();
 	}
-	
+
 	public function test_kitchen_can_see_its_own_edit_page_with_fresh_application() {
 		$this->actingAs($this->user)->get(action('Kitchen\KitchenController@edit', $this->user->user))
 			->assertSuccessful()
@@ -234,7 +236,7 @@ class KitchenControllerTest extends TestCase {
 			->assertViewHas('kitchen', $this->user->user)
 			->assertSee('id="reviewButton"');
 	}
-	
+
 	public function test_kitchen_can_see_its_own_edit_page_with_unsubmitted_application() {
 		$application = factory(Application::class)->make([
 			'year' => intval($this->settings->get('registration_year')),
@@ -249,7 +251,7 @@ class KitchenControllerTest extends TestCase {
 			->assertSee("value: '{$application->length}'")
 			->assertSee('id="reviewButton"');
 	}
-	
+
 	public function test_kitchen_can_see_its_own_edit_page_with_reopened_application() {
 		$application = factory(Application::class)->make([
 			'year' => $this->settings->get('registration_year'),
@@ -264,7 +266,7 @@ class KitchenControllerTest extends TestCase {
 			->assertSee("value: '{$application->length}'")
 			->assertSee('id="reviewButton"');
 	}
-	
+
 	public function test_kitchen_can_see_but_not_update_submitted_application() {
 		$appliedText = $this->settings->get("application_success_text_{$this->user->language}");
 		$application = factory(Application::class)->make([
@@ -281,15 +283,15 @@ class KitchenControllerTest extends TestCase {
 			->assertSee(str_replace(PHP_EOL, '<br>', $appliedText))
 			->assertDontSee('id="reviewButton"');
 	}
-	
+
 	public function test_guest_cant_update_kitchen_data() {
 		$this->patch(action('Kitchen\KitchenController@update', $this->user->user))->assertRedirect(action('Auth\LoginController@login'));
 	}
-	
+
 	public function test_other_kitchen_cant_update_kitchen_data() {
 		$this->actingAs($this->user1)->patch(action('Kitchen\KitchenController@update', $this->user->user))->assertForbidden();
 	}
-	
+
 	public function test_kitchen_can_update_kitchen_data_and_unsubmitted_application() {
 		$services = factory(Service::class, 3)->create();
 		$socket = factory(Service::class, 3)->create([
@@ -323,7 +325,7 @@ class KitchenControllerTest extends TestCase {
 			'title' => '',
 			'message' => __('vue.updateSuccess', [], 'nl')
 		]);
-		
+
 		$this->assertDatabaseHas('users', [
 			'id' => $this->user->id,
 			'name' => 'test',
@@ -344,13 +346,13 @@ class KitchenControllerTest extends TestCase {
 			'length' => 1,
 			'width' => 1,
 		]);
-		
+
 		$this->assertDatabaseHas('application_service', [
 			'application_id' => $application->id,
 			'service_id' => $socket->id,
 			'quantity' => 1
 		]);
-		
+
 		$this->assertDatabaseHas('application_service', [
 			'application_id' => $application->id,
 			'service_id' => $services->get(0)->id,
@@ -362,25 +364,25 @@ class KitchenControllerTest extends TestCase {
 				'quantity' => 5
 			]
 		);
-		
+
 		$this->assertDatabaseMissing('application_service', [
 			'application_id' => $application->id,
 			'service_id' => $services->get(1)->id,
 		]);
-		
-		
+
+
 	}
-	
+
 	public function test_kitchen_can_submit_unsubmitted_application() {
-		
+
 		\Notification::fake();
-		
+
 		$services = factory(Service::class, 3)->create();
-		
+
 		$socket = factory(Service::class, 3)->create([
 			'category' => 'socket'
 		])->random();
-		
+
 		$application = factory(Application::class)->make([
 			'year' => $this->settings->get('registration_year'),
 			'status' => 'new',
@@ -421,7 +423,7 @@ class KitchenControllerTest extends TestCase {
 			'title' => '',
 			'message' => __('vue.updateSuccess', [], 'nl')
 		])->assertSessionHas('fireworks');
-		
+
 		$this->assertDatabaseHas('users', [
 			'id' => $this->user->id,
 			'name' => 'test',
@@ -449,7 +451,7 @@ class KitchenControllerTest extends TestCase {
 			'length' => 1,
 			'width' => 1,
 		]);
-		
+
 		$this->assertDatabaseHas('application_service', [
 			'application_id' => $application->id,
 			'service_id' => $services->get(0)->id,
@@ -466,22 +468,22 @@ class KitchenControllerTest extends TestCase {
 				'quantity' => 5
 			]
 		);
-		
+
 		$this->assertDatabaseMissing('application_service', [
 			'application_id' => $application->id,
 			'service_id' => $services->get(1)->id,
 		]);
-		
+
 		Notification::assertSentTo([$application->kitchen->user], ApplicationSubmittedNotification::class);
 	}
-	
+
 	public function test_kitchen_can_submit_reopened_application() {
-		
+
 		$admin = factory(User::class)->make();
 		factory(Admin::class)->create()->user()->save($admin);
-		
+
 		Notification::fake();
-		
+
 		$services = factory(Service::class, 3)->create();
 		$socket = factory(Service::class, 3)->create([
 			'category' => 'socket'
@@ -490,7 +492,7 @@ class KitchenControllerTest extends TestCase {
 			'year' => $this->settings->get('registration_year'),
 			'status' => 'reopened',
 		]);
-		
+
 		$this->user->user->applications()->save($application);
 
 		$application->products()->save(factory(Product::class)->make([
@@ -527,7 +529,7 @@ class KitchenControllerTest extends TestCase {
 			'title' => '',
 			'message' => __('vue.updateSuccess', [], 'nl')
 		])->assertSessionHas('fireworks');
-		
+
 		$this->assertDatabaseHas('users', [
 			'id' => $this->user->id,
 			'name' => 'test',
@@ -555,36 +557,36 @@ class KitchenControllerTest extends TestCase {
 			'length' => 1,
 			'width' => 1,
 		]);
-		
+
 		$this->assertDatabaseHas('application_service', [
 			'application_id' => $application->id,
 			'service_id' => $services->get(0)->id,
 			'quantity' => 1
 		]);
-		
-		
+
+
 		$this->assertDatabaseHas('application_service', [
 			'application_id' => $application->id,
 			'service_id' => $socket->id,
 			'quantity' => 1
 		]);
-		
+
 		$this->assertDatabaseHas('application_service', [
 				'application_id' => $application->id,
 				'service_id' => $services->get(2)->id,
 				'quantity' => 5
 			]
 		);
-		
+
 		$this->assertDatabaseMissing('application_service', [
 			'application_id' => $application->id,
 			'service_id' => $services->get(1)->id,
 		]);
-		
+
 		Notification::assertSentTo([$admin], ApplicationResubmittedNotification::class);
 	}
-	
-	
+
+
 	public function test_kitchen_can_update_kitchen_data_but_not_submitted_application_data() {
 		$services = factory(Service::class, 3)->create();
 		$application = factory(Application::class)->make([
@@ -615,7 +617,7 @@ class KitchenControllerTest extends TestCase {
 			'title' => '',
 			'message' => __('vue.updateSuccess', [], 'nl')
 		]);
-		
+
 		$this->assertDatabaseHas('users', [
 			'id' => $this->user->id,
 			'name' => 'test',
@@ -637,7 +639,7 @@ class KitchenControllerTest extends TestCase {
 			'length' => 1,
 			'width' => 1,
 		]);
-		
+
 		$this->assertDatabaseMissing('application_service', [
 			'application_id' => $application->id,
 			'service_id' => $services->get(0)->id,
@@ -650,7 +652,7 @@ class KitchenControllerTest extends TestCase {
 			]
 		);
 	}
-	
+
 	public function test_kitchen_can_update_kitchen_data_and_reopened_application_data() {
 		$services = factory(Service::class, 3)->create();
 		$socket = factory(Service::class, 3)->create([
@@ -685,7 +687,7 @@ class KitchenControllerTest extends TestCase {
 			'title' => '',
 			'message' => __('vue.updateSuccess', [], 'nl')
 		]);
-		
+
 		$this->assertDatabaseHas('users', [
 			'id' => $this->user->id,
 			'name' => 'test',
@@ -706,20 +708,20 @@ class KitchenControllerTest extends TestCase {
 			'length' => 1,
 			'width' => 1,
 		]);
-		
+
 		$this->assertDatabaseHas('application_service', [
 			'application_id' => $application->id,
 			'service_id' => $services->get(0)->id,
 			'quantity' => 1
 		]);
-		
+
 		$this->assertDatabaseHas('application_service', [
 				'application_id' => $application->id,
 				'service_id' => $services->get(2)->id,
 				'quantity' => 5
 			]
 		);
-		
+
 		$this->assertDatabaseMissing('application_service', [
 			'application_id' => $application->id,
 			'service_id' => $services->get(1)->id,
@@ -730,7 +732,7 @@ class KitchenControllerTest extends TestCase {
 			'quantity' => 1
 		]);
 	}
-	
+
 	public function test_kitchen_uploaded_photo_gets_processed_by_width() {
 		Storage::fake('local');
 		$file = UploadedFile::fake()->image('photo.png', 1000, 500);
@@ -744,7 +746,7 @@ class KitchenControllerTest extends TestCase {
 		$this->assertEquals(400, $processedImage->height());
 		$this->assertEquals('image/jpeg', $processedImage->mime());
 	}
-	
+
 	public function test_kitchen_uploaded_photo_gets_processed_by_height() {
 		Storage::fake('local');
 		$file = UploadedFile::fake()->image('photo.png', 500, 1000);
@@ -758,7 +760,7 @@ class KitchenControllerTest extends TestCase {
 		$this->assertEquals(500, $processedImage->height());
 		$this->assertEquals('image/jpeg', $processedImage->mime());
 	}
-	
+
 	public function test_kitchen_can_see_applications_if_exists() {
 		$pastApplication = factory(Application::class)->make(['year' => '2012']);
 		$this->user->user->applications()->save($pastApplication);
@@ -766,58 +768,58 @@ class KitchenControllerTest extends TestCase {
 			->assertSee(__('kitchen/kitchen.pastApplications'))
 			->assertSee($pastApplication->year);
 	}
-	
+
 	public function test_past_applications_tab_doesnt_exists_if_there_are_no_past_applications() {
 		$this->actingAs($this->user)->get(action('Kitchen\KitchenController@edit', $this->user->user))
 			->assertDontSee(__('kitchen/kitchen.pastApplications'));
 	}
-	
+
 	public function test_kitchen_can_delete_self_and_all_applications() {
 		$pastApplication = factory(Application::class)->make(['year' => '2012']);
 		$this->user->user->applications()->save($pastApplication);
 		$this->actingAs($this->user)->delete(action('Kitchen\KitchenController@destroy', $this->user->user))
 			->assertRedirect(action('HomeController@show'));
-		
+
 		$this->assertDatabaseMissing('users', [
 			'user_type' => Kitchen::class,
 			'user_id' => $this->user->user->id
 		]);
-		
+
 		$this->assertDatabaseMissing('applications', [
 			'kitchen_id' => $this->user->user->id
 		]);
-		
+
 		$this->assertDatabaseMissing('kitchens', [
 			'id' => $this->user->user->id
 		]);
 	}
-	
+
 	public function test_guest_cant_delete_kitchen_and_application() {
 		$this->delete(action('Kitchen\KitchenController@destroy', $this->user->user))
 			->assertRedirect(action('Auth\LoginController@showLoginForm'));
-		
+
 		$this->assertDatabaseHas('users', [
 			'user_type' => Kitchen::class,
 			'user_id' => $this->user->user->id
 		]);
-		
+
 		$this->assertDatabaseHas('kitchens', [
 			'id' => $this->user->user->id
 		]);
 	}
-	
+
 	public function test_other_kitchen_cant_delete_kitchen_and_application() {
 		$this->actingAs($this->user1)->delete(action('Kitchen\KitchenController@destroy', $this->user->user))
 			->assertForbidden();
-		
+
 		$this->assertDatabaseHas('users', [
 			'user_type' => Kitchen::class,
 			'user_id' => $this->user->user->id
 		]);
-		
+
 		$this->assertDatabaseHas('kitchens', [
 			'id' => $this->user->user->id
 		]);
 	}
-	
+
 }

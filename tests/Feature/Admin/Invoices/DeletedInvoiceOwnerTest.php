@@ -11,6 +11,7 @@ use App\Models\DeletedInvoiceOwner;
 use App\Models\Invoice;
 use App\Models\Kitchen;
 use App\Models\User;
+use App\Models\Worker;
 use Tests\TestCase;
 use Queue;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -18,7 +19,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class DeletedInvoiceOwnerTest extends TestCase {
 	use RefreshDatabase;
-	
+
+	protected $worker;
 	private $user;
 	private $kitchen;
 	private $application;
@@ -32,6 +34,8 @@ class DeletedInvoiceOwnerTest extends TestCase {
 		parent::setUp();
 		$this->user = factory(User::class)->make();
 		factory(Admin::class)->create()->user()->save($this->user);
+		$this->worker = factory(User::class)->make();
+		factory(Worker::class)->create()->user()->save($this->worker);
 		$this->kitchen = factory(User::class)->make();
 		factory(Kitchen::class)->create([
 			'data' => [
@@ -91,7 +95,14 @@ class DeletedInvoiceOwnerTest extends TestCase {
 				$this->deletedOwnerInvoice]))
 			->assertRedirect(action('Auth\LoginController@login'));
 	}
-	
+
+	public function test_worker_cant_get_deleted_invoice_owner() {
+		$this->actingAs($this->worker)->get(action('Admin\DeletedInvoiceOwnerController@edit',
+			[$this->deletedeOwner,
+				$this->deletedOwnerInvoice]))
+			->assertForbidden();
+	}
+
 	public function test_kitchen_cant_get_deleted_invoice_owner() {
 		$this->actingAs($this->kitchen)->get(action('Admin\DeletedInvoiceOwnerController@edit',
 			[$this->deletedeOwner,
@@ -147,6 +158,31 @@ class DeletedInvoiceOwnerTest extends TestCase {
 		])->assertRedirect(action('Auth\LoginController@login'));
 		Queue::assertNotPushed(SendDebtorInvoice::class);
 		
+	}
+
+	public function test_worker_cant_update_deleted_owner_invoice() {
+		Queue::fake();
+		$this->actingAs($this->worker)->patch(action('Admin\DeletedInvoiceOwnerController@update', [
+			$this->deletedeOwner,
+			$this->deletedOwnerInvoice
+		]), [
+			'tax' => 21,
+			'recipient' => $this->deletedeOwner->email,
+			'bcc' => $this->deletedeOwner->email,
+			'message' => 'test',
+			'subject' => 'test subject',
+			'items' => [[
+				'quantity' => 1,
+				'unitPrice' => 1,
+				'item' => 'test'
+			], [
+				'quantity' => 2,
+				'unitPrice' => 2,
+				'item' => 'test2'
+			]]
+		])->assertForbidden();
+		Queue::assertNotPushed(SendDebtorInvoice::class);
+
 	}
 	
 	public function test_kitchen_cant_update_deleted_owner_invoice() {

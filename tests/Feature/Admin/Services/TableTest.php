@@ -7,6 +7,7 @@ use App\Models\Developer;
 use App\Models\Kitchen;
 use App\Models\Service;
 use App\Models\User;
+use App\Models\Worker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -16,6 +17,7 @@ class TableTest extends TestCase {
 	use RefreshDatabase;
 	use WithFaker;
 
+	protected $worker;
 	private $admin;
 	private $kitchen;
 	private $services;
@@ -29,6 +31,9 @@ class TableTest extends TestCase {
 		$this->kitchen = factory(Kitchen::class)->create();
 		$this->kitchen->user()->save(factory(User::class)->make());
 
+		$this->worker = factory(User::class)->make();
+		factory(Worker::class)->create()->user()->save($this->worker);
+
 		$this->services = factory(Service::class, 5)->create();
 
 		$this->developer = factory(Developer::class)->create();
@@ -37,6 +42,10 @@ class TableTest extends TestCase {
 
 	public function test_guest_cant_see_page() {
 		$this->get(action('Admin\ServiceController@index'))->assertRedirect(action('Auth\LoginController@login'));
+	}
+
+	public function test_worker_cant_see_page() {
+		$this->actingAs($this->worker)->get(action('Admin\ServiceController@index'))->assertForbidden();
 	}
 
 	public function test_kitchen_cant_see_page() {
@@ -75,7 +84,7 @@ class TableTest extends TestCase {
 
 	public function test_datatable_get_table_data_filtered() {
 		$this->services->push(factory(Service::class)->create([
-			'category' => 'safety'
+			'category' => 'safety',
 		]));
 		$response = $this->actingAs($this->admin->user)
 			->get(action('DatatableController@list', ['table' => 'admin.servicesTable', 'per_page' => 20, 'filter' => '{"category":"safety"}']));
@@ -100,6 +109,13 @@ class TableTest extends TestCase {
 		$this->patch(action('Admin\ServiceController@update', $service))->assertRedirect(action('Auth\LoginController@login'));
 	}
 
+	public function test_worker_cant_edit_service() {
+
+		$service = $this->services->random();
+		$this->actingAs($this->worker)
+			->patch(action('Admin\ServiceController@update', $service))->assertForbidden();
+	}
+
 	public function test_kitchen_cant_edit_service() {
 
 		$service = $this->services->random();
@@ -110,6 +126,11 @@ class TableTest extends TestCase {
 	public function test_guest_cant_get_service_fields() {
 		$service = $this->services->random();
 		$this->get(action('Admin\ServiceController@edit', $service))->assertRedirect(action('Auth\LoginController@login'));
+	}
+
+	public function test_worker_cant_get_service_fields() {
+		$service = $this->services->random();
+		$this->actingAs($this->worker)->get(action('Admin\ServiceController@edit', $service))->assertForbidden();
 	}
 
 	public function test_kitchen_cant_get_service_fields() {
@@ -183,6 +204,18 @@ class TableTest extends TestCase {
 
 	}
 
+	public function test_worker_cant_create_service() {
+
+		$this->actingAs($this->worker)
+			->post(action('Admin\ServiceController@create'), [
+				'name' => 'testname',
+				'category' => 'safety',
+				'type' => 0,
+				'price' => '25.00',
+			])->assertForbidden();
+
+	}
+
 	public function test_kitchen_cant_create_service() {
 
 		$this->actingAs($this->kitchen->user)
@@ -208,15 +241,20 @@ class TableTest extends TestCase {
 	}
 
 
-	public function test_guest_cant_delete_service(){
+	public function test_guest_cant_delete_service() {
 		$this->delete(action('Admin\ServiceController@destroy', $this->services->first()))->assertRedirect(action('Auth\LoginController@login'));
 	}
 
-	public function test_kitchen_cant_delete_service(){
+	public function test_worker_cant_delete_service() {
+		$this->actingAs($this->worker)->delete(action('Admin\ServiceController@destroy', $this->services->first()))->assertForbidden();
+	}
+
+
+	public function test_kitchen_cant_delete_service() {
 		$this->actingAs($this->kitchen->user)->delete(action('Admin\ServiceController@destroy', $this->services->first()))->assertForbidden();
 	}
 
-	public function test_admin_can_delete_kitchen(){
+	public function test_admin_can_delete_kitchen() {
 		$service = $this->services->first();
 		$this->actingAs($this->admin->user)->delete(action('Admin\ServiceController@destroy', $service))->assertSuccessful();
 		$this->assertDatabaseMissing('services', ['id' => $service->id]);
@@ -224,12 +262,11 @@ class TableTest extends TestCase {
 
 	}
 
-	public function test_developer_can_delete_kitchen(){
+	public function test_developer_can_delete_kitchen() {
 		$service = $this->services->first();
 		$this->actingAs($this->developer->user)->delete(action('Admin\ServiceController@destroy', $service))->assertSuccessful();
 		$this->assertDatabaseMissing('services', ['id' => $service->id]);
 		$this->assertDatabaseMissing('application_service', ['service_id' => $service->id]);
 
 	}
-
 }

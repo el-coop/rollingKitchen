@@ -13,7 +13,7 @@ class DeveloperSeeder extends Seeder {
     public function run() {
 		factory(Developer::class)->create()->each(function ($developer){
 			$user = factory(User::class)->make([
-				'email' => 'developer@elcoop.com',
+				'email' => 'developer@elcoop.io',
 				'password' => bcrypt(123456)
 			]);
 			$developer->user()->save($user);

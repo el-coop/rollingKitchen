@@ -31,7 +31,6 @@ return [
 	'application_success_email_nl' => 'Email aanmelding succesvol ingediend NL',
 	'application_success_email_en' => 'Email aanmelding succesvol ingediend EN',
 
-	'invoices_accountant' => "Accountant's Email",
 	'invoices_business_details' => "Bedrijfsgegevens",
 
 	'invoices_notes_nl' => "Opmerkingen factuur NL",
@@ -48,4 +47,15 @@ return [
 	'invoices_default_resend_subject_en' => 'Standaard onderwerp email vervolg factuur EN',
 	'invoices_default_resend_email_nl' => 'Standaard tekst email vervolg factuur NL',
 	'invoices_default_resend_email_en' => 'Standaard tekst email vervolg factuur EN',
+	
+	'workers_user_created_subject_nl' => 'Werknemers gecreëerd email onderwerp NL',
+	'workers_user_created_subject_en' => 'Werknemers gecreëerd email onderwerp EN',
+	'workers_user_created_nl' => 'Werknemers gecreëerd email tekst NL',
+	'workers_user_created_en' => 'Werknemers gecreëerd email onderwerp EN',
+
+	'workedHours' => 'TBT',
+
+	'accountant' => 'TBT',
+	'accountant_email' => "TBT",
+	'accountant_email' => "TBT",
 ];
