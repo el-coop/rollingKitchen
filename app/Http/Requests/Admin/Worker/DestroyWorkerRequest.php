@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Kitchen;
+namespace App\Http\Requests\Admin\Worker;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DestroyKitchenRequest extends FormRequest {
-	private $kitchen;
+class DestroyWorkerRequest extends FormRequest {
+	private $worker;
 	
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -13,11 +13,10 @@ class DestroyKitchenRequest extends FormRequest {
 	 * @return bool
 	 */
 	public function authorize() {
-
-		$this->kitchen = $this->route('kitchen');
-		return $this->user()->can('delete', $this->kitchen);
+		$this->worker = $this->route('worker');
+		return $this->user()->can('delete', $this->worker);
 	}
-
+	
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -28,8 +27,8 @@ class DestroyKitchenRequest extends FormRequest {
 			//
 		];
 	}
-
+	
 	public function commit() {
-		$this->kitchen->delete();
+		$this->worker->delete();
 	}
 }

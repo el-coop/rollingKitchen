@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Worker;
 
+use App\Http\Requests\Admin\Worker\DestroyWorkerRequest;
 use App\Http\Requests\Admin\Workplace\AddWorkFunctionRequest;
 use App\Http\Requests\Admin\Workplace\DeleteWorkFunctionRequest;
 use App\Http\Requests\Admin\Workplace\UpdateWorkFunctionRequest;
@@ -45,6 +46,13 @@ class SupervisorController extends Controller {
 	
 	public function storeWorker(CreateWorkerRequest $request, Workplace $workplace) {
 		return $request->commit();
+	}
+	
+	public function destroyWorker(DestroyWorkerRequest $request, Workplace $workplace, Worker $worker) {
+		$request->commit();
+		return [
+			'success' => true
+		];
 	}
 	
 	public function editWorker(Workplace $workplace, Worker $worker) {
