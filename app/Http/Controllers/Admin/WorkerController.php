@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\Admin\Worker\CreateWorkerRequest;
+use App\Http\Requests\Admin\Worker\DestroyWorkerRequest;
 use App\Http\Requests\Admin\Worker\UpdateWorkerRequest;
 use App\Models\Field;
 use App\Models\Worker;
@@ -75,6 +76,14 @@ class WorkerController extends Controller {
 	public function update(UpdateWorkerRequest $request, Worker $worker) {
 		
 		return $request->commit();
+	}
+	
+	public function destroy(DestroyWorkerRequest $request, Worker $worker) {
+		$request->commit();
+		
+		return [
+			'success' => true
+		];
 	}
 	
 }
