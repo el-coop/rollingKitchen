@@ -6,5 +6,6 @@ return [
 	'closed' => 'Closed',
 	'startTime' => 'Start Time',
 	'endTime' => 'End Time',
-	'exportWorkedHours' => 'Export Worked Hours'
+	'exportWorkedHours' => 'Export Worked Hours',
+	'hoursOverflow' => 'Hours Overflow Error'
 ];

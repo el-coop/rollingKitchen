@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Shift extends Model {
@@ -44,5 +45,14 @@ class Shift extends Model {
 	
 	public function workers() {
 		return $this->belongsToMany(Worker::class)->using(ShiftWorker::class)->withPivot('start_time', 'end_time', 'work_function_id');
+	}
+
+	public function getTotalHoursAttribute(){
+		$totalHours = new Carbon('today');
+		$startOfDay = $totalHours->clone();
+		$this->workers->each(function ($worker) use ($totalHours){
+			$totalHours->add($worker->pivot->workedHours);
+		});
+		return $startOfDay->diffAsCarbonInterval($totalHours);
 	}
 }

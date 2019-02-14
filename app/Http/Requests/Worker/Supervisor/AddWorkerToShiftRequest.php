@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Worker\Supervisor;
 
 use App\Models\Worker;
+use App\Rules\HoursOverflow;
 use App\Rules\WorkerApproved;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -30,7 +31,7 @@ class AddWorkerToShiftRequest extends FormRequest {
 		return [
 			'worker' => ['required','integer', new WorkerApproved],
 			'startTime' => 'required|date_format:H:i',
-			'endTime' => 'required|date_format:H:i',
+			'endTime' => ['required','date_format:H:i', new HoursOverflow($this->input('startTime'), $this->shift->totalHours, $this->shift->hours)],
 			'workFunction' => 'required|integer'
 		];
 	}
