@@ -12,11 +12,13 @@ return [
 	'workplaces' => 'Werkplekken',
 	'addWorkplace' => 'Werkplek toevoegen',
 	'createWorkplace' => 'Werkplek creëren ',
-	'payment_per_hour_before_tax' => 'Bruto Uurloon',
-	'payment_per_hour_after_tax' => 'Netto Uurloon',
+	'payment_per_hour_before_tax' => 'Freelancer Uurloon',
+	'payment_per_hour_after_tax' => 'Loonlijst Uurloon',
 	'fillProfile' => 'Profiel invullen',
 	'createShift' => 'Shift creëren',
 	'approved' => 'Goedgekeurd',
 	'totalHours' => 'Aantal uren',
-	'pdf' => 'PDF'
+	'pdf' => 'PDF',
+	'shiftPayment' => 'TBT',
+	'totalPayment' => 'TBT'
 ];

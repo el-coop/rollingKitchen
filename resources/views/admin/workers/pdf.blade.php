@@ -47,6 +47,7 @@
 			<td>@lang('vue.workFunction')</td>
 			<td>@lang('admin/shifts.startTime')</td>
 			<td>@lang('admin/shifts.endTime')</td>
+			<td>@lang('admin/workers.shiftPayment')</td>
 		</tr>
 		</thead>
 		<tbody>
@@ -54,19 +55,21 @@
 			<tr>
 				<td>{{$shift->date}}</td>
 				<td>{{$shift->workplace->name}}</td>
-				<td>{{$shift->workplace->workfunctions->firstWhere('id',$shift->pivot->work_function_id)->name}}</td>
+				<td>{{$shift->pivot->workFunction->name}}</td>
 				<td>{{ date('H:i',strtotime($shift->pivot->start_time)) }}</td>
 				<td>{{ date('H:i',strtotime($shift->pivot->end_time)) }}</td>
+				<td>{{ number_format($shift->pivot->payment,2,$decimalPoint,$thousandSeparator) }}</td>
 			</tr>
 		@endforeach
 		<tr>
-			<td></td>
 			<td></td>
 			<td></td>
 			<td>@lang('admin/workers.totalHours')</td>
 			<td>
 				{{number_format($worker->workedHours->total('hours'),2,$decimalPoint,$thousandSeparator)}}
 			</td>
+			<td>@lang('admin/workers.totalPayment')</td>
+			<td>{{ number_format($worker->totalPayment,2,$decimalPoint,$thousandSeparator) }}</td>
 		</tr>
 		</tbody>
 	</table>

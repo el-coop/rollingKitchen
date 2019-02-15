@@ -100,6 +100,11 @@ class WorkedHoursService implements FromCollection, WithHeadings {
 							$thousandSeparator = App::getLocale() == 'nl' ? '.' : ',';
 							$result->push(number_format($worker->workedHours->total('hours'), 2, $decimalPoint, $thousandSeparator));
 							break;
+						case 'totalPayment':
+							$decimalPoint = App::getLocale() == 'nl' ? ',' : '.';
+							$thousandSeparator = App::getLocale() == 'nl' ? '.' : ',';
+							$result->push(number_format($worker->totalPayment, 2, $decimalPoint, $thousandSeparator));
+							break;
 						default:
 							$column = Field::find($column)->id;
 							$result->push($worker->data[$column] ?? '');
@@ -107,11 +112,18 @@ class WorkedHoursService implements FromCollection, WithHeadings {
 					}
 					break;
 				case 'shift_worker':
-					$pivot = $worker->shifts->find($shift);
-					if ($column == 'work_function_id') {
-						$result->push(WorkFunction::find($pivot->pivot->work_function_id)->name);
-					} else {
-						$result->push($pivot->pivot->$column);
+					$shift = $worker->shifts->find($shift);
+					switch ($column) {
+						case 'workFunction';
+							$result->push($shift->pivot->workFunction->name);
+							break;
+						case 'payment':
+							$decimalPoint = App::getLocale() == 'nl' ? ',' : '.';
+							$thousandSeparator = App::getLocale() == 'nl' ? '.' : ',';
+							$result->push(number_format($shift->pivot->payment, 2, $decimalPoint, $thousandSeparator));
+							break;
+						default:
+							$result->push($shift->pivot->$column);
 					}
 					break;
 				case 'user':

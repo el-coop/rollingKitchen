@@ -15,7 +15,7 @@ use Maatwebsite\Excel\Excel;
 class WorkedHoursExportColumnController extends Controller {
 	
 	public function show() {
-		$workedHoursOptions = WorkedHoursExportColumn::getOptionsAttribute();
+		$workedHoursOptions = WorkedHoursExportColumn::options();
 		$workedHours = WorkedHoursExportColumn::orderBy('order')->get();
 		return view('admin.workedHours.show', compact('workedHours', 'workedHoursOptions'));
 	}
