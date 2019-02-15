@@ -148,5 +148,12 @@ class Worker extends Model {
 		});
 		return $startOfDay->diffAsCarbonInterval($totalHours);
 	}
+	
+	public function getTotalPaymentAttribute() {
+		return $this->shifts()->where('closed', true)->get()->sum(function ($shift) {
+			return $shift->pivot->payment;
+		});
+		
+	}
 }
 
