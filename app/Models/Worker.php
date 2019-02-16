@@ -24,23 +24,23 @@ class Worker extends Model {
 	protected $appends = [
 		'workplacesList',
 	];
-	
+
 	protected $casts = [
 		'data' => 'array',
 	];
-	
+
 	static function indexPage() {
 		return action('Admin\WorkerController@index', [], false);
 	}
-	
+
 	public function homePage() {
 		return action('Worker\WorkerController@index', $this);
 	}
-	
+
 	public function user() {
 		return $this->morphOne(User::class, 'user');
 	}
-	
+
 	public function getFullDataAttribute() {
 		$fullData = collect([
 			[
@@ -149,11 +149,13 @@ class Worker extends Model {
 		return $startOfDay->diffAsCarbonInterval($totalHours);
 	}
 	
+	public function taxReviews() {
+		return $this->hasMany(TaxReview::class);
+
 	public function getTotalPaymentAttribute() {
 		return $this->shifts()->where('closed', true)->get()->sum(function ($shift) {
 			return $shift->pivot->payment;
 		});
-		
 	}
 }
 

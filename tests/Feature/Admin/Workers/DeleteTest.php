@@ -31,7 +31,6 @@ class DeleteTest extends TestCase {
 		factory(Worker::class)->create()->user()->save($this->worker);
 		$this->accountant = factory(User::class)->make();
 		factory(Accountant::class)->create()->user()->save($this->accountant);
-		
 	}
 	
 	public function test_guest_cant_delete_worker() {

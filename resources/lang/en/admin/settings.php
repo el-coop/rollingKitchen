@@ -58,5 +58,10 @@ return [
 	'accountant' => 'Accountant',
 	'accountant_email' => "Accountant's Email",
 	'accountant_password' => "Accountant's Password",
+	
+	"workers_tax_review_uploaded_subject_nl" => 'Tax review uploaded subject NL',
+	"workers_tax_review_uploaded_subject_en" => 'Tax review uploaded subject EN',
+	"workers_tax_review_uploaded_nl" => 'Tax review uploaded body NL',
+	"workers_tax_review_uploaded_en" => 'Tax review uploaded body EN',
 
 ];

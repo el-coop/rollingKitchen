@@ -122,15 +122,18 @@ class PhotoUploadTest extends TestCase {
 		]);
 		
 		Storage::disk('local')->assertMissing("public/photos/test.jpg");
-		$this->assertDatabaseMissing('worker_photos',[
+		$this->assertDatabaseMissing('worker_photos', [
 			'worker_id' => $this->worker->user_id,
 			'file' => 'test.jpg'
 		]);
 	}
 	
-	public function test_admin_can_delete_own_photo() {
+	public function test_admin_can_delete_worker_photo() {
 		$file = UploadedFile::fake()->image('test.jpg');
 		$file->store('public/photos');
+		
+		$this->workerPhoto->file = $file->hashName();
+		$this->workerPhoto->save();
 		
 		$this->actingAs($this->admin)->delete(action('Worker\WorkerController@destroyPhoto', [
 			'worker' => $this->worker->user,
@@ -139,8 +142,8 @@ class PhotoUploadTest extends TestCase {
 			'success' => true
 		]);
 		
-		Storage::disk('local')->assertMissing("public/photos/test.jpg");
-		$this->assertDatabaseMissing('worker_photos',[
+		Storage::disk('local')->assertMissing("public/photos/{$file->hashName()}");
+		$this->assertDatabaseMissing('worker_photos', [
 			'worker_id' => $this->worker->user_id,
 			'file' => 'test.jpg'
 		]);

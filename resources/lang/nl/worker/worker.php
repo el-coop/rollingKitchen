@@ -6,5 +6,6 @@ return [
 	'shifts' => 'Diensten',
 	'workedHours' => 'Gewerkte uren',
 	'workplace' => 'Werkplek',
-	'workerNotApproved' => 'Medewerker niet goedgekeurd'
+	'workerNotApproved' => 'Medewerker niet goedgekeurd',
+	'taxReviews' => 'TBT'
 ];

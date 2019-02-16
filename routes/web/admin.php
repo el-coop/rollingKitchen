@@ -95,6 +95,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		});
 		
 		Route::group(['prefix' => 'workers'], function () {
+			Route::group(['prefix' => 'taxReviews'], function () {
+				Route::post('/{worker}', 'WorkerController@storeTaxReview');
+				Route::delete('/{worker}/{taxReview}', 'WorkerController@destroyTaxReview');
+			});
+			
 			Route::get('/', 'WorkerController@index');
 			Route::get('/edit', 'WorkerController@create');
 			Route::post('/edit', 'WorkerController@store');

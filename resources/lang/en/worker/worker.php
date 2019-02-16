@@ -6,5 +6,6 @@ return [
 	'shifts' => 'Shifts',
 	'workedHours' => 'Worked Hours',
 	'workplace' => 'Workplace',
-	'workerNotApproved' => 'Worker Not Approved'
+	'workerNotApproved' => 'Worker Not Approved',
+	'taxReviews' => 'Tax Reviews'
 ];
