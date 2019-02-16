@@ -6,5 +6,6 @@ return [
 	'closed' => 'Gesloten',
 	'startTime' => 'Begintijd',
 	'endTime' => 'Eindtijd',
-	'exportWorkedHours' => 'Exporteer uren'
+	'exportWorkedHours' => 'Exporteer uren',
+	'hoursOverflow' => 'TBT'
 ];

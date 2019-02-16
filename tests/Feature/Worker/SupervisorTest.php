@@ -40,7 +40,9 @@ class SupervisorTest extends TestCase {
 		factory(Worker::class)->create(['supervisor' => true])->user()->save($this->supervisor);
 		$this->supervisor->user->workplaces()->attach($this->workplace);
 		$this->worker->user->workplaces()->attach($this->workplace);
-		$this->shift = factory(Shift::class)->make();
+		$this->shift = factory(Shift::class)->make([
+			'hours' => 5
+		]);
 		$this->workplace->shifts()->save($this->shift);
 		$this->shiftWorker = factory(User::class)->make();
 		factory(Worker::class)->create()->user()->save($this->shiftWorker);
@@ -660,19 +662,19 @@ class SupervisorTest extends TestCase {
 			'shift' => $this->shift,
 			'worker' => $this->shiftWorker->user
 		]), [
-			'startTime' => '10:00',
+			'startTime' => '18:00',
 			'endTime' => '19:00',
 			'workFunction' => $this->workplace->workFunctions->first()->id
 		])->assertSuccessful()
 			->assertJsonFragment([
 				'worker' => $this->shiftWorker->user->id,
-				'startTime' => '10:00',
+				'startTime' => '18:00',
 				'endTime' => '19:00',
 				'workFunction' => $this->workplace->workFunctions->first()->id
 			]);
 		$this->assertDatabaseHas('shift_worker', [
 			'worker_id' => $this->shiftWorker->user->id,
-			'start_time' => '10:00',
+			'start_time' => '18:00',
 			'end_time' => '19:00',
 			'shift_id' => $this->shift->id,
 			'work_function_id' => $this->workplace->workFunctions->first()->id
@@ -697,19 +699,19 @@ class SupervisorTest extends TestCase {
 			'shift' => $this->shift,
 			'worker' => $this->shiftWorker->user
 		]), [
-			'startTime' => '10:00',
+			'startTime' => '18:00',
 			'endTime' => '19:00',
 			'workFunction' => $this->workplace->workFunctions->first()->id
 		])->assertSuccessful()
 			->assertJsonFragment([
 				'worker' => $this->shiftWorker->user->id,
-				'startTime' => '10:00',
+				'startTime' => '18:00',
 				'endTime' => '19:00',
 				'workFunction' => $this->workplace->workFunctions->first()->id
 			]);
 		$this->assertDatabaseHas('shift_worker', [
 			'worker_id' => $this->shiftWorker->user->id,
-			'start_time' => '10:00',
+			'start_time' => '18:00',
 			'end_time' => '19:00',
 			'shift_id' => $this->shift->id,
 			'work_function_id' => $this->workplace->workFunctions->first()->id
@@ -753,5 +755,16 @@ class SupervisorTest extends TestCase {
 			'per_page' => 20,
 			'sort' => 'name|asc'
 		]))->assertForbidden();
+	}
+
+	public function test_hours_overflow_validation(){
+		$this->worker->user->approved = true;
+		$this->worker->user->save();
+		$this->actingAs($this->supervisor)->post(action('Worker\SupervisorController@addWorkerToShift', $this->shift), [
+			'worker' => $this->worker->user->id,
+			'startTime' => '10:00',
+			'endTime' => '22:00',
+			'workFunction' => $this->workplace->workFunctions->first()->id])
+			->assertRedirect()->assertSessionHasErrors('endTime');
 	}
 }

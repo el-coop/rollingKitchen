@@ -151,6 +151,11 @@ class Worker extends Model {
 	
 	public function taxReviews() {
 		return $this->hasMany(TaxReview::class);
+
+	public function getTotalPaymentAttribute() {
+		return $this->shifts()->where('closed', true)->get()->sum(function ($shift) {
+			return $shift->pivot->payment;
+		});
 	}
 }
 

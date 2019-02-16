@@ -24,7 +24,7 @@ class UpdateWorkedHoursExportColumnRequest extends FormRequest {
 	 * @return array
 	 */
 	public function rules() {
-		$columnOptions = array_keys(WorkedHoursExportColumn::getOptionsAttribute()->toArray());
+		$columnOptions = array_keys(WorkedHoursExportColumn::options()->toArray());
 		return [
 			'column' => ['required', 'string', Rule::in($columnOptions)],
 			'name' => 'required|string'
