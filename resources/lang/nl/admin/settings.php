@@ -57,5 +57,11 @@ return [
 
 	'accountant' => 'Accountant',
 	'accountant_email' => "Email Accountant",
-	'accountant_email' => "Email Accountant",
+	'accountant_password' => "TBT",
+	
+	"workers_tax_review_uploaded_subject_nl" => 'TBT',
+	"workers_tax_review_uploaded_subject_en" => 'TBT',
+	"workers_tax_review_uploaded_nl" => 'TBT',
+	"workers_tax_review_uploaded_en" => 'TBT',
+
 ];

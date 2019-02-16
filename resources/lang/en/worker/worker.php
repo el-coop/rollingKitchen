@@ -7,5 +7,5 @@ return [
 	'workedHours' => 'Worked Hours',
 	'workplace' => 'Workplace',
 	'workerNotApproved' => 'Worker Not Approved',
-	'taxReviews' => 'Tex Reviews'
+	'taxReviews' => 'Tax Reviews'
 ];

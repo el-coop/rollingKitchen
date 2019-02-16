@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Notifications\Kitchen;
+namespace App\Notifications\Worker;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class ApplicationSubmittedNotification extends Notification implements ShouldQueue {
+class TaxReviewNotification extends Notification implements ShouldQueue {
 	use Queueable;
 	
 	/**
@@ -36,11 +36,12 @@ class ApplicationSubmittedNotification extends Notification implements ShouldQue
 	 * @return \Illuminate\Notifications\Messages\MailMessage
 	 */
 	public function toMail($notifiable) {
+		$message = explode(PHP_EOL, app('settings')->get("workers_tax_review_uploaded_{$notifiable->language}"));
 		
-		$message = explode(PHP_EOL, app('settings')->get("application_success_email_{$notifiable->language}"));
 		$email = (new MailMessage)
-			->subject(__('notification.notificationSubmitted'))
+			->subject(app('settings')->get("workers_tax_review_uploaded_subject_{$notifiable->language}"))
 			->greeting(__('notification.greeting', ['name' => $notifiable->name]));
+		
 		
 		foreach ($message as $line) {
 			$email->line($line);

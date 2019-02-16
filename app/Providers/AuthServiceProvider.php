@@ -14,6 +14,7 @@ use App\Models\Kitchen;
 use App\Models\Pdf;
 use App\Models\Service;
 use App\Models\Shift;
+use App\Models\TaxReview;
 use App\Models\WorkedHoursExportColumn;
 use App\Models\Worker;
 use App\Models\WorkerPhoto;
@@ -29,6 +30,7 @@ use App\Policies\InvoicePaymentPolicy;
 use App\Policies\PDFPOlicy;
 use App\Policies\ServicePolicy;
 use App\Policies\ShiftPolicy;
+use App\Policies\TaxReviewPolicy;
 use App\Policies\WorkedHoursExportColumnPolicy;
 use App\Policies\WorkerPhotoPolicy;
 use App\Policies\WorkerPolicy;
@@ -58,7 +60,8 @@ class AuthServiceProvider extends ServiceProvider {
 		Worker::class => WorkerPolicy::class,
 		WorkerPhoto::class => WorkerPhotoPolicy::class,
 		Shift::class => ShiftPolicy::class,
-		WorkedHoursExportColumn::class => WorkedHoursExportColumnPolicy::class
+		WorkedHoursExportColumn::class => WorkedHoursExportColumnPolicy::class,
+		TaxReview::class => TaxReviewPolicy::class
 	];
 	
 	/**

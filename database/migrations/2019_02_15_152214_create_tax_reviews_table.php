@@ -14,7 +14,7 @@ class CreateTaxReviewsTable extends Migration {
 		Schema::create('tax_reviews', function (Blueprint $table) {
 			$table->increments('id');
 			$table->integer('worker_id')->unsigned();
-			$table->string('year');
+			$table->string('name');
 			$table->string('file');
 			$table->timestamps();
 		});

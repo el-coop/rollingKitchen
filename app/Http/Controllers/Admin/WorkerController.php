@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\Admin\Worker\StoreTaxReviewRequest;
 use App\Http\Requests\Admin\Worker\CreateWorkerRequest;
+use App\Http\Requests\Admin\Worker\DestroyWorkerRequest;
 use App\Http\Requests\Admin\Worker\UpdateWorkerRequest;
 use App\Models\Field;
 use App\Models\TaxReview;
@@ -77,11 +79,22 @@ class WorkerController extends Controller {
 		return $request->commit();
 	}
 	
-	public function addTaxReview(Worker $worker) {
-	
+	public function destroy(DestroyWorkerRequest $request, Worker $worker) {
+		$request->commit();
+		
+		return [
+			'success' => true
+		];
 	}
 	
-	public function deleteTaxReview(Worker $worker, TaxReview $taxReview) {
+	public function storeTaxReview(StoreTaxReviewRequest $request, Worker $worker) {
+		return $request->commit();
+	}
 	
+	public function destroyTaxReview(Worker $worker, TaxReview $taxReview) {
+		$taxReview->delete();
+		return [
+			'success' => true
+		];
 	}
 }

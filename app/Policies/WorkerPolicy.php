@@ -64,7 +64,10 @@ class WorkerPolicy {
 	 * @return mixed
 	 */
 	public function delete(User $user, Worker $worker) {
-		//
+		if ($user->user_type == Worker::class) {
+			return $user->user_id == $worker->id || ($worker->isMySupervisor($user));
+		}
+		return $user->user_type == Admin::class;
 	}
 	
 	/**

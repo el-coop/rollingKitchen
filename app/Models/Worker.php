@@ -12,26 +12,35 @@ class Worker extends Model {
 	use HasFields;
 	use PaginationWithHavings;
 	
+	protected static function boot() {
+		parent::boot();
+		static::deleted(function ($worker) {
+			$worker->photos->each->delete();
+			$worker->user->delete();
+			$worker->shifts()->detach();
+		});
+	}
+	
 	protected $appends = [
 		'workplacesList',
 	];
-	
+
 	protected $casts = [
 		'data' => 'array',
 	];
-	
+
 	static function indexPage() {
 		return action('Admin\WorkerController@index', [], false);
 	}
-	
+
 	public function homePage() {
 		return action('Worker\WorkerController@index', $this);
 	}
-	
+
 	public function user() {
 		return $this->morphOne(User::class, 'user');
 	}
-	
+
 	public function getFullDataAttribute() {
 		$fullData = collect([
 			[
