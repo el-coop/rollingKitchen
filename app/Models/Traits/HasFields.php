@@ -14,9 +14,16 @@ use App\Models\Field;
 
 trait HasFields {
 	
+	protected static $customFields;
+	protected static $encryptedFields;
+	
 	static function fields() {
 		$field = property_exists(static::class, 'fieldClass') ? static::$fieldClass : static::class;
-		return Field::where('form', $field)->orderBy('order')->get();
+		if (!static::$customFields) {
+			static::$customFields = Field::where('form', $field)->orderBy('order')->get();
+			static::$encryptedFields = static::$customFields->where('status', 'encrypted')->pluck('id');
+		}
+		return static::$customFields;
 	}
 	
 	static function getLastFieldOrder() {
@@ -26,11 +33,13 @@ trait HasFields {
 	
 	public function getDataAttribute($values) {
 		$values = collect(json_decode($values));
-		$field = property_exists(static::class, 'fieldClass') ? static::$fieldClass : static::class;
 		
-		$encryptedFields = Field::where('form', $field)->where('status', 'encrypted')->select('id')->get()->pluck('id');
-		return $values->map(function ($value, $index) use ($encryptedFields) {
-			if ($value != '' && $encryptedFields->contains($index)) {
+		if (!static::$encryptedFields) {
+			static::fields();
+		}
+		
+		return $values->map(function ($value, $index) {
+			if ($value != '' && static::$encryptedFields->contains($index)) {
 				$value = decrypt($value);
 			}
 			return $value;
@@ -38,10 +47,12 @@ trait HasFields {
 	}
 	
 	public function setDataAttribute($values) {
-		$field = property_exists(static::class, 'fieldClass') ? static::$fieldClass : static::class;
-		$encryptedFields = Field::where('form', $field)->where('status', 'encrypted')->select('id')->get()->pluck('id');
-		$this->attributes['data'] = collect($values)->map(function ($value, $index) use ($encryptedFields) {
-			if ($encryptedFields->contains($index)) {
+		if (!static::$encryptedFields) {
+			static::fields();
+		}
+		
+		$this->attributes['data'] = collect($values)->map(function ($value, $index) {
+			if (static::$encryptedFields->contains($index)) {
 				$value = encrypt($value);
 			}
 			return $value;

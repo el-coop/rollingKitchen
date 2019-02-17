@@ -10,6 +10,13 @@ class Shift extends Model {
 		'closed' => 'boolean',
 	];
 	
+	protected static function boot() {
+		parent::boot();
+		static::deleted(function ($shift) {
+			$shift->workers()->detach();
+		});
+	}
+	
 	public function workplace() {
 		return $this->belongsTo(Workplace::class);
 	}
@@ -46,11 +53,11 @@ class Shift extends Model {
 	public function workers() {
 		return $this->belongsToMany(Worker::class)->using(ShiftWorker::class)->withPivot('start_time', 'end_time', 'work_function_id');
 	}
-
-	public function getTotalHoursAttribute(){
+	
+	public function getTotalHoursAttribute() {
 		$totalHours = new Carbon('today');
 		$startOfDay = $totalHours->clone();
-		$this->workers->each(function ($worker) use ($totalHours){
+		$this->workers->each(function ($worker) use ($totalHours) {
 			$totalHours->add($worker->pivot->workedHours);
 		});
 		return $startOfDay->diffAsCarbonInterval($totalHours);

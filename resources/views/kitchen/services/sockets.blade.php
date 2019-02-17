@@ -5,7 +5,7 @@
 			<input type="radio"
 				   @if(! $application->isOpen())  onclick="return false;" @endif
 				   value="0"
-				   name="socket" {{ $application->services()->where('category','socket')->count() ? '' : 'checked' }}>
+				   name="socket" {{ $application->services->contains	('category','socket') ? '' : 'checked' }}>
 		</label>
 	</div>
 	<div class="control">

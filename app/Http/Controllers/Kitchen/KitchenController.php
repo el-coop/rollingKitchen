@@ -64,11 +64,11 @@ class KitchenController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function edit(Kitchen $kitchen) {
+		$kitchen->load('user', 'applications.products', 'applications.electricDevices', 'applications.services', 'photos');
 		$locale = App::getLocale();
 		
-		$sockets = Service::where('category', '=', 'socket')->orderBy('price', 'asc')->get();
 		$application = $kitchen->getCurrentApplication();
-		$pastApplications = $kitchen->applications()->where('year', '!=', app('settings')->get('registration_year'))->get();
+		$pastApplications = $kitchen->applications->where('year', '!=', app('settings')->get('registration_year'));
 		
 		if ($application->status === 'accepted') {
 			$pdfs = Pdf::where('visibility', 1)->orWhere('visibility', 2)->get();
@@ -76,8 +76,10 @@ class KitchenController extends Controller {
 			$pdfs = Pdf::where('visibility', 1)->get();
 		}
 		
-		$countableServices = Service::where('type', 0)->where('category', '!=', 'socket')->orderByRaw("LENGTH(name_{$locale}) desc")->get();;
-		$checkableServices = Service::where('type', 1)->where('category', '!=', 'socket')->orderByRaw("LENGTH(name_{$locale}) desc")->get();;
+		$services = Service::orderByRaw("LENGTH(name_{$locale}) desc")->get();
+		$countableServices = $services->where('category', '!=', 'socket')->where('type', 0);
+		$checkableServices = $services->where('category', '!=', 'socket')->where('type', 1);
+		$sockets = $services->where('category', 'socket')->sortBy('price');
 		
 		
 		$message = app('settings')->get("application_text_{$locale}");

@@ -44,19 +44,21 @@ if (!isset($fields)) {
 		@endisset
 >
 	@isset($buttons)
-		<template slot="buttons" slot-scope="{actions}">{{$buttons}}</template>
+		<template v-slot:buttons="{actions}">{{$buttons}}</template>
 	@endisset
 	@if(trim($slot) !== '')
 		{{ $slot }}
 	@else
-		<template slot-scope="{object, onUpdate}" v-if="object">
-			<div class="title is-7 has-text-centered">
-				<a :href="`{{Request::url() }}/${object.id}`">
-					<span class="is-size-3" v-text="object.name"></span>
-					<font-awesome-icon icon="link"></font-awesome-icon>
-				</a>
-			</div>
-			<dynamic-form :url="`{{Request::url() }}/edit/${object.id}`" :on-data-update="onUpdate"></dynamic-form>
+		<template v-slot:default="{object, onUpdate}">
+			<template v-if="object">
+				<div class="title is-7 has-text-centered">
+					<a :href="`{{Request::url() }}/${object.id}`">
+						<span class="is-size-3" v-text="object.name"></span>
+						<font-awesome-icon icon="link"></font-awesome-icon>
+					</a>
+				</div>
+				<dynamic-form :url="`{{Request::url() }}/edit/${object.id}`" :on-data-update="onUpdate"></dynamic-form>
+			</template>
 		</template>
 	@endif
 </datatable>

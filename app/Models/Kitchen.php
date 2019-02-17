@@ -8,29 +8,28 @@ use Illuminate\Database\Eloquent\Model;
 class Kitchen extends Model {
 	
 	use HasFields;
+	protected $deletedOwner;
 	
 	protected static function boot() {
 		parent::boot();
 		static::deleting(function ($kitchen) {
+			$kitchen->load('photos', 'applications.invoices');
+			$kitchen->photos->each->delete();
 			if ($kitchen->has('applications')) {
 				$applications = $kitchen->applications;
+				$deletedOwner = null;
 				$applications->each(function ($application) use ($kitchen) {
 					if ($application->has('invoices')) {
-						$deletedOwner = DeletedInvoiceOwner::where('email', $kitchen->user->email)->first();
-						if (!$deletedOwner) {
-							$deletedOwner = new DeletedInvoiceOwner;
-							$deletedOwner->name = $kitchen->user->name;
-							$deletedOwner->email = $kitchen->user->email;
-							$deletedOwner->language = $kitchen->user->language;
-							$deletedOwner->data = $kitchen->data;
-							$deletedOwner->save();
+						if (!$kitchen->deletedOwner) {
+							$kitchen->deletedOwner = new DeletedInvoiceOwner;
+							$kitchen->deletedOwner->name = $kitchen->user->name;
+							$kitchen->deletedOwner->email = $kitchen->user->email;
+							$kitchen->deletedOwner->language = $kitchen->user->language;
+							$kitchen->deletedOwner->data = $kitchen->data;
+							$kitchen->deletedOwner->save();
 						}
-						$application->invoices->each(function ($invoice) use ($deletedOwner) {
-							$invoice->items->each(function ($item) {
-								$item->tax = 21;
-								$item->save();
-							});
-							$deletedOwner->invoices()->save($invoice);
+						$application->invoices->each(function ($invoice) use ($kitchen) {
+							$kitchen->deletedOwner->invoices()->save($invoice);
 						});
 					}
 				});
@@ -39,7 +38,6 @@ class Kitchen extends Model {
 		static::deleted(function ($kitchen) {
 			$kitchen->user->delete();
 			$kitchen->applications->each->delete();
-			$kitchen->photos->each->delete();
 		});
 	}
 	
@@ -50,6 +48,10 @@ class Kitchen extends Model {
 	
 	static function indexPage() {
 		return action('Admin\KitchenController@index', [], false);
+	}
+	
+	public function invoices() {
+		return $this->hasManyThrough(Invoice::class, Application::class);
 	}
 	
 	public function showPage() {
@@ -110,7 +112,7 @@ class Kitchen extends Model {
 	
 	public function getCurrentApplication() {
 		$applicationYear = app('settings')->get('registration_year');
-		$application = $this->applications()->where('year', $applicationYear)->first();
+		$application = $this->applications->firstWhere('year', $applicationYear);
 		if (!$application) {
 			$application = new Application;
 			$application->status = 'new';

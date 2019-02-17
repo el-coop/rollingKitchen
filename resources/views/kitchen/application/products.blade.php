@@ -14,7 +14,7 @@
 	icon: 'euro-sign',
 	callbackOptions: {prefix: '€'},
 	callback: 'localNumber|prefix'
-}]" :init-fields="{{ $application->products()->where('category',$category)->get() }}"
+}]" :init-fields="{{ $application->products->where('category',$category)->values() }}"
 					   @can('update',$application) action="/kitchen/applications/{{$application->id}}/products"
 					   @endcan
 					   :extra-data="{category: '{{$category}}'}">

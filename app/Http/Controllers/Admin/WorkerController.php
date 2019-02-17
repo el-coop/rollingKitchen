@@ -47,7 +47,7 @@ class WorkerController extends Controller {
 	}
 	
 	public function show(Worker $worker) {
-		$worker->load('photos', 'user');
+		$worker->load('photos', 'user', 'taxReviews');
 		$indexLink = action('Admin\WorkerController@index', [], false);
 		
 		$futureShifts = $worker->shifts()->where('date', '>', Carbon::yesterday())->with('workplace.workFunctions')->orderBy('date')->get();

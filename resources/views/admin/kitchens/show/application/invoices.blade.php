@@ -16,14 +16,14 @@
 					label: '@lang('admin/invoices.amountLeft')',
 					subType: 'number',
 					callback: 'localNumber',
-				}]" :init-fields="{{ $application->invoices()->with('payments')->get() }}"
+				}]" :init-fields="{{ $application->invoices }}"
 			   action="{{ action('Admin\ApplicationInvoiceController@store', $application) }}" :modal="{
 			   		width: 1000,
 			   		height: '100%',
 			   		pivotY: 0,
 			   		pivotX: 1
 			   }" :form-from-url="true" form-button-text="@lang('admin/invoices.send')" :delete-allowed="false">
-	<template slot="actions" slot-scope="{field, onUpdate}">
+	<template v-slot:actions="{field, onUpdate}">
 		<button @click="$bus.$emit('open-payment-modal', field, onUpdate)" class="button is-success">@lang('admin/invoices.managePayments')</button>
 	</template>
 </dynamic-table>

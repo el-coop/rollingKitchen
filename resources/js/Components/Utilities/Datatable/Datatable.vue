@@ -25,7 +25,7 @@
 							  @vuetable:pagination-data="paginationData"
 							  @vuetable:loading='tableLoading'
 							  @vuetable:loaded='tableLoaded'>
-						<template :v-if="deleteSlot" slot="delete" slot-scope="props">
+						<template :v-if="deleteSlot" v-slot:delete="props">
 							<datatable-delete-form :delete-btn="deleteBtn" :action="deleteAction + props.rowData.id"
 												   :key="`delete${props.rowData.id}`" @success="refresh">
 

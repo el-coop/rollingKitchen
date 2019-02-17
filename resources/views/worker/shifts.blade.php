@@ -33,7 +33,7 @@
 					{{$shift->workplace->name}}
 				</td>
 				<td>
-					{{$shift->workplace->workfunctions()->find($shift->pivot->work_function_id)->name}}
+					{{$shift->workplace->workFunctions->firstWhere('id',$shift->pivot->work_function_id)->name ?? __('global.deleted')}}
 				</td>
 
 				<td>

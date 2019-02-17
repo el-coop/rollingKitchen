@@ -130,7 +130,6 @@ class UpdateKitchenRequest extends FormRequest {
 				return $item['quantity'] > 0;
 			});
 			
-			
 			$this->application->services()->sync($services);
 			
 		}

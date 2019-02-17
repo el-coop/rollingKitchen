@@ -26,6 +26,7 @@ return [
 	'language' => 'Language',
 	'year' => 'Year',
 	'pdfs' => 'PDFs',
-
-	'delete' => 'Delete'
+	
+	'delete' => 'Delete',
+	'deleted' => 'Deleted'
 ];

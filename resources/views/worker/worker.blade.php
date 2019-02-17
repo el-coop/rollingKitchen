@@ -17,7 +17,8 @@
 				 'totalHours' => $totalHours
 
 			])
-			@endcomponent</tab>
+			@endcomponent
+		</tab>
 		@if(Auth::user()->user_type == \App\Models\Worker::class && Auth::user()->user->isSupervisor())
 			<tab label="@lang('worker/supervisor.manageWorkers')">@include('worker.supervisor.manageWorkplaces')</tab>
 		@endif

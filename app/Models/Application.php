@@ -14,9 +14,9 @@ class Application extends Model {
 	protected static function boot() {
 		parent::boot();
 		static::deleted(function ($application) {
-			$application->services()->sync([]);
-			$application->products->each->delete();
-			$application->electricDevices->each->delete();
+			$application->services()->detach();
+			$application->products()->delete();
+			$application->electricDevices()->delete();
 		});
 	}
 	
@@ -78,11 +78,14 @@ class Application extends Model {
 	}
 	
 	public function hasService(Service $service) {
-		return $this->services()->where('service_id', $service->id)->where('quantity', '>', 0)->exists();
+		
+		return !!$this->services->contains(function ($applicationService) use ($service) {
+			return $applicationService->id == $service->id && $applicationService->pivot->quantity > 0;
+		});
 	}
 	
 	public function serviceQuantity(Service $service) {
-		return $this->services()->where('service_id', $service->id)->first()->pivot->quantity ?? 0;
+		return $this->services->firstWhere('id', $service->id)->pivot->quantity ?? 0;
 	}
 	
 	public function electricDevices() {
@@ -110,10 +113,10 @@ class Application extends Model {
 			]]);
 		}
 	}
-
-	public function hasMenu(){
-
+	
+	public function hasMenu() {
+		
 		return $this->products()->where('category', 'menu')->exists();
-
+		
 	}
 }

@@ -14,16 +14,15 @@ class Worker extends Model {
 	
 	protected static function boot() {
 		parent::boot();
-		static::deleted(function ($worker) {
+		static::deleting(function ($worker) {
 			$worker->photos->each->delete();
+			$worker->taxReviews->each->delete();
+		});
+		static::deleted(function ($worker) {
 			$worker->user->delete();
 			$worker->shifts()->detach();
 		});
 	}
-	
-	protected $appends = [
-		'workplacesList',
-	];
 	
 	protected $casts = [
 		'data' => 'array',

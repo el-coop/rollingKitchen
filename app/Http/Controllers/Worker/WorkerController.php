@@ -20,8 +20,10 @@ class WorkerController extends Controller {
 	
 	public function index(Worker $worker) {
 		$formattersData = [
-			'totalDataCount' => Field::where('form', Worker::class)->count()
+			'totalDataCount' => Worker::fields()->count()
 		];
+		
+		$worker->load('photos','taxReviews','user');
 
 		$futureShifts = $worker->shifts()->where('date', '>', Carbon::yesterday())->with('workplace.workFunctions')->orderBy('date')->get();
 
