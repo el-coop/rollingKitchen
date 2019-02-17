@@ -19,7 +19,7 @@
 					@endforeach
 				@endisset
 			@endslot
-			<template v-slot:default="{object, onUpdate}">
+			<template #default="{object, onUpdate}">
 				<template v-if="object">
 					<div class="title is-7 has-text-centered">
 						@if($withEditLink ?? true)

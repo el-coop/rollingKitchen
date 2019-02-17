@@ -8,7 +8,7 @@
 
 			@slot('filters',$filters)
 			@slot('editWidth',1000)
-			<template v-slot:default="{object, onUpdate}">
+			<template #default="{object, onUpdate}">
 				<template v-if="object">
 					<div class="title is-7 has-text-centered">
 						<component

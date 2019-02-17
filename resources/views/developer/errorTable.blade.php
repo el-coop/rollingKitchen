@@ -15,7 +15,7 @@
 				@slot('deleteButtonTxt', $deleteButtonTxt)
 			@endisset
 			@slot('editWidth',1000)
-			<template v-slot:default="{object, onDelete}">
+			<template #default="{object, onDelete}">
 				<dynamic-fields v-if="object" :url="`{{Request::url() }}/edit/${object.id}`"></dynamic-fields>
 			</template>
 		@endcomponent

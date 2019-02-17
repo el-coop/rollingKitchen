@@ -11,7 +11,7 @@
 				<button class="button is-light"
 						@click="actions.newObjectForm">@lang('admin/workers.addWorkplace')</button>
 			@endslot
-			<template v-slot:default="{object, onUpdate}">
+			<template #default="{object, onUpdate}">
 				<template v-if="object">
 					<div class="title is-size-3 has-text-centered"
 						 v-text="object.name || '@lang('admin/workers.createWorkplace')'"></div>
@@ -20,7 +20,7 @@
 								  :method="object.id ? 'patch' : 'post'"
 								  :hide="['workFunctions']"
 					>
-						<template v-slot:default="{fields}" v-if="object.id">
+						<template #default="{fields}" v-if="object.id">
 							<h4 class="title is-4 mt-1">@lang('worker/supervisor.workFunctions')</h4>
 							<dynamic-table v-if="fields.length > 0" :columns="[{
                         name: 'name',

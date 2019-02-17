@@ -4,7 +4,7 @@
     'url' => "/supervisorDatatable/{$workplace->id}"
 ])
 	@slot('exportButton', false)
-	<template v-slot:default="{object, onUpdate}">
+	<template #default="{object, onUpdate}">
 		<template v-if="object">
 
 			<dynamic-fields :fields="[{

@@ -9,7 +9,7 @@
 		<button class="button is-light" @click="actions.newObjectForm">@lang('vue.add')</button>
 	@endslot
 	@slot('formattersData', collect($formattersData))
-	<template v-slot:default="{object, onUpdate}">
+	<template #default="{object, onUpdate}">
 		<template v-if="object">
 			<div class="title is-7 has-text-centered">
 				<span class="is-size-3" v-text="object.name || '@lang('admin/workers.createWorker')'"></span>

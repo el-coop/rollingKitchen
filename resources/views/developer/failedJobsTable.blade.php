@@ -15,7 +15,7 @@
 				@slot('deleteButtonTxt', $deleteButtonTxt)
 			@endisset
 			@slot('editWidth',1000)
-			<template v-slot:default="{object, onDelete}">
+			<template #default="{object, onDelete}">
 				<dynamic-form v-if="object"
 							  :url="`{{Request::url() }}/retry/${object.id}`"
 							  method="post"

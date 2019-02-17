@@ -30,12 +30,12 @@
 		@endisset
 >
 	@isset($buttons)
-		<template v-slot:buttons="{actions}">{{$buttons}}</template>
+		<template #buttons="{actions}">{{$buttons}}</template>
 	@endisset
 	@if(trim($slot) !== '')
 		{{ $slot }}
 	@else
-		<template v-slot:default="{object, onUpdate}">
+		<template #default="{object, onUpdate}">
 			<template v-if="object">
 				<div class="title is-7 has-text-centered">
 					<a :href="`{{Request::url() }}/${object.id}`">
