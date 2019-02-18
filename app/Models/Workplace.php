@@ -8,6 +8,15 @@ use JustBetter\PaginationWithHavings\PaginationWithHavings;
 class Workplace extends Model {
 	use PaginationWithHavings;
 	
+	protected static function boot() {
+		parent::boot();
+		static::deleted(function ($workplace) {
+			$workplace->workers()->detach();
+			$workplace->workFunctions()->delete();
+			$workplace->shifts->each->delete();
+		});
+	}
+	
 	public function workFunctions() {
 		return $this->hasMany(WorkFunction::class);
 	}
@@ -74,7 +83,7 @@ class Workplace extends Model {
 					}],
 				],
 				'callback' => 'dataCompleted|' . Worker::class
-			],[
+			], [
 				'name' => 'count(file)',
 				'sortField' => 'count(file)',
 				'title' => __('global.photos'),
@@ -97,9 +106,9 @@ class Workplace extends Model {
 					'0' => __('global.no')
 				]
 			]],
-
+		
 		];
-
+		
 	}
 	
 	public function hasWorker(Worker $worker) {
@@ -114,7 +123,7 @@ class Workplace extends Model {
 				'name' => 'id',
 				'title' => 'id',
 				'visible' => false,
-			],[
+			], [
 				'name' => 'date',
 				'title' => __('admin/shifts.date'),
 				'sortField' => 'date',
@@ -124,8 +133,12 @@ class Workplace extends Model {
 				'title' => __('admin/shifts.hours'),
 				'sortField' => 'hours',
 				'callback' => 'localNumber',
-				'filter' => false,]],
-
+				'filter' => false,
+			], [
+				'name' => 'closed',
+				'visible' => false,
+			]],
+		
 		];
 	}
 }

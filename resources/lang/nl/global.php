@@ -27,5 +27,6 @@ return [
 	'pdfs' => "PDF's",
 
 	'delete' => 'Verwijderen',
+	'deleted' => 'TBT'
 
 ];

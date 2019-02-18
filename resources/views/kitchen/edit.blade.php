@@ -15,7 +15,7 @@
 			@if(!$pastApplications->isEmpty())
 				<tab label="@lang('kitchen/kitchen.pastApplications')">@include('kitchen.application.pastApplications')</tab>
 			@endif
-			<template slot="buttons">
+			<template #buttons>
 				<button class="button is-link">
 					@lang('global.save')
 				</button>

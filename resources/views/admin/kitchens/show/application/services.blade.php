@@ -3,9 +3,9 @@
 		@if(!$service->type)
 			<div class="control">
 				<input type="number" class="input is-short-numeric" min="0"
-					   @if(! $application->isOpen()) readonly @endif
+					   @if(! $application->isOpen()) disabled @endif
 					   name="services[{{$service->id}}]"
-					   value="{{ $application->hasService($service) ? $application->serviceQuantity($service) : '0' }}">
+					   value="{{ $service->pivot->quantity > 0 ? $service->pivot->quantity : '0' }}">
 			</div>
 			<div class="control">
 				<a class="button is-static">
@@ -18,8 +18,8 @@
 			<div class="control">
 				<label class="button">
 					<input type="checkbox" value="1" id="services_{{$service->id}}"
-						   @if(! $application->isOpen())  onclick="return false;" @endif
-						   name="services[{{$service->id}}]" {{ $application->hasService($service) ? 'checked' : '' }}>
+						   @if(! $application->isOpen())  disabled onclick="return false;" @endif
+						   name="services[{{$service->id}}]" {{ $service->pivot->quantity > 0 ? 'checked' : '' }}>
 				</label>
 			</div>
 			<div class="control">

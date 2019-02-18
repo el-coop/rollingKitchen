@@ -28,9 +28,9 @@ class ShiftWorker extends Pivot {
 	public function getPaymentAttribute() {
 		$function = $this->workFunction;
 		if ($this->worker->type === 0) {
-			$rate = $function->payment_per_hour_after_tax;
+			$rate = $function->payment_per_hour_after_tax ?? 0;
 		} else {
-			$rate = $function->payment_per_hour_before_tax;
+			$rate = $function->payment_per_hour_before_tax ?? 0;
 		}
 		
 		return $this->workedHours->total('hours') * $rate;

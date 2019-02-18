@@ -162,7 +162,9 @@ class FieldTest extends TestCase {
 		$this->actingAs($this->admin)->patch(action('Admin\FieldController@saveOrder', [
 			'order' => $newOrder->toArray(),
 		]));
-		$ordered = Kitchen::fields()->pluck('id');
+		
+		$ordered = Field::where('form',Kitchen::class)->select('id')->orderBy('order')->get()->pluck('id');
+		
 		$this->assertEquals($newOrder, $ordered);
 	}
 

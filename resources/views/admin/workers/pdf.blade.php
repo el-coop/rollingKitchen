@@ -55,7 +55,9 @@
 			<tr>
 				<td>{{$shift->date}}</td>
 				<td>{{$shift->workplace->name}}</td>
-				<td>{{$shift->pivot->workFunction->name}}</td>
+				<td>
+					{{$shift->workplace->workFunctions->firstWhere('id',$shift->pivot->work_function_id)->name ?? __('global.deleted')}}
+				</td>
 				<td>{{ date('H:i',strtotime($shift->pivot->start_time)) }}</td>
 				<td>{{ date('H:i',strtotime($shift->pivot->end_time)) }}</td>
 				<td>{{ number_format($shift->pivot->payment,2,$decimalPoint,$thousandSeparator) }}</td>

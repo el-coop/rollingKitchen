@@ -69,12 +69,11 @@ class SupervisorController extends Controller {
 	
 	public function editShift(Shift $shift) {
 		$shiftWorkers = $shift->workers->map(function ($worker) use ($shift) {
-			$shift = $worker->shifts->find($shift);
 			return [
 				'id' => $worker->id,
 				'worker' => $worker->id,
-				'startTime' => date('H:i', strtotime($shift->pivot->start_time)),
-				'endTime' => date('H:i', strtotime($shift->pivot->end_time)),
+				'startTime' => date('H:i', strtotime($worker->pivot->start_time)),
+				'endTime' => date('H:i', strtotime($worker->pivot->end_time)),
 				'workFunction' => $worker->pivot->work_function_id
 			
 			];
