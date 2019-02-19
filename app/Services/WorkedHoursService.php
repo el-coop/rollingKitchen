@@ -28,7 +28,7 @@ class WorkedHoursService implements FromCollection, WithHeadings {
 	}
 	
 	public function collection() {
-		$shifts = Shift::where('closed', true)->with('workers.user')->get();
+		$shifts = Shift::where('closed', true)->where('date', '>', Carbon::parse('first day of January'))->with('workers.user')->get();
 		$fields = WorkedHoursExportColumn::orderBy('order')->get()->pluck('column');
 		$data = collect();
 		foreach ($shifts as $shift) {

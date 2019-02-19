@@ -95,4 +95,8 @@ class WorkerPolicy {
 	public function pdf(User $user, Worker $worker) {
 		return $user->user_type == Admin::class || $user->user_type == Accountant::class;
 	}
+	
+	public function taxReview(User $user, Worker $worker) {
+		return $user->user_type == Admin::class;
+	}
 }
