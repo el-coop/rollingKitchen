@@ -134,7 +134,7 @@ class Worker extends Model {
 	}
 	
 	public function shifts() {
-		return $this->belongsToMany(Shift::class)->using(ShiftWorker::class)->withPivot('start_time', 'end_time', 'work_function_id')->where('shifts.date', '>', Carbon::parse('first day of January'));
+		return $this->belongsToMany(Shift::class)->using(ShiftWorker::class)->withPivot('start_time', 'end_time', 'work_function_id');
 	}
 	
 	
