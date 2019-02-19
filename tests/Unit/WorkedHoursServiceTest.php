@@ -9,14 +9,12 @@ use App\Models\Worker;
 use App\Models\WorkFunction;
 use App\Models\Workplace;
 use App\Services\WorkedHoursService;
-use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class WorkedHoursServiceTest extends TestCase {
 	use RefreshDatabase;
-	use WithFaker;
 	protected $shifts;
 	protected $workplaces;
 	protected $workedHoursColumns;
@@ -28,9 +26,7 @@ class WorkedHoursServiceTest extends TestCase {
 			$workfunction = factory(WorkFunction::class)->make();
 			$workplace->workFunctions()->save($workfunction);
 		});
-		$this->shifts = factory(Shift::class, 6)->make([
-			'date' => $this->faker->dateTimeBetween(Carbon::parse('first day of January'), Carbon::parse('last day of december'))
-		])->each(function ($shift) {
+		$this->shifts = factory(Shift::class, 3)->make()->each(function ($shift) {
 			$shift->workplace_id = $this->workplaces->random()->id;
 			$shift->closed = true;
 			$shift->save();
@@ -71,7 +67,7 @@ class WorkedHoursServiceTest extends TestCase {
 	}
 	
 	private function collect() {
-		$shifts = Shift::where('closed', true)->where('date', '>', Carbon::parse('first day of January'))->get();
+		$shifts = Shift::where('closed', true)->get();
 		$fields = WorkedHoursExportColumn::orderBy('order')->get()->pluck('column')->toArray();
 		$data = collect();
 		foreach ($shifts as $shift) {
