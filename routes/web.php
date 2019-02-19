@@ -14,6 +14,10 @@
 
 Route::get('/', 'HomeController@show');
 
+Route::get('/calendar', function () {
+	return view('calendar');
+});
+
 Auth::routes([
 	'register' => false
 ]);

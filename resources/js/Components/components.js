@@ -27,6 +27,7 @@ Vue.component('DynamicTable', require('./Utilities/DynamicTable').default);
 Vue.component('StepsForm', require('./Utilities/StepsForm/StepsForm').default);
 Vue.component('FromStep', require('./Utilities/StepsForm/FormStep').default);
 Vue.component('ImageManager', require('./Utilities/ImageManager/ImageManager').default);
+Vue.component('Calendar', require('./Utilities/Calendar/Calendar').default);
 
 
 // form
