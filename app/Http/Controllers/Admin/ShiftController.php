@@ -25,18 +25,26 @@ class ShiftController extends Controller {
 		$withEditLink = false;
 
 		$buttons = [
-			view('admin.shift.deleteAllShifts')
+			view('admin.shift.deleteAllShifts'),
 		];
 
-		return view('admin.datatableWithNew', compact( 'title','createTitle', 'buttons','withEditLink','extraSlotView'));
+		return view('admin.datatableWithNew', compact('title', 'createTitle', 'buttons', 'withEditLink', 'extraSlotView'));
 	}
 
 
-	public function deleteAll (DeleteAllShiftsRequest $request) {
+	public function deleteAll(DeleteAllShiftsRequest $request) {
 
 		$request->commit();
-		return back();
-}
+
+		return back()->with('toast', [
+
+			'type' => 'success',
+			'title' => __('vue.deleteSuccess'),
+			'message' => ' ',
+		]);
+
+	}
+
 	/**
 	 * Show the form for creating a new resource.
 	 *
@@ -45,55 +53,60 @@ class ShiftController extends Controller {
 	public function create() {
 		return (new Shift)->fulldata;
 	}
-	
+
 	/**
 	 * Store a newly created resource in storage.
 	 *
 	 * @param  \Illuminate\Http\Request $request
+	 *
 	 * @return \Illuminate\Http\Response
 	 */
 	public function store(CreateShiftRequest $request) {
 		return $request->commit();
 	}
-	
+
 	/**
 	 * Display the specified resource.
 	 *
 	 * @param  \App\Models\Shift $shift
+	 *
 	 * @return \Illuminate\Http\Response
 	 */
 	public function show(Shift $shift) {
 		//
 	}
-	
+
 	/**
 	 * Show the form for editing the specified resource.
 	 *
 	 * @param  \App\Models\Shift $shift
+	 *
 	 * @return \Illuminate\Http\Response
 	 */
 	public function edit(Shift $shift) {
-		
+
 		return $shift->fulldata;
-		
+
 	}
-	
+
 	/**
 	 * Update the specified resource in storage.
 	 *
 	 * @param  \Illuminate\Http\Request $request
 	 * @param  \App\Models\Shift $shift
+	 *
 	 * @return \Illuminate\Http\Response
 	 */
 	public function update(UpdateShiftRequest $request, Shift $shift) {
-		
+
 		return $request->commit();
 	}
-	
+
 	/**
 	 * Remove the specified resource from storage.
 	 *
 	 * @param  \App\Models\Shift $shift
+	 *
 	 * @return \Illuminate\Http\Response
 	 */
 	public function destroy(Shift $shift) {

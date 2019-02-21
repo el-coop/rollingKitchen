@@ -36,7 +36,12 @@ class WorkerController extends Controller {
 	public function disapprove(DisapproveWorkersRequest $request) {
 
 		$request->commit();
-		return back();
+		return back()->with('toast', [
+
+			'type' => 'success',
+			'title' => __('vue.updateSuccess'),
+			'message' => ' '
+		]);
 
 	}
 	
