@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Shift\CreateShiftRequest;
+use App\Http\Requests\Admin\Shift\DeleteAllShiftsRequest;
 use App\Http\Requests\Admin\Shift\UpdateShiftRequest;
 use App\Models\Field;
 use App\Models\Shift;
@@ -22,9 +23,20 @@ class ShiftController extends Controller {
 		$createTitle = __('admin/workers.createShift');
 		$extraSlotView = 'admin.shift.manage';
 		$withEditLink = false;
-		return view('admin.datatableWithNew', compact( 'title','createTitle','withEditLink','extraSlotView'));
+
+		$buttons = [
+			view('admin.shift.deleteAllShifts')
+		];
+
+		return view('admin.datatableWithNew', compact( 'title','createTitle', 'buttons','withEditLink','extraSlotView'));
 	}
-	
+
+
+	public function deleteAll (DeleteAllShiftsRequest $request) {
+
+		$request->commit();
+		return back();
+}
 	/**
 	 * Show the form for creating a new resource.
 	 *

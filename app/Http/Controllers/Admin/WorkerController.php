@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\Admin\Worker\DisapproveWorkersRequest;
 use App\Http\Requests\Admin\Worker\StoreTaxReviewRequest;
 use App\Http\Requests\Admin\Worker\CreateWorkerRequest;
 use App\Http\Requests\Admin\Worker\DestroyWorkerRequest;
@@ -24,9 +25,19 @@ class WorkerController extends Controller {
 		$formattersData = collect([
 			'totalDataCount' => Field::where('form', Worker::class)->count()
 		]);
+
+		$buttons = [
+			view('admin.workers.disapproveAllButton')
+		];
+		return view('admin.datatableWithNew', compact('title', 'createTitle', 'buttons', 'fieldType', 'formattersData'));
 		
-		return view('admin.datatableWithNew', compact('title', 'createTitle', 'fieldType', 'formattersData'));
-		
+	}
+
+	public function disapprove(DisapproveWorkersRequest $request) {
+
+		$request->commit();
+		return back();
+
 	}
 	
 	public function pdf(Worker $worker, WorkedHoursService $workedHoursService) {
