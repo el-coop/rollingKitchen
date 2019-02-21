@@ -141,6 +141,16 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 			Route::delete('/{workedHoursExportColumn}', 'WorkedHoursExportColumnController@destroy');
 			Route::get('/export', 'WorkedHoursExportColumnController@export');
 		});
+
+		Route::group(['prefix' => 'artistManager'], function (){
+			Route::get('/', 'ArtistManagerController@index');
+			Route::get('/edit', 'ArtistManagerController@create');
+			Route::post('/edit', 'ArtistManagerController@store');
+			Route::get('/edit/{artistManager}', 'ArtistManagerController@edit');
+			Route::patch('/edit/{artistManager}', 'ArtistManagerController@update');
+			Route::delete('/delete/{artistManager}', 'ArtistManagerController@destroy');
+
+		});
 		
 	});
 });
