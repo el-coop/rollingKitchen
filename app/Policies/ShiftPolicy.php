@@ -65,6 +65,12 @@ class ShiftPolicy {
 		//
 	}
 
+	public function deleteAll(User $user) {
+
+		return $user->user_type == Admin::class;
+
+	}
+
 	/**
 	 * Determine whether the user can restore the shift.
 	 *
