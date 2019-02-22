@@ -91,11 +91,6 @@ class WorkerPolicy {
 	public function forceDelete(User $user, Worker $worker) {
 		//
 	}
-
-	public function disapproveAll (User $user) {
-
-		return $user->user_type == Admin::class;
-	}
 	
 	public function pdf(User $user, Worker $worker) {
 		return $user->user_type == Admin::class || $user->user_type == Accountant::class;

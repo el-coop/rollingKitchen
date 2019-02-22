@@ -101,7 +101,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 			});
 			
 			Route::get('/', 'WorkerController@index');
-			Route::delete('/', 'WorkerController@disapprove');
 			Route::get('/edit', 'WorkerController@create');
 			Route::post('/edit', 'WorkerController@store');
 			Route::get('/edit/{worker}', 'WorkerController@edit');
@@ -113,7 +112,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		});
 		Route::group(['prefix' => 'shifts'], function () {
 			Route::get('/', 'ShiftController@index');
-			Route::delete('/', 'ShiftController@deleteAll');
 			Route::get('/edit', 'ShiftController@create');
 			Route::post('/edit', 'ShiftController@store');
 			Route::get('/edit/{shift}', 'ShiftController@edit');
