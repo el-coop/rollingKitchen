@@ -38,6 +38,7 @@ class UpdateArtistManagerRequest extends FormRequest {
 			'id' => $this->artistManager->id,
 			'name' => $this->input('name'),
 			'email' => $this->input('email'),
+			'language' => $this->input('language')
 		];
 	}
 }
