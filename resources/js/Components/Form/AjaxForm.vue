@@ -30,7 +30,7 @@
 			},
 			action: {
 				type: String,
-				default: window.location
+				default: window.location.href
 			},
 		},
 
