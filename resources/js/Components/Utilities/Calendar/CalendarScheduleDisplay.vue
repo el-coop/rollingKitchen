@@ -3,13 +3,13 @@
 		<span v-for="(entry, index) in entries" class="is-hidden">
 			<input :key="`input_band_${index}`" type="hidden"
 				   :value="entry.band"
-				   :name="`${dateTime}[${index}][band]`">
+				   :name="`calendar[${dateTime}][${index}][band]`">
 			<input :key="`input_stage_${index}`" type="hidden"
 				   :value="entry.stage"
-				   :name="`${dateTime}[${index}][stage]`">
+				   :name="`calendar[${dateTime}][${index}][stage]`">
 			<input :key="`input_payment_${index}`" type="hidden"
 				   :value="entry.payment"
-				   :name="`${dateTime}[${index}][payment]`">
+				   :name="`calendar[${dateTime}][${index}][payment]`">
 		</span>
 		<div class="tags has-addons" v-for="entry in entries" :key="entry.stage"
 			 @click.stop="openModal({id: entry.band,stage: entry.stage,payment: entry.payment})">
