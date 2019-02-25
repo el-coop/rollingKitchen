@@ -14,6 +14,7 @@
 		</form>
 	</div>
 	<div class="column">
+		<h4 class="title is-4">@lang('worker/worker.uploadId')</h4>
 		<image-manager url="{{ action('Worker\WorkerController@storePhoto', $worker) }}" :data="{
 			_token: '{{csrf_token()}}'
 		}" :init-images="{{ $worker->photos }}" delete-url="/worker/{{ $worker->id }}/photo">
