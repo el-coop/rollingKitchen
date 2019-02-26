@@ -7,5 +7,6 @@ return [
 	'workedHours' => 'Worked Hours',
 	'workplace' => 'Workplace',
 	'workerNotApproved' => 'Worker Not Approved',
-	'taxReviews' => 'Tax Reviews'
+	'taxReviews' => 'Tax Reviews',
+	'uploadId' => 'ID Photo'
 ];
