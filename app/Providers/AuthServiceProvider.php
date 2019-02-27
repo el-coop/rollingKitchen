@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Admin;
 use App\Models\Application;
 use App\Models\ArtistManager;
+use App\Models\Band;
 use App\Models\Debtor;
 use App\Models\Developer;
 use App\Models\Error;
@@ -23,6 +24,7 @@ use App\Models\WorkFunction;
 use App\Models\Workplace;
 use App\Policies\ApplicationPolicy;
 use App\Policies\ArtistManagerPolicy;
+use App\Policies\BandPolicy;
 use App\Policies\DebtorPolicy;
 use App\Policies\ErrorPolicy;
 use App\Policies\FieldPolicy;
@@ -64,7 +66,8 @@ class AuthServiceProvider extends ServiceProvider {
 		Shift::class => ShiftPolicy::class,
 		WorkedHoursExportColumn::class => WorkedHoursExportColumnPolicy::class,
 		TaxReview::class => TaxReviewPolicy::class,
-		ArtistManager::class => ArtistManagerPolicy::class
+		ArtistManager::class => ArtistManagerPolicy::class,
+		Band::class => BandPolicy::class
 	];
 	
 	/**

@@ -3,5 +3,7 @@
 return [
 	'artistManager' => 'Artist Managers',
 	'createArtistManager' => 'Create Artist Manager',
-	'artists' => 'Artists'
+	'artists' => 'Artists',
+	'bands' => 'Bands',
+	'createBand' => 'Create Band'
 ];

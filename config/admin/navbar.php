@@ -19,6 +19,7 @@ return [
 		'admin/settings.files' => 'Admin\PDFController@index',
 	],
 	'admin/artists.artists' => [
-		'admin/artists.artistManager' => 'Admin\ArtistManagerController@index'
+		'admin/artists.artistManager' => 'Admin\ArtistManagerController@index',
+		'admin/artists.bands' => 'Admin\BandController@index'
 	]
 ];

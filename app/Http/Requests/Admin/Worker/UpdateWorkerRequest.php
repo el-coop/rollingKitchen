@@ -27,7 +27,6 @@ class UpdateWorkerRequest extends FormRequest {
 	 */
 	public function rules() {
 		return [
-			
 			'name' => 'required',
 			'email' => 'required|email|unique:users,email,' . $this->worker->user->id,
 			'type' => 'required|in:0,1,2',

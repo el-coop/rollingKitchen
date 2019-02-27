@@ -22,5 +22,10 @@ class DatatableController extends Controller {
 		$datatableService = new DatatableService($request, $workplace->{$request->input('attribute')});
 		return $this->list($request, $datatableService);
 	}
+
+	public function artistManagerList(Request $request){
+		$dataTableService = new DatatableService($request);
+		return $this->list($request,$dataTableService);
+	}
 	
 }
