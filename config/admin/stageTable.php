@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'model' => \App\Models\Service::class,
+	'model' => \App\Models\Stage::class,
 	
 	
 	'fields' => [[

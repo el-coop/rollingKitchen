@@ -155,5 +155,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 	
 	Route::group(['prefix' => 'stage'], function () {
 		Route::get('/', 'StageController@index');
+		Route::get('/edit', 'StageController@create');
+		Route::post('/edit', 'StageController@store');
+		Route::get('/edit/{stage}', 'StageController@edit');
+		Route::patch('/edit/{stage}', 'StageController@update');
+		Route::delete('/delete/{stage}', 'StageController@destroy');
 	});
 });
