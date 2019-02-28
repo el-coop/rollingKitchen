@@ -18,6 +18,10 @@ class ArtistManager extends Model {
 		return action('ArtistManager\ArtistManagerController@index');
 	}
 
+	static function indexPage() {
+		return action('ArtistManager\ArtistManagerController@index', [], false);
+	}
+
 	public function user() {
 		return $this->morphOne(User::class, 'user');
 	}

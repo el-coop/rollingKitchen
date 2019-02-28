@@ -12,10 +12,12 @@ return [
 			'visible' => false
 		], [
 			'name' => 'name',
+			'table' => 'users',
 			'title' => 'global.name',
 			'sortField' => 'name',
 		], [
 			'name' => 'email',
+			'table' => 'users',
 			'title' => 'global.email',
 			'sortField' => 'email',
 		]

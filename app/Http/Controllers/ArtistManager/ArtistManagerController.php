@@ -6,6 +6,8 @@ use App\Http\Requests\Admin\Band\CreateBandRequest;
 use App\Http\Requests\Admin\Band\DestroyBandRequest;
 use App\Http\Requests\Admin\Band\UpdateBandRequest;
 use App\Models\Band;
+use Auth;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -46,5 +48,14 @@ class ArtistManagerController extends Controller {
 		return [
 			'success' => true
 		];
+	}
+
+	public function broker() {
+		return Password::broker('workers');
+	}
+
+
+	public function redirectTo() {
+		return Auth::user()->user->homePage();
 	}
 }

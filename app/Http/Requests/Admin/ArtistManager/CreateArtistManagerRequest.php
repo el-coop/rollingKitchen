@@ -43,6 +43,10 @@ class CreateArtistManagerRequest extends FormRequest {
 			['email' => $user->email]
 		);
 
-		return $user;
+		return [
+			'id' => $artistManager->id,
+			'name' => $this->input('name'),
+			'email' => $this->input('email')
+		];
 	}
 }

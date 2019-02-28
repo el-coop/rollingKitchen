@@ -38,9 +38,9 @@ class UserCreated extends Notification {
 	 * @return \Illuminate\Notifications\Messages\MailMessage
 	 */
 	public function toMail($notifiable) {
-		$message = explode(PHP_EOL, app('settings')->get("workers_user_created_{$notifiable->language}"));
+		$message = explode(PHP_EOL, app('settings')->get("bands_user_created_{$notifiable->language}"));
 		$email = (new MailMessage)
-			->subject(app('settings')->get("workers_user_created_subject_{$notifiable->language}"))
+			->subject(app('settings')->get("bands_user_created_subject_{$notifiable->language}"))
 			->greeting(__('notification.greeting', ['name' => $notifiable->name]));
 
 

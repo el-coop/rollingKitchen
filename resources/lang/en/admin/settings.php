@@ -64,4 +64,14 @@ return [
 	"workers_tax_review_uploaded_nl" => 'Tax review uploaded body NL',
 	"workers_tax_review_uploaded_en" => 'Tax review uploaded body EN',
 
+	'artist_managers_user_created_subject_nl' => 'Artist Manager created mail subject NL',
+	'artist_managers_user_created_subject_en' => 'Artist Manager mail subject EN',
+	'artist_managers_user_created_nl' => 'Artist Manager created mail body NL',
+	'artist_managers_user_created_en' => 'Artist Manager created mail body EN',
+
+	'bands_user_created_subject_nl' => 'Bands created mail subject NL',
+	'bands_user_created_subject_en' => 'Bands created mail subject EN',
+	'bands_user_created_nl' => 'Bands created mail body NL',
+	'bands_user_created_en' => 'Bands created mail body EN',
+
 ];
