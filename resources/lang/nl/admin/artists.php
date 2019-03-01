@@ -5,5 +5,7 @@ return [
 	'createArtistManager' => 'TBT',
 	'artists' => 'TBT',
 	'bands' => 'TBT',
-	'createBand' => 'TBT'
+	'createBand' => 'TBT',
+	'stages' => 'TBT',
+	'createStage' => 'TBT',
 ];

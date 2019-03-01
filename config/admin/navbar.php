@@ -14,12 +14,13 @@ return [
 		'worker/worker.shifts' => 'Admin\ShiftController@index',
 		'admin/settings.workedHours' => 'Admin\WorkedHoursExportColumnController@show'
 	],
+	'admin/artists.artists' => [
+		'admin/artists.stages' => 'Admin\StageController@index',
+		'admin/artists.artistManager' => 'Admin\ArtistManagerController@index',
+		'admin/artists.bands' => 'Admin\BandController@index'
+	],
 	'admin/settings.title' => [
 		'admin/settings.settings' => 'Admin\SettingsController@show',
 		'admin/settings.files' => 'Admin\PDFController@index',
 	],
-	'admin/artists.artists' => [
-		'admin/artists.artistManager' => 'Admin\ArtistManagerController@index',
-		'admin/artists.bands' => 'Admin\BandController@index'
-	]
 ];

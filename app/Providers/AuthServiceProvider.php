@@ -16,6 +16,7 @@ use App\Models\Kitchen;
 use App\Models\Pdf;
 use App\Models\Service;
 use App\Models\Shift;
+use App\Models\Stage;
 use App\Models\TaxReview;
 use App\Models\WorkedHoursExportColumn;
 use App\Models\Worker;
@@ -34,6 +35,7 @@ use App\Policies\InvoicePaymentPolicy;
 use App\Policies\PDFPOlicy;
 use App\Policies\ServicePolicy;
 use App\Policies\ShiftPolicy;
+use App\Policies\StagePolicy;
 use App\Policies\TaxReviewPolicy;
 use App\Policies\WorkedHoursExportColumnPolicy;
 use App\Policies\WorkerPhotoPolicy;
@@ -67,7 +69,8 @@ class AuthServiceProvider extends ServiceProvider {
 		WorkedHoursExportColumn::class => WorkedHoursExportColumnPolicy::class,
 		TaxReview::class => TaxReviewPolicy::class,
 		ArtistManager::class => ArtistManagerPolicy::class,
-		Band::class => BandPolicy::class
+		Band::class => BandPolicy::class,
+		Stage::class => StagePolicy::class
 	];
 	
 	/**
