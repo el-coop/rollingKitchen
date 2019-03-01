@@ -151,16 +151,17 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		Route::delete('/delete/{artistManager}', 'ArtistManagerController@destroy');
 		
 	});
-
-	Route::group(['prefix' => 'bands'], function (){
-			Route::get('/', 'BandController@index');
-			Route::get('/edit', 'BandController@create');
-			Route::post('/edit', 'BandController@store');
-			Route::get('/edit/{band}', 'BandController@edit');
-			Route::patch('/edit/{band}', 'BandController@update');
-			Route::delete('/delete/{band}', 'BandController@destroy');
-
-		});
+	
+	Route::group(['prefix' => 'bands'], function () {
+		Route::get('/', 'BandController@index');
+		Route::get('/schedule', 'BandController@schedule');
+		Route::get('/edit', 'BandController@create');
+		Route::post('/edit', 'BandController@store');
+		Route::get('/edit/{band}', 'BandController@edit');
+		Route::patch('/edit/{band}', 'BandController@update');
+		Route::delete('/delete/{band}', 'BandController@destroy');
+		
+	});
 	
 	Route::group(['prefix' => 'stage'], function () {
 		Route::get('/', 'StageController@index');

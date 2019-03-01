@@ -8,4 +8,5 @@ return [
 	'createBand' => 'TBT',
 	'stages' => 'TBT',
 	'createStage' => 'TBT',
+	'schedule' => 'TBT'
 ];

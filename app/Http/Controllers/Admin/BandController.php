@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class BandController extends Controller {
-
+	
 	public function index() {
 		$title = __('admin/artists.bands');
 		$fieldType = "Band";
@@ -18,28 +18,34 @@ class BandController extends Controller {
 		$withEditLink = false;
 		return view('admin.datatableWithNew', compact('title', 'createTitle', 'fieldType', 'withEditLink'));
 	}
-
-	public function create(){
+	
+	public function create() {
 		return (new Band)->fullData;
 	}
-
-	public function store(CreateBandRequest $request){
+	
+	public function store(CreateBandRequest $request) {
 		return $request->commit();
 	}
-
-	public function edit(Band $band){
+	
+	public function edit(Band $band) {
 		return $band->fullData;
 	}
-
-	public function update(UpdateBandRequest $request, Band $band){
+	
+	public function update(UpdateBandRequest $request, Band $band) {
 		return $request->commit();
 	}
-
-	public function destroy(DestroyBandRequest $request, Band $band){
+	
+	public function destroy(DestroyBandRequest $request, Band $band) {
 		$request->commit();
-
+		
 		return [
 			'success' => true
 		];
+	}
+	
+	public function schedule() {
+		$bands = Band::select('id', 'name')->get()->pluck('name','id');
+		$stages = Stage::select('id', 'name')->get()->pluck('name','id');
+		return view('admin.bands.schedule', compact('bands','stages'));
 	}
 }

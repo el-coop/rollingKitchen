@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder {
 		$this->call(DeveloperSeeder::class);
 		$this->call(FieldSeeder::class);
 		$this->call(ServiceSeeder::class);
-//		$this->call(SettingsSeeder::class);
+		$this->call(SettingsSeeder::class);
 		
 		$this->call(KitchenSeeder::class);
 		$this->call(PhotosSeeder::class);
@@ -26,8 +26,10 @@ class DatabaseSeeder extends Seeder {
 		$this->call(WorkerSeeder::class);
 		$this->call(ShiftSeeder::class);
 		$this->call(SupervisorSeeder::class);
+		$this->call(BandSeeder::class);
+		$this->call(StageSeeder::class);
 //		$this->call(AccountantSeeder::class);
-
-
+	
+	
 	}
 }

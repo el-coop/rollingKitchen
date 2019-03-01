@@ -46,7 +46,7 @@
 					<h6 class="title is-6" v-text="optionsTitle"></h6>
 					<ul>
 						<li v-for="(option,index) in options" :key="index" class="mt-1">
-							<drag drop-effect="move" :transfer-data="option" v-text="option.name"
+							<drag drop-effect="move" :transfer-data="{id: index, name: option}" v-text="option"
 								  class="tag is-dark is-medium"></drag>
 						</li>
 					</ul>
