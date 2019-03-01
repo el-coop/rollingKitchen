@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Notifications\ArtistManager;
+namespace App\Notifications\Band;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
@@ -38,9 +38,9 @@ class UserCreated extends Notification {
 	 * @return \Illuminate\Notifications\Messages\MailMessage
 	 */
 	public function toMail($notifiable) {
-		$message = explode(PHP_EOL, app('settings')->get("artist_managers_user_created_{$notifiable->language}"));
+		$message = explode(PHP_EOL, app('settings')->get("bands_user_created_{$notifiable->language}"));
 		$email = (new MailMessage)
-			->subject(app('settings')->get("artist_managers_user_created_subject_{$notifiable->language}"))
+			->subject(app('settings')->get("bands_user_created_subject_{$notifiable->language}"))
 			->greeting(__('notification.greeting', ['name' => $notifiable->name]));
 
 
@@ -48,7 +48,7 @@ class UserCreated extends Notification {
 			$email->line($line);
 		}
 
-		$email->action(__('admin/workers.fillProfile', [], $notifiable->language), action('ArtistManager\ArtistManagerController@showResetForm', $this->token, true));
+		$email->action(__('admin/workers.fillProfile', [], $notifiable->language), action('Band\BandController@showResetForm', $this->token, true));
 
 		return $email;
 	}

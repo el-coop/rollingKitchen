@@ -1,29 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\ArtistManager;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\Admin\Band\CreateBandRequest;
 use App\Http\Requests\Admin\Band\DestroyBandRequest;
 use App\Http\Requests\Admin\Band\UpdateBandRequest;
 use App\Models\Band;
-use Auth;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class ArtistManagerController extends Controller {
+class BandController extends Controller {
 
-	use ResetsPasswords;
-
-	public function showResetForm(Request $request, $token = null) {
-		return view('worker.setPassword')->with(
-			['token' => $token, 'email' => $request->email]
-		);
-	}
-
-	public function index(){
-		return view('artistManager.index');
+	public function index() {
+		$title = __('admin/artists.bands');
+		$fieldType = "Band";
+		$createTitle = __('admin/artists.createBand');
+		$withEditLink = false;
+		return view('admin.datatableWithNew', compact('title', 'createTitle', 'fieldType', 'withEditLink'));
 	}
 
 	public function create(){
@@ -48,14 +41,5 @@ class ArtistManagerController extends Controller {
 		return [
 			'success' => true
 		];
-	}
-
-	public function broker() {
-		return Password::broker('workers');
-	}
-
-
-	public function redirectTo() {
-		return Auth::user()->user->homePage();
 	}
 }

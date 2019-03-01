@@ -64,4 +64,14 @@ return [
 	"workers_tax_review_uploaded_nl" => 'TBT',
 	"workers_tax_review_uploaded_en" => 'TBT',
 
+	'artist_managers_user_created_subject_nl' => 'TBT',
+	'artist_managers_user_created_subject_en' => 'TBT',
+	'artist_managers_user_created_nl' => 'TBT',
+	'artist_managers_user_created_en' => 'TBT',
+
+	'bands_user_created_subject_nl' => 'TBT',
+	'bands_user_created_subject_en' => 'TBT',
+	'bands_user_created_nl' => 'TBT',
+	'bands_user_created_en' => 'TBT',
+
 ];

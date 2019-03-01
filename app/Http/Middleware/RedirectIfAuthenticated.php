@@ -16,8 +16,10 @@ class RedirectIfAuthenticated {
 	 */
 	public function handle($request, Closure $next, $guard = null) {
 		if (Auth::guard($guard)->check()) {
-			
-			return redirect(Auth::user()->user->homePage());
+			if (method_exists(Auth::user()->user, 'homePage')){
+				return redirect(Auth::user()->user->homePage());
+			}
+			return redirect()->action('HomeController@show');
 		}
 		
 		return $next($request);

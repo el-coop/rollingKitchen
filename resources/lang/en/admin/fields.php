@@ -15,5 +15,6 @@ return [
 	'encrypted' => 'Encrypted',
 	'none' => 'None',
 	'placeholder_nl' => 'Dutch Placeholder',
-	'placeholder_en' => 'English Placeholder'
+	'placeholder_en' => 'English Placeholder',
+	'Band' => 'Band'
 ];

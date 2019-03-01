@@ -119,7 +119,6 @@ class CreateTest extends TestCase {
 			->assertJsonFragment([
 				'name' => 'name',
 				'email' => 'a@a.com',
-				'language' => 'nl'
 			]);
 
 		$this->assertDatabaseHas('users', [

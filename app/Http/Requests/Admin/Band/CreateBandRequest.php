@@ -1,20 +1,21 @@
 <?php
 
-namespace App\Http\Requests\Admin\ArtistManager;
+namespace App\Http\Requests\Admin\Band;
 
-use App\Models\ArtistManager;
+use App\Models\Band;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Password;
 
-class CreateArtistManagerRequest extends FormRequest {
+
+class CreateBandRequest extends FormRequest {
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
 	 * @return bool
 	 */
 	public function authorize() {
-		return $this->user()->can('create', ArtistManager::class);
+		return $this->user()->can('create', Band::class);
 	}
 
 	/**
@@ -26,25 +27,28 @@ class CreateArtistManagerRequest extends FormRequest {
 		return [
 			'name' => 'required',
 			'email' => 'required|email|unique:users',
-			'language' => 'required|in:en,nl',
+			'language' => 'required|in:en,nl'
 		];
 	}
 
 	public function commit(){
-		$artistManager = new ArtistManager;
+		$band = new Band;
 		$user = new User;
+
 		$user->email = $this->input('email');
 		$user->name = $this->input('name');
 		$user->language = $this->input('language');
 		$user->password = '';
-		$artistManager->save();
-		$artistManager->user()->save($user);
+		$band->data = [];
+		$band->save();
+		$band->user()->save($user);
+
 		Password::broker()->sendResetLink(
 			['email' => $user->email]
 		);
 
 		return [
-			'id' => $artistManager->id,
+			'id' => $band->id,
 			'name' => $this->input('name'),
 			'email' => $this->input('email')
 		];
