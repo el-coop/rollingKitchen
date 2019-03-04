@@ -50,7 +50,7 @@
 			},
 
 			dataCompleted(value) {
-				return `${100 * value / this.formattersData.totalDataCount}%`;
+				return `${Math.round(100 * value / this.formattersData.totalDataCount)}%`;
 			}
 		}
 	}
