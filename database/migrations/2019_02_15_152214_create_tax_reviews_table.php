@@ -17,6 +17,11 @@ class CreateTaxReviewsTable extends Migration {
 			$table->string('name');
 			$table->string('file');
 			$table->timestamps();
+			
+			
+			$table->foreign('worker_id')
+				->references('id')->on('workers')
+				->onDelete('cascade');
 		});
 	}
 	

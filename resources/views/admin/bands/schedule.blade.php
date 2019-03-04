@@ -4,7 +4,7 @@
 
 @section('content')
 	@component('components.calender')
-		@slot('bands', compact('bands'))
-		@slot('stages', compact('stages'))
+		@slot('bands',$bands)
+		@slot('stages', $stages)
 	@endcomponent
 @endsection

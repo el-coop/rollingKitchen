@@ -6,6 +6,7 @@ use App\Http\Requests\Admin\Band\CreateBandRequest;
 use App\Http\Requests\Admin\Band\DestroyBandRequest;
 use App\Http\Requests\Admin\Band\UpdateBandRequest;
 use App\Models\Band;
+use App\Models\Stage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -44,8 +45,8 @@ class BandController extends Controller {
 	}
 	
 	public function schedule() {
-		$bands = Band::select('id', 'name')->get()->pluck('name','id');
-		$stages = Stage::select('id', 'name')->get()->pluck('name','id');
-		return view('admin.bands.schedule', compact('bands','stages'));
+		$bands = Band::select('id')->with('user')->get()->pluck('user.name','id');
+		$stages = Stage::select('id', 'name')->get()->pluck('name', 'id');
+		return view('admin.bands.schedule', compact('bands', 'stages'));
 	}
 }
