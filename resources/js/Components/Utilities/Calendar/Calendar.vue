@@ -45,6 +45,7 @@
 			</div>
 			<div class="column" v-if="currentlyDisplaying > 1">
 				<div class="box is-inline-block options" ref="options">
+					<slot name="options"></slot>
 					<h6 class="title is-6" v-text="optionsTitle"></h6>
 					<ul>
 						<li v-for="(option,index) in options" :key="index" class="mt-1">

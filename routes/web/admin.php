@@ -155,6 +155,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 	Route::group(['prefix' => 'bands'], function () {
 		Route::get('/', 'BandController@index');
 		Route::get('/schedule', 'BandController@schedule');
+		Route::post('/schedule', 'BandController@storeSchedule');
 		Route::get('/edit', 'BandController@create');
 		Route::post('/edit', 'BandController@store');
 		Route::get('/edit/{band}', 'BandController@edit');

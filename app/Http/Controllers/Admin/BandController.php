@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\Admin\Band\CreateBandRequest;
 use App\Http\Requests\Admin\Band\DestroyBandRequest;
 use App\Http\Requests\Admin\Band\UpdateBandRequest;
+use App\Http\Requests\ArtistManager\StoreBandScheduleRequest;
 use App\Models\Band;
 use App\Models\Stage;
 use Illuminate\Http\Request;
@@ -48,5 +49,12 @@ class BandController extends Controller {
 		$bands = Band::select('id')->with('user')->get()->pluck('user.name','id');
 		$stages = Stage::select('id', 'name')->get()->pluck('name', 'id');
 		return view('admin.bands.schedule', compact('bands', 'stages'));
+	}
+	
+	public function storeSchedule(StoreBandScheduleRequest $request) {
+		$request->commit();
+		return [
+			'message'
+		];
 	}
 }
