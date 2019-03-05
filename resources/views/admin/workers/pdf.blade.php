@@ -37,7 +37,7 @@
 		</div>
 	@endforeach
 </div>
-<div class="section" style="padding-top: 10px; margin-top: 10px">
+<div class="section" style="padding-top: 10px; margin-top: 10px; margin-bottom: 50px">
 	<h5 class="title is-5">@lang('worker/worker.workedHours')</h5>
 	<table class="table is-fullwidth">
 		<thead>
@@ -75,6 +75,14 @@
 		</tr>
 		</tbody>
 	</table>
+</div>
+<div class="is-clearfix"></div>
+<div class="section">
+	<div class="container">
+		@foreach($images as $image)
+			<img src="{{ $image }}">
+		@endforeach
+	</div>
 </div>
 </body>
 </html>

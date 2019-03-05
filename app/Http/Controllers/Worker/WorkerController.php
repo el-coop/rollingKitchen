@@ -23,21 +23,26 @@ class WorkerController extends Controller {
 			'totalDataCount' => Worker::fields()->count()
 		];
 		
-		$worker->load('photos','taxReviews','user');
-
+		$worker->load('photos', 'taxReviews', 'user');
+		
 		$futureShifts = $worker->shifts()->where('date', '>', Carbon::yesterday())->with('workplace.workFunctions')->orderBy('date')->get();
-
 		$pastShifts = $worker->shifts()->where('date', '<=', Carbon::yesterday())->with('workplace.workFunctions')->orderBy('date')->get();
-
+		
+		$rightSideFields = Worker::fields()->filter(function ($field) {
+			return $field->status === 'protected';
+		})->map(function ($field) {
+			return "worker[{$field->id}]";
+		});
+		
 		$totalHours = new Carbon('today');
 		$startOfDay = $totalHours->clone();
 		$pastShifts->each(function ($shift) use ($totalHours) {
 			$totalHours->add($shift->pivot->workedHours);
 		});
-		$totalHours =  $startOfDay->diffAsCarbonInterval($totalHours);
-
-
-		return view('worker.worker', compact('worker', 'futureShifts', 'totalHours', 'pastShifts', 'formattersData'));
+		$totalHours = $startOfDay->diffAsCarbonInterval($totalHours);
+		
+		
+		return view('worker.worker', compact('worker', 'futureShifts', 'totalHours', 'pastShifts', 'formattersData', 'rightSideFields'));
 	}
 	
 	public function showResetForm(Request $request, $token = null) {
