@@ -38,10 +38,13 @@
 		<button class="button is-link">
 			@lang('global.save')
 		</button>
-		<confirmation-submit label="@lang('kitchen/kitchen.submitReview')"
-							 title="@lang('kitchen/kitchen.submitConfirmTitle')"
-							 subtitle="@lang('kitchen/kitchen.submitConfirmSubtitle')" yes-text="@lang('global.yes')"
-							 no-text="@lang('global.no')" name="review" value="1"
-							 id="reviewButton"></confirmation-submit>
+		@if(!$worker->submitted)
+			<confirmation-submit label="@lang('kitchen/kitchen.submitReview')"
+								 title="@lang('kitchen/kitchen.submitConfirmTitle')"
+								 subtitle="@lang('kitchen/kitchen.submitConfirmSubtitle')"
+								 yes-text="@lang('global.yes')"
+								 no-text="@lang('global.no')" name="review" value="1"
+								 id="reviewButton"></confirmation-submit>
+		@endif
 	</div>
 </form>

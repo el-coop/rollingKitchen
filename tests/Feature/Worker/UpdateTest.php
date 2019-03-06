@@ -2,10 +2,14 @@
 
 namespace Tests\Feature\Worker;
 
+use App\Events\Worker\WorkerProfileFilled;
 use App\Models\Admin;
 use App\Models\Kitchen;
 use App\Models\User;
 use App\Models\Worker;
+use App\Notifications\Worker\ProfileFilledNotification;
+use Event;
+use Notification;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -66,6 +70,8 @@ class UpdateTest extends TestCase {
 	}
 	
 	public function test_worker_can_update_self() {
+		Event::fake();
+		
 		$this->actingAs($this->worker)->patch(action('Worker\WorkerController@update', $this->worker->user), [
 			'email' => 'bla@gla.bla',
 			'name' => 'game',
@@ -85,8 +91,89 @@ class UpdateTest extends TestCase {
 		
 		$this->assertDatabaseHas('workers', [
 			'id' => $this->worker->user_id,
-			'data' => json_encode(['data'])
+			'data' => json_encode(['data']),
+			'submitted' => false
 		]);
+		
+		Event::assertNotDispatched(WorkerProfileFilled::class);
+	}
+	
+	public function test_worker_can_submit_self() {
+		
+		Event::fake();
+		
+		$this->actingAs($this->worker)->patch(action('Worker\WorkerController@update', $this->worker->user), [
+			'email' => 'bla@gla.bla',
+			'name' => 'game',
+			'language' => 'en',
+			'worker' => [
+				'data'
+			],
+			'review' => true
+		])->assertSessionHas('toast');
+		
+		$this->assertDatabaseHas('users', [
+			'user_id' => $this->worker->user_id,
+			'user_type' => Worker::class,
+			'email' => 'bla@gla.bla',
+			'name' => 'game',
+			'language' => 'en'
+		]);
+		
+		$this->assertDatabaseHas('workers', [
+			'id' => $this->worker->user_id,
+			'data' => json_encode(['data']),
+			'submitted' => true
+		]);
+		
+		Event::assertDispatched(WorkerProfileFilled::class, function ($event) {
+			return $event->worker->id === $this->worker->user->id;
+		});
+	}
+	
+	
+	public function test_worker_filled_notification_only_sent_once() {
+		
+		Event::fake();
+		
+		$this->worker->user->submitted = true;
+		$this->worker->user->save();
+		
+		$this->actingAs($this->worker)->patch(action('Worker\WorkerController@update', $this->worker->user), [
+			'email' => 'bla@gla.bla',
+			'name' => 'game',
+			'language' => 'en',
+			'worker' => [
+				'data'
+			],
+			'review' => true
+		])->assertSessionHas('toast');
+		
+		$this->assertDatabaseHas('users', [
+			'user_id' => $this->worker->user_id,
+			'user_type' => Worker::class,
+			'email' => 'bla@gla.bla',
+			'name' => 'game',
+			'language' => 'en'
+		]);
+		
+		$this->assertDatabaseHas('workers', [
+			'id' => $this->worker->user_id,
+			'data' => json_encode(['data']),
+			'submitted' => true
+		]);
+		
+		Event::assertNotDispatched(WorkerProfileFilled::class, function ($event) {
+			return $event->worker->id === $this->worker->user->id;
+		});
+	}
+	
+	public function test_notifies_worker_when_profile_is_filled() {
+		Notification::fake();
+		
+		event(new WorkerProfileFilled($this->worker->user));
+		
+		Notification::assertSentTo($this->worker, ProfileFilledNotification::class);
 	}
 	
 	public function test_admin_can_update_worker() {
@@ -120,7 +207,7 @@ class UpdateTest extends TestCase {
 			'language' => '',
 			'worker' => 'test'
 		])->assertSessionHasErrors([
-			'email','name','language','worker'
+			'email', 'name', 'language', 'worker'
 		]);
 		
 	}
