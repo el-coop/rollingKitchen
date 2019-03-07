@@ -52,6 +52,12 @@ class SettingsSeeder extends Seeder {
 		$this->settingsFakeNoOverwrite('workers_tax_review_uploaded_en', $faker->paragraph);
 		$this->settingsFakeNoOverwrite('workers_tax_review_uploaded_nl', $faker->paragraph);
 		
+		
+		$this->settingsFakeNoOverwrite('workers_profile_filled_subject_nl', $faker->sentence);
+		$this->settingsFakeNoOverwrite('workers_profile_filled_subject_en', $faker->sentence);
+		$this->settingsFakeNoOverwrite('workers_profile_filled_nl', $faker->paragraph);
+		$this->settingsFakeNoOverwrite('workers_profile_filled_en', $faker->paragraph);
+		
 		$this->settingsFakeNoOverwrite('accountant_email', $faker->email);
 		$this->settingsFakeNoOverwrite('accountant_password', '');
 		

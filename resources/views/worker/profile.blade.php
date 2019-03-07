@@ -10,17 +10,16 @@
 					$item['error'] = $errors->has($fieldName) ? $errors->get($fieldName): null;
 					return $item;
 				}) }}"
-				class="mb-1"
-				:hide="{{ collect(['supervisor','approved','workplaces'])->concat($rightSideFields) }}">
+							class="mb-1"
+							:hide="{{ collect(['supervisor','approved','workplaces'])->concat($rightSideFields) }}">
 			</dynamic-fields>
-			<button class="button is-success">@lang('global.save')</button>
 		</div>
 		<div class="column">
 			<h4 class="title is-4">@lang('worker/worker.uploadId')</h4>
 			<image-manager url="{{ action('Worker\WorkerController@storePhoto', $worker) }}" :data="{
 					_token: '{{csrf_token()}}'
 				}"
-			   :init-images="{{ $worker->photos }}" delete-url="/worker/{{ $worker->id }}/photo">
+						   :init-images="{{ $worker->photos }}" delete-url="/worker/{{ $worker->id }}/photo">
 			</image-manager>
 			<dynamic-fields :fields="{{ $rightSideFields->map(function ($field) use ($worker, $errors) {
 					$item = $worker->fullData->firstWhere('name', $field);
@@ -31,8 +30,21 @@
 					$item['error'] = $errors->has($fieldName) ? $errors->get($fieldName): null;
 					return $item;
 				}) }}"
-				class="mb-1">
+							class="mb-1">
 			</dynamic-fields>
 		</div>
+	</div>
+	<div class="buttons has-content-justified-center">
+		<button class="button is-link">
+			@lang('global.save')
+		</button>
+		@if(!$worker->submitted)
+			<confirmation-submit label="@lang('kitchen/kitchen.submitReview')"
+								 title="@lang('kitchen/kitchen.submitConfirmTitle')"
+								 subtitle="@lang('kitchen/kitchen.submitConfirmSubtitle')"
+								 yes-text="@lang('global.yes')"
+								 no-text="@lang('global.no')" name="review" value="1"
+								 id="reviewButton"></confirmation-submit>
+		@endif
 	</div>
 </form>
