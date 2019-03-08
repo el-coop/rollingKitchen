@@ -19,6 +19,10 @@ class Band extends Model {
 		return action('Admin\BandController@index', [], false);
 	}
 
+	public function homePage(){
+		return action('Band\BandController@show', $this);
+	}
+
 	public function user(){
 		return $this->morphOne(User::class, 'user');
 	}
@@ -52,5 +56,19 @@ class Band extends Model {
 		return $fullData;
 	}
 
+	public function bandMembers(){
+		return $this->hasMany(BandMember::class);
+	}
+
+	public function getBandMembersForTableAttribute(){
+		return $this->bandMembers->map(function ($bandMember) {
+			return [
+				'id' => $bandMember->id,
+				'name' => $bandMember->user->name,
+				'email' => $bandMember->user->email,
+				'language' => $bandMember->user->language
+			];
+		});
+	}
 
 }

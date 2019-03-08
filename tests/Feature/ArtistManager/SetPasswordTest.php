@@ -55,7 +55,7 @@ class SetPasswordTest extends TestCase {
 	}
 
 	public function test_band_cant_access_set_password_page() {
-		$this->actingAs($this->band)->get(action('ArtistManager\ArtistManagerController@showResetForm', '111'))->assertRedirect(action('HomeController@show'));
+		$this->actingAs($this->band)->get(action('ArtistManager\ArtistManagerController@showResetForm', '111'))->assertRedirect($this->band->user->homePage());
 	}
 
 	public function test_admin_cant_access_set_password_page() {
@@ -87,7 +87,7 @@ class SetPasswordTest extends TestCase {
 	}
 
 	public function test_band_cant_set_password_for_artist_manager(){
-		$this->actingAs($this->band)->post(action('ArtistManager\ArtistManagerController@reset'))->assertRedirect(action('HomeController@show'));
+		$this->actingAs($this->band)->post(action('ArtistManager\ArtistManagerController@reset'))->assertRedirect($this->band->user->homePage());
 	}
 
 	public function test_artist_manager_cant_set_password_for_artist_manager(){

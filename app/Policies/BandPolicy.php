@@ -46,7 +46,7 @@ class BandPolicy {
 	 * @return mixed
 	 */
 	public function update(User $user, Band $band) {
-		return $user->user_type == Admin::class || $user->user_type == ArtistManager::class;
+		return $user->user_type == Admin::class || $user->user_type == ArtistManager::class || $user->user == $band;
 	}
 
 	/**

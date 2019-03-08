@@ -19,8 +19,8 @@ class SettingsController extends Controller {
 			'admin/invoices.invoices' => $settings->allStartingWith('invoices_'),
 			'admin/workers.workers' => $settings->allStartingWith('workers_'),
 			'admin/artists.bands' => $settings->allStartingWith('bands_'),
-			'admin/artists.artistManager' => $settings->allStartingWith('artist_managers'),
-
+			'admin/artists.artistManager' => $settings->allStartingWith('artist_managers_'),
+			'admin/bands.bandMember' => $settings->allStartingWith('band_members_'),
 			'admin/settings.accountant' => $settings->allStartingWith('accountant_')
 		];
 		return view('admin.settings.show', compact('tabs'));
