@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\ArtistManager;
 
+use App\Models\Band;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreBandScheduleRequest extends FormRequest
@@ -13,7 +14,7 @@ class StoreBandScheduleRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return $this->user()->can('schedule',Band::class);
     }
 
     /**
@@ -24,7 +25,12 @@ class StoreBandScheduleRequest extends FormRequest
     public function rules()
     {
         return [
-            'bla' => 'required'
+        	'calendar' => 'required|array',
+			'calendar.*' => 'required|array',
+			'calendar.*.*' => 'array',
+			'calendar.*.*.band' => 'required|exists:bands,id',
+			'calendar.*.*.payment' => 'required|min:1',
+			'calendar.*.*.stage' => 'required|exists:stages,id',
         ];
     }
 	

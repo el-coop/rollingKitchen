@@ -29,11 +29,7 @@
 
 			handleErrors(errors) {
 				if (Object.keys(errors).length) {
-					let message = '';
-					for (let prop in errors) {
-						message += `<li>${errors[prop][0]}</li>`;
-					}
-					this.$toast.html(`<div class="snotifyToast__title"><b>${this.$translations.pleaseCorrect}</b></div><div class="snotifyToast__body"><ul>${message}</ul></div>`, {
+					this.$toast.error(errors[Object.keys(errors)[0]][0], this.$translations.formErrors, {
 						type: 'error'
 					});
 				}

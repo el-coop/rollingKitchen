@@ -11,13 +11,13 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 
 class BandPolicy {
 	use HandlesAuthorization;
-
-	public function before($user,$ability){
-		if ($user->user_type == Developer::class){
+	
+	public function before($user, $ability) {
+		if ($user->user_type == Developer::class) {
 			return true;
 		}
 	}
-
+	
 	/**
 	 * Determine whether the user can view the band.
 	 *
@@ -27,7 +27,7 @@ class BandPolicy {
 	 */
 	public function view(User $user, Band $band) {
 	}
-
+	
 	/**
 	 * Determine whether the user can create bands.
 	 *
@@ -37,7 +37,7 @@ class BandPolicy {
 	public function create(User $user) {
 		return $user->user_type == Admin::class || $user->user_type == ArtistManager::class;
 	}
-
+	
 	/**
 	 * Determine whether the user can update the band.
 	 *
@@ -48,7 +48,7 @@ class BandPolicy {
 	public function update(User $user, Band $band) {
 		return $user->user_type == Admin::class || $user->user_type == ArtistManager::class;
 	}
-
+	
 	/**
 	 * Determine whether the user can delete the band.
 	 *
@@ -59,7 +59,7 @@ class BandPolicy {
 	public function delete(User $user, Band $band) {
 		return $user->user_type == Admin::class || $user->user_type == ArtistManager::class;
 	}
-
+	
 	/**
 	 * Determine whether the user can restore the band.
 	 *
@@ -70,7 +70,7 @@ class BandPolicy {
 	public function restore(User $user, Band $band) {
 		//
 	}
-
+	
 	/**
 	 * Determine whether the user can permanently delete the band.
 	 *
@@ -80,5 +80,9 @@ class BandPolicy {
 	 */
 	public function forceDelete(User $user, Band $band) {
 		//
+	}
+	
+	public function schedule(User $user) {
+		return $user->user_type == Admin::class || $user->user_type == ArtistManager::class;
 	}
 }
