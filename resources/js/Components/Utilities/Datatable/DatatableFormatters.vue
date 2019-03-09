@@ -50,7 +50,11 @@
 			},
 
 			dataCompleted(value) {
-				return `${Math.round(100 * value / this.formattersData.totalDataCount)}%`;
+				let percent = Math.round(100 * value / this.formattersData.totalDataCount);
+				if (percent > 100) {
+					percent = 100;
+				}
+				return `${percent}%`;
 			}
 		}
 	}
