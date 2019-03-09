@@ -14,8 +14,8 @@ use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 class User extends Authenticatable implements HasLocalePreference {
 	use Notifiable;
 	use PaginationWithHavings;
-	
-	
+
+
 	/**
 	 * The attributes that should be hidden for arrays.
 	 *
@@ -24,11 +24,11 @@ class User extends Authenticatable implements HasLocalePreference {
 	protected $hidden = [
 		'password', 'remember_token',
 	];
-	
+
 	public function user() {
 		return $this->morphTo();
 	}
-	
+
 	/**
 	 * Get the preferred locale of the entity.
 	 *
@@ -37,23 +37,26 @@ class User extends Authenticatable implements HasLocalePreference {
 	public function preferredLocale() {
 		return $this->language;
 	}
-	
+
 	public function sendPasswordResetNotification($token) {
-		if ($this->password !== '' || !($this->user_type === Worker::class || $this->user_type === ArtistManager::class || $this->user_type === Band::class)) {
+		if ($this->password !== '' || !in_array($this->user_type,[Worker::class, ArtistManager::class, Band::class, BandMember::class])) {
 			$this->notify(new ResetPasswordNotification($token));
 			return;
 		}
-		switch ($this->user_type){
+		switch ($this->user_type) {
 			case ArtistManager::class:
 				$this->notify(new \App\Notifications\ArtistManager\UserCreated($token));
 				break;
 			case Band::class:
 				$this->notify(new \App\Notifications\Band\UserCreated($token));
 				break;
+			case BandMember::class:
+				$this->notify(new \App\Notifications\BandMember\UserCreated($token));
+				break;
 			default:
 				$this->notify(new UserCreated($token));
 				break;
 		}
 	}
-	
+
 }

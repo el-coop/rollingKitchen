@@ -1,21 +1,22 @@
 <?php
 
-namespace App\Http\Requests\Admin\Band;
+namespace App\Http\Requests\Band;
 
-use App\Models\Band;
+use App\Models\BandMember;
 use App\Models\User;
-use Illuminate\Foundation\Http\FormRequest;
 use Password;
+use Illuminate\Foundation\Http\FormRequest;
 
-
-class CreateBandRequest extends FormRequest {
+class CreateBandMemberRequest extends FormRequest {
+	protected $band;
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
 	 * @return bool
 	 */
 	public function authorize() {
-		return $this->user()->can('create', Band::class);
+		$this->band = $this->route('band');
+		return $this->user()->can('create', BandMember::class);
 	}
 
 	/**
@@ -27,30 +28,26 @@ class CreateBandRequest extends FormRequest {
 		return [
 			'name' => 'required',
 			'email' => 'required|email|unique:users',
-			'language' => 'required|in:en,nl',
-			'paymentMethod' => 'required|string|in:band,individual'
+			'language' => 'required|in:en,nl'
 		];
 	}
 
 	public function commit(){
-		$band = new Band;
+		$bandMember = new BandMember;
 		$user = new User;
 
 		$user->email = $this->input('email');
 		$user->name = $this->input('name');
 		$user->language = $this->input('language');
 		$user->password = '';
-		$band->data = [];
-		$band->payment_method = $this->input('paymentMethod');
-		$band->save();
-		$band->user()->save($user);
-
+		$this->band->bandMembers()->save($bandMember);
+		$bandMember->user()->save($user);
 		Password::broker()->sendResetLink(
 			['email' => $user->email]
 		);
 
 		return [
-			'id' => $band->id,
+			'id' => $bandMember->id,
 			'name' => $this->input('name'),
 			'email' => $this->input('email')
 		];
