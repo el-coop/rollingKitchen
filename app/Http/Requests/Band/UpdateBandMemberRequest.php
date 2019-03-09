@@ -33,6 +33,7 @@ class UpdateBandMemberRequest extends FormRequest {
 		$this->bandMember->user->name = $this->input('name');
 		$this->bandMember->user->email = $this->input('email');
 		$this->bandMember->user->language = $this->input('language');
+
 		$this->bandMember->user->save();
 		return [
 			'id' => $this->bandMember->id,

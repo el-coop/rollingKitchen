@@ -29,6 +29,7 @@ class UpdateBandRequest extends FormRequest {
 			'email' => 'required|email|unique:users,email,' . $this->band->user->id,
 			'language' => 'required|in:en,nl',
 			'band' => 'required|array',
+			'paymentMethod' => 'required|string|in:band,individual'
 		]);
 
 		$fieldRules = Field::getRequiredFields(Band::class);
@@ -43,6 +44,7 @@ class UpdateBandRequest extends FormRequest {
 		$this->band->user->save();
 
 		$this->band->data = array_filter($this->input('band'));
+		$this->band->payment_method = $this->input('paymentMethod');
 		$this->band->save();
 	}
 }

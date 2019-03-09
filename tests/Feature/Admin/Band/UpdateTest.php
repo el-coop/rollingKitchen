@@ -141,6 +141,7 @@ class UpdateTest extends TestCase {
 			'name' => 'name',
 			'email' => 'test@test.com',
 			'language' => 'nl',
+			'paymentMethod' => 'individual',
 			'band' => ['test' => 'test']
 		])->assertSuccessful()
 			->assertJsonFragment([
@@ -157,7 +158,8 @@ class UpdateTest extends TestCase {
 		]);
 		$this->assertDatabaseHas('bands', [
 			'data' => json_encode(['test' => 'test']),
-			'id' => $this->secondBand->user->id
+			'id' => $this->secondBand->user->id,
+			'payment_method' => 'individual'
 		]);
 	}
 }

@@ -48,6 +48,16 @@ class Band extends Model {
 					'en' => __('global.en'),
 				],
 				'value' => $this->user->language ?? 'nl',
+			],
+			[
+				'name' => 'paymentMethod',
+				'label' => __('band/band.paymentMethod'),
+				'type' => 'select',
+				'options' => [
+					'band' => __('admin/fields.Band'),
+					'individual' => __('band/band.individual')
+				],
+				'value' => $this->payment_method ?? 'band'
 			]
 		]);
 		if ($this->exists){

@@ -27,7 +27,8 @@ class CreateBandRequest extends FormRequest {
 		return [
 			'name' => 'required',
 			'email' => 'required|email|unique:users',
-			'language' => 'required|in:en,nl'
+			'language' => 'required|in:en,nl',
+			'paymentMethod' => 'required|string|in:band,individual'
 		];
 	}
 
@@ -40,6 +41,7 @@ class CreateBandRequest extends FormRequest {
 		$user->language = $this->input('language');
 		$user->password = '';
 		$band->data = [];
+		$band->payment_method = $this->input('paymentMethod');
 		$band->save();
 		$band->user()->save($user);
 

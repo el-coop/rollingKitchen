@@ -26,6 +26,7 @@ class BandPolicy {
 	 * @return mixed
 	 */
 	public function view(User $user, Band $band) {
+		return $user->user == $band;
 	}
 
 	/**

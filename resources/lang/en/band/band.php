@@ -2,5 +2,6 @@
 
 return [
 	'paymentMethod' => 'Payment Method',
-	'individual' => 'Individual'
+	'individual' => 'Individual',
+	'bandMembers' => 'Band Members'
 ];
