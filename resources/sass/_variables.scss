@@ -8,6 +8,7 @@ $above-desktop: "only screen and (min-width : #{$desktop})";
 $above-wide-screen: "only screen and (min-width : #{$widescreen})";
 
 $under-tablet: "only screen and (max-width : 576px)";
+$under-desktop: "only screen and (max-width : #{$tablet})";
 
 
 // Body

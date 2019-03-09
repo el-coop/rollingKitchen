@@ -1,16 +1,18 @@
 <template>
 	<div>
-		<div class="buttons" v-if="currentlyDisplaying-1 < Math.max(this.numberOfDays)">
-			<button class="button is-primary" v-html="this.$translations.previous" @click="changeStartDate(-1)"
-					type="button"
-					:disabled="daysOffset === 0">
-			</button>
-			<button class="button is-primary" v-html="this.$translations.next" @click="changeStartDate(1)" type="button"
-					:disabled="daysOffset === (numberOfDays - currentlyDisplaying + (currentlyDisplaying > 1 ? 1 : 0))">
-			</button>
-		</div>
 		<div class="columns is-mobile">
-			<div class="column">
+			<div class="column is-flex is-column has-items-aligned-center" v-if="loaded">
+				<div class="buttons"
+					 v-if="currentlyDisplaying-1 < Math.max(this.numberOfDays) && currentlyDisplaying === 1">
+					<button class="button is-primary" v-html="this.$translations.previous" @click="changeStartDate(-1)"
+							type="button"
+							:disabled="daysOffset === 0">
+					</button>
+					<button class="button is-primary" v-html="this.$translations.next" @click="changeStartDate(1)"
+							type="button"
+							:disabled="daysOffset === (numberOfDays - currentlyDisplaying + (currentlyDisplaying > 1 ? 1 : 0))">
+					</button>
+				</div>
 				<table class="table is-bordered">
 					<thead>
 					<tr>
@@ -18,7 +20,7 @@
 							v-text="date(calcDate(realStartDate,i - 1))"
 							v-show="calcDate(realStartDate,i - 1) >= currentStart && calcDate(realStartDate,i - 1) < lastDate"
 							:key="`header_${i}`"
-							:style="{ 'min-width': `${columnMinWidth}px`}">
+							:style="{ 'min-width': `${columnWidth}px`}">
 						</th>
 					</tr>
 					</thead>
@@ -27,7 +29,7 @@
 						<td v-for="i in numberOfDays"
 							:key="`${n}_${i}`"
 							v-show="calcDate(realStartDate,i - 1) >= currentStart && calcDate(realStartDate,i - 1) < lastDate"
-							:style="{ 'min-width': `${columnMinWidth}px`}">
+							:style="{ 'min-width': `${columnWidth}px`}">
 							<calendar-entry :label="formatTime(startHour + (n-1) * interval)" @drop="drop">
 								<template #default="{rawData, processedData, edit}">
 									<slot name="entry" :rawData="rawData" :processedData="processedData"
@@ -42,14 +44,30 @@
 				</table>
 			</div>
 			<div class="column" v-if="currentlyDisplaying > 1">
-				<div class="box is-inline-block options">
+				<div class="box is-inline-block options" ref="options">
+					<slot name="options"></slot>
 					<h6 class="title is-6" v-text="optionsTitle"></h6>
 					<ul>
 						<li v-for="(option,index) in options" :key="index" class="mt-1">
-							<drag drop-effect="move" :transfer-data="option" v-text="option.name"
+							<drag drop-effect="move" :transfer-data="{id: index, name: option}" v-text="option"
 								  class="tag is-dark is-medium"></drag>
 						</li>
 					</ul>
+					<template v-if="currentlyDisplaying-1 < Math.max(this.numberOfDays)">
+						<hr>
+						<div class="buttons">
+							<button class="button is-primary" v-html="this.$translations.previous"
+									@click="changeStartDate(-1)"
+									type="button"
+									:disabled="daysOffset === 0">
+							</button>
+							<button class="button is-primary" v-html="this.$translations.next"
+									@click="changeStartDate(1)"
+									type="button"
+									:disabled="daysOffset === (numberOfDays - currentlyDisplaying + (currentlyDisplaying > 1 ? 1 : 0))">
+							</button>
+						</div>
+					</template>
 				</div>
 			</div>
 		</div>
@@ -84,7 +102,7 @@
 			},
 			numberOfDays: {
 				type: Number,
-				default: 9
+				default: 5
 			},
 			startHour: {
 				type: Number,
@@ -98,16 +116,16 @@
 				type: Number,
 				default: 0.5
 			},
-			columnMinWidth: {
+			columnWidth: {
 				type: Number,
-				default: 200
+				default: 300
 			},
 			maxParallel: {
 				type: Number,
 				default: 7
 			},
 			options: {
-				type: Array,
+				type: Object,
 				default() {
 					return [];
 				}
@@ -142,6 +160,7 @@
 				currentlyDisplaying: Math.min(this.maxParallel, this.numberOfDays),
 				raw: null,
 				output: null,
+				loaded: false
 			};
 		},
 
@@ -153,12 +172,14 @@
 			},
 
 			setWidth() {
-				const totalWidth = this.$el.getBoundingClientRect().width;
-				let maxDisplay = Math.min(this.maxParallel, this.numberOfDays) + 1;
-				while (totalWidth / (this.columnMinWidth * maxDisplay) < 1) {
+				const totalWidth = this.$el.parentElement.getBoundingClientRect().width;
+				const optionsWidth = this.$refs.options.getBoundingClientRect().width / this.columnWidth;
+				let maxDisplay = Math.min(this.maxParallel, this.numberOfDays) + optionsWidth;
+				while ((totalWidth / (this.columnWidth * maxDisplay)) < 1) {
 					maxDisplay--;
 				}
-				this.currentlyDisplaying = maxDisplay;
+				this.currentlyDisplaying = Math.ceil(maxDisplay);
+				this.loaded = true;
 			},
 
 			changeStartDate(days) {
@@ -228,5 +249,9 @@
 	.options {
 		position: sticky;
 		top: 0;
+	}
+
+	.calendar-container {
+		padding: 0 1.5rem;
 	}
 </style>

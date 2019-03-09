@@ -1,5 +1,5 @@
 <template>
-	<div class="drop-field" @dblclick="drop({})">
+	<div :style="{height: height}" @dblclick="drop({})">
 		<drop class="h-100" @drop="drop">
 			<h6 class="title is-7" v-text="label"></h6>
 			<slot :rawData="raw" :processedData="processedData" :edit="drop"></slot>
@@ -16,6 +16,10 @@
 				type: String,
 				required: true
 			},
+			height: {
+				type: String,
+				default: '150px'
+			}
 		},
 
 		data() {
@@ -41,9 +45,6 @@
 </script>
 
 <style scoped>
-	.drop-field {
-		height: 100px;
-	}
 
 	.title {
 		margin-bottom: 0.5rem;

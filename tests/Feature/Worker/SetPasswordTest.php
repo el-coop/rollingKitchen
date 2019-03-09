@@ -107,7 +107,7 @@ class SetPasswordTest extends TestCase {
 	}
 	
 	public function test_cant_set_password_with_correct_credentials_with_older_than_a_month_token() {
-		DB::table('password_resets')->update(['created_at' => Carbon::now()->subMonth()]);
+		DB::table('password_resets')->update(['created_at' => Carbon::now()->subDays(31)]);
 		$this->post(action('Worker\WorkerController@reset'), [
 			'token' => '111',
 			'email' => $this->worker->email,
