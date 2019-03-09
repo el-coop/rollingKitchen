@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\Band\DestroyBandRequest;
 use App\Http\Requests\Admin\Band\UpdateBandRequest;
 use App\Http\Requests\ArtistManager\StoreBandScheduleRequest;
 use App\Models\Band;
+use App\Models\BandSchedule;
 use App\Models\Stage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -46,9 +47,10 @@ class BandController extends Controller {
 	}
 	
 	public function schedule() {
-		$bands = Band::select('id')->with('user')->get()->pluck('user.name','id');
+		$schedules = BandSchedule::select('dateTime', 'stage_id as stage', 'band_id as band', 'payment','approved')->get()->groupBy('dateTime');
+		$bands = Band::select('id')->with('user')->get()->pluck('user.name', 'id');
 		$stages = Stage::select('id', 'name')->get()->pluck('name', 'id');
-		return view('admin.bands.schedule', compact('bands', 'stages'));
+		return view('admin.bands.schedule', compact('bands', 'stages', 'schedules'));
 	}
 	
 	public function storeSchedule(StoreBandScheduleRequest $request) {
