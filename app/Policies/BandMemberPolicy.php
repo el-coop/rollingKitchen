@@ -45,7 +45,7 @@ class BandMemberPolicy {
 	 * @return mixed
 	 */
 	public function update(User $user, BandMember $bandMember) {
-		return $user->user_type == Band::class && $bandMember->band == $user->user;
+		return $user->user_type == Band::class && $bandMember->band->id == $user->user->id;
 	}
 
 	/**
@@ -56,7 +56,7 @@ class BandMemberPolicy {
 	 * @return mixed
 	 */
 	public function delete(User $user, BandMember $bandMember) {
-		return $user->user_type == Band::class && $bandMember->band == $user->user;
+		return $user->user_type == Band::class && $bandMember->band->id == $user->user->id;
 	}
 
 	/**

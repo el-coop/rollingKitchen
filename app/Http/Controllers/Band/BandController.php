@@ -36,15 +36,6 @@ class BandController extends Controller {
 		]);
 	}
 
-	public function updatePaymentMethod(UpdatePaymentMethodRequest $request, Band $band) {
-		$request->commit();
-		return back()->with('toast', [
-			'type' => 'success',
-			'title' => '',
-			'message' => __('vue.updateSuccess', [], $request->input('language'))
-		]);
-	}
-
 	public function addBandMember(CreateBandMemberRequest $request, Band $band){
 		return $request->commit();
 	}
