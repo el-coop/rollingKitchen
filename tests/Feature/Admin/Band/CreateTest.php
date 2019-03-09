@@ -130,7 +130,8 @@ class CreateTest extends TestCase {
 		$this->actingAs($this->admin)->post(action('Admin\BandController@store'),[
 			'name' => 'name',
 			'email' => 'test@test.com',
-			'language' => 'en'
+			'language' => 'en',
+			'paymentMethod' => 'band'
 		])
 			->assertSuccessful()
 			->assertJsonFragment([
@@ -146,7 +147,8 @@ class CreateTest extends TestCase {
 		]);
 		$newBand = User::where(['email' => 'test@test.com', 'user_type' => Band::class])->first()->user;
 		$this->assertDatabaseHas('bands', [
-			'id' => $newBand->id
+			'id' => $newBand->id,
+			'payment_method' => 'band'
 		]);
 		Notification::assertSentTo($newBand->user, UserCreated::class);
 	}

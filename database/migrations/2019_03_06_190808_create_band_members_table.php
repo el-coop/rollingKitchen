@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBandsTable extends Migration
+class CreateBandMembersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateBandsTable extends Migration
      */
     public function up()
     {
-        Schema::create('bands', function (Blueprint $table) {
+        Schema::create('band_members', function (Blueprint $table) {
             $table->increments('id');
-			$table->json('data');
-			$table->string('payment_method')->default('band');
-			$table->timestamps();
+            $table->integer('band_id')->unsigned();
+            $table->timestamps();
+			$table->foreign('band_id')
+				->references('id')->on('bands')
+				->onDelete('cascade');
         });
     }
 
@@ -28,6 +30,6 @@ class CreateBandsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bands');
+        Schema::dropIfExists('band_members');
     }
 }

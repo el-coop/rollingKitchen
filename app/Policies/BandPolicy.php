@@ -26,6 +26,7 @@ class BandPolicy {
 	 * @return mixed
 	 */
 	public function view(User $user, Band $band) {
+		return $user->user == $band;
 	}
 
 	/**
@@ -46,7 +47,7 @@ class BandPolicy {
 	 * @return mixed
 	 */
 	public function update(User $user, Band $band) {
-		return $user->user_type == Admin::class || $user->user_type == ArtistManager::class;
+		return $user->user_type == Admin::class || $user->user_type == ArtistManager::class || $user->user == $band;
 	}
 
 	/**
