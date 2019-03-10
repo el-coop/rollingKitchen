@@ -763,7 +763,7 @@ class SupervisorTest extends TestCase {
 		$this->actingAs($this->supervisor)->post(action('Worker\SupervisorController@addWorkerToShift', $this->shift), [
 			'worker' => $this->worker->user->id,
 			'startTime' => '10:00',
-			'endTime' => '22:00',
+			'endTime' => '22:01',
 			'workFunction' => $this->workplace->workFunctions->first()->id])
 			->assertRedirect()->assertSessionHasErrors('endTime');
 	}

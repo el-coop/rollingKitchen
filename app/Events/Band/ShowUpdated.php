@@ -13,6 +13,10 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class ShowUpdated {
 	use Dispatchable, InteractsWithSockets, SerializesModels;
+	/**
+	 * @var BandSchedule
+	 */
+	public $show;
 	
 	/**
 	 * Create a new event instance.
@@ -21,6 +25,7 @@ class ShowUpdated {
 	 */
 	public function __construct(BandSchedule $show) {
 		//
+		$this->show = $show;
 	}
 	
 	/**

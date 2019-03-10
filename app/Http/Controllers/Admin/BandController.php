@@ -56,7 +56,7 @@ class BandController extends Controller {
 	public function storeSchedule(StoreBandScheduleRequest $request) {
 		$request->commit();
 		return [
-			'message'
+			'success' => true
 		];
 	}
 }
