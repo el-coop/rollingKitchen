@@ -21,7 +21,7 @@ return [
 		'sortField' => 'name',
 	], [
 		'name' => 'workplacesList',
-		'raw' => 'GROUP_CONCAT(workplaces.name, ", ") as workplacesList',
+		'noTable' => true,
 		'filterFields' => ['workplaces.name'],
 		'title' => 'admin/workers.workplaces',
 	], [

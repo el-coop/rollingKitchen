@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use App\Events\Kitchen\ApplicationResubmitted;
 use App\Events\Kitchen\ApplicationSubmitted;
+use App\Events\Worker\WorkerProfileFilled;
 use App\Events\Worker\TaxReviewUploaded;
 use App\Listeners\Admin\SendAppplicationResubmittedNotification;
 use App\Listeners\Kitchen\SendApplicationSubmittedNotification;
+use App\Listeners\Worker\SendProfileFilledNotification;
 use App\Listeners\Worker\SendTaxReviewNotification;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
@@ -28,6 +30,9 @@ class EventServiceProvider extends ServiceProvider {
 		],
 		TaxReviewUploaded::class => [
 			SendTaxReviewNotification::class
+		],
+		WorkerProfileFilled::class => [
+			SendProfileFilledNotification::class
 		]
 	];
 	

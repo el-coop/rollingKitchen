@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Worker;
 
+use App\Events\Worker\WorkerProfileFilled;
 use App\Models\Field;
 use App\Models\Worker;
 use Illuminate\Foundation\Http\FormRequest;
@@ -33,8 +34,12 @@ class UpdateWorkerRequest extends FormRequest {
 			'worker' => 'required|array',
 		]);
 		
-		$fieldRules = Field::getRequiredFields(Worker::class);
-		$rules = $rules->merge($fieldRules);
+		if ($this->input('review') || $this->worker->submitted) {
+			$requiredFieldsRules = Field::getRequiredFields(Worker::class);
+			$protectedFieldsRules = Field::getProtectedFields(Worker::class);
+			$rules = $rules->merge($requiredFieldsRules)->merge($protectedFieldsRules);
+		}
+		
 		return $rules->toArray();
 	}
 	
@@ -46,6 +51,11 @@ class UpdateWorkerRequest extends FormRequest {
 		
 		
 		$this->worker->data = array_filter($this->input('worker'));
+		if ($this->input('review') && !$this->worker->submitted) {
+			$this->worker->submitted = true;
+			event(new WorkerProfileFilled($this->worker));
+		}
 		$this->worker->save();
+		
 	}
 }

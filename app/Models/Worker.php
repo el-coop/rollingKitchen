@@ -28,6 +28,10 @@ class Worker extends Model {
 		'data' => 'array',
 	];
 	
+	protected $appends = [
+		'workplacesList'
+	];
+	
 	static function indexPage() {
 		return action('Admin\WorkerController@index', [], false);
 	}

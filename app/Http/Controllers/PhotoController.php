@@ -20,7 +20,6 @@ class PhotoController extends Controller {
 		$encryptedContents = Storage::get("public/photos/{$photo->file}");
 		$decryptedContents = Crypt::decrypt($encryptedContents);
 		
-		
 		return response()->make($decryptedContents, 200, [
 			'Content-Type' => 'image/jpeg'
 		]);
