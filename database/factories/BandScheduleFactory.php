@@ -3,7 +3,9 @@
 use Faker\Generator as Faker;
 
 $factory->define(App\Models\BandSchedule::class, function (Faker $faker) {
-    return [
-        //
-    ];
+	return [
+		'dateTime' => $faker->date(),
+		'payment' => $faker->numberBetween(0, 50),
+		'approved' => $faker->boolean
+	];
 });

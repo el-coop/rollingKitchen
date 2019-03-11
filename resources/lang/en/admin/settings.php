@@ -63,6 +63,11 @@ return [
 	"workers_tax_review_uploaded_subject_en" => 'Tax review uploaded subject EN',
 	"workers_tax_review_uploaded_nl" => 'Tax review uploaded body NL',
 	"workers_tax_review_uploaded_en" => 'Tax review uploaded body EN',
+	
+	'workers_profile_filled_subject_nl' => 'Worker profile filled subject NL',
+	'workers_profile_filled_subject_en' => 'Worker profile filled subject EN',
+	'workers_profile_filled_nl' => 'Worker profile filled body NL',
+	'workers_profile_filled_en' => 'Worker profile filled body EN',
 
 	'artist_managers_user_created_subject_nl' => 'Artist Manager created mail subject NL',
 	'artist_managers_user_created_subject_en' => 'Artist Manager mail subject EN',

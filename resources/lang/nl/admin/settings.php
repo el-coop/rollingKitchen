@@ -63,6 +63,11 @@ return [
 	"workers_tax_review_uploaded_subject_en" => 'TBT',
 	"workers_tax_review_uploaded_nl" => 'TBT',
 	"workers_tax_review_uploaded_en" => 'TBT',
+	
+	'workers_profile_filled_subject_nl' => 'TBT',
+	'workers_profile_filled_subject_en' => 'TBT',
+	'workers_profile_filled_nl' => 'TBT',
+	'workers_profile_filled_en' => 'TBT',
 
 	'artist_managers_user_created_subject_nl' => 'TBT',
 	'artist_managers_user_created_subject_en' => 'TBT',

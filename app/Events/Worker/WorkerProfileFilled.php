@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Events\Band;
+namespace App\Events\Worker;
 
-use App\Models\BandSchedule;
+use App\Models\Worker;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -11,21 +11,21 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class ShowUpdated {
+class WorkerProfileFilled {
 	use Dispatchable, InteractsWithSockets, SerializesModels;
 	/**
-	 * @var BandSchedule
+	 * @var Worker
 	 */
-	public $show;
+	public $worker;
 	
 	/**
 	 * Create a new event instance.
 	 *
-	 * @param BandSchedule $show
+	 * @param Worker $worker
 	 */
-	public function __construct(BandSchedule $show) {
+	public function __construct(Worker $worker) {
 		//
-		$this->show = $show;
+		$this->worker = $worker;
 	}
 	
 	/**

@@ -15,6 +15,7 @@ class CreateWorkersTable extends Migration {
 			$table->increments('id');
 			$table->tinyInteger('type');
 			$table->boolean('supervisor');
+			$table->boolean('submitted')->default(false);
 			$table->boolean('approved')->default(false);
 			$table->json('data');
 			$table->timestamps();
