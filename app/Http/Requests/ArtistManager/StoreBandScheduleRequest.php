@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\ArtistManager;
 
+use App\Events\Band\ShowCreated;
 use App\Events\Band\ShowDeleted;
 use App\Events\Band\ShowUpdated;
 use App\Models\Band;
@@ -70,12 +71,14 @@ class StoreBandScheduleRequest extends FormRequest {
 			$timeSchedules = $existingSchedules->where('dateTime', $schedule->dateTime);
 			if ($existingSchedule = $timeSchedules->firstWhere('band_id', $schedule->band_id)) {
 				if ($existingSchedule->payment != $schedule->payment || $existingSchedule->stage_id != $schedule->stage_id) {
-					event(new showUpdated($schedule));
+					event(new ShowUpdated($schedule, $existingSchedule));
 				}
 				
 				if ($existingSchedule->payment == $schedule->payment) {
 					$schedule->approved = $existingSchedule->approved;
 				}
+			} else {
+				event(new ShowCreated($schedule));
 			}
 			$schedule->save();
 		});

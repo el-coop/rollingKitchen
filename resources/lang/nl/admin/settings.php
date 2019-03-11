@@ -78,5 +78,27 @@ return [
 	'bands_user_created_subject_en' => 'TBT',
 	'bands_user_created_nl' => 'TBT',
 	'bands_user_created_en' => 'TBT',
+	
+	'band_members_user_created_subject_nl' => 'TBT',
+	'band_members_user_created_subject_en' => 'TBT',
+	'band_members_user_created_nl' => 'TBT',
+	'band_members_user_created_en' => 'TBT',
+	
+	'schedule_deleted_subject_nl' => 'TBT',
+	'schedule_deleted_subject_en' => 'TBT',
+	'schedule_deleted_nl' => 'TBT',
+	'schedule_deleted_en' => 'TBT',
+	
+	'schedule_changed_subject_nl' => 'TBT',
+	'schedule_changed_subject_en' => 'TBT',
+	'schedule_stage_changed_nl' => 'TBT',
+	'schedule_stage_changed_en' => 'TBT',
+	'schedule_payment_changed_nl' => 'TBT',
+	'schedule_payment_changed_en' => 'TBT',
+	
+	'schedule_created_subject_nl' => 'TBT',
+	'schedule_created_subject_en' => 'TBT',
+	'schedule_created_nl' => 'TBT',
+	'schedule_created_en' => 'TBT',
 
 ];
