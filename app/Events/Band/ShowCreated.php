@@ -11,27 +11,21 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class ShowUpdated {
+class ShowCreated {
 	use Dispatchable, InteractsWithSockets, SerializesModels;
 	/**
 	 * @var BandSchedule
 	 */
 	public $show;
-	/**
-	 * @var BandSchedule
-	 */
-	public $oldShow;
 	
 	/**
 	 * Create a new event instance.
 	 *
-	 * @param BandSchedule $show
-	 * @param BandSchedule $oldShow
+	 * @param BandSchedule $schedule
 	 */
-	public function __construct(BandSchedule $show, BandSchedule $oldShow) {
+	public function __construct(BandSchedule $show) {
 		//
 		$this->show = $show;
-		$this->oldShow = $oldShow;
 	}
 	
 	/**
