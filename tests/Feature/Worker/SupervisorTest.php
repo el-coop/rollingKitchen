@@ -5,6 +5,7 @@ namespace Tests\Feature\Worker;
 use App\Models\Admin;
 use App\Models\Kitchen;
 use App\Models\Shift;
+use App\Models\ShiftWorker;
 use App\Models\User;
 use App\Models\Worker;
 use App\Models\WorkFunction;
@@ -295,14 +296,14 @@ class SupervisorTest extends TestCase {
 	public function test_supervisor_can_get_shift() {
 		$this->actingAs($this->supervisor)->get(action('Worker\SupervisorController@editShift', $this->shift))
 			->assertSuccessful()->assertJsonFragment([
-				'workers' => $this->workplace->workers()->where('approved', true)->with('user')->get()->pluck('name', 'id')
+				'workers' => $this->workplace->workers()->where('approved', true)->with('user')->get()->pluck('name', 'id')->put(0, '')
 			]);
 	}
 	
 	public function test_admin_can_get_shift() {
 		$this->actingAs($this->admin)->get(action('Worker\SupervisorController@editShift', $this->shift))->assertSuccessful()
 			->assertSuccessful()->assertJsonFragment([
-				'workers' => $this->workplace->workers()->where('approved', true)->with('user')->get()->pluck('name', 'id')
+				'workers' => $this->workplace->workers()->where('approved', true)->with('user')->get()->pluck('name', 'id')->put(0, '')
 			]);
 	}
 	
@@ -460,24 +461,27 @@ class SupervisorTest extends TestCase {
 	}
 	
 	public function test_kitchen_cant_remove_worker_from_shift() {
+		$shiftWorker = ShiftWorker::where('shift_id', $this->shift->id)->first();
 		$this->actingAs($this->kitchen)->delete(action('Worker\SupervisorController@removeWorkerFromShift', [
 			'shift' => $this->shift,
-			'worker' => $this->shiftWorker->user
+			'shiftWorker' => $shiftWorker->id
 		]))->assertForbidden();
 	}
 	
 	public function test_worker_cant_remove_worker_from_shift() {
+		$shiftWorker = ShiftWorker::where('shift_id', $this->shift->id)->first();
 		$this->actingAs($this->worker)->delete(action('Worker\SupervisorController@removeWorkerFromShift', [
 			'shift' => $this->shift,
-			'worker' => $this->shiftWorker->user
+			'shiftWorker' => $shiftWorker->id
 		]))->assertForbidden();
 	}
 	
 	public function test_supervisor_can_remove_worker_from_shift() {
+		$shiftWorker = ShiftWorker::where('shift_id', $this->shift->id)->first();
 		
 		$this->actingAs($this->supervisor)->delete(action('Worker\SupervisorController@removeWorkerFromShift', [
 			'shift' => $this->shift,
-			'worker' => $this->shiftWorker->user
+			'shiftWorker' => $shiftWorker->id
 		]))->assertSuccessful();
 		$this->assertDatabaseMissing('shift_worker', [
 			'shift_id' => $this->shift->id,
@@ -486,19 +490,22 @@ class SupervisorTest extends TestCase {
 	}
 	
 	public function test_supervisor_cant_remove_worker_from_closed_shift() {
+		$shiftWorker = ShiftWorker::where('shift_id', $this->shift->id)->first();
+		
 		$this->shift->closed = true;
 		$this->shift->save();
 		$this->actingAs($this->supervisor)->delete(action('Worker\SupervisorController@removeWorkerFromShift', [
 			'shift' => $this->shift,
-			'worker' => $this->shiftWorker->user
+			'shiftWorker' => $shiftWorker->id
 		]))->assertForbidden();
 	}
 	
 	public function test_admin_can_remove_worker_from_shift() {
+		$shiftWorker = ShiftWorker::where('shift_id', $this->shift->id)->first();
 		
 		$this->actingAs($this->admin)->delete(action('Worker\SupervisorController@removeWorkerFromShift', [
 			'shift' => $this->shift,
-			'worker' => $this->shiftWorker->user
+			'shiftWorker' => $shiftWorker->id
 		]))->assertSuccessful();
 		$this->assertDatabaseMissing('shift_worker', [
 			'shift_id' => $this->shift->id,
@@ -507,11 +514,13 @@ class SupervisorTest extends TestCase {
 	}
 	
 	public function test_admin_cant_remove_worker_from_closed_shift() {
+		$shiftWorker = ShiftWorker::where('shift_id', $this->shift->id)->first();
+		
 		$this->shift->closed = true;
 		$this->shift->save();
 		$this->actingAs($this->admin)->delete(action('Worker\SupervisorController@removeWorkerFromShift', [
 			'shift' => $this->shift,
-			'worker' => $this->shiftWorker->user
+			'shiftWorker' => $shiftWorker->id
 		]))->assertForbidden();
 	}
 	
@@ -527,9 +536,11 @@ class SupervisorTest extends TestCase {
 	}
 	
 	public function test_kitchen_cant_update_shift_worker() {
+		$shiftWorker = ShiftWorker::where('shift_id', $this->shift->id)->first();
+		
 		$this->actingAs($this->kitchen)->patch(action('Worker\SupervisorController@updateWorkerShift', [
 			'shift' => $this->shift,
-			'worker' => $this->shiftWorker->user
+			'shiftWorker' => $shiftWorker->id
 		]), [
 			'startTime' => '20:00',
 			'endTime' => '22:00',
@@ -538,9 +549,12 @@ class SupervisorTest extends TestCase {
 	}
 	
 	public function test_worker_cant_update_shift_worker() {
+		$shiftWorker = ShiftWorker::where('shift_id', $this->shift->id)->first();
+		
 		$this->actingAs($this->worker)->patch(action('Worker\SupervisorController@updateWorkerShift', [
 			'shift' => $this->shift,
-			'worker' => $this->shiftWorker->user
+			'shiftWorker' => $shiftWorker->id
+		
 		]), [
 			'startTime' => '20:00',
 			'endTime' => '22:00',
@@ -549,10 +563,16 @@ class SupervisorTest extends TestCase {
 	}
 	
 	public function test_supervisor_can_update_shift_worker() {
+		$this->shiftWorker->user->approved = true;
+		$this->shiftWorker->user->save();
+		$shiftWorker = ShiftWorker::where('shift_id', $this->shift->id)->first();
+		
 		$this->actingAs($this->supervisor)->patch(action('Worker\SupervisorController@updateWorkerShift', [
 			'shift' => $this->shift,
-			'worker' => $this->shiftWorker->user
+			'shiftWorker' => $shiftWorker->id
+		
 		]), [
+			'worker' => $this->shiftWorker->user->id,
 			'startTime' => '18:00',
 			'endTime' => '19:00',
 			'workFunction' => $this->workplace->workFunctions->first()->id
@@ -573,11 +593,14 @@ class SupervisorTest extends TestCase {
 	}
 	
 	public function test_supervisor_cant_update_closed_shift_worker() {
+		$shiftWorker = ShiftWorker::where('shift_id', $this->shift->id)->first();
+		
 		$this->shift->closed = true;
 		$this->shift->save();
 		$this->actingAs($this->supervisor)->patch(action('Worker\SupervisorController@updateWorkerShift', [
 			'shift' => $this->shift,
-			'worker' => $this->shiftWorker->user
+			'shiftWorker' => $shiftWorker->id
+		
 		]), [
 			'startTime' => '20:00',
 			'endTime' => '22:00',
@@ -586,10 +609,16 @@ class SupervisorTest extends TestCase {
 	}
 	
 	public function test_admin_can_update_shift_worker() {
+		
+		$this->shiftWorker->user->approved = true;
+		$this->shiftWorker->user->save();
+		$shiftWorker = ShiftWorker::where('shift_id', $this->shift->id)->first();
 		$this->actingAs($this->admin)->patch(action('Worker\SupervisorController@updateWorkerShift', [
 			'shift' => $this->shift,
-			'worker' => $this->shiftWorker->user
+			'shiftWorker' => $shiftWorker->id
+		
 		]), [
+			'worker' => $this->shiftWorker->user->id,
 			'startTime' => '18:00',
 			'endTime' => '19:00',
 			'workFunction' => $this->workplace->workFunctions->first()->id
@@ -610,11 +639,14 @@ class SupervisorTest extends TestCase {
 	}
 	
 	public function test_admin_cant_update_closed_shift_worker() {
+		$shiftWorker = ShiftWorker::where('shift_id', $this->shift->id)->first();
+		
 		$this->shift->closed = true;
 		$this->shift->save();
 		$this->actingAs($this->admin)->patch(action('Worker\SupervisorController@updateWorkerShift', [
 			'shift' => $this->shift,
-			'worker' => $this->shiftWorker->user
+			'shiftWorker' => $shiftWorker->id
+		
 		]), [
 			'startTime' => '20:00',
 			'endTime' => '22:00',
