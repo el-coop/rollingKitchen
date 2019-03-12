@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Requests\Band;
+namespace App\Http\Requests\Admin\BandMember;
 
 use App\Models\BandMember;
 use App\Models\User;
-use Password;
 use Illuminate\Foundation\Http\FormRequest;
+use Password;
 
 class CreateBandMemberRequest extends FormRequest {
-	protected $band;
+
+	private $band;
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *

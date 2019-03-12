@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Band;
+namespace App\Http\Requests\BandMember;
 
+use App\Models\BandMember;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateBandMemberRequest extends FormRequest {
+
 	private $bandMember;
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -25,7 +27,8 @@ class UpdateBandMemberRequest extends FormRequest {
 		return [
 			'name' => 'required',
 			'email' => 'required|email|unique:users,email,' . $this->bandMember->user->id,
-			'language' => 'required|in:en,nl'
+			'language' => 'required|in:en,nl',
+			'bandmember' => 'required|array'
 		];
 	}
 
@@ -33,13 +36,8 @@ class UpdateBandMemberRequest extends FormRequest {
 		$this->bandMember->user->name = $this->input('name');
 		$this->bandMember->user->email = $this->input('email');
 		$this->bandMember->user->language = $this->input('language');
-
+		$this->bandMember->data = array_filter($this->input('bandmember'));
+		$this->bandMember->save();
 		$this->bandMember->user->save();
-		return [
-			'id' => $this->bandMember->id,
-			'name' => $this->input('name'),
-			'email' => $this->input('email'),
-			'language' => $this->input('language')
-		];
 	}
 }

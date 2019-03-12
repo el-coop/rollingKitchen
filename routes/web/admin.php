@@ -163,6 +163,16 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		Route::get('/edit/{band}', 'BandController@edit');
 		Route::patch('/edit/{band}', 'BandController@update');
 		Route::delete('/delete/{band}', 'BandController@destroy');
+		Route::get('/{band}', 'BandController@show');
+		Route::delete('{band}/delete/{bandMember}', 'BandMemberController@destroy');
+		Route::group(['prefix' => 'bandMembers'], function (){
+			Route::get('{band}/edit', 'BandMemberController@create');
+			Route::post('{band}/edit', 'BandMemberController@store');
+			Route::get('{band}/edit/{bandMember}', 'BandMemberController@edit');
+			Route::patch('{band}/edit/{bandMember}', 'BandMemberController@update');
+
+
+		});
 		
 	});
 	

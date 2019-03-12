@@ -18,8 +18,7 @@ class BandController extends Controller {
 		$title = __('admin/artists.bands');
 		$fieldType = "Band";
 		$createTitle = __('admin/artists.createBand');
-		$withEditLink = false;
-		return view('admin.datatableWithNew', compact('title', 'createTitle', 'fieldType', 'withEditLink'));
+		return view('admin.datatableWithNew', compact('title', 'createTitle', 'fieldType'));
 	}
 	
 	public function create() {
@@ -44,6 +43,10 @@ class BandController extends Controller {
 		return [
 			'success' => true
 		];
+	}
+
+	public function show(Band $band){
+		return view('admin.bands.band', compact('band'));
 	}
 	
 	public function schedule() {
