@@ -21,9 +21,6 @@ Route::group(['prefix' => 'worker', 'namespace' => 'Worker'], function () {
 		Route::group(['middleware' => 'supervisor'], function () {
 			Route::delete('{workplace}/delete/{worker}', 'SupervisorController@destroyWorker');
 			Route::group(['prefix' => 'workplace'], function () {
-				Route::post('{workplace}/workFunctions', 'SupervisorController@addWorkFunction');
-				Route::delete('{workplace}/workFunctions/{workFunction}', 'SupervisorController@destroyWorkFunction');
-				Route::patch('{workplace}/workFunctions/{workFunction}', 'SupervisorController@updateWorkFunction');
 				
 				Route::get('{workplace}/worker', 'SupervisorController@createWorker');
 				Route::post('{workplace}/worker', 'SupervisorController@storeWorker');
