@@ -164,6 +164,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		Route::patch('/edit/{band}', 'BandController@update');
 		Route::delete('/delete/{band}', 'BandController@destroy');
 		Route::get('/{band}', 'BandController@show');
+		Route::patch('/update/{band}', 'BandController@nonAjaxUpdate');
 		Route::delete('{band}/delete/{bandMember}', 'BandMemberController@destroy');
 		Route::group(['prefix' => 'bandMembers'], function (){
 			Route::get('{band}/edit', 'BandMemberController@create');

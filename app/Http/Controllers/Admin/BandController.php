@@ -36,6 +36,15 @@ class BandController extends Controller {
 	public function update(UpdateBandRequest $request, Band $band) {
 		return $request->commit();
 	}
+
+	public function nonAjaxUpdate(UpdateBandRequest $request, Band $band) {
+		$request->commit();
+		return back()->with('toast', [
+			'type' => 'success',
+			'title' => '',
+			'message' => __('vue.updateSuccess', [], $request->input('language'))
+		]);
+	}
 	
 	public function destroy(DestroyBandRequest $request, Band $band) {
 		$request->commit();

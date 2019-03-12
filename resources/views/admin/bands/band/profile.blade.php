@@ -1,5 +1,5 @@
 <div>
-    <form method="post" action="{{action('Admin\BandController@update', $band)}}">
+    <form method="post" action="{{action('Admin\BandController@nonAjaxUpdate', $band)}}">
         @method('patch')
         @csrf
         <dynamic-fields :fields="{{ $band->fulldata->map(function($item) use($errors){
