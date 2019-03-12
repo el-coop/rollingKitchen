@@ -21,6 +21,9 @@
 				}"
 						   :init-images="{{ $worker->photos }}" delete-url="/worker/{{ $worker->id }}/photo">
 			</image-manager>
+			@if($errors->has('photos'))
+				<p class="help is-danger">{{$errors->first('photos')}}</p>
+			@endif
 			<dynamic-fields :fields="{{ $rightSideFields->map(function ($field) use ($worker, $errors) {
 					$item = $worker->fullData->firstWhere('name', $field);
 
@@ -41,7 +44,7 @@
 		@if(!$worker->submitted)
 			<confirmation-submit label="@lang('kitchen/kitchen.submitReview')"
 								 title="@lang('kitchen/kitchen.submitConfirmTitle')"
-								 subtitle="@lang('kitchen/kitchen.submitConfirmSubtitle')"
+								 subtitle="{{ $privacyStatement }}"
 								 yes-text="@lang('global.yes')"
 								 no-text="@lang('global.no')" name="review" value="1"
 								 id="reviewButton"></confirmation-submit>
