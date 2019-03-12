@@ -15,6 +15,7 @@ use App\Http\Requests\Worker\Supervisor\RemoveWorkerFromShiftRequest;
 use App\Http\Requests\Worker\Supervisor\UpdateWorkerRequest;
 use App\Http\Requests\Worker\Supervisor\UpdateWorkerShiftRequest;
 use App\Models\Shift;
+use App\Models\ShiftWorker;
 use App\Models\Worker;
 use App\Models\WorkFunction;
 use App\Models\Workplace;
@@ -24,19 +25,6 @@ use App\Http\Controllers\Controller;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class SupervisorController extends Controller {
-	
-	public function addWorkFunction(AddWorkFunctionRequest $request, Workplace $workplace) {
-		return $request->commit();
-	}
-	
-	public function destroyWorkFunction(DeleteWorkFunctionRequest $request, Workplace $workplace, WorkFunction $workFunction) {
-		$request->commit();
-		return ['success' => true];
-	}
-	
-	public function updateWorkFunction(UpdateWorkFunctionRequest $request, Workplace $workplace, WorkFunction $workFunction) {
-		return $request->commit();
-	}
 	
 	public function createWorker() {
 		return (new Worker)->fullData->reject(function ($value) {
@@ -68,18 +56,18 @@ class SupervisorController extends Controller {
 	}
 	
 	public function editShift(Shift $shift) {
-		$shiftWorkers = $shift->workers->map(function ($worker) use ($shift) {
+		$shiftWorkers = ShiftWorker::where('shift_id', $shift->id)->get()->map(function ($shiftWorker) {
 			return [
-				'id' => $worker->id,
-				'worker' => $worker->id,
-				'startTime' => date('H:i', strtotime($worker->pivot->start_time)),
-				'endTime' => date('H:i', strtotime($worker->pivot->end_time)),
-				'workFunction' => $worker->pivot->work_function_id
+				'id' => $shiftWorker->id,
+				'worker' => $shiftWorker->worker_id,
+				'startTime' => date('H:i', strtotime($shiftWorker->start_time)),
+				'endTime' => date('H:i', strtotime($shiftWorker->end_time)),
+				'workFunction' => $shiftWorker->work_function_id
 			
 			];
 		});
 		return [
-			'workers' => $shift->workplace->workers()->where('approved', true)->with('user')->get()->pluck('user.name', 'id'),
+			'workers' => $shift->workplace->workers()->where('approved', true)->with('user')->get()->pluck('user.name', 'id')->put(0, ''),
 			'shiftWorkers' => $shiftWorkers,
 			'workFunctions' => $shift->workplace->workFunctions->pluck('name', 'id')
 		];
@@ -93,11 +81,11 @@ class SupervisorController extends Controller {
 		return $request->commit();
 	}
 	
-	public function updateWorkerShift(UpdateWorkerShiftRequest $request, Shift $shift, Worker $worker) {
+	public function updateWorkerShift(UpdateWorkerShiftRequest $request, Shift $shift, ShiftWorker $shiftWorker) {
 		return $request->commit();
 	}
 	
-	public function removeWorkerFromShift(RemoveWorkerFromShiftRequest $request, Shift $shift, Worker $worker) {
+	public function removeWorkerFromShift(RemoveWorkerFromShiftRequest $request, Shift $shift, ShiftWorker $shiftWorker) {
 		return $request->commit();
 	}
 }
