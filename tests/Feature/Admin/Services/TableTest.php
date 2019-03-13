@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\Services;
 
+use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\Developer;
 use App\Models\Kitchen;
@@ -19,6 +20,7 @@ class TableTest extends TestCase {
 
 	protected $worker;
 	private $admin;
+	protected $accountant;
 	private $kitchen;
 	private $services;
 	private $developer;
@@ -30,6 +32,9 @@ class TableTest extends TestCase {
 
 		$this->kitchen = factory(Kitchen::class)->create();
 		$this->kitchen->user()->save(factory(User::class)->make());
+
+		$this->accountant = factory(User::class)->make();
+		factory(Accountant::class)->create()->user()->save($this->accountant);
 
 		$this->worker = factory(User::class)->make();
 		factory(Worker::class)->create()->user()->save($this->worker);
@@ -50,6 +55,10 @@ class TableTest extends TestCase {
 
 	public function test_kitchen_cant_see_page() {
 		$this->actingAs($this->kitchen->first()->user)->get(action('Admin\ServiceController@index'))->assertForbidden();
+	}
+
+	public function test_accountant_cant_see_page() {
+		$this->actingAs($this->accountant)->get(action('Admin\ServiceController@index'))->assertForbidden();
 	}
 
 	public function test_page_loads_with_datatable() {
@@ -123,6 +132,13 @@ class TableTest extends TestCase {
 			->patch(action('Admin\ServiceController@update', $service))->assertForbidden();
 	}
 
+	public function test_accountant_cant_edit_service() {
+
+		$service = $this->services->random();
+		$this->actingAs($this->accountant)
+			->patch(action('Admin\ServiceController@update', $service))->assertForbidden();
+	}
+
 	public function test_guest_cant_get_service_fields() {
 		$service = $this->services->random();
 		$this->get(action('Admin\ServiceController@edit', $service))->assertRedirect(action('Auth\LoginController@login'));
@@ -136,6 +152,11 @@ class TableTest extends TestCase {
 	public function test_kitchen_cant_get_service_fields() {
 		$service = $this->services->random();
 		$this->actingAs($this->kitchen->user)->get(action('Admin\ServiceController@edit', $service))->assertForbidden();
+	}
+
+	public function test_accountant_cant_get_service_fields() {
+		$service = $this->services->random();
+		$this->actingAs($this->accountant)->get(action('Admin\ServiceController@edit', $service))->assertForbidden();
 	}
 
 	public function test_can_admin_update_service() {
@@ -228,6 +249,18 @@ class TableTest extends TestCase {
 
 	}
 
+	public function test_accountant_cant_create_service() {
+
+		$this->actingAs($this->accountant)
+			->post(action('Admin\ServiceController@create'), [
+				'name' => 'testname',
+				'category' => 'safety',
+				'type' => 0,
+				'price' => '25.00',
+			])->assertForbidden();
+
+	}
+
 	public function test_create_service_validates() {
 
 		$this->actingAs($this->admin->user)
@@ -252,6 +285,10 @@ class TableTest extends TestCase {
 
 	public function test_kitchen_cant_delete_service() {
 		$this->actingAs($this->kitchen->user)->delete(action('Admin\ServiceController@destroy', $this->services->first()))->assertForbidden();
+	}
+
+	public function test_accountant_cant_delete_service() {
+		$this->actingAs($this->accountant)->delete(action('Admin\ServiceController@destroy', $this->services->first()))->assertForbidden();
 	}
 
 	public function test_admin_can_delete_kitchen() {

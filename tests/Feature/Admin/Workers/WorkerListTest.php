@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\Workers;
 
+use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\Kitchen;
 use App\Models\User;
@@ -16,6 +17,7 @@ class WorkerListTest extends TestCase {
 	
 	protected $admin;
 	protected $kitchen;
+	protected $accountant;
 	protected $worker;
 	private $workplaces;
 	
@@ -25,8 +27,11 @@ class WorkerListTest extends TestCase {
 		$this->admin->user()->save(factory(User::class)->make());
 		$this->kitchen = factory(Kitchen::class)->create();
 		$this->kitchen->user()->save(factory(User::class)->make());
-		$this->worker = factory(Worker::class)->create();
-		$this->worker->user()->save(factory(User::class)->make());
+		$this->accountant = factory(User::class)->make();
+		factory(Accountant::class)->create()->user()->save($this->accountant);
+		$this->worker = factory(User::class)->make();
+		factory(Worker::class)->create()->user()->save($this->worker);
+
 	}
 	
 	
@@ -35,11 +40,15 @@ class WorkerListTest extends TestCase {
 	}
 	
 	public function test_worker_cant_see_page() {
-		$this->actingAs($this->worker->user)->get(action('Admin\WorkerController@index'))->assertForbidden();
+		$this->actingAs($this->worker)->get(action('Admin\WorkerController@index'))->assertForbidden();
 	}
 	
 	public function test_kitchen_cant_see_page() {
 		$this->actingAs($this->kitchen->user)->get(action('Admin\WorkerController@index'))->assertForbidden();
+	}
+
+	public function test_accountant_cant_see_page() {
+		$this->actingAs($this->accountant)->get(action('Admin\WorkerController@index'))->assertForbidden();
 	}
 	
 	public function test_admin_can_see_page() {

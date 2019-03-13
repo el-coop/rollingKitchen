@@ -7,5 +7,5 @@ return [
 	'startTime' => 'Begintijd',
 	'endTime' => 'Eindtijd',
 	'exportWorkedHours' => 'Exporteer uren',
-	'hoursOverflow' => 'TBT'
+	'hoursOverflow' => 'Overschreden uren error'
 ];

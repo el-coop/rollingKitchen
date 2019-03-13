@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Worker;
 
+use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\Kitchen;
 use App\Models\Shift;
@@ -18,6 +19,7 @@ class SupervisorTest extends TestCase {
 	protected $admin;
 	protected $kitchen;
 	protected $worker;
+	protected $accountant;
 	protected $workplace;
 	protected $supervisor;
 	protected $shift;
@@ -29,6 +31,8 @@ class SupervisorTest extends TestCase {
 		factory(Admin::class)->create()->user()->save($this->admin);
 		$this->kitchen = factory(User::class)->make();
 		factory(Kitchen::class)->create()->user()->save($this->kitchen);
+		$this->accountant = factory(User::class)->make();
+		factory(Accountant::class)->create()->user()->save($this->accountant);
 		$this->worker = factory(User::class)->make();
 		factory(Worker::class)->create()->user()->save($this->worker);
 		$this->workplace = factory(Workplace::class)->create();
@@ -75,6 +79,10 @@ class SupervisorTest extends TestCase {
 	public function test_kitchen_cant_add_workFunction() {
 		$this->actingAs($this->kitchen)->post(action('Worker\SupervisorController@addWorkFunction', $this->workplace))->assertForbidden();
 	}
+
+	public function test_accountant_cant_add_workFunction() {
+		$this->actingAs($this->accountant)->post(action('Worker\SupervisorController@addWorkFunction', $this->workplace))->assertForbidden();
+	}
 	
 	public function test_admin_cant_add_workFunction() {
 		$this->actingAs($this->admin)->post(action('Worker\SupervisorController@addWorkFunction', $this->workplace))->assertForbidden();
@@ -117,6 +125,10 @@ class SupervisorTest extends TestCase {
 	
 	public function test_admin_cant_update_workFunction() {
 		$this->actingAs($this->admin)->patch(action('Worker\SupervisorController@updateWorkFunction', [$this->workplace, $this->workplace->workfunctions->first()]))->assertForbidden();
+	}
+
+	public function test_accountant_cant_update_workFunction() {
+		$this->actingAs($this->accountant)->patch(action('Worker\SupervisorController@updateWorkFunction', [$this->workplace, $this->workplace->workfunctions->first()]))->assertForbidden();
 	}
 	
 	public function test_worker_cant_update_workFunction() {
@@ -164,6 +176,10 @@ class SupervisorTest extends TestCase {
 	public function test_worker_cant_delete_workFunction() {
 		$this->actingAs($this->worker)->delete(action('Worker\SupervisorController@destroyWorkFunction', [$this->workplace, $this->workplace->workfunctions->first()]))->assertForbidden();
 	}
+
+	public function test_accountant_cant_delete_workFunction() {
+		$this->actingAs($this->accountant)->delete(action('Worker\SupervisorController@destroyWorkFunction', [$this->workplace, $this->workplace->workfunctions->first()]))->assertForbidden();
+	}
 	
 	public function test_supervisor_can_delete_workFunction() {
 		$this->actingAs($this->supervisor)->delete(action('Worker\SupervisorController@destroyWorkFunction', [
@@ -186,6 +202,10 @@ class SupervisorTest extends TestCase {
 	
 	public function test_admin_cant_create_worker() {
 		$this->actingAs($this->admin)->get(action('Worker\SupervisorController@createWorker', $this->workplace))->assertForbidden();
+	}
+
+	public function test_accountant_cant_create_worker() {
+		$this->actingAs($this->accountant)->get(action('Worker\SupervisorController@createWorker', $this->workplace))->assertForbidden();
 	}
 	
 	public function test_worker_cant_create_worker() {
@@ -217,6 +237,10 @@ class SupervisorTest extends TestCase {
 	
 	public function test_admin_cant_store_worker() {
 		$this->actingAs($this->admin)->post(action('Worker\SupervisorController@storeWorker', $this->workplace))->assertForbidden();
+	}
+
+	public function test_accountant_cant_store_worker() {
+		$this->actingAs($this->accountant)->post(action('Worker\SupervisorController@storeWorker', $this->workplace))->assertForbidden();
 	}
 	
 	public function test_worker_cant_store_worker() {
@@ -272,7 +296,16 @@ class SupervisorTest extends TestCase {
 			'sort' => 'name|asc'
 		]))->assertForbidden();
 	}
-	
+
+	public function test_accountant_cant_get_supervisor_datatable() {
+		$this->actingAs($this->accountant)->get(action('DatatableController@supervisorList', [
+			'workplace' => $this->workplace,
+			'attribute' => 'shiftsForSupervisor',
+			'per_page' => 20,
+			'sort' => 'name|asc'
+		]))->assertForbidden();
+	}
+
 	public function test_worker_cant_get_supervisor_datatable() {
 		$this->actingAs($this->worker)->get(action('DatatableController@supervisorList', [
 			
@@ -315,6 +348,10 @@ class SupervisorTest extends TestCase {
 	public function test_kitchen_cant_get_worker() {
 		$this->actingAs($this->kitchen)->get(action('Worker\SupervisorController@editWorker', [$this->workplace, $this->worker->user]))->assertForbidden();
 	}
+
+	public function test_accountant_cant_get_worker() {
+		$this->actingAs($this->accountant)->get(action('Worker\SupervisorController@editWorker', [$this->workplace, $this->worker->user]))->assertForbidden();
+	}
 	
 	public function test_admin_cant_get_worker() {
 		$this->actingAs($this->admin)->get(action('Worker\SupervisorController@editWorker', [$this->workplace, $this->worker->user]))->assertForbidden();
@@ -351,6 +388,10 @@ class SupervisorTest extends TestCase {
 	
 	public function test_admin_cant_update_worker() {
 		$this->actingAs($this->admin)->patch(action('Worker\SupervisorController@updateWorker', [$this->workplace, $this->worker->user]))->assertForbidden();
+	}
+
+	public function test_accountant_cant_update_worker() {
+		$this->actingAs($this->accountant)->patch(action('Worker\SupervisorController@updateWorker', [$this->workplace, $this->worker->user]))->assertForbidden();
 	}
 	
 	public function test_worker_cant_update_worker() {
@@ -400,6 +441,10 @@ class SupervisorTest extends TestCase {
 	public function test_worker_cant_get_shift() {
 		$this->actingAs($this->worker)->get(action('Worker\SupervisorController@editShift', $this->shift))->assertForbidden();
 	}
+
+	public function test_accountant_cant_get_shift() {
+		$this->actingAs($this->accountant)->get(action('Worker\SupervisorController@editShift', $this->shift))->assertForbidden();
+	}
 	
 	public function test_supervisor_can_get_shift() {
 		$this->actingAs($this->supervisor)->get(action('Worker\SupervisorController@editShift', $this->shift))
@@ -421,6 +466,10 @@ class SupervisorTest extends TestCase {
 	
 	public function test_kitchen_cant_close_shift() {
 		$this->actingAs($this->kitchen)->patch(action('Worker\SupervisorController@closeShift', $this->shift))->assertForbidden();
+	}
+
+	public function test_accountant_cant_close_shift() {
+		$this->actingAs($this->accountant)->patch(action('Worker\SupervisorController@closeShift', $this->shift))->assertForbidden();
 	}
 	
 	public function test_worker_cant_close_shift() {
@@ -454,6 +503,15 @@ class SupervisorTest extends TestCase {
 	
 	public function test_kitchen_cant_add_worker_to_shift() {
 		$this->actingAs($this->kitchen)->post(action('Worker\SupervisorController@addWorkerToShift', $this->shift), [
+			'worker' => $this->worker->user->id,
+			'startTime' => '20:00',
+			'endTime' => '22:00',
+			'workFunction' => $this->workplace->workFunctions->first()->id
+		])->assertForbidden();
+	}
+
+	public function test_accountant_cant_add_worker_to_shift() {
+		$this->actingAs($this->accountant)->post(action('Worker\SupervisorController@addWorkerToShift', $this->shift), [
 			'worker' => $this->worker->user->id,
 			'startTime' => '20:00',
 			'endTime' => '22:00',
@@ -574,6 +632,13 @@ class SupervisorTest extends TestCase {
 			'worker' => $this->shiftWorker->user
 		]))->assertForbidden();
 	}
+
+	public function test_accountant_cant_remove_worker_from_shift() {
+		$this->actingAs($this->accountant)->delete(action('Worker\SupervisorController@removeWorkerFromShift', [
+			'shift' => $this->shift,
+			'worker' => $this->shiftWorker->user
+		]))->assertForbidden();
+	}
 	
 	public function test_worker_cant_remove_worker_from_shift() {
 		$this->actingAs($this->worker)->delete(action('Worker\SupervisorController@removeWorkerFromShift', [
@@ -637,6 +702,17 @@ class SupervisorTest extends TestCase {
 	
 	public function test_kitchen_cant_update_shift_worker() {
 		$this->actingAs($this->kitchen)->patch(action('Worker\SupervisorController@updateWorkerShift', [
+			'shift' => $this->shift,
+			'worker' => $this->shiftWorker->user
+		]), [
+			'startTime' => '20:00',
+			'endTime' => '22:00',
+			'workFunction' => $this->workplace->workFunctions->first()->id
+		])->assertForbidden();
+	}
+
+	public function test_accountant_cant_update_shift_worker() {
+		$this->actingAs($this->accountant)->patch(action('Worker\SupervisorController@updateWorkerShift', [
 			'shift' => $this->shift,
 			'worker' => $this->shiftWorker->user
 		]), [

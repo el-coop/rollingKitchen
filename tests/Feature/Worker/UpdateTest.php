@@ -3,6 +3,7 @@
 namespace Tests\Feature\Worker;
 
 use App\Events\Worker\WorkerProfileFilled;
+use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\Kitchen;
 use App\Models\User;
@@ -19,6 +20,7 @@ class UpdateTest extends TestCase {
 	protected $admin;
 	protected $kitchen;
 	protected $worker;
+	protected $accountant;
 	private $kitchenPhoto;
 	private $workerPhoto;
 	
@@ -29,6 +31,8 @@ class UpdateTest extends TestCase {
 		factory(Admin::class)->create()->user()->save($this->admin);
 		$this->kitchen = factory(User::class)->make();
 		factory(Kitchen::class)->create()->user()->save($this->kitchen);
+		$this->accountant = factory(User::class)->make();
+		factory(Accountant::class)->create()->user()->save($this->accountant);
 		$this->worker = factory(User::class)->make();
 		factory(Worker::class)->create()->user()->save($this->worker);
 	}
@@ -50,6 +54,10 @@ class UpdateTest extends TestCase {
 	public function test_worker_can_see_own_page() {
 		$this->actingAs($this->worker)->get(action('Worker\WorkerController@index', $this->worker->user))->assertSuccessful();
 	}
+
+	public function test_accountant_cant_see_worker_page() {
+		$this->actingAs($this->accountant)->get(action('Worker\WorkerController@index', $this->worker->user))->assertForbidden();
+	}
 	
 	public function test_admin_can_see_worker_page() {
 		$this->actingAs($this->admin)->get(action('Worker\WorkerController@index', $this->worker->user))->assertSuccessful();
@@ -61,6 +69,10 @@ class UpdateTest extends TestCase {
 	
 	public function test_kitchen_cant_update_worker() {
 		$this->actingAs($this->kitchen)->patch(action('Worker\WorkerController@update', $this->worker->user))->assertForbidden();
+	}
+
+	public function test_accountant_cant_update_worker() {
+		$this->actingAs($this->accountant)->patch(action('Worker\WorkerController@update', $this->worker->user))->assertForbidden();
 	}
 	
 	public function test_other_worker_cant_update_worker() {

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\Application;
 use App\Models\Field;
@@ -15,9 +16,25 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class FieldTest extends TestCase {
 	use RefreshDatabase;
 	protected $admin;
+	protected $accountant;
 	protected $kitchen;
 	protected $fields;
 	protected $worker;
+
+	protected function setUp() {
+		parent::setUp();
+		$this->admin = factory(User::class)->make();
+		factory(Admin::class)->create()->user()->save($this->admin);
+		$this->kitchen = factory(User::class)->make();
+		factory(Kitchen::class)->create()->user()->save($this->kitchen);
+		$this->accountant = factory(User::class)->make();
+		factory(Accountant::class)->create()->user()->save($this->accountant);
+		factory(Field::class, 5)->create();
+		$this->fields = Field::all();
+		$this->worker = factory(User::class)->make();
+		factory(Worker::class)->create()->user()->save($this->worker);
+
+	}
 
 	public function test_can_see_Kitchen_field_list() {
 		$this->actingAs($this->admin)->get(action('Admin\FieldController@index', 'Kitchen'))->assertSuccessful()->assertViewIs('admin.fields');
@@ -28,6 +45,10 @@ class FieldTest extends TestCase {
 	}
 
 	public function test_can_see_worker_field_list() {
+		$this->actingAs($this->admin)->get(action('Admin\FieldController@index', 'Worker'))->assertSuccessful()->assertViewIs('admin.fields');
+	}
+
+	public function test_can_see_accountant_field_list() {
 		$this->actingAs($this->admin)->get(action('Admin\FieldController@index', 'Worker'))->assertSuccessful()->assertViewIs('admin.fields');
 	}
 
@@ -42,6 +63,13 @@ class FieldTest extends TestCase {
 		$this->actingAs($this->worker)->get(action('Admin\FieldController@index', 'Kitchen'))->assertForbidden();
 		$this->actingAs($this->worker)->get(action('Admin\FieldController@index', 'Application'))->assertForbidden();
 		$this->actingAs($this->worker)->get(action('Admin\FieldController@index', 'Worker'))->assertForbidden();
+
+	}
+
+	public function test_accountant_cant_see_any_field_list() {
+		$this->actingAs($this->accountant)->get(action('Admin\FieldController@index', 'Kitchen'))->assertForbidden();
+		$this->actingAs($this->accountant)->get(action('Admin\FieldController@index', 'Application'))->assertForbidden();
+		$this->actingAs($this->accountant)->get(action('Admin\FieldController@index', 'Worker'))->assertForbidden();
 
 	}
 
@@ -94,6 +122,15 @@ class FieldTest extends TestCase {
 		])->assertForbidden();
 	}
 
+	public function test_accountant_cant_create_field() {
+		$this->actingAs($this->accountant)->post(action('Admin\FieldController@create'), [
+			'name_en' => 'test',
+			'name_nl' => 'test',
+			'type' => 'text',
+			'form' => Kitchen::class,
+		])->assertForbidden();
+	}
+
 	public function test_worker_cant_create_field() {
 
 		$this->actingAs($this->worker)->post(action('Admin\FieldController@create'), [
@@ -120,6 +157,10 @@ class FieldTest extends TestCase {
 
 	public function test_kitchen_cant_delete_field() {
 		$this->actingAs($this->kitchen)->delete(action('Admin\FieldController@destroy', $this->fields->first()))->assertForbidden();
+	}
+
+	public function test_accountant_cant_delete_field() {
+		$this->actingAs($this->accountant)->delete(action('Admin\FieldController@destroy', $this->fields->first()))->assertForbidden();
 	}
 
 	public function test_worker_cant_delete_field() {
@@ -157,6 +198,22 @@ class FieldTest extends TestCase {
 		])->assertForbidden();
 	}
 
+	public function test_worker_cant_edit_field() {
+		$this->actingAs($this->worker)->patch(action('Admin\FieldController@edit', $this->fields->first()), [
+			'name_en' => 'new name',
+			'name_nl' => 'new name nl',
+			'type' => 'text',
+		])->assertForbidden();
+	}
+
+	public function test_accountant_cant_edit_field() {
+		$this->actingAs($this->accountant)->patch(action('Admin\FieldController@edit', $this->fields->first()), [
+			'name_en' => 'new name',
+			'name_nl' => 'new name nl',
+			'type' => 'text',
+		])->assertForbidden();
+	}
+
 	public function test_admin_can_order_list() {
 		$newOrder = $this->fields->sortByDesc('id')->pluck('id');
 		$this->actingAs($this->admin)->patch(action('Admin\FieldController@saveOrder', [
@@ -182,23 +239,18 @@ class FieldTest extends TestCase {
 		]))->assertForbidden();
 	}
 
+	public function test_accountant_cant_order_list() {
+		$newOrder = $this->fields->sortByDesc('id')->pluck('id');
+		$this->actingAs($this->accountant)->patch(action('Admin\FieldController@saveOrder', [
+			'order' => $newOrder->toArray(),
+		]))->assertForbidden();
+	}
+
+
 	public function test_kitchen_cant_order_list() {
 		$newOrder = $this->fields->sortByDesc('id')->pluck('id');
 		$this->actingAs($this->kitchen)->patch(action('Admin\FieldController@saveOrder', [
 			'order' => $newOrder->toArray(),
 		]))->assertForbidden();
-	}
-
-	protected function setUp() {
-		parent::setUp();
-		$this->admin = factory(User::class)->make();
-		factory(Admin::class)->create()->user()->save($this->admin);
-		$this->kitchen = factory(User::class)->make();
-		factory(Kitchen::class)->create()->user()->save($this->kitchen);
-		factory(Field::class, 5)->create();
-		$this->fields = Field::all();
-		$this->worker = factory(User::class)->make();
-		factory(Worker::class)->create()->user()->save($this->worker);
-
 	}
 }

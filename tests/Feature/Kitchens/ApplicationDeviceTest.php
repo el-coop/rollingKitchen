@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Kitchens;
 
+use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\Application;
 use App\Models\ElectricDevice;
@@ -20,6 +21,7 @@ class ApplicationDeviceTest extends TestCase {
 	protected $worker;
 	private $admin;
 	private $application;
+	private $accountant;
 	private $kitchen;
 	private $kitchen2;
 	private $device;
@@ -47,6 +49,9 @@ class ApplicationDeviceTest extends TestCase {
 		$this->kitchen2 = factory(User::class)->make();
 		$this->kitchen2->user()->save(factory(Kitchen::class)->create());
 
+		$this->accountant = factory(User::class)->make();
+		factory(Accountant::class)->create()->user()->save($this->accountant);
+
 		$this->kitchen = factory(User::class)->make();
 		$kitchen = factory(Kitchen::class)->create();
 		$kitchen->user()->save($this->kitchen);
@@ -67,14 +72,22 @@ class ApplicationDeviceTest extends TestCase {
 			'watts' => 3
 		])->assertRedirect(action('Auth\LoginController@login'));
 	}
-	public function test_a_different_worker_cant_create_device() {
+	public function test_a_worker_cant_create_device() {
 		$this->actingAs($this->worker)->post(action('Kitchen\ApplicationDeviceController@create', $this->application), [
 			'name' => 'test',
 			'watts' => 3
 		])->assertForbidden();
 	}
+
 	public function test_a_different_kitchen_cant_create_device() {
 		$this->actingAs($this->kitchen2)->post(action('Kitchen\ApplicationDeviceController@create', $this->application), [
+			'name' => 'test',
+			'watts' => 3
+		])->assertForbidden();
+	}
+
+	public function test_a_accountant_cant_create_device() {
+		$this->actingAs($this->accountant)->post(action('Kitchen\ApplicationDeviceController@create', $this->application), [
 			'name' => 'test',
 			'watts' => 3
 		])->assertForbidden();
@@ -131,10 +144,28 @@ class ApplicationDeviceTest extends TestCase {
 		])->assertRedirect(action('Auth\LoginController@login'));
 	}
 
+	public function test_a_worker_cant_edit_device() {
+		$this->application->status = 'new';
+		$this->application->save();
+		$this->actingAs($this->worker)->patch(action('Kitchen\ApplicationDeviceController@update', ['application' => $this->application, 'device' => $this->device]), [
+			'name' => 'test',
+			'watts' => 0.01
+		])->assertForbidden();
+	}
+
 	public function test_a_different_kitchen_cant_edit_device() {
 		$this->application->status = 'new';
 		$this->application->save();
 		$this->actingAs($this->kitchen2)->patch(action('Kitchen\ApplicationDeviceController@update', ['application' => $this->application, 'device' => $this->device]), [
+			'name' => 'test',
+			'watts' => 0.01
+		])->assertForbidden();
+	}
+
+	public function test_a_accountant_kitchen_cant_edit_device() {
+		$this->application->status = 'new';
+		$this->application->save();
+		$this->actingAs($this->accountant)->patch(action('Kitchen\ApplicationDeviceController@update', ['application' => $this->application, 'device' => $this->device]), [
 			'name' => 'test',
 			'watts' => 0.01
 		])->assertForbidden();
@@ -205,8 +236,18 @@ class ApplicationDeviceTest extends TestCase {
 			->assertRedirect(action('Auth\LoginController@login'));
 	}
 
+	public function test_a_worker_cant_delete_device() {
+		$this->actingAs($this->worker)->delete(action('Kitchen\ApplicationDeviceController@destroy', ['application' => $this->application, 'device' => $this->device]))
+			->assertForbidden();
+	}
+
 	public function test_a_different_kitchen_cant_delete_device() {
 		$this->actingAs($this->kitchen2)->delete(action('Kitchen\ApplicationDeviceController@destroy', ['application' => $this->application, 'device' => $this->device]))
+			->assertForbidden();
+	}
+
+	public function test_an_accountant_cant_delete_device() {
+		$this->actingAs($this->accountant)->delete(action('Kitchen\ApplicationDeviceController@destroy', ['application' => $this->application, 'device' => $this->device]))
 			->assertForbidden();
 	}
 
