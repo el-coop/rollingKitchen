@@ -41,6 +41,10 @@
 				type: Function,
 				required: false
 			},
+			onUpdate: {
+				type: Function,
+				required: true
+			},
 			init: {
 				type: Array,
 				default() {
@@ -72,7 +76,7 @@
 				if (index < 0) {
 					return;
 				}
-				this.entries.splice(index, 1);
+				this.onUpdate(-this.entries.splice(index, 1)[0].payment);
 			},
 			openModal(payload) {
 				this.edit(payload);
@@ -101,6 +105,7 @@
 					}
 					return -1;
 				});
+				this.onUpdate(parseFloat(value.payment));
 			}
 		}
 	}

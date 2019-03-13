@@ -5,6 +5,8 @@
 @section('content')
 	@component('components.calender')
 		@slot('bands',$bands)
+		@slot('budget',$budget)
+		@slot('initBudget',$initBudget)
 		@slot('schedules',$schedules)
 		@slot('stages', $stages)
 	@endcomponent

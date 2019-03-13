@@ -47,10 +47,13 @@ class BandController extends Controller {
 	}
 	
 	public function schedule() {
-		$schedules = BandSchedule::select('dateTime', 'stage_id as stage', 'band_id as band', 'payment','approved')->get()->groupBy('dateTime');
+		$schedules = BandSchedule::select('dateTime', 'stage_id as stage', 'band_id as band', 'payment', 'approved')->get()->groupBy('dateTime');
 		$bands = Band::select('id')->with('user')->get()->pluck('user.name', 'id');
 		$stages = Stage::select('id', 'name')->get()->pluck('name', 'id');
-		return view('admin.bands.schedule', compact('bands', 'stages', 'schedules'));
+		$budget = app('settings')->get('bands_budget');
+		$initBudget = BandSchedule::sum('payment');
+		
+		return view('admin.bands.schedule', compact('bands', 'stages', 'schedules', 'budget','initBudget'));
 	}
 	
 	public function storeSchedule(StoreBandScheduleRequest $request) {
