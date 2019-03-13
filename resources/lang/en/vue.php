@@ -55,5 +55,8 @@ return [
 	'field' => 'Field',
 	'startTime' => 'Start Time',
 	'endTime' => 'End Time',
-	'export' => 'Export'
+	'export' => 'Export',
+	'budget' => 'Budget',
+	'budgetUsed' => 'Budget used',
+	'budgetOverflow' => 'The current schedule is above budget',
 ];

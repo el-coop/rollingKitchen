@@ -3,5 +3,5 @@
 return [
 	'paymentMethod' => 'Payment Method',
 	'individual' => 'Individual',
-	'bandMembers' => 'Band Members'
+	'bandMembers' => 'Band Members',
 ];

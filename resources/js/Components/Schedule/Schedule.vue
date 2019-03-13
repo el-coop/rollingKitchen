@@ -1,6 +1,11 @@
 <template>
 	<ajax-form :action="action" @submitting="submitting = true" @errors="handleErrors" @submitted="handleSubmitted">
-		<slot :submitting="submitting"></slot>
+		<div class="box">
+			<p v-text="`${$translations.budget}: ${budget}`"></p>
+			<p v-text="`${$translations.budgetUsed}: ${budgetUsed}`"></p>
+			<p v-if="budget < budgetUsed" class="help is-danger" v-text="$translations.budgetOverflow"></p>
+		</div>
+		<slot :submitting="submitting" :updateBudget="updateBudget"></slot>
 	</ajax-form>
 </template>
 
@@ -11,11 +16,20 @@
 			action: {
 				type: String,
 				default: window.location.href
+			},
+			budget: {
+				type: Number,
+				required: true
+			},
+			initBudget: {
+				type: Number,
+				required: true
 			}
 		},
 		data() {
 			return {
-				submitting: false
+				submitting: false,
+				budgetUsed: this.initBudget
 			}
 		},
 
@@ -34,6 +48,9 @@
 					});
 				}
 			},
+			updateBudget(value) {
+				this.budgetUsed += value;
+			}
 		}
 	}
 </script>

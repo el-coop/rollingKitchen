@@ -78,5 +78,6 @@ return [
 	'bands_user_created_subject_en' => 'TBT',
 	'bands_user_created_nl' => 'TBT',
 	'bands_user_created_en' => 'TBT',
+	'bands_budget' => 'TBT',
 
 ];

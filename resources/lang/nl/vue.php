@@ -56,4 +56,8 @@ return [
 	'startTime' => 'Begintijd',
 	'endTime' => 'Eindtijd',
 	'export' => 'Exporteren',
+	'budget' => 'TBT',
+	'budgetUsed' => 'TBT',
+	'budgetOverflow' => 'TBT',
+
 ];

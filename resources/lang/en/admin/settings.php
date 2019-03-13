@@ -78,5 +78,6 @@ return [
 	'bands_user_created_subject_en' => 'Bands created mail subject EN',
 	'bands_user_created_nl' => 'Bands created mail body NL',
 	'bands_user_created_en' => 'Bands created mail body EN',
+	'bands_budget' => 'Bands Budget',
 
 ];
