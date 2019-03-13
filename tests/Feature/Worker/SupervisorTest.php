@@ -515,9 +515,11 @@ class SupervisorTest extends TestCase {
 	}
 
 	public function test_accountant_cant_remove_worker_from_shift() {
+		$shiftWorker = ShiftWorker::where('shift_id', $this->shift->id)->first();
+		
 		$this->actingAs($this->accountant)->delete(action('Worker\SupervisorController@removeWorkerFromShift', [
 			'shift' => $this->shift,
-			'worker' => $this->shiftWorker->user
+			'shiftWorker' => $shiftWorker->id
 		]))->assertForbidden();
 	}
 	
@@ -602,9 +604,11 @@ class SupervisorTest extends TestCase {
 	}
 
 	public function test_accountant_cant_update_shift_worker() {
+		$shiftWorker = ShiftWorker::where('shift_id', $this->shift->id)->first();
+		
 		$this->actingAs($this->accountant)->patch(action('Worker\SupervisorController@updateWorkerShift', [
 			'shift' => $this->shift,
-			'worker' => $this->shiftWorker->user
+			'shiftWorker' => $shiftWorker->id
 		]), [
 			'startTime' => '20:00',
 			'endTime' => '22:00',
