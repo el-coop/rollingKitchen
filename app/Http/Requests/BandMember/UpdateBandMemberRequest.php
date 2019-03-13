@@ -3,6 +3,7 @@
 namespace App\Http\Requests\BandMember;
 
 use App\Models\BandMember;
+use App\Models\Field;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateBandMemberRequest extends FormRequest {
@@ -24,12 +25,18 @@ class UpdateBandMemberRequest extends FormRequest {
 	 * @return array
 	 */
 	public function rules() {
-		return [
+		$rules = collect( [
 			'name' => 'required',
 			'email' => 'required|email|unique:users,email,' . $this->bandMember->user->id,
 			'language' => 'required|in:en,nl',
 			'bandmember' => 'required|array'
-		];
+		]);
+		if ($this->input('review') || $this->bandMember->submitted){
+			$requiredFieldsRules = Field::getRequiredFields(BandMember::class);
+			$protectedFieldsRules = Field::getProtectedFields(BandMember::class);
+			$rules = $rules->merge($requiredFieldsRules)->merge($protectedFieldsRules);
+		}
+		return $rules->toArray();
 	}
 
 	public function commit(){
@@ -37,6 +44,9 @@ class UpdateBandMemberRequest extends FormRequest {
 		$this->bandMember->user->email = $this->input('email');
 		$this->bandMember->user->language = $this->input('language');
 		$this->bandMember->data = array_filter($this->input('bandmember'));
+		if ($this->input('review') && !$this->bandMember->submitted) {
+			$this->bandMember->submitted = true;
+		}
 		$this->bandMember->save();
 		$this->bandMember->user->save();
 	}

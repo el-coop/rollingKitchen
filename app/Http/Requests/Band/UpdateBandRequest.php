@@ -32,8 +32,11 @@ class UpdateBandRequest extends FormRequest {
 			'paymentMethod' => 'required|string|in:band,individual'
 		]);
 
-		$fieldRules = Field::getRequiredFields(Band::class);
-		$rules = $rules->merge($fieldRules);
+		if ($this->input('review') || $this->band->submitted){
+			$requiredFieldsRules = Field::getRequiredFields(Band::class);
+			$protectedFieldsRules = Field::getProtectedFields(Band::class);
+			$rules = $rules->merge($requiredFieldsRules)->merge($protectedFieldsRules);
+		}
 		return $rules->toArray();
 	}
 
@@ -42,7 +45,9 @@ class UpdateBandRequest extends FormRequest {
 		$this->band->user->email = $this->input('email');
 		$this->band->user->language = $this->input('language');
 		$this->band->user->save();
-
+		if ($this->input('review') && !$this->band->submitted) {
+			$this->band->submitted = true;
+		}
 		$this->band->data = array_filter($this->input('band'));
 		$this->band->payment_method = $this->input('paymentMethod');
 		$this->band->save();

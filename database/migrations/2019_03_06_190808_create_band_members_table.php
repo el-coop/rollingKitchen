@@ -16,6 +16,7 @@ class CreateBandMembersTable extends Migration
         Schema::create('band_members', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('band_id')->unsigned();
+			$table->boolean('submitted')->default(false);
             $table->json('data');
             $table->timestamps();
 			$table->foreign('band_id')
