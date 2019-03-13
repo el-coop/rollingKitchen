@@ -2,11 +2,17 @@
 
 namespace App\Providers;
 
+use App\Events\Band\ShowCreated;
+use App\Events\Band\ShowDeleted;
+use App\Events\Band\ShowUpdated;
 use App\Events\Kitchen\ApplicationResubmitted;
 use App\Events\Kitchen\ApplicationSubmitted;
 use App\Events\Worker\WorkerProfileFilled;
 use App\Events\Worker\TaxReviewUploaded;
 use App\Listeners\Admin\SendAppplicationResubmittedNotification;
+use App\Listeners\Band\SendShowCreatedNotification;
+use App\Listeners\Band\SendShowDeletedNotification;
+use App\Listeners\Band\SendShowUpdatedNotification;
 use App\Listeners\Kitchen\SendApplicationSubmittedNotification;
 use App\Listeners\Worker\SendProfileFilledNotification;
 use App\Listeners\Worker\SendTaxReviewNotification;
@@ -33,6 +39,15 @@ class EventServiceProvider extends ServiceProvider {
 		],
 		WorkerProfileFilled::class => [
 			SendProfileFilledNotification::class
+		],
+		ShowDeleted::class => [
+			SendShowDeletedNotification::class
+		],
+		ShowUpdated::class => [
+			SendShowUpdatedNotification::class
+		],
+		ShowCreated::class => [
+			SendShowCreatedNotification::class
 		]
 	];
 	

@@ -1,7 +1,7 @@
 <schedule :budget="{{ $budget }}" :init-budget="{{ $initBudget }}">
 	<template #default="{submitting, updateBudget}">
 		<calendar start-date="{{ \Carbon\Carbon::now() }}" :start-hour="13" options-title="@lang('admin/artists.bands')"
-				  :init-data="{{ $schedules }}"
+				  :init-data="{{ $schedules->count() ? $schedules : '{}' }}"
 				  :options="{{ $bands }}">
 			<template #entry="{rawData,processedData, edit, init, dateTime}">
 				<calendar-schedule-display v-if="processedData" :data="processedData" :edit="edit" :init="init"
