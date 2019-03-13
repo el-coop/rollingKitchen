@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Developer;
 
+use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\Developer;
 use App\Models\Error;
@@ -21,6 +22,7 @@ class ErrorTest extends TestCase {
 
 	protected $admin;
 	protected $kitchen;
+	protected $accountant;
 	protected $developer;
 	protected $phpErrors;
 	protected $jsErrors;
@@ -32,6 +34,8 @@ class ErrorTest extends TestCase {
 		$this->admin->user()->save(factory(User::class)->make());
 		$this->worker = factory(User::class)->make();
 		factory(Worker::class)->create()->user()->save($this->worker);
+		$this->accountant = factory(User::class)->make();
+		factory(Accountant::class)->create()->user()->save($this->accountant);
 		$this->developer = factory(Developer::class)->create();
 		$this->developer->user()->save(factory(User::class)->make());
 		$this->kitchen = factory(Kitchen::class)->create();
@@ -56,6 +60,10 @@ class ErrorTest extends TestCase {
 		$this->actingAs($this->kitchen->user)->get(action('Developer\ErrorController@phpErrors'))->assertForbidden();
 	}
 
+	public function test_accountant_cant_see_php_error_page() {
+		$this->actingAs($this->accountant)->get(action('Developer\ErrorController@phpErrors'))->assertForbidden();
+	}
+
 	public function test_admin_cant_see_php_error_page() {
 		$this->actingAs($this->admin->user)->get(action('Developer\ErrorController@phpErrors'))->assertForbidden();
 	}
@@ -76,6 +84,10 @@ class ErrorTest extends TestCase {
 
 	public function test_kitchen_cant_see_js_error_page() {
 		$this->actingAs($this->kitchen->user)->get(action('Developer\ErrorController@jsErrors'))->assertForbidden();
+	}
+
+	public function test_accountant_cant_see_js_error_page() {
+		$this->actingAs($this->accountant)->get(action('Developer\ErrorController@jsErrors'))->assertForbidden();
 	}
 
 	public function test_admin_cant_see_js_error_page() {
@@ -122,6 +134,10 @@ class ErrorTest extends TestCase {
 		$this->actingAs($this->kitchen->user)->delete(action('Developer\ErrorController@resolve',$this->phpErrors->first()->error))->assertForbidden();
 	}
 
+	public function test_accountant_cant_resolve() {
+		$this->actingAs($this->accountant)->delete(action('Developer\ErrorController@resolve',$this->phpErrors->first()->error))->assertForbidden();
+	}
+
 	public function test_admin_cant_resolve() {
 		$this->actingAs($this->admin->user)->delete(action('Developer\ErrorController@resolve',$this->phpErrors->first()->error))->assertForbidden();
 	}
@@ -142,6 +158,10 @@ class ErrorTest extends TestCase {
 
 	public function test_kitchen_cant_get_full_data() {
 		$this->actingAs($this->kitchen->user)->get(action('Developer\ErrorController@show',$this->phpErrors->first()->error))->assertForbidden();
+	}
+
+	public function test_accountant_cant_get_full_data() {
+		$this->actingAs($this->accountant)->get(action('Developer\ErrorController@show',$this->phpErrors->first()->error))->assertForbidden();
 	}
 
 	public function test_admin_cant_get_full_data() {

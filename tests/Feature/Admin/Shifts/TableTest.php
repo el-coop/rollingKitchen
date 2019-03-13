@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\Shifts;
 
+use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\Kitchen;
 use App\Models\Shift;
@@ -16,6 +17,7 @@ class TableTest extends TestCase {
 	use RefreshDatabase;
 	protected $admin;
 	protected $kitchen;
+	protected $accountant;
 	protected $workplaces;
 	private $worker;
 	private $shifts;
@@ -26,6 +28,8 @@ class TableTest extends TestCase {
 		factory(Admin::class)->create()->user()->save($this->admin);
 		$this->kitchen = factory(User::class)->make();
 		factory(Kitchen::class)->create()->user()->save($this->kitchen);
+		$this->accountant = factory(User::class)->make();
+		factory(Accountant::class)->create()->user()->save($this->accountant);
 		$this->worker = factory(User::class)->make();
 		factory(Worker::class)->create()->user()->save($this->worker);
 		
@@ -48,7 +52,10 @@ class TableTest extends TestCase {
 	public function test_kitchen_cant_see_page() {
 		$this->actingAs($this->kitchen)->get(action('Admin\ShiftController@index'))->assertForbidden();
 	}
-	
+
+	public function test_accountant_cant_see_page() {
+		$this->actingAs($this->accountant)->get(action('Admin\ShiftController@index'))->assertForbidden();
+	}
 	
 	public function test_worker_cant_see_page() {
 		$this->actingAs($this->worker)->get(action('Admin\ShiftController@index'))->assertForbidden();

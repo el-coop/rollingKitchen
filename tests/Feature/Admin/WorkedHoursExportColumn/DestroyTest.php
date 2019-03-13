@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\WorkedHoursExportColumn;
 
+use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\Kitchen;
 use App\Models\User;
@@ -15,6 +16,7 @@ class DestroyTest extends TestCase {
 	use RefreshDatabase;
 	protected $admin;
 	protected $kitchen;
+	protected $accountant;
 	protected $worker;
 	protected $workedHoursColumn;
 
@@ -24,6 +26,8 @@ class DestroyTest extends TestCase {
 		factory(Admin::class)->create()->user()->save($this->admin);
 		$this->kitchen = factory(User::class)->make();
 		factory(Kitchen::class)->create()->user()->save($this->kitchen);
+		$this->accountant = factory(User::class)->make();
+		factory(Accountant::class)->create()->user()->save($this->accountant);
 		$this->worker = factory(User::class)->make();
 		factory(Worker::class)->create()->user()->save($this->worker);
 		$this->workedHoursColumn = factory(WorkedHoursExportColumn::class)->create([
@@ -42,6 +46,10 @@ class DestroyTest extends TestCase {
 
 	public function test_worker_cant_destroy_worked_hours_export_column(){
 		$this->actingAs($this->worker)->delete(action('Admin\WorkedHoursExportColumnController@destroy', $this->workedHoursColumn))->assertForbidden();
+	}
+
+	public function test_accountant_cant_destroy_worked_hours_export_column(){
+		$this->actingAs($this->accountant)->delete(action('Admin\WorkedHoursExportColumnController@destroy', $this->workedHoursColumn))->assertForbidden();
 	}
 
 	public function test_admin_can_destroy_worked_hours_export_column(){

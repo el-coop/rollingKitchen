@@ -123,6 +123,13 @@ class TaxReviewTest extends TestCase {
 			'taxReview' => $this->taxReview
 		]))->assertForbidden();
 	}
+
+	public function test_accountant_cant_delete_tax_review() {
+		$this->actingAs($this->worker)->delete(action('Admin\WorkerController@destroyTaxReview', [
+			'worker' => $this->worker->user,
+			'taxReview' => $this->taxReview
+		]))->assertForbidden();
+	}
 	
 	
 	public function test_admin_can_delete_tax_review() {

@@ -3,6 +3,7 @@
 namespace Tests\Feature\Admin\Invoices;
 
 use App\Jobs\SendApplicationInvoice;
+use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\Application;
 use App\Models\Invoice;
@@ -27,6 +28,7 @@ class ApplicationInvoiceTest extends TestCase {
 	private $user;
 	private $kitchen;
 	private $application;
+	private $accountant;
 	private $invoice;
 	private $invoices;
 	private $payment;
@@ -38,6 +40,8 @@ class ApplicationInvoiceTest extends TestCase {
 		factory(Admin::class)->create()->user()->save($this->user);
 		$this->worker = factory(User::class)->make();
 		factory(Worker::class)->create()->user()->save($this->worker);
+		$this->accountant = factory(User::class)->make();
+		factory(Accountant::class)->create()->user()->save($this->accountant);
 		$this->kitchen = factory(User::class)->make();
 		factory(Kitchen::class)->create([
 			'data' => [
@@ -88,6 +92,11 @@ class ApplicationInvoiceTest extends TestCase {
 			->assertForbidden();
 	}
 
+	public function test_accountant_cant_see_invoice_index_page() {
+		$this->actingAs($this->accountant)->get(action('Admin\ApplicationInvoiceController@index'))
+			->assertForbidden();
+	}
+
 	public function test_admin_can_see_invoice_index_page() {
 		$this->actingAs($this->user)->get(action('Admin\ApplicationInvoiceController@index'))
 			->assertSuccessful()->assertSee('</datatable>');
@@ -105,6 +114,11 @@ class ApplicationInvoiceTest extends TestCase {
 
 	public function test_kitchen_cant_see_new_invoice_form() {
 		$this->actingAs($this->kitchen)->get(action('Admin\ApplicationInvoiceController@create', $this->application))
+			->assertForbidden();
+	}
+
+	public function test_accountant_cant_see_new_invoice_form() {
+		$this->actingAs($this->accountant)->get(action('Admin\ApplicationInvoiceController@create', $this->application))
 			->assertForbidden();
 	}
 
@@ -272,6 +286,29 @@ class ApplicationInvoiceTest extends TestCase {
 		Queue::fake();
 
 		$this->actingAs($this->kitchen)->post(action('Admin\ApplicationInvoiceController@store', $this->application), [
+			'tax' => 21,
+			'recipient' => $this->kitchen->email,
+			'bcc' => $this->user->email,
+			'message' => 'test',
+			'subject' => 'test subject',
+			'items' => [[
+				'quantity' => 1,
+				'unitPrice' => 1,
+				'item' => 'test',
+			], [
+				'quantity' => 2,
+				'unitPrice' => 2,
+				'item' => 'test2',
+			]],
+		])->assertForbidden();
+
+		Queue::assertNotPushed(SendApplicationInvoice::class);
+	}
+
+	public function test_accountant_cant_create_new_invoice() {
+		Queue::fake();
+
+		$this->actingAs($this->accountant)->post(action('Admin\ApplicationInvoiceController@store', $this->application), [
 			'tax' => 21,
 			'recipient' => $this->kitchen->email,
 			'bcc' => $this->user->email,
@@ -505,6 +542,13 @@ class ApplicationInvoiceTest extends TestCase {
 		]))->assertForbidden();
 	}
 
+	public function test_accountant_cant_see_existing_invoice_form() {
+		$this->actingAs($this->accountant)->get(action('Admin\ApplicationInvoiceController@edit', [
+			'application' => $this->application,
+			'invoice' => $this->invoices->first(),
+		]))->assertForbidden();
+	}
+
 	public function test_admin_loads_existing_invoice_form() {
 		$defaultPdf = factory(Pdf::class)->create([
 			'name' => 'test',
@@ -633,6 +677,33 @@ class ApplicationInvoiceTest extends TestCase {
 
 
 	public function test_kitchen_cant_edit_invoice() {
+		Queue::fake();
+		$invoice = $this->invoices->first();
+
+		$this->actingAs($this->kitchen)->patch(action('Admin\ApplicationInvoiceController@update', [
+			'application' => $this->application,
+			'invoice' => $invoice,
+		]), [
+			'tax' => 21,
+			'recipient' => $this->kitchen->email,
+			'bcc' => $this->user->email,
+			'message' => 'test',
+			'subject' => 'test subject',
+			'items' => [[
+				'quantity' => 1,
+				'unitPrice' => 1,
+				'item' => 'test',
+			], [
+				'quantity' => 2,
+				'unitPrice' => 2,
+				'item' => 'test2',
+			]],
+		])->assertForbidden();
+
+		Queue::assertNotPushed(SendApplicationInvoice::class);
+	}
+
+	public function test_accountant_cant_edit_invoice() {
 		Queue::fake();
 		$invoice = $this->invoices->first();
 
@@ -912,6 +983,13 @@ class ApplicationInvoiceTest extends TestCase {
 		$this->actingAs($this->kitchen)->post(action('Admin\ApplicationInvoiceController@addPayment', $invoice))->assertForbidden();
 	}
 
+	public function test_accountant_cant_add_payment() {
+
+		$invoice = $this->invoices->first();
+
+		$this->actingAs($this->accountant)->post(action('Admin\ApplicationInvoiceController@addPayment', $invoice))->assertForbidden();
+	}
+
 	public function test_admin_can_add_payment() {
 		$date = $this->faker()->date();
 		$invoice = $this->invoices->first();
@@ -945,6 +1023,11 @@ class ApplicationInvoiceTest extends TestCase {
 		$this->actingAs($this->kitchen)->patch(action('Admin\ApplicationInvoiceController@updatePayment', [$invoice, $this->payment]))->assertForbidden();
 	}
 
+	public function test_accountant_cant_update_payment() {
+		$invoice = $this->invoices->first();
+		$this->actingAs($this->accountant)->patch(action('Admin\ApplicationInvoiceController@updatePayment', [$invoice, $this->payment]))->assertForbidden();
+	}
+
 	public function test_admin_can_update_payment() {
 		$invoice = $this->invoices->first();
 		$date = $this->faker()->date();
@@ -973,6 +1056,11 @@ class ApplicationInvoiceTest extends TestCase {
 	public function test_kitchen_cant_destroy_payment() {
 		$invoice = $this->invoices->first();
 		$this->actingAs($this->kitchen)->delete(action('Admin\ApplicationInvoiceController@destroyPayment', [$invoice, $this->payment]))->assertForbidden();
+	}
+
+	public function test_accountant_cant_destroy_payment() {
+		$invoice = $this->invoices->first();
+		$this->actingAs($this->accountant)->delete(action('Admin\ApplicationInvoiceController@destroyPayment', [$invoice, $this->payment]))->assertForbidden();
 	}
 
 	public function test_admin_can_destroy_payment() {
