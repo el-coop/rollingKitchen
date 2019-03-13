@@ -26,7 +26,7 @@ class BandMemberPolicy {
 	 * @return mixed
 	 */
 	public function view(User $user, BandMember $bandMember) {
-		return $user->user->id == $bandMember->id;
+		return $user->user->id == $bandMember->id && $user->user_type == BandMember::class;
 	}
 
 	/**

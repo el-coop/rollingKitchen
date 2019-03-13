@@ -8,9 +8,11 @@ use App\Http\Requests\Band\UpdateBandMemberRequest;
 use App\Http\Requests\Band\UpdateBandRequest;
 use App\Http\Requests\Band\UpdatePaymentMethodRequest;
 use App\Models\Band;
+use Auth;
 use App\Models\BandMember;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
+use Password;
 use App\Http\Controllers\Controller;
 
 class BandController extends Controller {
@@ -50,5 +52,14 @@ class BandController extends Controller {
 		return [
 			'success' => true
 		];
+	}
+
+	public function broker() {
+		return Password::broker('workers');
+	}
+
+
+	public function redirectTo() {
+		return Auth::user()->user->homePage();
 	}
 }

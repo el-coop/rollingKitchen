@@ -6,6 +6,8 @@ use App\Http\Requests\BandMember\UpdateBandMemberRequest;
 use App\Models\BandMember;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
+use Password;
+use Auth;
 use App\Http\Controllers\Controller;
 
 class BandMemberController extends Controller {
@@ -29,5 +31,14 @@ class BandMemberController extends Controller {
 			'title' => '',
 			'message' => __('vue.updateSuccess', [], $request->input('language'))
 		]);
+	}
+
+	public function broker() {
+		return Password::broker('workers');
+	}
+
+
+	public function redirectTo() {
+		return Auth::user()->user->homePage();
 	}
 }
