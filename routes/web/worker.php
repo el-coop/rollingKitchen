@@ -36,8 +36,8 @@ Route::group(['prefix' => 'worker', 'namespace' => 'Worker'], function () {
 			Route::patch('{shift}', 'SupervisorController@closeShift');
 			
 			Route::post('{shift}/worker', 'SupervisorController@addWorkerToShift');
-			Route::delete('{shift}/worker/{worker}', 'SupervisorController@removeWorkerFromShift');
-			Route::patch('{shift}/worker/{worker}', 'SupervisorController@updateWorkerShift');
+			Route::delete('{shift}/worker/{shiftWorker}', 'SupervisorController@removeWorkerFromShift');
+			Route::patch('{shift}/worker/{shiftWorker}', 'SupervisorController@updateWorkerShift');
 		});
 	});
 });

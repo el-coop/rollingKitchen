@@ -7,6 +7,7 @@ use Illuminate\Contracts\Validation\Rule;
 
 class WorkerApproved implements Rule {
 	protected $worker;
+	
 	/**
 	 * Create a new rule instance.
 	 *
@@ -15,7 +16,7 @@ class WorkerApproved implements Rule {
 	public function __construct() {
 		//
 	}
-
+	
 	/**
 	 * Determine if the validation rule passes.
 	 *
@@ -24,10 +25,13 @@ class WorkerApproved implements Rule {
 	 * @return bool
 	 */
 	public function passes($attribute, $value) {
+		if (!$value) {
+			return true;
+		}
 		$this->worker = Worker::findOrFail($value);
 		return $this->worker->approved;
 	}
-
+	
 	/**
 	 * Get the validation error message.
 	 *
