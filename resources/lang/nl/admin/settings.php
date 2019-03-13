@@ -68,5 +68,8 @@ return [
 	'workers_profile_filled_subject_en' => 'Medewerker profiel ingevuld onderwerp EN',
 	'workers_profile_filled_nl' => 'Medewerker profiel ingevuld tekst NL',
 	'workers_profile_filled_en' => 'Medewerker profiel ingevuld tekst EN',
+	
+	'workers_privacy_statement_nl' => 'Werknemerst privacy verklaring NL',
+	'workers_privacy_statement_en' => 'Werknemerst privacy verklaring EN'
 
 ];
