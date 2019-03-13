@@ -71,127 +71,6 @@ class SupervisorTest extends TestCase {
 			->assertSee(__('worker/supervisor.manageWorkers'));
 	}
 	
-	
-	public function test_guest_cant_add_workFunction() {
-		$this->post(action('Worker\SupervisorController@addWorkFunction', $this->workplace))->assertRedirect(action('Auth\LoginController@login'));
-	}
-	
-	public function test_kitchen_cant_add_workFunction() {
-		$this->actingAs($this->kitchen)->post(action('Worker\SupervisorController@addWorkFunction', $this->workplace))->assertForbidden();
-	}
-
-	public function test_accountant_cant_add_workFunction() {
-		$this->actingAs($this->accountant)->post(action('Worker\SupervisorController@addWorkFunction', $this->workplace))->assertForbidden();
-	}
-	
-	public function test_admin_cant_add_workFunction() {
-		$this->actingAs($this->admin)->post(action('Worker\SupervisorController@addWorkFunction', $this->workplace))->assertForbidden();
-	}
-	
-	public function test_worker_cant_add_workFunction() {
-		$this->actingAs($this->worker)->post(action('Worker\SupervisorController@addWorkFunction', $this->workplace))->assertForbidden();
-	}
-	
-	public function test_supervisor_can_add_workFunction() {
-		$response = $this->actingAs($this->supervisor)->post(action('Worker\SupervisorController@addWorkFunction',
-			$this->workplace
-		), [
-			'name' => 'name',
-			'payment_per_hour_before_tax' => 12,
-			'payment_per_hour_after_tax' => 10,
-		])->assertSuccessful();
-		$response->assertJsonFragment([
-			'name' => 'name',
-			'payment_per_hour_after_tax' => 10,
-			'payment_per_hour_before_tax' => 12,
-			'workplace_id' => 1
-		]);
-		
-		$this->assertDatabaseHas('work_functions', [
-			'name' => 'name',
-			'payment_per_hour_before_tax' => 12,
-			'payment_per_hour_after_tax' => 10,
-			'workplace_id' => 1
-		]);
-	}
-	
-	public function test_guest_cant_update_workFunction() {
-		$this->patch(action('Worker\SupervisorController@updateWorkFunction', [$this->workplace, $this->workplace->workfunctions->first()]))->assertRedirect(action('Auth\LoginController@login'));
-	}
-	
-	public function test_kitchen_cant_update_workFunction() {
-		$this->actingAs($this->kitchen)->patch(action('Worker\SupervisorController@updateWorkFunction', [$this->workplace, $this->workplace->workfunctions->first()]))->assertForbidden();
-	}
-	
-	public function test_admin_cant_update_workFunction() {
-		$this->actingAs($this->admin)->patch(action('Worker\SupervisorController@updateWorkFunction', [$this->workplace, $this->workplace->workfunctions->first()]))->assertForbidden();
-	}
-
-	public function test_accountant_cant_update_workFunction() {
-		$this->actingAs($this->accountant)->patch(action('Worker\SupervisorController@updateWorkFunction', [$this->workplace, $this->workplace->workfunctions->first()]))->assertForbidden();
-	}
-	
-	public function test_worker_cant_update_workFunction() {
-		$this->actingAs($this->worker)->patch(action('Worker\SupervisorController@updateWorkFunction', [$this->workplace, $this->workplace->workfunctions->first()]))->assertForbidden();
-	}
-	
-	public function test_supervisor_can_update_workFunction() {
-		$response = $this->actingAs($this->supervisor)->patch(action('Worker\SupervisorController@updateWorkFunction', [
-			$this->workplace,
-			$this->workplace->workFunctions->first(),
-		]), [
-			'name' => 'name',
-			'payment_per_hour_before_tax' => 12,
-			'payment_per_hour_after_tax' => 10,
-		])->assertSuccessful();
-		$response->assertJsonFragment([
-			'name' => 'name',
-			'payment_per_hour_after_tax' => 10,
-			'payment_per_hour_before_tax' => 12,
-			'id' => $this->workplace->workFunctions->first()->id,
-		]);
-		
-		$this->assertDatabaseHas('work_functions', [
-			'name' => 'name',
-			'payment_per_hour_before_tax' => 12,
-			'payment_per_hour_after_tax' => 10,
-			'workplace_id' => 1,
-			'id' => $this->workplace->workFunctions->first()->id,
-		
-		]);
-	}
-	
-	public function test_guest_cant_delete_workFunction() {
-		$this->delete(action('Worker\SupervisorController@destroyWorkFunction', [$this->workplace, $this->workplace->workfunctions->first()]))->assertRedirect(action('Auth\LoginController@login'));
-	}
-	
-	public function test_kitchen_cant_delete_workFunction() {
-		$this->actingAs($this->kitchen)->delete(action('Worker\SupervisorController@destroyWorkFunction', [$this->workplace, $this->workplace->workfunctions->first()]))->assertForbidden();
-	}
-	
-	public function test_admin_cant_delete_workFunction() {
-		$this->actingAs($this->admin)->delete(action('Worker\SupervisorController@destroyWorkFunction', [$this->workplace, $this->workplace->workfunctions->first()]))->assertForbidden();
-	}
-	
-	public function test_worker_cant_delete_workFunction() {
-		$this->actingAs($this->worker)->delete(action('Worker\SupervisorController@destroyWorkFunction', [$this->workplace, $this->workplace->workfunctions->first()]))->assertForbidden();
-	}
-
-	public function test_accountant_cant_delete_workFunction() {
-		$this->actingAs($this->accountant)->delete(action('Worker\SupervisorController@destroyWorkFunction', [$this->workplace, $this->workplace->workfunctions->first()]))->assertForbidden();
-	}
-	
-	public function test_supervisor_can_delete_workFunction() {
-		$this->actingAs($this->supervisor)->delete(action('Worker\SupervisorController@destroyWorkFunction', [
-			$this->workplace,
-			$this->workplace->workFunctions->first(),
-		]))->assertSuccessful();
-		$this->assertDatabaseMissing('work_functions', [
-			'id' => $this->workplace->workFunctions->first()->id,
-		
-		]);
-	}
-	
 	public function test_guest_cant_create_worker() {
 		$this->get(action('Worker\SupervisorController@createWorker', $this->workplace))->assertRedirect(action('Auth\LoginController@login'));
 	}
@@ -459,7 +338,7 @@ class SupervisorTest extends TestCase {
 				'workers' => $this->workplace->workers()->where('approved', true)->with('user')->get()->pluck('name', 'id')
 			]);
 	}
-
+	
 	public function test_guest_cant_close_shift() {
 		$this->patch(action('Worker\SupervisorController@closeShift', $this->shift))->assertRedirect(action('Auth\LoginController@login'));
 	}
@@ -485,7 +364,7 @@ class SupervisorTest extends TestCase {
 		$this->actingAs($this->admin)->patch(action('Worker\SupervisorController@closeShift', $this->shift))->assertSuccessful();
 		$this->assertDatabaseHas('shifts', ['id' => $this->shift->id, 'closed' => true]);
 	}
-
+	
 	public function test_supervisor_cant_close_closed_shift() {
 		$this->shift->closed = true;
 		$this->shift->save();
@@ -580,7 +459,7 @@ class SupervisorTest extends TestCase {
 			'endTime' => '22:00',
 			'workFunction' => $this->workplace->workFunctions->first()->id
 		])->assertRedirect()->assertSessionHasErrors(['worker']);
-
+		
 	}
 	
 	public function test_admin_can_add_approved_worker_to_shift() {
@@ -658,7 +537,7 @@ class SupervisorTest extends TestCase {
 			'worker_id' => $this->shiftWorker->user->id
 		]);
 	}
-
+	
 	public function test_supervisor_cant_remove_worker_from_closed_shift() {
 		$this->shift->closed = true;
 		$this->shift->save();
@@ -832,8 +711,8 @@ class SupervisorTest extends TestCase {
 			'sort' => 'name|asc'
 		]))->assertForbidden();
 	}
-
-	public function test_hours_overflow_validation(){
+	
+	public function test_hours_overflow_validation() {
 		$this->worker->user->approved = true;
 		$this->worker->user->save();
 		$this->actingAs($this->supervisor)->post(action('Worker\SupervisorController@addWorkerToShift', $this->shift), [

@@ -8,6 +8,7 @@ use App\Models\Admin;
 use App\Models\Kitchen;
 use App\Models\User;
 use App\Models\Worker;
+use App\Models\WorkerPhoto;
 use App\Notifications\Worker\ProfileFilledNotification;
 use Event;
 use Notification;
@@ -110,7 +111,10 @@ class UpdateTest extends TestCase {
 		Event::assertNotDispatched(WorkerProfileFilled::class);
 	}
 	
-	public function test_worker_can_submit_self() {
+	public function test_worker_can_submit_self_when_has_photo() {
+		factory(WorkerPhoto::class)->create([
+			'worker_id' => $this->worker->user->id
+		]);
 		
 		Event::fake();
 		
@@ -143,8 +147,45 @@ class UpdateTest extends TestCase {
 		});
 	}
 	
+	public function test_worker_must_have_a_photo() {
+		
+		Event::fake();
+		
+		$this->actingAs($this->worker)->patch(action('Worker\WorkerController@update', $this->worker->user), [
+			'email' => 'bla@gla.bla',
+			'name' => 'game',
+			'language' => 'en',
+			'worker' => [
+				'data'
+			],
+			'review' => true
+		])->assertSessionHasErrors('photos');
+		
+		$this->assertDatabaseMissing('users', [
+			'user_id' => $this->worker->user_id,
+			'user_type' => Worker::class,
+			'email' => 'bla@gla.bla',
+			'name' => 'game',
+			'language' => 'en'
+		]);
+		
+		$this->assertDatabaseMissing('workers', [
+			'id' => $this->worker->user_id,
+			'data' => json_encode(['data']),
+			'submitted' => true
+		]);
+		
+		Event::assertNotDispatched(WorkerProfileFilled::class, function ($event) {
+			return $event->worker->id === $this->worker->user->id;
+		});
+	}
+	
 	
 	public function test_worker_filled_notification_only_sent_once() {
+		
+		factory(WorkerPhoto::class)->create([
+			'worker_id' => $this->worker->user->id
+		]);
 		
 		Event::fake();
 		

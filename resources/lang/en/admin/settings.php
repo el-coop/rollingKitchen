@@ -68,5 +68,7 @@ return [
 	'workers_profile_filled_subject_en' => 'Worker profile filled subject EN',
 	'workers_profile_filled_nl' => 'Worker profile filled body NL',
 	'workers_profile_filled_en' => 'Worker profile filled body EN',
-
+	
+	'workers_privacy_statement_nl' => 'Workers privacy statement NL',
+	'workers_privacy_statement_en' => 'Workers privacy statement EN'
 ];

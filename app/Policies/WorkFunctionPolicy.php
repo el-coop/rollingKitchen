@@ -36,7 +36,7 @@ class WorkFunctionPolicy {
 	 * @return mixed
 	 */
 	public function create(User $user) {
-		return $user->user_type == Admin::class ||  ($user->user_type == Worker::class && $user->user->isSupervisor());
+		return $user->user_type == Admin::class;
 	}
 
 	/**
@@ -47,7 +47,7 @@ class WorkFunctionPolicy {
 	 * @return mixed
 	 */
 	public function update(User $user, WorkFunction $workFunction) {
-		return $user->user_type == Admin::class || ($workFunction->workplace->hasWorker($user->user) && $user->user->isSupervisor());
+		return $user->user_type == Admin::class;
 	}
 
 	/**
@@ -58,7 +58,7 @@ class WorkFunctionPolicy {
 	 * @return mixed
 	 */
 	public function delete(User $user, WorkFunction $workFunction) {
-		return $user->user_type == Admin::class || ($user->user_type == Worker::class && $user->user->isSupervisor());
+		return $user->user_type == Admin::class;
 	}
 
 	/**
