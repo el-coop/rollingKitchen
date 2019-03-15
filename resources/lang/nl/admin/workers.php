@@ -19,6 +19,6 @@ return [
 	'approved' => 'Goedgekeurd',
 	'totalHours' => 'Aantal uren',
 	'pdf' => 'PDF',
-	'shiftPayment' => 'TBT',
-	'totalPayment' => 'TBT'
+	'shiftPayment' => 'Betaling shift',
+	'totalPayment' => 'Betaling totaal'
 ];

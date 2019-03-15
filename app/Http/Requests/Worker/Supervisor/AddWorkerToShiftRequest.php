@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Worker\Supervisor;
 
+use App\Models\ShiftWorker;
 use App\Models\Worker;
 use App\Rules\HoursOverflow;
 use App\Rules\WorkerApproved;
@@ -18,8 +19,12 @@ class AddWorkerToShiftRequest extends FormRequest {
 	 */
 	public function authorize() {
 		$this->shift = $this->route('shift');
-		$this->worker = Worker::findOrFail($this->input('worker'));
-		return $this->user()->can('update', $this->shift) && $this->shift->workplace->hasWorker($this->worker) && !$this->shift->closed;
+		$hasWorker = true;
+		if ($this->input('worker')) {
+			$this->worker = Worker::findOrFail($this->input('worker'));
+			$hasWorker = $this->shift->workplace->hasWorker($this->worker);
+		}
+		return $this->user()->can('update', $this->shift) && $hasWorker && !$this->shift->closed;
 	}
 	
 	/**
@@ -29,18 +34,25 @@ class AddWorkerToShiftRequest extends FormRequest {
 	 */
 	public function rules() {
 		return [
-			'worker' => ['required','integer', new WorkerApproved],
+			'worker' => ['nullable', 'integer', new WorkerApproved],
 			'startTime' => 'required|date_format:H:i',
-			'endTime' => ['required','date_format:H:i', new HoursOverflow($this->input('startTime'), $this->shift->totalHours, $this->shift->hours)],
+			'endTime' => ['required', 'date_format:H:i', new HoursOverflow($this->input('startTime'), $this->shift->totalHours, $this->shift->hours)],
 			'workFunction' => 'required|integer'
 		];
 	}
 	
 	public function commit() {
-		$this->shift->workers()->attach($this->worker, ['start_time' => $this->input('startTime'), 'end_time' => $this->input('endTime'), 'work_function_id' => $this->input('workFunction')]);
+		$shiftWorker = new ShiftWorker;
+		$shiftWorker->worker_id = $this->worker->id ?? null;
+		$shiftWorker->shift_id = $this->shift->id;
+		$shiftWorker->start_time = $this->input('startTime');
+		$shiftWorker->end_time = $this->input('endTime');
+		$shiftWorker->work_function_id = $this->input('workFunction');
+		$shiftWorker->save();
+		
 		return [
-			'id' => $this->worker->id,
-			'worker' => $this->worker->id,
+			'id' => $shiftWorker->id,
+			'worker' => $this->worker->id ?? null,
 			'startTime' => $this->input('startTime'),
 			'endTime' => $this->input('endTime'),
 			'workFunction' => $this->input('workFunction')

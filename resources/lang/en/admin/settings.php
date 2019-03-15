@@ -79,4 +79,7 @@ return [
 	'bands_user_created_nl' => 'Bands created mail body NL',
 	'bands_user_created_en' => 'Bands created mail body EN',
 
+	
+	'workers_privacy_statement_nl' => 'Workers privacy statement NL',
+	'workers_privacy_statement_en' => 'Workers privacy statement EN'
 ];

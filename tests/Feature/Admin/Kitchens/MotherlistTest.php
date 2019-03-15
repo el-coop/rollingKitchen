@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\Kitchens;
 
+use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\Application;
 use App\Models\Developer;
@@ -21,6 +22,7 @@ class MotherlistTest extends TestCase {
 	
 	protected $worker;
 	private $admin;
+	protected $accountant;
 	private $kitchens;
 	private $developer;
 	
@@ -31,6 +33,8 @@ class MotherlistTest extends TestCase {
 		factory(\App\Models\Field::class, 5)->create();
 		$this->worker = factory(User::class)->make();
 		factory(Worker::class)->create()->user()->save($this->worker);
+		$this->accountant = factory(User::class)->make();
+		factory(Accountant::class)->create()->user()->save($this->accountant);
 		$this->developer = factory(Developer::class)->create();
 		$this->developer->user()->save(factory(User::class)->make());
 		
@@ -64,6 +68,10 @@ class MotherlistTest extends TestCase {
 	public function test_kitchen_cant_see_page() {
 		$this->actingAs($this->kitchens->first()->user)->get(action('Admin\KitchenController@index'))->assertForbidden();
 	}
+
+	public function test_accountant_cant_see_page() {
+		$this->actingAs($this->accountant)->get(action('Admin\KitchenController@index'))->assertForbidden();
+	}
 	
 	public function test_page_loads_with_datatable() {
 		$this->actingAs($this->admin->user)->get(action('Admin\KitchenController@index'))
@@ -95,6 +103,10 @@ class MotherlistTest extends TestCase {
 	
 	public function test_kitchen_cant_get_list() {
 		$this->actingAs($this->kitchens->first()->user)->get(action('DatatableController@list'))->assertForbidden();
+	}
+
+	public function test_accountant_cant_get_list() {
+		$this->actingAs($this->accountant)->get(action('DatatableController@list'))->assertForbidden();
 	}
 	
 	public function test_datatable_get_table_data_sorted() {
@@ -155,6 +167,12 @@ class MotherlistTest extends TestCase {
 		$this->actingAs($this->kitchens->first()->user)
 			->get(action('Admin\KitchenController@edit', $kitchen))->assertForbidden();
 	}
+
+	public function test_accountant_cant_get_kitchen_fields_with_values() {
+		$kitchen = $this->kitchens->random();
+		$this->actingAs($this->accountant)
+			->get(action('Admin\KitchenController@edit', $kitchen))->assertForbidden();
+	}
 	
 	public function test_admin_can_get_kitchen_fields_with_values() {
 		$kitchen = $this->kitchens->random();
@@ -177,6 +195,12 @@ class MotherlistTest extends TestCase {
 	public function test_kitchen_cant_edit_kitchen() {
 		$kitchen = $this->kitchens->random();
 		$this->actingAs($this->kitchens->first()->user)
+			->patch(action('Admin\KitchenController@update', $kitchen))->assertForbidden();
+	}
+
+	public function test_accountant_cant_edit_kitchen() {
+		$kitchen = $this->kitchens->random();
+		$this->actingAs($this->accountant)
 			->patch(action('Admin\KitchenController@update', $kitchen))->assertForbidden();
 	}
 	
@@ -230,6 +254,10 @@ class MotherlistTest extends TestCase {
 	
 	public function test_worker_cant_delete_another_kitchen() {
 		$this->actingAs($this->worker)->delete(action('Admin\KitchenController@destroy', $this->kitchens->first()))->assertForbidden();
+	}
+
+	public function test_accountant_cant_delete_another_kitchen() {
+		$this->actingAs($this->accountant)->delete(action('Admin\KitchenController@destroy', $this->kitchens->first()))->assertForbidden();
 	}
 	
 	public function test_kitchen_cant_delete_another_kitchen() {

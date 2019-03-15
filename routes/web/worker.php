@@ -21,9 +21,6 @@ Route::group(['prefix' => 'worker', 'namespace' => 'Worker'], function () {
 		Route::group(['middleware' => 'supervisor'], function () {
 			Route::delete('{workplace}/delete/{worker}', 'SupervisorController@destroyWorker');
 			Route::group(['prefix' => 'workplace'], function () {
-				Route::post('{workplace}/workFunctions', 'SupervisorController@addWorkFunction');
-				Route::delete('{workplace}/workFunctions/{workFunction}', 'SupervisorController@destroyWorkFunction');
-				Route::patch('{workplace}/workFunctions/{workFunction}', 'SupervisorController@updateWorkFunction');
 				
 				Route::get('{workplace}/worker', 'SupervisorController@createWorker');
 				Route::post('{workplace}/worker', 'SupervisorController@storeWorker');
@@ -39,8 +36,8 @@ Route::group(['prefix' => 'worker', 'namespace' => 'Worker'], function () {
 			Route::patch('{shift}', 'SupervisorController@closeShift');
 			
 			Route::post('{shift}/worker', 'SupervisorController@addWorkerToShift');
-			Route::delete('{shift}/worker/{worker}', 'SupervisorController@removeWorkerFromShift');
-			Route::patch('{shift}/worker/{worker}', 'SupervisorController@updateWorkerShift');
+			Route::delete('{shift}/worker/{shiftWorker}', 'SupervisorController@removeWorkerFromShift');
+			Route::patch('{shift}/worker/{shiftWorker}', 'SupervisorController@updateWorkerShift');
 		});
 	});
 });

@@ -57,17 +57,20 @@ return [
 
 	'accountant' => 'Accountant',
 	'accountant_email' => "Email Accountant",
-	'accountant_password' => "TBT",
+	'accountant_password' => "Wachtwoord Accountant",
 	
-	"workers_tax_review_uploaded_subject_nl" => 'TBT',
-	"workers_tax_review_uploaded_subject_en" => 'TBT',
-	"workers_tax_review_uploaded_nl" => 'TBT',
-	"workers_tax_review_uploaded_en" => 'TBT',
+	"workers_tax_review_uploaded_subject_nl" => 'Belasting informatie uploaded onderwerp NL',
+	"workers_tax_review_uploaded_subject_en" => 'Belasting informatie uploaded onderwerp EN',
+	"workers_tax_review_uploaded_nl" => 'Belasting informatie uploaded tekst NL',
+	"workers_tax_review_uploaded_en" => 'Belasting informatie uploaded tekst EN',
 	
-	'workers_profile_filled_subject_nl' => 'TBT',
-	'workers_profile_filled_subject_en' => 'TBT',
-	'workers_profile_filled_nl' => 'TBT',
-	'workers_profile_filled_en' => 'TBT',
+	'workers_profile_filled_subject_nl' => 'Medewerker profiel ingevuld onderwerp NL',
+	'workers_profile_filled_subject_en' => 'Medewerker profiel ingevuld onderwerp EN',
+	'workers_profile_filled_nl' => 'Medewerker profiel ingevuld tekst NL',
+	'workers_profile_filled_en' => 'Medewerker profiel ingevuld tekst EN',
+	
+	'workers_privacy_statement_nl' => 'Werknemerst privacy verklaring NL',
+	'workers_privacy_statement_en' => 'Werknemerst privacy verklaring EN'
 
 	'artist_managers_user_created_subject_nl' => 'TBT',
 	'artist_managers_user_created_subject_en' => 'TBT',

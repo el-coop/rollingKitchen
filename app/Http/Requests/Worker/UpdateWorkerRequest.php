@@ -43,6 +43,14 @@ class UpdateWorkerRequest extends FormRequest {
 		return $rules->toArray();
 	}
 	
+	public function withValidator($validator) {
+		$validator->after(function ($validator) {
+			if ($this->input('review') && !$this->worker->photos()->count()) {
+				$validator->errors()->add('photos', __('validation.required', ['attribute ' => 'photos ']));
+			}
+		});
+	}
+	
 	public function commit() {
 		$this->worker->user->name = $this->input('name');
 		$this->worker->user->email = $this->input('email');

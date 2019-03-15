@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\Shifts;
 
+use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\Kitchen;
 use App\Models\Shift;
@@ -16,6 +17,7 @@ class CreateTest extends TestCase {
 	use RefreshDatabase;
 	protected $admin;
 	protected $kitchen;
+	protected $accountant;
 	protected $workplaces;
 	protected $worker;
 	private $shifts;
@@ -26,6 +28,8 @@ class CreateTest extends TestCase {
 		factory(Admin::class)->create()->user()->save($this->admin);
 		$this->kitchen = factory(User::class)->make();
 		factory(Kitchen::class)->create()->user()->save($this->kitchen);
+		$this->accountant = factory(User::class)->make();
+		factory(Accountant::class)->create()->user()->save($this->accountant);
 		$this->worker = factory(User::class)->make();
 		factory(Worker::class)->create()->user()->save($this->worker);
 		$this->workplaces = factory(Workplace::class, 10)->create();
@@ -46,6 +50,10 @@ class CreateTest extends TestCase {
 	
 	public function test_worker_cant_see_shift_form() {
 		$this->actingAs($this->worker)->get(action('Admin\ShiftController@create'))->assertForbidden();
+	}
+
+	public function test_accountant_cant_see_shift_form() {
+		$this->actingAs($this->accountant)->get(action('Admin\ShiftController@create'))->assertForbidden();
 	}
 	
 	public function test_admin_can_see_shift_form() {
@@ -75,6 +83,10 @@ class CreateTest extends TestCase {
 	
 	public function test_worker_cant_create_a_shift() {
 		$this->actingAs($this->worker)->post(action('Admin\ShiftController@store'))->assertForbidden();
+	}
+
+	public function test_accountant_cant_create_a_shift() {
+		$this->actingAs($this->accountant)->post(action('Admin\ShiftController@store'))->assertForbidden();
 	}
 	
 	public function test_admin_can_create_a_shift() {

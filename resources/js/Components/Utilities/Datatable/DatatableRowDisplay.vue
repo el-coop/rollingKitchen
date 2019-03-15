@@ -1,5 +1,5 @@
 <template>
-	<modal name="datatable-row" :adaptive="true" height="100%" :pivotY="0"
+	<modal :name="`datatable-row${name}`" :adaptive="true" height="100%" :pivotY="0"
 		   :pivotX="1" :width="width">
 		<div class="modal-body box">
 			<button class="modal-close is-large" @click="$modal.hide('datatable-row')"></button>
@@ -12,6 +12,9 @@
 	export default {
 		name: "DatatableRowDisplay",
 		props: {
+			name: {
+				default: ''
+			},
 			width: {
 				default: 600
 			}

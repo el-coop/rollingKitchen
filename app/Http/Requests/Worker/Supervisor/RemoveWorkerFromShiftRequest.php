@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class RemoveWorkerFromShiftRequest extends FormRequest {
 	protected $shift;
 	protected $worker;
-
+	
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
@@ -15,10 +15,9 @@ class RemoveWorkerFromShiftRequest extends FormRequest {
 	 */
 	public function authorize() {
 		$this->shift = $this->route('shift');
-		$this->worker = $this->route('worker');
 		return $this->user()->can('update', $this->shift) && !$this->shift->closed;
 	}
-
+	
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -26,11 +25,12 @@ class RemoveWorkerFromShiftRequest extends FormRequest {
 	 */
 	public function rules() {
 		return [
-
+		
 		];
 	}
-
-	public function commit(){
-		$this->shift->workers()->detach($this->worker);
+	
+	public function commit() {
+		$shiftWorker = $this->route('shiftWorker');
+		$shiftWorker->delete();
 	}
 }

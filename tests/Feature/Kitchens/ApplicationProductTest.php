@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Kitchens;
 
+use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\Application;
 use App\Models\Kitchen;
@@ -20,6 +21,7 @@ class ApplicationProductTest extends TestCase {
 	protected $worker;
 	private $admin;
 	private $application;
+	protected $accountant;
 	private $kitchen;
 	private $product;
 	private $kitchen2;
@@ -45,6 +47,9 @@ class ApplicationProductTest extends TestCase {
 
 		$this->kitchen2 = factory(User::class)->make();
 		$this->kitchen2->user()->save(factory(Kitchen::class)->create());
+
+		$this->accountant = factory(User::class)->make();
+		factory(Accountant::class)->create()->user()->save($this->accountant);
 
 		$this->kitchen = factory(User::class)->make();
 		$kitchen = factory(Kitchen::class)->create();
@@ -74,6 +79,13 @@ class ApplicationProductTest extends TestCase {
 
 	public function test_a_different_kitchen_cant_create_product() {
 		$this->actingAs($this->kitchen2)->post(action('Kitchen\ApplicationProductController@create', $this->application), [
+			'name' => 'test',
+			'price' => 2.5
+		])->assertForbidden();
+	}
+
+	public function test_a_account_kitchen_cant_create_product() {
+		$this->actingAs($this->accountant)->post(action('Kitchen\ApplicationProductController@create', $this->application), [
 			'name' => 'test',
 			'price' => 2.5
 		])->assertForbidden();
@@ -126,6 +138,21 @@ class ApplicationProductTest extends TestCase {
 		]);
 	}
 
+	public function test_accountant_cant_create_product_on_submitted_application() {
+		$this->actingAs($this->accountant)->post(action('Kitchen\ApplicationProductController@create', $this->application), [
+			'name' => 'test',
+			'price' => 2.5,
+			'category' => 'drinks'
+		])->assertForbidden();
+
+		$this->assertDatabaseMissing('products', [
+			'application_id' => $this->application->id,
+			'name' => 'test',
+			'price' => 2.5,
+			'category' => 'drinks'
+		]);
+	}
+
 	public function test_kitchen_cant_create_product_on_submitted_application() {
 		$this->actingAs($this->kitchen)->post(action('Kitchen\ApplicationProductController@create', $this->application), [
 			'name' => 'test',
@@ -163,6 +190,13 @@ class ApplicationProductTest extends TestCase {
 	}
 
 	public function test_a_different_worker_cant_edit_product() {
+		$this->actingAs($this->worker)->patch(action('Kitchen\ApplicationProductController@update', ['application' => $this->application, 'product' => $this->product]), [
+			'name' => 'test',
+			'price' => 0.01
+		])->assertForbidden();
+	}
+
+	public function test_a_accountant_cant_edit_product() {
 		$this->actingAs($this->worker)->patch(action('Kitchen\ApplicationProductController@update', ['application' => $this->application, 'product' => $this->product]), [
 			'name' => 'test',
 			'price' => 0.01
