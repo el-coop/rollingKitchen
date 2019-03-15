@@ -1,10 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Band;
+namespace App\Http\Requests\BandMember;
 
+use App\Models\BandMember;
+use App\Models\Field;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateBandMemberRequest extends FormRequest {
+
 	private $bandMember;
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -22,24 +25,29 @@ class UpdateBandMemberRequest extends FormRequest {
 	 * @return array
 	 */
 	public function rules() {
-		return [
+		$rules = collect( [
 			'name' => 'required',
 			'email' => 'required|email|unique:users,email,' . $this->bandMember->user->id,
-			'language' => 'required|in:en,nl'
-		];
+			'language' => 'required|in:en,nl',
+			'bandmember' => 'required|array'
+		]);
+		if ($this->input('review') || $this->bandMember->submitted){
+			$requiredFieldsRules = Field::getRequiredFields(BandMember::class);
+			$protectedFieldsRules = Field::getProtectedFields(BandMember::class);
+			$rules = $rules->merge($requiredFieldsRules)->merge($protectedFieldsRules);
+		}
+		return $rules->toArray();
 	}
 
 	public function commit(){
 		$this->bandMember->user->name = $this->input('name');
 		$this->bandMember->user->email = $this->input('email');
 		$this->bandMember->user->language = $this->input('language');
-
+		$this->bandMember->data = array_filter($this->input('bandmember'));
+		if ($this->input('review') && !$this->bandMember->submitted) {
+			$this->bandMember->submitted = true;
+		}
+		$this->bandMember->save();
 		$this->bandMember->user->save();
-		return [
-			'id' => $this->bandMember->id,
-			'name' => $this->input('name'),
-			'email' => $this->input('email'),
-			'language' => $this->input('language')
-		];
 	}
 }

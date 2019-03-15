@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Band;
+namespace App\Http\Requests\Admin\BandMember;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -16,16 +16,12 @@ class UpdateBandMemberRequest extends FormRequest {
 		return $this->user()->can('update', $this->bandMember);
 	}
 
-	/**
-	 * Get the validation rules that apply to the request.
-	 *
-	 * @return array
-	 */
 	public function rules() {
 		return [
 			'name' => 'required',
 			'email' => 'required|email|unique:users,email,' . $this->bandMember->user->id,
-			'language' => 'required|in:en,nl'
+			'language' => 'required|in:en,nl',
+			'bandmember' => 'required|array'
 		];
 	}
 
@@ -33,13 +29,13 @@ class UpdateBandMemberRequest extends FormRequest {
 		$this->bandMember->user->name = $this->input('name');
 		$this->bandMember->user->email = $this->input('email');
 		$this->bandMember->user->language = $this->input('language');
-
+		$this->bandMember->data = array_filter($this->input('bandmember'));
+		$this->bandMember->save();
 		$this->bandMember->user->save();
 		return [
 			'id' => $this->bandMember->id,
 			'name' => $this->input('name'),
-			'email' => $this->input('email'),
-			'language' => $this->input('language')
+			'email' => $this->input('email')
 		];
 	}
 }

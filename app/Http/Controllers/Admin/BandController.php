@@ -18,8 +18,7 @@ class BandController extends Controller {
 		$title = __('admin/artists.bands');
 		$fieldType = "Band";
 		$createTitle = __('admin/artists.createBand');
-		$withEditLink = false;
-		return view('admin.datatableWithNew', compact('title', 'createTitle', 'fieldType', 'withEditLink'));
+		return view('admin.datatableWithNew', compact('title', 'createTitle', 'fieldType'));
 	}
 	
 	public function create() {
@@ -37,6 +36,15 @@ class BandController extends Controller {
 	public function update(UpdateBandRequest $request, Band $band) {
 		return $request->commit();
 	}
+
+	public function nonAjaxUpdate(UpdateBandRequest $request, Band $band) {
+		$request->commit();
+		return back()->with('toast', [
+			'type' => 'success',
+			'title' => '',
+			'message' => __('vue.updateSuccess', [], $request->input('language'))
+		]);
+	}
 	
 	public function destroy(DestroyBandRequest $request, Band $band) {
 		$request->commit();
@@ -44,6 +52,10 @@ class BandController extends Controller {
 		return [
 			'success' => true
 		];
+	}
+
+	public function show(Band $band){
+		return view('admin.bands.band', compact('band'));
 	}
 	
 	public function schedule() {
