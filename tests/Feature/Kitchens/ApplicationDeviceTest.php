@@ -26,7 +26,7 @@ class ApplicationDeviceTest extends TestCase {
 	private $kitchen2;
 	private $device;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		Storage::fake('local');

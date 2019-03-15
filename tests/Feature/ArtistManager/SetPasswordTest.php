@@ -24,7 +24,7 @@ class SetPasswordTest extends TestCase {
 	protected $accountant;
 	protected $band;
 	
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->admin = factory(User::class)->make();
 		factory(Admin::class)->create()->user()->save($this->admin);
@@ -98,8 +98,8 @@ class SetPasswordTest extends TestCase {
 		$this->post(action('ArtistManager\ArtistManagerController@reset'), [
 			'token' => 'bla',
 			'email' => $this->artistManager->email,
-			'password' => '123456',
-			'password_confirmation' => '123456',
+			'password' => '12345678',
+			'password_confirmation' => '12345678',
 		])->assertSessionHasErrors(['email']);
 	}
 	
@@ -107,8 +107,8 @@ class SetPasswordTest extends TestCase {
 		$this->post(action('ArtistManager\ArtistManagerController@reset'), [
 			'token' => '111',
 			'email' => 'bla@gla.dla',
-			'password' => '123456',
-			'password_confirmation' => '123456',
+			'password' => '12345678',
+			'password_confirmation' => '12345678',
 		])->assertSessionHasErrors(['email']);
 	}
 	
@@ -117,8 +117,8 @@ class SetPasswordTest extends TestCase {
 		$this->post(action('ArtistManager\ArtistManagerController@reset'), [
 			'token' => '111',
 			'email' => $this->artistManager->email,
-			'password' => '123456',
-			'password_confirmation' => '123456',
+			'password' => '12345678',
+			'password_confirmation' => '12345678',
 		])->assertRedirect($this->artistManager->user->homepage());
 		
 		
@@ -131,8 +131,8 @@ class SetPasswordTest extends TestCase {
 		$this->post(action('ArtistManager\ArtistManagerController@reset'), [
 			'token' => '111',
 			'email' => $this->artistManager->email,
-			'password' => '123456',
-			'password_confirmation' => '123456',
+			'password' => '12345678',
+			'password_confirmation' => '12345678',
 		])->assertRedirect($this->artistManager->user->homepage());
 		
 		
@@ -145,8 +145,8 @@ class SetPasswordTest extends TestCase {
 		$this->post(action('ArtistManager\ArtistManagerController@reset'), [
 			'token' => '111',
 			'email' => $this->artistManager->email,
-			'password' => '123456',
-			'password_confirmation' => '123456',
+			'password' => '12345678',
+			'password_confirmation' => '12345678',
 		])->assertSessionHasErrors(['email']);
 		
 		

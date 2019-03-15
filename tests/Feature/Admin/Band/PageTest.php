@@ -22,7 +22,7 @@ class PageTest extends TestCase {
 	protected $accountant;
 	protected $band;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->admin = factory(User::class)->make();
 		factory(Admin::class)->create()->user()->save($this->admin);

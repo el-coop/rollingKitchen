@@ -27,7 +27,7 @@ class PhotoControllerTest extends TestCase {
 	private $accountant;
 	private $taxReview;
 	
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		
 		$this->admin = factory(User::class)->make();

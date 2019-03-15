@@ -26,7 +26,7 @@ class ApplicationProductTest extends TestCase {
 	private $product;
 	private $kitchen2;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		Storage::fake('local');

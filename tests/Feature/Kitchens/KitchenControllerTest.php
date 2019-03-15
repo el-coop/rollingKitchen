@@ -27,7 +27,7 @@ class KitchenControllerTest extends TestCase {
 	private $user;
 	private $user1;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		Storage::fake('local');

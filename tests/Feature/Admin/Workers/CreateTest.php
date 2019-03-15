@@ -24,7 +24,7 @@ class CreateTest extends TestCase {
 	protected $workplaces;
 	protected $worker;
 	
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->admin = factory(User::class)->make();
 		factory(Admin::class)->create()->user()->save($this->admin);
@@ -127,7 +127,7 @@ class CreateTest extends TestCase {
 	public function test_create_worker_validation() {
 		$this->actingAs($this->admin)->post(action('Admin\WorkerController@store'), [
 			'name' => '',
-			'email' => 'test@best',
+			'email' => 'test',
 			'type' => 3,
 			'language' => 'dl',
 			'supervisor' => 'asd',

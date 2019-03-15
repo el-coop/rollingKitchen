@@ -21,7 +21,7 @@ class UpdateTest extends TestCase {
 	protected $workplaces;
 	protected $worker;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->admin = factory(Admin::class)->create();
 		$this->admin->user()->save(factory(User::class)->make());
@@ -126,7 +126,7 @@ class UpdateTest extends TestCase {
 	public function test_update_worker_validation() {
 		$this->actingAs($this->admin->user)->patch(action('Admin\WorkerController@update', $this->worker), [
 			'name' => '',
-			'email' => 'test@best',
+			'email' => 'test',
 			'type' => 3,
 			'language' => 'dl',
 			'supervisor' => 'asd',

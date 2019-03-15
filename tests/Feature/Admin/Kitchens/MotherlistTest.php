@@ -26,7 +26,7 @@ class MotherlistTest extends TestCase {
 	private $kitchens;
 	private $developer;
 	
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->admin = factory(Admin::class)->create();
 		$this->admin->user()->save(factory(User::class)->make());

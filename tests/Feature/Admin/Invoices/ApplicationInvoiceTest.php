@@ -34,7 +34,7 @@ class ApplicationInvoiceTest extends TestCase {
 	private $payment;
 	private $worker;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->user = factory(User::class)->make();
 		factory(Admin::class)->create()->user()->save($this->user);

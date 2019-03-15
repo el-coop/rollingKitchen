@@ -23,7 +23,7 @@ class KitchenViewTest extends TestCase {
 	private $application;
 	private $product;
 	
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$admin = factory(Admin::class)->create();
 		$admin->user()->save(factory(User::class)->make());
