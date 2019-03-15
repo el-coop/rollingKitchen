@@ -1,7 +1,10 @@
 {
     "name": "laravel/laravel",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "type": "project",
     "require": {
@@ -24,7 +27,7 @@
         "filp/whoops": "^2.3",
         "fzaninotto/faker": "^1.8",
         "mockery/mockery": "^1.2",
-        "nunomaduro/collision": "^2.0",
+        "nunomaduro/collision": "^3.0",
         "phpunit/phpunit": "^8.0"
     },
     "autoload": {
@@ -43,8 +46,7 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": [
-            ]
+            "dont-discover": []
         }
     },
     "scripts": {

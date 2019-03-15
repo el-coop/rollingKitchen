@@ -14,7 +14,7 @@ class CreateBandsTable extends Migration
     public function up()
     {
         Schema::create('bands', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
 			$table->json('data');
 			$table->boolean('submitted')->default(false);
 			$table->string('payment_method')->default('band');

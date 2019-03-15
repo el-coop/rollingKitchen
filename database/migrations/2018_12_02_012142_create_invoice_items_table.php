@@ -12,7 +12,7 @@ class CreateInvoiceItemsTable extends Migration {
 	 */
 	public function up() {
 		Schema::create('invoice_items', function (Blueprint $table) {
-			$table->increments('id');
+			$table->bigIncrements('id');
 			$table->integer('invoice_id')->unsigned();
 			$table->integer('service_id')->unsigned()->nullable();
 			$table->integer('quantity')->unsigned();

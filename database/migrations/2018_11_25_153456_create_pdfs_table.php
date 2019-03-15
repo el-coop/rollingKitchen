@@ -12,7 +12,7 @@ class CreatePdfsTable extends Migration {
 	 */
 	public function up() {
 		Schema::create('pdfs', function (Blueprint $table) {
-			$table->increments('id');
+			$table->bigIncrements('id');
 			$table->string('file');
 			$table->string('name');
 			$table->integer('visibility');

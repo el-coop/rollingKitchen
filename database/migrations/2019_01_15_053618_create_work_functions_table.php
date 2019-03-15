@@ -12,7 +12,7 @@ class CreateWorkFunctionsTable extends Migration {
 	 */
 	public function up() {
 		Schema::create('work_functions', function (Blueprint $table) {
-			$table->increments('id');
+			$table->bigIncrements('id');
 			$table->string('name');
 			$table->decimal('payment_per_hour_before_tax');
 			$table->decimal('payment_per_hour_after_tax');

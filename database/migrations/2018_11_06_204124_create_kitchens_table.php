@@ -12,7 +12,7 @@ class CreateKitchensTable extends Migration {
 	 */
 	public function up() {
 		Schema::create('kitchens', function (Blueprint $table) {
-			$table->increments('id');
+			$table->bigIncrements('id');
 			$table->string('status');
 			$table->json('data');
 			$table->timestamps();

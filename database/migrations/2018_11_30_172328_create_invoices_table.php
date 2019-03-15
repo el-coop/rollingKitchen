@@ -12,7 +12,7 @@ class CreateInvoicesTable extends Migration {
 	 */
 	public function up() {
 		Schema::create('invoices', function (Blueprint $table) {
-			$table->increments('id');
+			$table->bigIncrements('id');
 			$table->integer('owner_id')->unsigned()->nullable();
 			$table->string('owner_type');
 			$table->string('prefix');

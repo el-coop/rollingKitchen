@@ -26,7 +26,7 @@ class SetPasswordTest extends TestCase {
 	protected $band;
 	protected $bandMember;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->admin = factory(User::class)->make();
 		factory(Admin::class)->create()->user()->save($this->admin);
@@ -104,8 +104,8 @@ class SetPasswordTest extends TestCase {
 		$this->post(action('BandMember\BandMemberController@reset'), [
 			'token' => 'bla',
 			'email' => $this->bandMember->email,
-			'password' => '123456',
-			'password_confirmation' => '123456',
+			'password' => '12345678',
+			'password_confirmation' => '12345678',
 		])->assertSessionHasErrors(['email']);
 	}
 
@@ -113,8 +113,8 @@ class SetPasswordTest extends TestCase {
 		$this->post(action('BandMember\BandMemberController@reset'), [
 			'token' => '111',
 			'email' => 'bla@gla.dla',
-			'password' => '123456',
-			'password_confirmation' => '123456',
+			'password' => '12345678',
+			'password_confirmation' => '12345678',
 		])->assertSessionHasErrors(['email']);
 	}
 
@@ -123,8 +123,8 @@ class SetPasswordTest extends TestCase {
 		$this->post(action('BandMember\BandMemberController@reset'), [
 			'token' => '111',
 			'email' => $this->bandMember->email,
-			'password' => '123456',
-			'password_confirmation' => '123456',
+			'password' => '12345678',
+			'password_confirmation' => '12345678',
 		])->assertRedirect($this->bandMember->user->homepage());
 
 
@@ -137,8 +137,8 @@ class SetPasswordTest extends TestCase {
 		$this->post(action('BandMember\BandMemberController@reset'), [
 			'token' => '111',
 			'email' => $this->bandMember->email,
-			'password' => '123456',
-			'password_confirmation' => '123456',
+			'password' => '12345678',
+			'password_confirmation' => '12345678',
 		])->assertRedirect($this->bandMember->user->homepage());
 
 
@@ -151,8 +151,8 @@ class SetPasswordTest extends TestCase {
 		$this->post(action('BandMember\BandMemberController@reset'), [
 			'token' => '111',
 			'email' => $this->bandMember->email,
-			'password' => '123456',
-			'password_confirmation' => '123456',
+			'password' => '12345678',
+			'password_confirmation' => '12345678',
 		])->assertSessionHasErrors(['email']);
 
 
