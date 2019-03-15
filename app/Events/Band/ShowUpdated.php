@@ -17,15 +17,21 @@ class ShowUpdated {
 	 * @var BandSchedule
 	 */
 	public $show;
+	/**
+	 * @var BandSchedule
+	 */
+	public $oldShow;
 	
 	/**
 	 * Create a new event instance.
 	 *
 	 * @param BandSchedule $show
+	 * @param BandSchedule $oldShow
 	 */
-	public function __construct(BandSchedule $show) {
+	public function __construct(BandSchedule $show, BandSchedule $oldShow) {
 		//
 		$this->show = $show;
+		$this->oldShow = $oldShow;
 	}
 	
 	/**

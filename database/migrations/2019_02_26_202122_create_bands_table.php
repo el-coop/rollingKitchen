@@ -16,6 +16,7 @@ class CreateBandsTable extends Migration
         Schema::create('bands', function (Blueprint $table) {
             $table->increments('id');
 			$table->json('data');
+			$table->boolean('submitted')->default(false);
 			$table->string('payment_method')->default('band');
 			$table->timestamps();
         });

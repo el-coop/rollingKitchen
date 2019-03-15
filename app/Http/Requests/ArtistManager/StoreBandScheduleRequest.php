@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\ArtistManager;
 
+use App\Events\Band\ShowCreated;
 use App\Events\Band\ShowDeleted;
 use App\Events\Band\ShowUpdated;
 use App\Models\Band;
@@ -33,6 +34,19 @@ class StoreBandScheduleRequest extends FormRequest {
 			'calendar.*.*.payment' => 'required|min:1',
 			'calendar.*.*.stage' => 'required|exists:stages,id',
 		];
+	}
+	
+	public function withValidator($validator) {
+		$validator->after(function ($validator) {
+			$budget = app('settings')->get('bands_budget');
+			if (collect($this->input('calendar'))->sum(function ($dateTime) {
+					return collect($dateTime)->sum(function ($show) {
+						return $show['payment'];
+					});
+				}) > $budget) {
+				$validator->errors()->add('payment', __('vue.budgetOverflow'));
+			}
+		});
 	}
 	
 	public function commit() {
@@ -70,12 +84,14 @@ class StoreBandScheduleRequest extends FormRequest {
 			$timeSchedules = $existingSchedules->where('dateTime', $schedule->dateTime);
 			if ($existingSchedule = $timeSchedules->firstWhere('band_id', $schedule->band_id)) {
 				if ($existingSchedule->payment != $schedule->payment || $existingSchedule->stage_id != $schedule->stage_id) {
-					event(new showUpdated($schedule));
+					event(new ShowUpdated($schedule, $existingSchedule));
 				}
 				
 				if ($existingSchedule->payment == $schedule->payment) {
 					$schedule->approved = $existingSchedule->approved;
 				}
+			} else {
+				event(new ShowCreated($schedule));
 			}
 			$schedule->save();
 		});

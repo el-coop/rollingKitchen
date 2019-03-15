@@ -9,6 +9,18 @@
 	$item['error'] = $errors->has($fieldName) ? $errors->get($fieldName): null;
 	return $item;
 }) }}" class="mb-1"></dynamic-fields>
-        <button class="button is-success">@lang('global.save')</button>
+        <div class="buttons has-content-justified-center">
+            <button class="button is-link">
+                @lang('global.save')
+            </button>
+            @if(!$band->submitted)
+                <confirmation-submit label="@lang('kitchen/kitchen.submitReview')"
+                                     title="@lang('kitchen/kitchen.submitConfirmTitle')"
+                                     subtitle="@lang('kitchen/kitchen.submitConfirmSubtitle')"
+                                     yes-text="@lang('global.yes')"
+                                     no-text="@lang('global.no')" name="review" value="1"
+                                     id="reviewButton"></confirmation-submit>
+            @endif
+        </div>
     </form>
 </div>

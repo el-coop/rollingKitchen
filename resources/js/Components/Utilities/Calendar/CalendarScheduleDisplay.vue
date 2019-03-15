@@ -13,7 +13,8 @@
 		</span>
 		<div class="tags has-addons" v-for="entry in entries" :key="entry.stage"
 			 @click.stop="openModal({id: entry.band,stage: entry.stage,payment: entry.payment})">
-			<span class="tag is-primary" v-text="stages[entry.stage]"></span>
+			<span class="tag" :class="{'is-warning': ! isApproved(entry), 'is-primary': isApproved(entry)}"
+				  v-text="stages[entry.stage]"></span>
 			<span class="tag is-dark" v-text="bands[entry.band]"></span>
 			<a class="tag is-delete" @click.stop="remove(entry.stage)"></a>
 		</div>
@@ -40,6 +41,10 @@
 				type: Function,
 				required: false
 			},
+			onUpdate: {
+				type: Function,
+				required: true
+			},
 			init: {
 				type: Array,
 				default() {
@@ -54,7 +59,12 @@
 
 		data() {
 			return {
-				entries: this.init,
+				entries: [...this.init].sort((a, b) => {
+					if (this.stages[a.stage] > this.stages[b.stage]) {
+						return 1;
+					}
+					return -1;
+				}),
 			}
 		},
 
@@ -66,10 +76,18 @@
 				if (index < 0) {
 					return;
 				}
-				this.entries.splice(index, 1);
+				this.onUpdate(-this.entries.splice(index, 1)[0].payment);
 			},
 			openModal(payload) {
 				this.edit(payload);
+			},
+			isApproved(show) {
+				if (this.init.some((initShow) => {
+					return initShow.approved === 1 && initShow.band === show.band && parseFloat(initShow.payment) === parseFloat(show.payment);
+				})) {
+					return true;
+				}
+				return false;
 			}
 		},
 
@@ -81,6 +99,13 @@
 				this.remove(value.stage);
 				this.remove(value.band, 'band');
 				this.entries.push(value);
+				this.entries.sort((a, b) => {
+					if (this.stages[a.stage] > this.stages[b.stage]) {
+						return 1;
+					}
+					return -1;
+				});
+				this.onUpdate(parseFloat(value.payment));
 			}
 		}
 	}
@@ -91,7 +116,7 @@
 		margin-bottom: 0;
 	}
 
-	.tag {
+	.tags {
 		cursor: pointer;
 	}
 </style>

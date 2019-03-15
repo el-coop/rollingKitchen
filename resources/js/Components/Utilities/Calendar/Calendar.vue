@@ -95,7 +95,12 @@
 		mixins: [DatatableFormatters],
 
 		props: {
-			initData: {},
+			initData: {
+				type: Object,
+				default() {
+					return {};
+				}
+			},
 			startDate: {
 				type: String,
 				required: true
@@ -221,7 +226,7 @@
 			currentStart() {
 				return this.calcDate(this.realStartDate, this.daysOffset);
 			}
-		}
+		},
 	}
 </script>
 

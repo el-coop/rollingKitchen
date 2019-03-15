@@ -50,18 +50,19 @@ class SettingsTest extends TestCase {
 		$settings->put('general_login_text_en', $faker->text);
 		$settings->put('general_login_text_nl', $faker->text);
 		$settings->put('registration_year', 2019);
-
-
+		$settings->put('bands_budget', 0);
+		
+		
 	}
-
+	
 	public function test_guest_cant_see_page() {
 		$this->get(action('Admin\SettingsController@show'))->assertRedirect(action('Auth\LoginController@login'));
 	}
-
+	
 	public function test_worker_cant_see_page() {
 		$this->actingAs($this->worker)->get(action('Admin\SettingsController@show'))->assertForbidden();
 	}
-
+	
 	public function test_kitchen_cant_see_page() {
 		$this->actingAs($this->kitchen->user)->get(action('Admin\SettingsController@show'))->assertForbidden();
 	}
@@ -75,7 +76,7 @@ class SettingsTest extends TestCase {
 			->assertStatus(200)
 			->assertSee(__('admin/settings.accountant'));
 	}
-
+	
 	public function test_guest_cant_update_settings() {
 		$this->patch(action('Admin\SettingsController@update'), [
 			'accountant_email' => 'test@test.com',
@@ -87,7 +88,7 @@ class SettingsTest extends TestCase {
 			'general_login_text_nl' => 'logintestnl'
 		])->assertRedirect(action('Auth\LoginController@login'));
 	}
-
+	
 	public function test_worker_cant_update_settings() {
 		$this->actingAs($this->worker)->patch(action('Admin\SettingsController@update'), [
 			'accountant_email' => 'test@test.com',
@@ -99,7 +100,7 @@ class SettingsTest extends TestCase {
 			'general_login_text_nl' => 'logintestnl'
 		])->assertForbidden();
 	}
-
+	
 	public function test_kitchen_cant_update_settings() {
 		$this->actingAs($this->kitchen->user)->patch(action('Admin\SettingsController@update'), [
 			'accountant_email' => 'test@test.com',
@@ -134,8 +135,8 @@ class SettingsTest extends TestCase {
 			'general_registration_text_nl' => 'regtestnl',
 			'general_login_text_en' => 'logintest',
 			'general_login_text_nl' => 'logintestnl',
-			'registration_year' => '2019'
-
+			'registration_year' => '2019',
+			'bands_budget' => '100'	,
 		];
 		$this->actingAs($this->admin->user)->patch(action('Admin\SettingsController@update'), $settings)->assertRedirect();
 		$settings['general_registration_status'] = false;

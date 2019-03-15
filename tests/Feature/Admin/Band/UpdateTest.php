@@ -6,6 +6,7 @@ use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\ArtistManager;
 use App\Models\Band;
+use App\Models\BandMember;
 use App\Models\Kitchen;
 use App\Models\User;
 use App\Models\Worker;
@@ -22,6 +23,7 @@ class UpdateTest extends TestCase {
 	protected $accountant;
 	protected $band;
 	protected $secondBand;
+	protected $bandMember;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -39,6 +41,10 @@ class UpdateTest extends TestCase {
 		factory(Band::class)->create()->user()->save($this->band);
 		$this->secondBand = factory(User::class)->make();
 		factory(Band::class)->create()->user()->save($this->secondBand);
+		$this->bandMember = factory(User::class)->make();
+		factory(BandMember::class)->create([
+			'band_id' => $this->band->user->id
+		])->user()->save($this->bandMember);
 	}
 
 	public function test_guest_cant_get_edit_form() {
@@ -59,6 +65,10 @@ class UpdateTest extends TestCase {
 
 	public function test_band_cant_get_edit_form() {
 		$this->actingAs($this->band)->get(action('Admin\BandController@edit', $this->secondBand->user))->assertForbidden();
+	}
+
+	public function test_band_member_cant_get_edit_form() {
+		$this->actingAs($this->bandMember)->get(action('Admin\BandController@edit', $this->secondBand->user))->assertForbidden();
 	}
 
 	public function test_artist_manager_cant_get_edit_form_from_admin_controller() {
@@ -150,6 +160,90 @@ class UpdateTest extends TestCase {
 				'email' => 'test@test.com'
 			]);
 
+		$this->assertDatabaseHas('users', [
+			'name' => 'name',
+			'email' => 'test@test.com',
+			'language' => 'nl',
+			'id' => $this->secondBand->id
+		]);
+		$this->assertDatabaseHas('bands', [
+			'data' => json_encode(['test' => 'test']),
+			'id' => $this->secondBand->user->id,
+			'payment_method' => 'individual'
+		]);
+	}
+
+	public function test_guest_cant_non_ajax_update_band() {
+		$this->patch(action('Admin\BandController@nonAjaxUpdate', $this->secondBand->user), [
+			'name' => 'name',
+			'email' => 'test@test.com',
+			'language' => 'nl',
+			'band' => ['test' => 'test']
+		])->assertRedirect(action('Auth\LoginController@login'));
+	}
+
+	public function test_kitchen_cant_non_ajax_update_band() {
+		$this->actingAs($this->kitchen)->patch(action('Admin\BandController@nonAjaxUpdate', $this->secondBand->user), [
+			'name' => 'name',
+			'email' => 'test@test.com',
+			'language' => 'nl',
+			'band' => ['test' => 'test']
+		])->assertForbidden();
+	}
+
+	public function test_worker_cant_non_ajax_update_band() {
+		$this->actingAs($this->worker)->patch(action('Admin\BandController@nonAjaxUpdate', $this->secondBand->user), [
+			'name' => 'name',
+			'email' => 'test@test.com',
+			'language' => 'nl',
+			'band' => ['test' => 'test']
+		])->assertForbidden();
+	}
+
+	public function test_accountant_cant_non_ajax_update_band() {
+		$this->actingAs($this->accountant)->patch(action('Admin\BandController@nonAjaxUpdate', $this->secondBand->user), [
+			'name' => 'name',
+			'email' => 'test@test.com',
+			'language' => 'nl',
+			'band' => ['test' => 'test']
+		])->assertForbidden();
+	}
+
+	public function test_band_cant_non_ajax_update_band() {
+		$this->actingAs($this->band)->patch(action('Admin\BandController@nonAjaxUpdate', $this->secondBand->user), [
+			'name' => 'name',
+			'email' => 'test@test.com',
+			'language' => 'nl',
+			'band' => ['test' => 'test']
+		])->assertForbidden();
+	}
+
+	public function test_band_member_cant_non_ajax_update_band() {
+		$this->actingAs($this->bandMember)->patch(action('Admin\BandController@nonAjaxUpdate', $this->secondBand->user), [
+			'name' => 'name',
+			'email' => 'test@test.com',
+			'language' => 'nl',
+			'band' => ['test' => 'test']
+		])->assertForbidden();
+	}
+
+	public function test_artist_manager_cant_non_ajax_update_band_from_admin_controller() {
+		$this->actingAs($this->artistManager)->patch(action('Admin\BandController@nonAjaxUpdate', $this->secondBand->user), [
+			'name' => 'name',
+			'email' => 'test@test.com',
+			'language' => 'nl',
+			'band' => ['test' => 'test']
+		])->assertForbidden();
+	}
+
+	public function test_admin_can_non_ajax_update_band() {
+		$this->actingAs($this->admin)->patch(action('Admin\BandController@nonAjaxUpdate', $this->secondBand->user), [
+			'name' => 'name',
+			'email' => 'test@test.com',
+			'language' => 'nl',
+			'paymentMethod' => 'individual',
+			'band' => ['test' => 'test']
+		])->assertRedirect();
 		$this->assertDatabaseHas('users', [
 			'name' => 'name',
 			'email' => 'test@test.com',

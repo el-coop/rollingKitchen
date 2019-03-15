@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Admin;
 use App\Models\Band;
 use App\Models\Developer;
 use App\Models\User;
@@ -10,8 +11,9 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 
 class BandMemberPolicy {
 	use HandlesAuthorization;
-	public function before($user,$ability){
-		if ($user->user_type == Developer::class){
+
+	public function before($user, $ability) {
+		if ($user->user_type == Developer::class) {
 			return true;
 		}
 	}
@@ -24,7 +26,7 @@ class BandMemberPolicy {
 	 * @return mixed
 	 */
 	public function view(User $user, BandMember $bandMember) {
-		//
+		return $user->user->id == $bandMember->id && $user->user_type == BandMember::class;
 	}
 
 	/**
@@ -34,7 +36,7 @@ class BandMemberPolicy {
 	 * @return mixed
 	 */
 	public function create(User $user) {
-		return $user->user_type == Band::class;
+		return $user->user_type == Band::class || $user->user_type == Admin::class;
 	}
 
 	/**
@@ -45,7 +47,8 @@ class BandMemberPolicy {
 	 * @return mixed
 	 */
 	public function update(User $user, BandMember $bandMember) {
-		return $user->user_type == Band::class && $bandMember->band->id == $user->user->id;
+		return ($user->user_type == Band::class && $bandMember->band->id == $user->user->id)
+			|| ($user->user->id == $bandMember->id && $user->user_type == BandMember::class) || $user->user_type == Admin::class;
 	}
 
 	/**
@@ -56,7 +59,7 @@ class BandMemberPolicy {
 	 * @return mixed
 	 */
 	public function delete(User $user, BandMember $bandMember) {
-		return $user->user_type == Band::class && $bandMember->band->id == $user->user->id;
+		return ($user->user_type == Band::class && $bandMember->band->id == $user->user->id) || $user->user_type == Admin::class;
 	}
 
 	/**

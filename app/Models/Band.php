@@ -14,6 +14,10 @@ class Band extends Model {
 			$band->user->delete();
 		});
 	}
+
+	protected $casts = [
+		'data' => 'array',
+	];
 	
 	static function indexPage() {
 		return action('Admin\BandController@index', [], false);
@@ -84,5 +88,28 @@ class Band extends Model {
 	public function schedules() {
 		return $this->hasMany(BandSchedule::class);
 	}
-	
+
+	public function getBandMembersForDatatableAttribute() {
+		return [
+			'model' => BandMember::class,
+			'where' => [['user_type', BandMember::class],['band_id', $this->id]],
+			'joins' => [['users', 'users.user_id', 'band_members.id']],
+			'fields' => [
+				[
+					'name' => 'id',
+					'table' => 'band_members',
+					'title' => 'id',
+					'visible' => false
+				], [
+					'name' => 'name',
+					'title' => __('global.name'),
+					'sortField' => 'name',
+				], [
+					'name' => 'email',
+					'title' => __('global.email'),
+					'sortField' => 'email',
+				]
+			]
+		];
+	}
 }

@@ -25,7 +25,7 @@ class UpdateBandMemberRequest extends FormRequest {
 		return [
 			'name' => 'required',
 			'email' => 'required|email|unique:users,email,' . $this->bandMember->user->id,
-			'language' => 'required|in:en,nl',
+			'language' => 'required|in:en,nl'
 		];
 	}
 

@@ -40,6 +40,7 @@ class CreateBandMemberRequest extends FormRequest {
 		$user->name = $this->input('name');
 		$user->language = $this->input('language');
 		$user->password = '';
+		$bandMember->data = [];
 		$this->band->bandMembers()->save($bandMember);
 		$bandMember->user()->save($user);
 		Password::broker()->sendResetLink(
