@@ -23,11 +23,12 @@ class ViewTest extends TestCase {
 	use RefreshDatabase;
 	protected $admin;
 	protected $kitchen;
+	protected $accountant;
 	protected $workplaces;
 	protected $worker;
-	private $accountant;
+
 	
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->admin = factory(User::class)->make();
 		factory(Admin::class)->create()->user()->save($this->admin);
@@ -46,6 +47,10 @@ class ViewTest extends TestCase {
 	public function test_kitchen_cant_see_worker_page() {
 		$this->actingAs($this->kitchen)->get(action('Admin\WorkerController@show', $this->worker->user))->assertForbidden();
 	}
+
+	public function test_accountant_cant_see_worker_page() {
+		$this->actingAs($this->accountant)->get(action('Admin\WorkerController@show', $this->worker->user))->assertForbidden();
+	}
 	
 	public function test_worker_cant_see_worker_page() {
 		$this->actingAs($this->worker)->get(action('Admin\WorkerController@show', $this->worker->user))->assertForbidden();
@@ -59,7 +64,8 @@ class ViewTest extends TestCase {
 	public function test_guest_cant_see_worker_pdf() {
 		$this->get(action('Admin\WorkerController@pdf', $this->worker->user))->assertStatus(401);
 	}
-	
+
+
 	public function test_kitchen_cant_see_worker_pdf() {
 		$this->actingAs($this->kitchen)->get(action('Admin\WorkerController@pdf', $this->worker->user))->assertForbidden();
 	}

@@ -14,7 +14,7 @@ class CreateArtistManagersTable extends Migration
     public function up()
     {
         Schema::create('artist_managers', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->timestamps();
         });
     }

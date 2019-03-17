@@ -23,8 +23,8 @@ class DestroyTest extends TestCase {
 	protected $accountant;
 	protected $band;
 	protected $bandMember;
-
-	protected function setUp() {
+	
+	protected function setUp(): void {
 		parent::setUp();
 		$this->admin = factory(User::class)->make();
 		factory(Admin::class)->create()->user()->save($this->admin);
@@ -45,36 +45,36 @@ class DestroyTest extends TestCase {
 			'band_id' => $this->band->user->id
 		])->user()->save($this->bandMember);
 	}
-
-	public function test_guest_cant_delete_band_member(){
+	
+	public function test_guest_cant_delete_band_member() {
 		$this->delete(action('Admin\BandMemberController@destroy', [$this->band->user, $this->bandMember->user]))->assertRedirect(action('Auth\LoginController@login'));
 	}
-
-	public function test_kitchen_cant_delete_band_member(){
+	
+	public function test_kitchen_cant_delete_band_member() {
 		$this->actingAs($this->kitchen)->delete(action('Admin\BandMemberController@destroy', [$this->band->user, $this->bandMember->user]))->assertForbidden();
 	}
-
-	public function test_worker_cant_delete_band_member(){
+	
+	public function test_worker_cant_delete_band_member() {
 		$this->actingAs($this->worker)->delete(action('Admin\BandMemberController@destroy', [$this->band->user, $this->bandMember->user]))->assertForbidden();
 	}
-
-	public function test_accountant_cant_delete_band_member(){
+	
+	public function test_accountant_cant_delete_band_member() {
 		$this->actingAs($this->accountant)->delete(action('Admin\BandMemberController@destroy', [$this->band->user, $this->bandMember->user]))->assertForbidden();
 	}
-
-	public function test_band_cant_delete_band_member(){
+	
+	public function test_band_cant_delete_band_member() {
 		$this->actingAs($this->band)->delete(action('Admin\BandMemberController@destroy', [$this->band->user, $this->bandMember->user]))->assertForbidden();
 	}
-
-	public function test_band_member_cant_delete_band_member(){
+	
+	public function test_band_member_cant_delete_band_member() {
 		$this->actingAs($this->bandMember)->delete(action('Admin\BandMemberController@destroy', [$this->band->user, $this->bandMember->user]))->assertForbidden();
 	}
-
-	public function test_artist_manager_cant_delete_band_member(){
+	
+	public function test_artist_manager_cant_delete_band_member() {
 		$this->actingAs($this->artistManager)->delete(action('Admin\BandMemberController@destroy', [$this->band->user, $this->bandMember->user]))->assertForbidden();
 	}
-
-	public function test_admin_cant_delete_band_member(){
+	
+	public function test_admin_cant_delete_band_member() {
 		$this->actingAs($this->admin)->delete(action('Admin\BandMemberController@destroy', [$this->band->user, $this->bandMember->user]))
 			->assertSuccessful();
 		$this->assertDatabaseMissing('users', [

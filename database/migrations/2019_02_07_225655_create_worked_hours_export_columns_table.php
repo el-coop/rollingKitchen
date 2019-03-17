@@ -12,7 +12,7 @@ class CreateWorkedHoursExportColumnsTable extends Migration {
 	 */
 	public function up() {
 		Schema::create('worked_hours_export_columns', function (Blueprint $table) {
-			$table->increments('id');
+			$table->bigIncrements('id');
 			$table->string('name');
 			$table->integer('order');
 			$table->string('column');

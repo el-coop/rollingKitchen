@@ -56,8 +56,9 @@
 		methods: {
 			handleClick(event) {
 				if (!this.confirmed) {
-                    this.disabled = true;
-                    event.preventDefault();
+					this.disabled = true;
+					event.preventDefault();
+					console.log(this.subtitle);
 					this.$toast.question(this.subtitle, this.title, {
 						timeout: false, position: 'center', buttons: [
 							[`<button>${this.yesText}</button>`, this.handleConfirm, true],
@@ -71,8 +72,8 @@
 				instance.hide({transitionOut: 'fadeOut'}, toast, 'button');
 			},
 			async handleConfirm(instance, toast) {
-                this.disabled = false;
-                await this.$nextTick();
+				this.disabled = false;
+				await this.$nextTick();
 				this.confirmed = true;
 				this.$el.click();
 				instance.hide({transitionOut: 'fadeOut'}, toast, 'button');

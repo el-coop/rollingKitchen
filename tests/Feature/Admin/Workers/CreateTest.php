@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\Workers;
 
+use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\Kitchen;
 use App\Models\User;
@@ -19,15 +20,18 @@ class CreateTest extends TestCase {
 	use RefreshDatabase;
 	protected $admin;
 	protected $kitchen;
+	protected $accountant;
 	protected $workplaces;
 	protected $worker;
 	
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->admin = factory(User::class)->make();
 		factory(Admin::class)->create()->user()->save($this->admin);
 		$this->kitchen = factory(User::class)->make();
 		factory(Kitchen::class)->create()->user()->save($this->kitchen);
+		$this->accountant = factory(User::class)->make();
+		factory(Accountant::class)->create()->user()->save($this->accountant);
 		$this->worker = factory(User::class)->make();
 		factory(Worker::class)->create()->user()->save($this->worker);
 		$this->workplaces = factory(Workplace::class, 10)->create()->each(function ($workplace) {
@@ -44,7 +48,11 @@ class CreateTest extends TestCase {
 	public function test_kitchen_cant_see_worker_form() {
 		$this->actingAs($this->kitchen)->get(action('Admin\WorkerController@create'))->assertForbidden();
 	}
-	
+
+	public function test_accountant_cant_see_worker_form() {
+		$this->actingAs($this->accountant)->get(action('Admin\WorkerController@create'))->assertForbidden();
+	}
+
 	public function test_worker_cant_see_worker_form() {
 		$this->actingAs($this->worker)->get(action('Admin\WorkerController@create'))->assertForbidden();
 	}
@@ -70,6 +78,10 @@ class CreateTest extends TestCase {
 	
 	public function test_kitchen_cant_create_a_worker() {
 		$this->actingAs($this->kitchen)->post(action('Admin\WorkerController@store'))->assertForbidden();
+	}
+
+	public function test_accountant_cant_create_a_worker() {
+		$this->actingAs($this->accountant)->post(action('Admin\WorkerController@store'))->assertForbidden();
 	}
 	
 	public function test_worker_cant_create_a_worker() {
@@ -115,7 +127,7 @@ class CreateTest extends TestCase {
 	public function test_create_worker_validation() {
 		$this->actingAs($this->admin)->post(action('Admin\WorkerController@store'), [
 			'name' => '',
-			'email' => 'test@best',
+			'email' => 'test',
 			'type' => 3,
 			'language' => 'dl',
 			'supervisor' => 'asd',

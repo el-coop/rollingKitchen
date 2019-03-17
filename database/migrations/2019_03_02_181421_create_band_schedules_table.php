@@ -12,7 +12,7 @@ class CreateBandSchedulesTable extends Migration {
 	 */
 	public function up() {
 		Schema::create('band_schedules', function (Blueprint $table) {
-			$table->increments('id');
+			$table->bigIncrements('id');
 			$table->timestamp('dateTime');
 			$table->integer('stage_id')->unsigned();
 			$table->integer('band_id')->unsigned();

@@ -16,7 +16,7 @@ class DatatableServiceTest extends TestCase {
 	private $datable;
 	private $request;
 	
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		Config::set('test.config', [
 			'table' => 'test',

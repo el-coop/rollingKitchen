@@ -101,4 +101,7 @@ return [
 	'schedule_created_nl' => 'Show created body NL',
 	'schedule_created_en' => 'Show created body EN',
 
+	
+	'workers_privacy_statement_nl' => 'Workers privacy statement NL',
+	'workers_privacy_statement_en' => 'Workers privacy statement EN'
 ];

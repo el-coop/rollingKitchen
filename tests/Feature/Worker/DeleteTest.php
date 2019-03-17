@@ -22,7 +22,7 @@ class DeleteTest extends TestCase {
 	private $accountant;
 	private $workplace;
 	
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->admin = factory(User::class)->make();
 		factory(Admin::class)->create()->user()->save($this->admin);

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Worker;
 
+use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\Kitchen;
 use App\Models\User;
@@ -16,17 +17,20 @@ class SetPasswordTest extends TestCase {
 	use RefreshDatabase;
 	protected $admin;
 	protected $kitchen;
+	protected $accountant;
 	protected $worker;
 	private $kitchenPhoto;
 	private $workerPhoto;
 	
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		
 		$this->admin = factory(User::class)->make();
 		factory(Admin::class)->create()->user()->save($this->admin);
 		$this->kitchen = factory(User::class)->make();
 		factory(Kitchen::class)->create()->user()->save($this->kitchen);
+		$this->accountant = factory(User::class)->make();
+		factory(Accountant::class)->create()->user()->save($this->accountant);
 		$this->worker = factory(User::class)->make();
 		factory(Worker::class)->create()->user()->save($this->worker);
 		DB::table('password_resets')->insert(['email' => $this->worker->email, 'token' => bcrypt('111')]);
@@ -39,6 +43,10 @@ class SetPasswordTest extends TestCase {
 	
 	public function test_kitchen_cant_access_set_password_page() {
 		$this->actingAs($this->kitchen)->get(action('Worker\WorkerController@showResetForm', '111'))->assertRedirect($this->kitchen->user->homePage());
+	}
+
+	public function test_accountant_cant_access_set_password_page() {
+		$this->actingAs($this->accountant)->get(action('Worker\WorkerController@showResetForm', '111'))->assertRedirect($this->accountant->user->homepage());
 	}
 	
 	public function test_admin_cant_access_set_password_page() {
@@ -56,6 +64,10 @@ class SetPasswordTest extends TestCase {
 	public function test_worker_cant_set_password_for_worker() {
 		$this->actingAs($this->worker)->post(action('Worker\WorkerController@reset'))->assertRedirect($this->worker->user->homePage());
 	}
+
+	public function test_account_cant_set_password_for_worker() {
+		$this->actingAs($this->accountant)->post(action('Worker\WorkerController@reset'))->assertRedirect($this->accountant->user->homePage());
+	}
 	
 	public function test_admin_cant_set_password_for_worker() {
 		$this->actingAs($this->admin)->post(action('Worker\WorkerController@reset'))->assertRedirect($this->admin->user->homePage());
@@ -65,8 +77,8 @@ class SetPasswordTest extends TestCase {
 		$this->post(action('Worker\WorkerController@reset'), [
 			'token' => 'bla',
 			'email' => $this->worker->email,
-			'password' => '123456',
-			'password_confirmation' => '123456',
+			'password' => '12345678',
+			'password_confirmation' => '12345678',
 		])->assertSessionHasErrors(['email']);
 	}
 	
@@ -74,8 +86,8 @@ class SetPasswordTest extends TestCase {
 		$this->post(action('Worker\WorkerController@reset'), [
 			'token' => '111',
 			'email' => 'bla@gla.dla',
-			'password' => '123456',
-			'password_confirmation' => '123456',
+			'password' => '12345678',
+			'password_confirmation' => '12345678',
 		])->assertSessionHasErrors(['email']);
 	}
 	
@@ -83,8 +95,8 @@ class SetPasswordTest extends TestCase {
 		$this->post(action('Worker\WorkerController@reset'), [
 			'token' => '111',
 			'email' => $this->worker->email,
-			'password' => '123456',
-			'password_confirmation' => '123456',
+			'password' => '12345678',
+			'password_confirmation' => '12345678',
 		])->assertRedirect($this->worker->user->homepage());
 		
 		
@@ -97,8 +109,8 @@ class SetPasswordTest extends TestCase {
 		$this->post(action('Worker\WorkerController@reset'), [
 			'token' => '111',
 			'email' => $this->worker->email,
-			'password' => '123456',
-			'password_confirmation' => '123456',
+			'password' => '12345678',
+			'password_confirmation' => '12345678',
 		])->assertRedirect($this->worker->user->homepage());
 		
 		
@@ -111,8 +123,8 @@ class SetPasswordTest extends TestCase {
 		$this->post(action('Worker\WorkerController@reset'), [
 			'token' => '111',
 			'email' => $this->worker->email,
-			'password' => '123456',
-			'password_confirmation' => '123456',
+			'password' => '12345678',
+			'password_confirmation' => '12345678',
 		])->assertSessionHasErrors(['email']);
 		
 		

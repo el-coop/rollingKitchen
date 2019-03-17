@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\Settings;
 
+use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\Kitchen;
 use App\Models\Pdf;
@@ -18,15 +19,18 @@ class FileSystemTest extends TestCase {
 	use WithFaker;
 	protected $admin;
 	protected $kitchen;
+	protected $accountant;
 	protected $pdf;
 	protected $worker;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->admin = factory(Admin::class)->create();
 		$this->admin->user()->save(factory(User::class)->make());
 		$this->worker = factory(User::class)->make();
 		factory(Worker::class)->create()->user()->save($this->worker);
+		$this->accountant = factory(User::class)->make();
+		factory(Accountant::class)->create()->user()->save($this->accountant);
 		$this->kitchen = factory(Kitchen::class)->create();
 		$this->kitchen->user()->save(factory(User::class)->make());
 		Storage::fake('local');
@@ -49,6 +53,9 @@ class FileSystemTest extends TestCase {
 	public function test_kitchen_cant_see_page() {
 		$this->actingAs($this->kitchen->user)->get(action('Admin\PDFController@index'))->assertForbidden();
 	}
+	public function test_accountant_cant_see_page() {
+		$this->actingAs($this->accountant)->get(action('Admin\PDFController@index'))->assertForbidden();
+	}
 
 	public function test_admin_can_see_page() {
 		$this->actingAs($this->admin->user)->get(action('Admin\PDFController@index'))
@@ -69,6 +76,11 @@ class FileSystemTest extends TestCase {
 	public function test_kitchen_cant_upload_pdf() {
 		$pdf = UploadedFile::fake()->create('test.pdf');
 		$this->actingAs($this->kitchen->user)->post(action('Admin\PDFController@upload'), ['name' => 'newPDF', 'file' => $pdf])->assertForbidden();
+	}
+
+	public function test_accountant_cant_upload_pdf() {
+		$pdf = UploadedFile::fake()->create('test.pdf');
+		$this->actingAs($this->accountant)->post(action('Admin\PDFController@upload'), ['name' => 'newPDF', 'file' => $pdf])->assertForbidden();
 	}
 
 	public function test_admin_can_upload_pdf() {
@@ -132,6 +144,10 @@ class FileSystemTest extends TestCase {
 
 	public function test_kitchen_cant_destroy_pdf() {
 		$this->actingAs($this->kitchen->user)->delete(action('Admin\PDFController@destroy', $this->pdf))->assertForbidden();
+	}
+
+	public function test_accountant_cant_destroy_pdf() {
+		$this->actingAs($this->accountant)->delete(action('Admin\PDFController@destroy', $this->pdf))->assertForbidden();
 	}
 
 	public function test_admin_can_destroy_pdf() {

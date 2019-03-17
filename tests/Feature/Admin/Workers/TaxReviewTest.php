@@ -27,7 +27,7 @@ class TaxReviewTest extends TestCase {
 	private $accountant;
 	private $taxReview;
 	
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->admin = factory(User::class)->make();
 		factory(Admin::class)->create()->user()->save($this->admin);
@@ -118,6 +118,13 @@ class TaxReviewTest extends TestCase {
 	}
 	
 	public function test_worker_cant_delete_tax_review() {
+		$this->actingAs($this->worker)->delete(action('Admin\WorkerController@destroyTaxReview', [
+			'worker' => $this->worker->user,
+			'taxReview' => $this->taxReview
+		]))->assertForbidden();
+	}
+
+	public function test_accountant_cant_delete_tax_review() {
 		$this->actingAs($this->worker)->delete(action('Admin\WorkerController@destroyTaxReview', [
 			'worker' => $this->worker->user,
 			'taxReview' => $this->taxReview

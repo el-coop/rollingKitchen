@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\Application;
 use App\Models\Kitchen;
@@ -17,17 +18,20 @@ class KitchenViewTest extends TestCase {
 	
 	protected $worker;
 	private $admin;
+	private $accountant;
 	private $kitchen;
 	private $application;
 	private $product;
 	
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$admin = factory(Admin::class)->create();
 		$admin->user()->save(factory(User::class)->make());
 		$this->admin = $admin->user;
 		$this->worker = factory(User::class)->make();
 		factory(Worker::class)->create()->user()->save($this->worker);
+		$this->accountant = factory(User::class)->make();
+		factory(Accountant::class)->create()->user()->save($this->accountant);
 		$this->kitchen = factory(Kitchen::class)->create();
 		$this->kitchen->user()->save(factory(User::class)->make());
 		$this->application = factory(Application::class)->make();
@@ -44,6 +48,11 @@ class KitchenViewTest extends TestCase {
 
 	public function test_worker_cant_view_kitchen_and_application_test() {
 		$this->actingAs($this->worker)->get(action('Admin\KitchenController@show', $this->kitchen))
+			->assertForbidden();
+	}
+
+	public function test_accountant_cant_view_kitchen_and_application_test() {
+		$this->actingAs($this->accountant)->get(action('Admin\KitchenController@show', $this->kitchen))
 			->assertForbidden();
 	}
 

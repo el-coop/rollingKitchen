@@ -12,7 +12,7 @@ class CreateWorkerWorkplaceTable extends Migration {
 	 */
 	public function up() {
 		Schema::create('worker_workplace', function (Blueprint $table) {
-			$table->increments('id');
+			$table->bigIncrements('id');
 			$table->integer('worker_id')->unsigned();
 			$table->integer('workplace_id')->unsigned();
 

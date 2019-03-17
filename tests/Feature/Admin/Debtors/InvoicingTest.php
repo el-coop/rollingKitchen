@@ -4,6 +4,7 @@ namespace Tests\Feature\Admin\Debtors;
 
 use App\Jobs\SendApplicationInvoice;
 use App\Jobs\SendDebtorInvoice;
+use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\Debtor;
 use App\Models\Invoice;
@@ -22,16 +23,19 @@ class InvoicingTest extends TestCase {
 	protected $worker;
 	private $user;
 	private $kitchen;
+	private $accountant;
 	private $invoice;
 	private $invoices;
 	private $debtor;
 	
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->user = factory(User::class)->make();
 		factory(Admin::class)->create()->user()->save($this->user);
 		$this->worker = factory(User::class)->make();
 		factory(Worker::class)->create()->user()->save($this->worker);
+		$this->accountant = factory(User::class)->make();
+		factory(Accountant::class)->create()->user()->save($this->accountant);
 		$this->kitchen = factory(User::class)->make();
 		factory(Kitchen::class)->create([
 			'data' => [
@@ -70,6 +74,11 @@ class InvoicingTest extends TestCase {
 
 	public function test_worker_cant_see_new_invoice_form() {
 		$this->actingAs($this->worker)->get(action('Admin\DebtorInvoiceController@create', $this->debtor))
+			->assertForbidden();
+	}
+
+	public function test_accountant_cant_see_new_invoice_form() {
+		$this->actingAs($this->accountant)->get(action('Admin\DebtorInvoiceController@create', $this->debtor))
 			->assertForbidden();
 	}
 	
@@ -177,6 +186,29 @@ class InvoicingTest extends TestCase {
 			]]
 		])->assertForbidden();
 		
+		Queue::assertNotPushed(SendDebtorInvoice::class);
+	}
+
+	public function test_accountant_cant_create_new_invoice() {
+		Queue::fake();
+
+		$this->actingAs($this->accountant)->post(action('Admin\DebtorController@store', $this->debtor), [
+			'tax' => 21,
+			'recipient' => $this->debtor->email,
+			'bcc' => $this->debtor->email,
+			'message' => 'test',
+			'subject' => 'test subject',
+			'items' => [[
+				'quantity' => 1,
+				'unitPrice' => 1,
+				'item' => 'test'
+			], [
+				'quantity' => 2,
+				'unitPrice' => 2,
+				'item' => 'test2'
+			]]
+		])->assertForbidden();
+
 		Queue::assertNotPushed(SendDebtorInvoice::class);
 	}
 	
@@ -287,6 +319,13 @@ class InvoicingTest extends TestCase {
 		]))->assertForbidden();
 	}
 
+	public function test_accountant_cant_see_existing_invoice_form() {
+		$this->actingAs($this->accountant)->get(action('Admin\DebtorInvoiceController@edit', [
+			'debtor' => $this->debtor,
+			'invoice' => $this->invoices->first()
+		]))->assertForbidden();
+	}
+
 	public function test_kitchen_cant_see_existing_invoice_form() {
 		$this->actingAs($this->kitchen)->get(action('Admin\DebtorInvoiceController@edit', [
 			'debtor' => $this->debtor,
@@ -373,6 +412,33 @@ class InvoicingTest extends TestCase {
 		$invoice = $this->invoices->first();
 
 		$this->actingAs($this->worker)->patch(action('Admin\DebtorInvoiceController@update', [
+			'debtor' => $this->debtor,
+			'invoice' => $invoice
+		]), [
+			'tax' => 21,
+			'recipient' => $this->debtor->email,
+			'bcc' => $this->debtor->email,
+			'message' => 'test',
+			'subject' => 'test subject',
+			'items' => [[
+				'quantity' => 1,
+				'unitPrice' => 1,
+				'item' => 'test'
+			], [
+				'quantity' => 2,
+				'unitPrice' => 2,
+				'item' => 'test2'
+			]]
+		])->assertForbidden();
+
+		Queue::assertNotPushed(SendDebtorInvoice::class);
+	}
+
+	public function test_accountant_cant_edit_invoice() {
+		Queue::fake();
+		$invoice = $this->invoices->first();
+
+		$this->actingAs($this->accountant)->patch(action('Admin\DebtorInvoiceController@update', [
 			'debtor' => $this->debtor,
 			'invoice' => $invoice
 		]), [

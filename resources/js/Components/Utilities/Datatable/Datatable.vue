@@ -53,7 +53,7 @@
 								  :init-filters="initFilters"></datatable-filter>
 			</div>
 		</div>
-		<datatable-row-display :width="editWidth">
+		<datatable-row-display :width="editWidth" :name="_uid">
 			<slot :object="object" :on-update="updateObject" :on-delete="deleteObject"></slot>
 		</datatable-row-display>
 	</div>
@@ -181,7 +181,7 @@
 			},
 
 			newObjectForm() {
-				this.$modal.show('datatable-row');
+				this.$modal.show(`datatable-row${this._uid}`);
 				this.object = {};
 
 
@@ -217,7 +217,7 @@
 				})
 			},
 			cellClicked(data, field, event) {
-				this.$modal.show('datatable-row');
+				this.$modal.show(`datatable-row${this._uid}`);
 				this.object = data;
 				this.$bus.$emit('vuetable-cell-clicked', {
 					data, event
@@ -243,7 +243,7 @@
 				this.$refs.table.setData(currentData);
 			},
 			deleteObject(data) {
-				this.$modal.hide('datatable-row');
+				this.$modal.hide(`datatable-row${this._uid}`);
 				this.object = {...this.object, ...data};
 				const currentData = this.$refs.table.tableData;
 				let objectIndex = currentData.findIndex((item) => {

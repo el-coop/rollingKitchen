@@ -19,16 +19,17 @@ class DisapproveTest extends TestCase {
 	protected $worker;
 	private $accountant;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->admin = factory(User::class)->make();
 		factory(Admin::class)->create()->user()->save($this->admin);
 		$this->kitchen = factory(User::class)->make();
 		factory(Kitchen::class)->create()->user()->save($this->kitchen);
-		$this->worker = factory(User::class)->make();
-		factory(Worker::class)->create()->user()->save($this->worker);
 		$this->accountant = factory(User::class)->make();
 		factory(Accountant::class)->create()->user()->save($this->accountant);
+		$this->worker = factory(User::class)->make();
+		factory(Worker::class)->create()->user()->save($this->worker);
+
 	}
 
 	public function test_guest_cant_disapprove_worker() {
@@ -39,12 +40,12 @@ class DisapproveTest extends TestCase {
 		$this->actingAs($this->kitchen)->delete(action('Admin\WorkerController@disapprove'))->assertForbidden();
 	}
 
-	public function test_worker_cant_disapprove_worker() {
-		$this->actingAs($this->worker)->delete(action('Admin\WorkerController@disapprove'))->assertForbidden();
-	}
-
 	public function test_accountant_cant_disapprove_worker() {
 		$this->actingAs($this->accountant)->delete(action('Admin\WorkerController@disapprove'))->assertForbidden();
+	}
+
+	public function test_worker_cant_disapprove_worker() {
+		$this->actingAs($this->worker)->delete(action('Admin\WorkerController@disapprove'))->assertForbidden();
 	}
 
 	public function test_admin_can_disapprove_worker() {

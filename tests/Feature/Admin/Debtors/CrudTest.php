@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\Debtors;
 
+use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\Debtor;
 use App\Models\Developer;
@@ -17,12 +18,13 @@ class CrudTest extends TestCase {
 	use WithFaker;
 
 	protected $worker;
+	private $accountant;
 	private $admin;
 	private $debtors;
 	private $developer;
 	private $kitchen;
 	
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->admin = factory(User::class)->make();
 		factory(Admin::class)->create()->user()->save($this->admin);
@@ -32,6 +34,9 @@ class CrudTest extends TestCase {
 		
 		$this->kitchen = factory(User::class)->make();
 		factory(Kitchen::class)->create()->user()->save($this->kitchen);
+
+		$this->accountant = factory(User::class)->make();
+		factory(Accountant::class)->create()->user()->save($this->accountant);
 		
 		$this->debtors = factory(Debtor::class, 5)->create();
 		
@@ -46,9 +51,14 @@ class CrudTest extends TestCase {
 	public function test_worker_cant_see_page() {
 		$this->actingAs($this->worker)->get(action('Admin\DebtorController@index'))->assertForbidden();
 	}
-	
+
+
 	public function test_kitchen_cant_see_page() {
 		$this->actingAs($this->kitchen)->get(action('Admin\DebtorController@index'))->assertForbidden();
+	}
+
+	public function test_accountant_cant_see_page() {
+		$this->actingAs($this->accountant)->get(action('Admin\DebtorController@index'))->assertForbidden();
 	}
 	
 	public function test_page_loads_with_datatable() {
@@ -111,6 +121,12 @@ class CrudTest extends TestCase {
 		$this->actingAs($this->worker)->patch(action('Admin\DebtorController@update', $debtor))->assertForbidden();
 	}
 
+	public function test_accountant_cant_edit_debtor() {
+		$debtor = $this->debtors->random();
+
+		$this->actingAs($this->accountant)->patch(action('Admin\DebtorController@update', $debtor))->assertForbidden();
+	}
+
 	public function test_kitchen_cant_edit_debtor() {
 		$debtor = $this->debtors->random();
 		
@@ -127,6 +143,12 @@ class CrudTest extends TestCase {
 		$debtor = $this->debtors->random();
 
 		$this->actingAs($this->worker)->get(action('Admin\DebtorController@edit', $debtor))->assertForbidden();
+	}
+
+	public function test_accountant_cant_get_debtor_fields() {
+		$debtor = $this->debtors->random();
+
+		$this->actingAs($this->accountant)->get(action('Admin\DebtorController@edit', $debtor))->assertForbidden();
 	}
 
 	public function test_kitchen_cant_get_debtor_fields() {
@@ -244,6 +266,24 @@ class CrudTest extends TestCase {
 			])->assertForbidden();
 
 	}
+
+	public function test_accountant_cant_create_debtor() {
+
+		$this->actingAs($this->accountant)
+			->post(action('Admin\DebtorController@store'), [
+				'name' => 'testname',
+				'email' => 'test@emial.com',
+				'language' => 'nl',
+				'kitchen' => [
+					'1' => 1,
+					'2' => 2,
+					'3' => 3,
+					'4' => 4,
+					'5' => 5,
+				]
+			])->assertForbidden();
+
+	}
 	public function test_kitchen_cant_create_debtor() {
 		
 		$this->actingAs($this->kitchen)
@@ -279,6 +319,10 @@ class CrudTest extends TestCase {
 
 	public function test_kitchen_cant_delete_debtor() {
 		$this->actingAs($this->kitchen)->delete(action('Admin\DebtorController@destroy', $this->debtors->first()))->assertForbidden();
+	}
+
+	public function test_accountant_cant_delete_debtor() {
+		$this->actingAs($this->accountant)->delete(action('Admin\DebtorController@destroy', $this->debtors->first()))->assertForbidden();
 	}
 	
 	public function test_worker_cant_delete_debtor() {

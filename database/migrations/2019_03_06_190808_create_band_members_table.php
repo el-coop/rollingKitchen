@@ -14,7 +14,7 @@ class CreateBandMembersTable extends Migration
     public function up()
     {
         Schema::create('band_members', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->integer('band_id')->unsigned();
 			$table->boolean('submitted')->default(false);
             $table->json('data');

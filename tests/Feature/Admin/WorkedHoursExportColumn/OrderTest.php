@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\WorkedHoursExportColumn;
 
+use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\Kitchen;
 use App\Models\User;
@@ -15,15 +16,18 @@ class OrderTest extends TestCase {
 	use RefreshDatabase;
 	protected $admin;
 	protected $kitchen;
+	protected $accountant;
 	protected $worker;
 	protected $workedHoursColumns;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->admin = factory(User::class)->make();
 		factory(Admin::class)->create()->user()->save($this->admin);
 		$this->kitchen = factory(User::class)->make();
 		factory(Kitchen::class)->create()->user()->save($this->kitchen);
+		$this->accountant = factory(User::class)->make();
+		factory(Accountant::class)->create()->user()->save($this->accountant);
 		$this->worker = factory(User::class)->make();
 		factory(Worker::class)->create()->user()->save($this->worker);
 		$i = 1;
@@ -43,6 +47,12 @@ class OrderTest extends TestCase {
 
 	public function test_kitchen_cant_order_worked_hours_export_column() {
 		$this->actingAs($this->kitchen)->patch(action('Admin\WorkedHoursExportColumnController@saveOrder'), [
+			'order' => $this->workedHoursColumns->pluck('id')
+		])->assertForbidden();
+	}
+
+	public function test_accountant_cant_order_worked_hours_export_column() {
+		$this->actingAs($this->accountant)->patch(action('Admin\WorkedHoursExportColumnController@saveOrder'), [
 			'order' => $this->workedHoursColumns->pluck('id')
 		])->assertForbidden();
 	}

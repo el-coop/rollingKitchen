@@ -4,6 +4,7 @@ namespace Tests\Feature\Admin\Invoices;
 
 use App\Jobs\SendApplicationInvoice;
 use App\Jobs\SendDebtorInvoice;
+use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\Application;
 use App\Models\Debtor;
@@ -23,6 +24,7 @@ class DeletedInvoiceOwnerTest extends TestCase {
 	protected $worker;
 	private $user;
 	private $kitchen;
+	private $accountant;
 	private $application;
 	private $applicationInvoice;
 	private $debtor;
@@ -30,12 +32,14 @@ class DeletedInvoiceOwnerTest extends TestCase {
 	private $deletedeOwner;
 	private $deletedOwnerInvoice;
 	
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->user = factory(User::class)->make();
 		factory(Admin::class)->create()->user()->save($this->user);
 		$this->worker = factory(User::class)->make();
 		factory(Worker::class)->create()->user()->save($this->worker);
+		$this->accountant = factory(User::class)->make();
+		factory(Accountant::class)->create()->user()->save($this->accountant);
 		$this->kitchen = factory(User::class)->make();
 		factory(Kitchen::class)->create([
 			'data' => [
@@ -103,6 +107,13 @@ class DeletedInvoiceOwnerTest extends TestCase {
 			->assertForbidden();
 	}
 
+	public function test_accountant_cant_get_deleted_invoice_owner() {
+		$this->actingAs($this->accountant)->get(action('Admin\DeletedInvoiceOwnerController@edit',
+			[$this->deletedeOwner,
+				$this->deletedOwnerInvoice]))
+			->assertForbidden();
+	}
+
 	public function test_kitchen_cant_get_deleted_invoice_owner() {
 		$this->actingAs($this->kitchen)->get(action('Admin\DeletedInvoiceOwnerController@edit',
 			[$this->deletedeOwner,
@@ -163,6 +174,31 @@ class DeletedInvoiceOwnerTest extends TestCase {
 	public function test_worker_cant_update_deleted_owner_invoice() {
 		Queue::fake();
 		$this->actingAs($this->worker)->patch(action('Admin\DeletedInvoiceOwnerController@update', [
+			$this->deletedeOwner,
+			$this->deletedOwnerInvoice
+		]), [
+			'tax' => 21,
+			'recipient' => $this->deletedeOwner->email,
+			'bcc' => $this->deletedeOwner->email,
+			'message' => 'test',
+			'subject' => 'test subject',
+			'items' => [[
+				'quantity' => 1,
+				'unitPrice' => 1,
+				'item' => 'test'
+			], [
+				'quantity' => 2,
+				'unitPrice' => 2,
+				'item' => 'test2'
+			]]
+		])->assertForbidden();
+		Queue::assertNotPushed(SendDebtorInvoice::class);
+
+	}
+
+	public function test_accountant_cant_update_deleted_owner_invoice() {
+		Queue::fake();
+		$this->actingAs($this->accountant)->patch(action('Admin\DeletedInvoiceOwnerController@update', [
 			$this->deletedeOwner,
 			$this->deletedOwnerInvoice
 		]), [

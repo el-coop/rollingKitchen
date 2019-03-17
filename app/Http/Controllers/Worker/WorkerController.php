@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Worker;
 
+use App;
 use App\Http\Requests\Worker\StorePhotoRequest;
 use App\Http\Requests\Worker\UpdateWorkerRequest;
 use App\Models\Field;
@@ -19,6 +20,7 @@ class WorkerController extends Controller {
 	use ResetsPasswords;
 	
 	public function index(Worker $worker) {
+		$locale = App::getLocale();
 		$formattersData = [
 			'totalDataCount' => Worker::fields()->count()
 		];
@@ -40,9 +42,9 @@ class WorkerController extends Controller {
 			$totalHours->add($shift->pivot->workedHours);
 		});
 		$totalHours = $startOfDay->diffAsCarbonInterval($totalHours);
+		$privacyStatement = str_replace(PHP_EOL, '<br>', app('settings')->get("workers_privacy_statement_{$locale}"));
 		
-		
-		return view('worker.worker', compact('worker', 'futureShifts', 'totalHours', 'pastShifts', 'formattersData', 'rightSideFields'));
+		return view('worker.worker', compact('worker', 'futureShifts', 'totalHours', 'pastShifts', 'formattersData', 'rightSideFields', 'privacyStatement'));
 	}
 	
 	public function showResetForm(Request $request, $token = null) {

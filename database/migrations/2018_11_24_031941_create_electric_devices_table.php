@@ -12,7 +12,7 @@ class CreateElectricDevicesTable extends Migration {
 	 */
 	public function up() {
 		Schema::create('electric_devices', function (Blueprint $table) {
-			$table->increments('id');
+			$table->bigIncrements('id');
 			$table->integer('application_id')->unsigned();
 			$table->string('name');
 			$table->integer('watts');

@@ -22,7 +22,7 @@ class WorkedHoursServiceTest extends TestCase {
 	protected $workedHoursColumns;
 	protected $workedHoursService;
 	
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->workplaces = factory(Workplace::class, 10)->create()->each(function ($workplace) {
 			$workfunction = factory(WorkFunction::class)->make();
