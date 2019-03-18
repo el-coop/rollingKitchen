@@ -13,8 +13,8 @@ class CreateApplicationServiceTable extends Migration {
 	public function up() {
 		Schema::create('application_service', function (Blueprint $table) {
 			$table->bigIncrements('id');
-			$table->integer('application_id')->unsigned();
-			$table->integer('service_id')->unsigned();
+			$table->bigInteger('application_id')->unsigned();
+			$table->bigInteger('service_id')->unsigned();
 			$table->integer('quantity')->unsigned();
 			$table->timestamps();
 			

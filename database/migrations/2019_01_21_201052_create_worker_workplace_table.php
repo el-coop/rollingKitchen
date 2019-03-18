@@ -13,8 +13,8 @@ class CreateWorkerWorkplaceTable extends Migration {
 	public function up() {
 		Schema::create('worker_workplace', function (Blueprint $table) {
 			$table->bigIncrements('id');
-			$table->integer('worker_id')->unsigned();
-			$table->integer('workplace_id')->unsigned();
+			$table->bigInteger('worker_id')->unsigned();
+			$table->bigInteger('workplace_id')->unsigned();
 
 			$table->timestamps();
 			

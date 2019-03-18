@@ -13,7 +13,7 @@ class CreatePhotosTable extends Migration {
 	public function up() {
 		Schema::create('photos', function (Blueprint $table) {
 			$table->bigIncrements('id');
-			$table->integer('kitchen_id')->unsigned();
+			$table->bigInteger('kitchen_id')->unsigned();
 			$table->string('file');
 			$table->timestamps();
 			
