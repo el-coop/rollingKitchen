@@ -61,23 +61,28 @@ class SettingsSeeder extends Seeder {
 		$this->settingsFakeNoOverwrite('artist_managers_user_created_subject_en', $faker->sentence);
 		$this->settingsFakeNoOverwrite('artist_managers_user_created_nl', $faker->paragraph);
 		$this->settingsFakeNoOverwrite('artist_managers_user_created_en', $faker->paragraph);
-
+		
 		$this->settingsFakeNoOverwrite('bands_user_created_subject_nl', $faker->sentence);
 		$this->settingsFakeNoOverwrite('bands_user_created_subject_en', $faker->sentence);
 		$this->settingsFakeNoOverwrite('bands_user_created_nl', $faker->paragraph);
 		$this->settingsFakeNoOverwrite('bands_user_created_en', $faker->paragraph);
-		$this->settingsFakeNoOverwrite('bands_budget', 100);
-
+		
 		$this->settingsFakeNoOverwrite('band_members_user_created_subject_nl', $faker->sentence);
 		$this->settingsFakeNoOverwrite('band_members_user_created_subject_en', $faker->sentence);
 		$this->settingsFakeNoOverwrite('band_members_user_created_nl', $faker->paragraph);
 		$this->settingsFakeNoOverwrite('band_members_user_created_en', $faker->paragraph);
-
+		
 		$this->settingsFakeNoOverwrite('workers_privacy_statement_nl', $faker->paragraph);
 		$this->settingsFakeNoOverwrite('workers_privacy_statement_en', $faker->paragraph);
 		
 		$this->settingsFakeNoOverwrite('accountant_email', $faker->email);
 		$this->settingsFakeNoOverwrite('accountant_password', '');
+		
+		$this->settingsFakeNoOverwrite('schedule_budget', 100);
+		$this->settingsFakeNoOverwrite('schedule_start_day', \Carbon\Carbon::now()->addMonths(3));
+		$this->settingsFakeNoOverwrite('schedule_end_day', \Carbon\Carbon::now()->addMonths(3)->addWeek());
+		$this->settingsFakeNoOverwrite('schedule_start_hour', 13);
+		$this->settingsFakeNoOverwrite('schedule_end_hour', 24);
 		
 		$this->settingsFakeNoOverwrite('schedule_created_subject_nl', $faker->sentence);
 		$this->settingsFakeNoOverwrite('schedule_created_subject_en', $faker->sentence);

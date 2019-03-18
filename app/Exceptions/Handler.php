@@ -32,10 +32,11 @@ class Handler extends ExceptionHandler {
 	 *
 	 * @param  \Exception $exception
 	 * @return void
+	 * @throws Exception
 	 */
 	public function report(Exception $exception) {
 		if ($this->shouldReport($exception)) {
-//			$this->logException($exception);
+			$this->logException($exception);
 		}
 		parent::report($exception);
 	}

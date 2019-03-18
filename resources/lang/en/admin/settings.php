@@ -77,7 +77,7 @@ return [
 	'bands_user_created_subject_en' => 'Bands created mail subject EN',
 	'bands_user_created_nl' => 'Bands created mail body NL',
 	'bands_user_created_en' => 'Bands created mail body EN',
-	'bands_budget' => 'Bands Budget',
+	'schedule_budget' => 'Bands Budget',
 	
 	'band_members_user_created_subject_nl' => 'Bands member created mail subject NL',
 	'band_members_user_created_subject_en' => 'Bands member created mail subject EN',
@@ -100,8 +100,9 @@ return [
 	'schedule_created_subject_en' => 'Show created subject EN',
 	'schedule_created_nl' => 'Show created body NL',
 	'schedule_created_en' => 'Show created body EN',
-
 	
-	'workers_privacy_statement_nl' => 'Workers privacy statement NL',
-	'workers_privacy_statement_en' => 'Workers privacy statement EN'
+	'schedule_start_day' => 'Schedule start day',
+	'schedule_end_day' => 'Schedule end day',
+	'schedule_start_hour' => 'Schedule start hour',
+	'schedule_end_hour' => 'Schedule end hour',
 ];
