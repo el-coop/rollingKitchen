@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class ShiftWorker extends Pivot {
 	
+	public $incrementing = true;
+	
 	public function workFunction() {
 		return $this->belongsTo(WorkFunction::class);
 	}

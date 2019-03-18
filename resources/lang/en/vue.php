@@ -55,5 +55,6 @@ return [
 	'field' => 'Field',
 	'startTime' => 'Start Time',
 	'endTime' => 'End Time',
-	'export' => 'Export'
+	'export' => 'Export',
+	'totalHours' => 'Total hours'
 ];
