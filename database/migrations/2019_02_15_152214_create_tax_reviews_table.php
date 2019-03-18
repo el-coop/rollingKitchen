@@ -13,7 +13,7 @@ class CreateTaxReviewsTable extends Migration {
 	public function up() {
 		Schema::create('tax_reviews', function (Blueprint $table) {
 			$table->bigIncrements('id');
-			$table->integer('worker_id')->unsigned();
+			$table->bigInteger('worker_id')->unsigned();
 			$table->string('name');
 			$table->string('file');
 			$table->timestamps();

@@ -70,7 +70,7 @@ return [
 	'workers_profile_filled_en' => 'Medewerker profiel ingevuld tekst EN',
 	
 	'workers_privacy_statement_nl' => 'Werknemerst privacy verklaring NL',
-	'workers_privacy_statement_en' => 'Werknemerst privacy verklaring EN'
+	'workers_privacy_statement_en' => 'Werknemerst privacy verklaring EN',
 
 	'artist_managers_user_created_subject_nl' => 'TBT',
 	'artist_managers_user_created_subject_en' => 'TBT',
@@ -81,7 +81,7 @@ return [
 	'bands_user_created_subject_en' => 'TBT',
 	'bands_user_created_nl' => 'TBT',
 	'bands_user_created_en' => 'TBT',
-	'bands_budget' => 'TBT',
+	'schedule_budget' => 'TBT',
 	
 	'band_members_user_created_subject_nl' => 'TBT',
 	'band_members_user_created_subject_en' => 'TBT',
@@ -104,5 +104,10 @@ return [
 	'schedule_created_subject_en' => 'TBT',
 	'schedule_created_nl' => 'TBT',
 	'schedule_created_en' => 'TBT',
+	
+	'schedule_start_day' => 'TBT',
+	'schedule_end_day' => 'TBT',
+	'schedule_start_hour' => 'TBT',
+	'schedule_end_hour' => 'TBT',
 
 ];

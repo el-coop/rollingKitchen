@@ -50,7 +50,7 @@ class SettingsTest extends TestCase {
 		$settings->put('general_login_text_en', $faker->text);
 		$settings->put('general_login_text_nl', $faker->text);
 		$settings->put('registration_year', 2019);
-		$settings->put('bands_budget', 0);
+		$settings->put('schedule_budget', 0);
 		
 		
 	}
@@ -136,7 +136,7 @@ class SettingsTest extends TestCase {
 			'general_login_text_en' => 'logintest',
 			'general_login_text_nl' => 'logintestnl',
 			'registration_year' => '2019',
-			'bands_budget' => '100'	,
+			'schedule_budget' => '100'	,
 		];
 		$this->actingAs($this->admin->user)->patch(action('Admin\SettingsController@update'), $settings)->assertRedirect();
 		$settings['general_registration_status'] = false;

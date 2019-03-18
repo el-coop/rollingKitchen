@@ -15,7 +15,7 @@ class CreateInvoicePaymentsTable extends Migration {
 			$table->bigIncrements('id');
 			$table->decimal('amount');
 			$table->date('date');
-			$table->integer('invoice_id')->unsigned();
+			$table->bigInteger('invoice_id')->unsigned();
 
 			$table->timestamps();
 

@@ -28,9 +28,19 @@
 													<span class="slider"></span>
 												</label>
 												@break
-												@case('bands_budget')
+												@case('schedule_budget')
 												<input type="number" name="{{$key}}" class="input"
 													   value="{{$setting}}" step="0.01" required>
+												@break
+												@case('schedule_start_day')
+												@case('schedule_end_day')
+												<input type="date" name="{{$key}}" class="input"
+													   value="{{$setting}}" required>
+												@break
+												@case('schedule_start_hour')
+												@case('schedule_end_hour')
+												<input type="number" name="{{$key}}" class="input"
+													   value="{{$setting}}" step="0.5" required>
 												@break
 												@case('accountant_email')
 												<input type="email" name="{{$key}}" class="input"

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Band;
+namespace Tests\Feature\ArtistManager;
 
 use App\Events\Band\ShowCreated;
 use App\Events\Band\ShowDeleted;
@@ -65,69 +65,37 @@ class ScheduleTest extends TestCase {
 		});
 	}
 	
-	public function test_guest_cant_access_schedule_page() {
-		$this->get(action('Admin\BandController@schedule'))->assertRedirect(action('Auth\LoginController@login'));
-	}
-	
-	public function test_kitchen_cant_access_schedule_page() {
-		$this->actingAs($this->kitchen)->get(action('Admin\BandController@schedule'))->assertForbidden();
-	}
-	
-	public function test_worker_cant_access_schedule_page() {
-		$this->actingAs($this->worker)->get(action('Admin\BandController@schedule'))->assertForbidden();
-	}
-	
-	public function test_artist_manager_cant_access_schedule_page() {
-		$this->actingAs($this->artistManager)->get(action('Admin\BandController@schedule'))->assertForbidden();
-	}
-	
-	public function test_accountant_cant_access_schedule_page() {
-		$this->actingAs($this->accountant)->get(action('Admin\BandController@schedule'))->assertForbidden();
-	}
-	
-	public function test_band_cant_access_schedule_page() {
-		$this->actingAs($this->bands->first()->user)->get(action('Admin\BandController@schedule'))->assertForbidden();
-	}
-	
-	public function test_admin_can_access_schedule_page() {
-		$this->actingAs($this->admin)->get(action('Admin\BandController@schedule'))->assertSuccessful()
-			->assertViewIs('admin.bands.schedule')
-			->assertViewHas('stages', $this->stages->pluck('name', 'id'))
-			->assertViewHas('bands', $this->bands->pluck('user.name', 'id'))
-			->assertViewHas('schedules', BandSchedule::select('dateTime', 'stage_id as stage', 'band_id as band', 'payment', 'approved')->get()->groupBy('dateTime'));
-	}
-	
 	public function test_guest_cant_post_new_schedule() {
-		$this->post(action('Admin\BandController@storeSchedule'))->assertRedirect(action('Auth\LoginController@login'));
+		$this->post(action('ArtistManager\ArtistManagerController@storeSchedule'))->assertRedirect(action('Auth\LoginController@login'));
 	}
 	
 	public function test_kitchen_cant_post_new_schedule() {
-		$this->actingAs($this->kitchen)->post(action('Admin\BandController@storeSchedule'))->assertForbidden();
+		$this->actingAs($this->kitchen)->post(action('ArtistManager\ArtistManagerController@storeSchedule'))->assertForbidden();
 	}
 	
 	public function test_worker_cant_post_new_schedule() {
-		$this->actingAs($this->worker)->post(action('Admin\BandController@storeSchedule'))->assertForbidden();
-	}
-	
-	public function test_artist_manager_cant_post_new_schedule() {
-		$this->actingAs($this->artistManager)->post(action('Admin\BandController@storeSchedule'))->assertForbidden();
+		$this->actingAs($this->worker)->post(action('ArtistManager\ArtistManagerController@storeSchedule'))->assertForbidden();
 	}
 	
 	public function test_accountant_cant_post_new_schedule() {
-		$this->actingAs($this->accountant)->post(action('Admin\BandController@storeSchedule'))->assertForbidden();
+		$this->actingAs($this->accountant)->post(action('ArtistManager\ArtistManagerController@storeSchedule'))->assertForbidden();
 	}
 	
 	public function test_band_cant_post_new_schedule() {
-		$this->actingAs($this->bands->first()->user)->post(action('Admin\BandController@storeSchedule'))->assertForbidden();
+		$this->actingAs($this->bands->first()->user)->post(action('ArtistManager\ArtistManagerController@storeSchedule'))->assertForbidden();
 	}
 	
-	public function test_admin_can_post_new_schedule_and_fires_event() {
+	public function test_admin_cant_post_new_schedule() {
+		$this->actingAs($this->admin)->post(action('ArtistManager\ArtistManagerController@storeSchedule'))->assertForbidden();
+	}
+	
+	public function test_artist_anager_can_post_new_schedule_and_fires_event() {
 		Event::fake();
 		app('settings')->put('schedule_budget', 120);
 		$bands = $this->bands->random(2);
 		$stages = $this->stages->random(2);
 		$dateTime = Carbon::now();
-		$this->actingAs($this->admin)->post(action('Admin\BandController@storeSchedule'), ['calendar' => [
+		$this->actingAs($this->artistManager)->post(action('ArtistManager\ArtistManagerController@storeSchedule'), ['calendar' => [
 			$dateTime->format('d/m/Y H:i') => [[
 				'band' => $bands->first()->id,
 				'stage' => $stages->first()->id,
@@ -167,12 +135,12 @@ class ScheduleTest extends TestCase {
 		Notification::assertSentTo($band->user, ShowCreatedNotification::class);
 	}
 	
-	public function test_admin_cant_post_over_budget_schedule() {
+	public function test_artist_manager_cant_post_over_budget_schedule() {
 		app('settings')->put('schedule_budget', 100);
 		$bands = $this->bands->random(2);
 		$stages = $this->stages->random(2);
 		$dateTime = Carbon::now();
-		$this->actingAs($this->admin)->post(action('Admin\BandController@storeSchedule'), ['calendar' => [
+		$this->actingAs($this->artistManager)->post(action('ArtistManager\ArtistManagerController@storeSchedule'), ['calendar' => [
 			$dateTime->format('d/m/Y H:i') => [[
 				'band' => $bands->first()->id,
 				'stage' => $stages->first()->id,
@@ -206,7 +174,7 @@ class ScheduleTest extends TestCase {
 		$stage = $this->stages->random();
 		$dateTime = Carbon::now();
 		$oldShows = BandSchedule::all();
-		$this->actingAs($this->admin)->post(action('Admin\BandController@storeSchedule'), ['calendar' => [
+		$this->actingAs($this->artistManager)->post(action('ArtistManager\ArtistManagerController@storeSchedule'), ['calendar' => [
 			$dateTime->format('d/m/Y H:i') => [[
 				'band' => $bands->id,
 				'stage' => $stage->id,
@@ -261,7 +229,7 @@ class ScheduleTest extends TestCase {
 			'approved' => true,
 		]);
 		
-		$this->actingAs($this->admin)->post(action('Admin\BandController@storeSchedule'), ['calendar' => [
+		$this->actingAs($this->artistManager)->post(action('ArtistManager\ArtistManagerController@storeSchedule'), ['calendar' => [
 			$dateTime->format('d/m/Y H:i') => [[
 				'band' => $band->id,
 				'stage' => $this->stages->last()->id,
@@ -297,7 +265,7 @@ class ScheduleTest extends TestCase {
 			'approved' => true,
 		]);
 		
-		$this->actingAs($this->admin)->post(action('Admin\BandController@storeSchedule'), ['calendar' => [
+		$this->actingAs($this->artistManager)->post(action('ArtistManager\ArtistManagerController@storeSchedule'), ['calendar' => [
 			$dateTime->format('d/m/Y H:i') => [[
 				'band' => $bands->id,
 				'stage' => $stage->id,
@@ -341,7 +309,7 @@ class ScheduleTest extends TestCase {
 		$dateTime = Carbon::now();
 		
 		
-		$this->actingAs($this->admin)->post(action('Admin\BandController@storeSchedule'), ['calenda' => [
+		$this->actingAs($this->artistManager)->post(action('ArtistManager\ArtistManagerController@storeSchedule'), ['calenda' => [
 			$dateTime->format('d/m/Y H:i') => [[
 				'band' => $bands->id,
 				'stage' => $stage->id,

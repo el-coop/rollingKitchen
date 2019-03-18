@@ -9,5 +9,9 @@
 		@slot('initBudget',$initBudget)
 		@slot('schedules',$schedules)
 		@slot('stages', $stages)
+		@slot('startDay', $startDay)
+		@slot('days', $days)
+		@slot('startHour', $startHour)
+		@slot('endHour', $endHour)
 	@endcomponent
 @endsection

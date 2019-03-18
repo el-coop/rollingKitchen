@@ -38,7 +38,7 @@ class StoreBandScheduleRequest extends FormRequest {
 	
 	public function withValidator($validator) {
 		$validator->after(function ($validator) {
-			$budget = app('settings')->get('bands_budget');
+			$budget = app('settings')->get('schedule_budget');
 			if (collect($this->input('calendar'))->sum(function ($dateTime) {
 					return collect($dateTime)->sum(function ($show) {
 						return $show['payment'];

@@ -178,10 +178,19 @@
 
 			setWidth() {
 				const totalWidth = this.$el.parentElement.getBoundingClientRect().width;
+				if (totalWidth === 0) {
+					window.setTimeout(() => {
+						this.setWidth();
+					},500);
+					return;
+				}
 				const optionsWidth = this.$refs.options.getBoundingClientRect().width / this.columnWidth;
 				let maxDisplay = Math.min(this.maxParallel, this.numberOfDays) + optionsWidth;
 				while ((totalWidth / (this.columnWidth * maxDisplay)) < 1) {
 					maxDisplay--;
+				}
+				if (maxDisplay < 1) {
+					maxDisplay = 1;
 				}
 				this.currentlyDisplaying = Math.ceil(maxDisplay);
 				this.loaded = true;
