@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<slot :data="fields"></slot>
 		<div class="table-container">
 			<table class="table is-fullwidth">
 				<thead>

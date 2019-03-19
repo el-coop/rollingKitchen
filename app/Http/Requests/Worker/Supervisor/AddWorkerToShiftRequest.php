@@ -55,7 +55,8 @@ class AddWorkerToShiftRequest extends FormRequest {
 			'worker' => $this->worker->id ?? null,
 			'startTime' => $this->input('startTime'),
 			'endTime' => $this->input('endTime'),
-			'workFunction' => $this->input('workFunction')
+			'workFunction' => $this->input('workFunction'),
+			'hours' => $shiftWorker->WorkedHours->total('hours')
 		];
 	}
 }

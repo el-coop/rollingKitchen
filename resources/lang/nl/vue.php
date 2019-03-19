@@ -56,4 +56,5 @@ return [
 	'startTime' => 'Begintijd',
 	'endTime' => 'Eindtijd',
 	'export' => 'Exporteren',
+	'totalHours' => 'Aantal uren'
 ];
