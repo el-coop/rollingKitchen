@@ -30,8 +30,15 @@ class ApproveScheduleRequest extends FormRequest {
 	}
 
 	public function commit(){
-		$this->schedule->approved = 'approved';
+		$this->schedule->approved = 'accepted';
 		$this->schedule->save();
+		return [
+			'id' => $this->schedule->id,
+			'stage' => $this->schedule->stage->name,
+			'dateTime' => $this->schedule->dateTime,
+			'payment' => $this->schedule->payment,
+			'approved' => $this->schedule->approved
+		];
 
 	}
 }

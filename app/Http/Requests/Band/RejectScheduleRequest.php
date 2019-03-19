@@ -32,6 +32,14 @@ class RejectScheduleRequest extends FormRequest {
 
 	public function commit() {
 		$this->schedule->approved = 'rejected';
+		$this->schedule->payment = 0;
 		$this->schedule->save();
+		return [
+			'id' => $this->schedule->id,
+			'stage' => $this->schedule->stage->name,
+			'dateTime' => $this->schedule->dateTime,
+			'payment' => $this->schedule->payment,
+			'approved' => $this->schedule->approved
+		];
 	}
 }

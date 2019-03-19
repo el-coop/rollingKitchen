@@ -114,12 +114,13 @@ class Band extends Model {
 	}
 
 	public function getPendingScheduleAttribute(){
-		return $this->schedules->where('approved', 'pending')->map(function ($schedule) {
+		return $this->schedules->map(function ($schedule) {
 			return [
 				'id' => $schedule->id,
 				'stage' => $schedule->stage->name,
 				'dateTime' => $schedule->dateTime,
-				'payment' => $schedule->payment
+				'payment' => $schedule->payment,
+				'approved' => $schedule->approved
 			];
 		});
 	}

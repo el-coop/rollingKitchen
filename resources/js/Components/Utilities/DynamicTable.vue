@@ -17,7 +17,7 @@
 							v-html="valueDisplay(column,field[column.name])" @click="editObject(field)"
 							:class="{'is-hidden-phone': column.responsiveHidden}"></td>
 						<td v-if="hasActions">
-							<slot name="actions" :field="field" :approve="handleApprove" :on-update="replaceObject"></slot>
+							<slot name="actions" :field="field" :on-update="replaceObject"></slot>
 						</td>
 						<td v-if="action && deleteAllowed">
 							<button class="button is-danger" type="button"
@@ -159,6 +159,7 @@
 			},
 
 			replaceObject(object) {
+				console.log(object);
 				const editedId = this.fields.findIndex((item) => {
 					return item.id === object.id;
 				});
@@ -172,7 +173,7 @@
 					const editedId = this.fields.findIndex((item) => {
 						return item.id === this.object.id;
 					});
-					this.fields.splice(editedId, 1, object);
+					this.fields.splice(editedId, 1, object); 
 				}
 				this.$modal.hide(`${this._uid}modal`);
 			},

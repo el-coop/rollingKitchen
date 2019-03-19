@@ -13,6 +13,7 @@ Vue.component('InvoicePaymentsModal', require('./Invoice/InvoicePaymentsModal').
 Vue.component('ManageShiftWorkers', require('./Shift/ManageShiftWorkers').default);
 Vue.component('ExportWorkedHours', require('./Shift/ExportWorkedHours').default);
 Vue.component('Schedule', require('./Schedule/Schedule').default);
+Vue.component('ApproveSchedule', require('./Band/ApproveSchedule').default);
 
 // utilities
 Vue.component('Drawer', require('./Utilities/Drawer').default);

@@ -13,10 +13,13 @@
                         callback: 'localNumber'
                     }
         ]" :init-fields="{{$band->pendingSchedule->values()}}">
-        <template #actions="{field, approve}">
-            <div class="columns">
-                <button @click="approve(['reject',field, {{$band->id}}])" class="button is-danger">@lang('band/band.reject')</button>
-                <button @click="approve(['approve',field, {{$band->id}}])" class="button is-info">@lang('band/band.approve')</button>
+        <template #actions="{field, onUpdate}">
+            <div v-if="field.approved === 'pending'">
+                <approve-schedule :on-update="onUpdate" :object="field" :band="{{$band->id}}">
+
+                </approve-schedule>
+            </div>
+            <div v-else v-text="$translations[field.approved]">
             </div>
         </template>
     </dynamic-table>

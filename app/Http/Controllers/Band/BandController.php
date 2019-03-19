@@ -58,11 +58,11 @@ class BandController extends Controller {
 	}
 
 	public function approveSchedule(ApproveScheduleRequest $request, Band $band, BandSchedule $bandSchedule){
-		$request->commit();
+		return $request->commit();
 	}
 
 	public function rejectSchedule(RejectScheduleRequest $request, Band $band, BandSchedule $bandSchedule){
-		$request->commit();
+		return $request->commit();
 	}
 
 	public function broker() {
