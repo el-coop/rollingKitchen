@@ -14,16 +14,19 @@
 			<hr>
 		</div>
 		<div class="card-content">
-			<dynamic-table :init-fields="{{ $fields }}" :columns="[{
+			<dynamic-table :responsive="true" :init-fields="{{ $fields }}" :columns="[{
 					name: 'name_nl',
+					responsiveHidden: {{ App::getLocale() =='en' ? 'true' : 'false' }},
 					label: '@lang('admin/fields.name_nl')'
 				},{
 					name: 'name_en',
+					responsiveHidden: {{ App::getLocale() =='nl' ? 'true' : 'false' }},
 					label: '@lang('admin/fields.name_en')'
 				},{
 					name: 'type',
 					label: '@lang('admin/fields.type')',
 					type: 'select',
+					responsiveHidden: true,
 					options: {
 						text: '@lang('admin/fields.text')',
 						textarea: '@lang('admin/fields.textarea')',
@@ -33,6 +36,7 @@
                     name: 'status',
 					label: '@lang('global.status')',
 					type: 'select',
+					responsiveHidden: true,
 					options: {
 					    protected: '@lang('admin/fields.protected')',
 					    encrypted: '@lang('admin/fields.encrypted')',
@@ -43,10 +47,13 @@
 				},
 				{
 					name: 'placeholder_nl',
+					responsiveHidden: true,
 					label: '@lang('admin/fields.placeholder_nl')',
 					invisible: true
 				},{
 					name: 'placeholder_en',
+					responsiveHidden: true,
+
 					label: '@lang('admin/fields.placeholder_en')',
 					invisible: true
 
