@@ -17,7 +17,7 @@
 							v-html="valueDisplay(column,field[column.name])" @click="editObject(field)"
 							:class="{'is-hidden-phone': column.responsiveHidden}"></td>
 						<td v-if="hasActions">
-							<slot name="actions" :field="field" :on-update="replaceObject"></slot>
+							<slot name="actions" :field="field" :approve="handleApprove" :on-update="replaceObject"></slot>
 						</td>
 						<td v-if="action && deleteAllowed">
 							<button class="button is-danger" type="button"
@@ -187,7 +187,6 @@
 				}
 				this.deleteing = null;
 			},
-
 			async saveOrder() {
 				this.savingOrder = true;
 				const order = [];
@@ -203,6 +202,24 @@
 					this.$toast.error(this.$translations.tryLater, this.$translations.operationFiled);
 				}
 				this.savingOrder = false;
+			},
+
+			async handleApprove(payload){
+				let method = payload[0];
+				let object = payload[1];
+				let band = payload[2];
+				try {
+					if (method === 'approve'){
+						await axios.patch(`${band}/schedule/${object.id}/approve`);
+
+					} else {
+						await axios.patch(`${band}/schedule/${object.id}/reject`);
+					}
+					this.$toast.success(this.$translations.updateSuccess);
+					this.fields.splice(this.fields.indexOf(object), 1);
+				} catch (error) {
+					this.$toast.error(this.$translations.tryLater, this.$translations.operationFiled);
+				}
 			}
 		},
 
