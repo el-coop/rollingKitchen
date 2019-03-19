@@ -5,7 +5,7 @@
 				<thead>
 				<tr>
 					<th v-for="(column,index) in columns" v-text="column.label" :key="index"
-						v-if="!column.invisible"></th>
+						v-if="!column.invisible" :class="{'is-hidden-phone': column.responsiveHidden}"></th>
 					<th v-if="hasActions">
 					</th>
 					<th v-if="action"></th>
@@ -14,7 +14,8 @@
 				<draggable element="tbody" :list="fields" :options="draggable">
 					<tr v-for="(field, index) in fields" :key="`${index}${field.id}`">
 						<td v-if="!column.invisible" v-for="(column,colIndex) in columns" :key="`${index}_${colIndex}`"
-							v-html="valueDisplay(column,field[column.name])" @click="editObject(field)"></td>
+							v-html="valueDisplay(column,field[column.name])" @click="editObject(field)"
+							:class="{'is-hidden-phone': column.responsiveHidden}"></td>
 						<td v-if="hasActions">
 							<slot name="actions" :field="field" :on-update="replaceObject"></slot>
 						</td>

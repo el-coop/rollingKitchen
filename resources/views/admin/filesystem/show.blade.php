@@ -11,6 +11,7 @@
     name: 'visibility',
     label: '@lang('admin/settings.visibleTo')',
     type: 'select',
+    responsiveHidden: true,
     options: [
     	'@lang('admin/settings.noKitchens')',
     	'@lang('admin/settings.allKitchens')',
@@ -26,6 +27,7 @@
 },{
 	name: 'default_send_invoice',
 	label: '@lang('admin/settings.default_send_invoice')',
+    responsiveHidden: true,
 	type: 'checkbox',
 	hideLabel: true,
 	options: [{name: '@lang('admin/settings.default_send_invoice')'}]
@@ -33,6 +35,7 @@
 },{
 	name: 'default_resend_invoice',
 	label: '@lang('admin/settings.default_resend_invoice')',
+    responsiveHidden: true,
 	type: 'checkbox',
 	hideLabel: true,
 	options: [{name: '@lang('admin/settings.default_resend_invoice')'}]

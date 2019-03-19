@@ -64,3 +64,9 @@
 .flex-shrink-fix {
 	flex-shrink: 1;
 }
+
+@media #{$under-tablet} {
+	.is-hidden-phone {
+		display: none !important;
+	}
+}
