@@ -159,7 +159,6 @@
 			},
 
 			replaceObject(object) {
-				console.log(object);
 				const editedId = this.fields.findIndex((item) => {
 					return item.id === object.id;
 				});
@@ -203,24 +202,6 @@
 					this.$toast.error(this.$translations.tryLater, this.$translations.operationFiled);
 				}
 				this.savingOrder = false;
-			},
-
-			async handleApprove(payload){
-				let method = payload[0];
-				let object = payload[1];
-				let band = payload[2];
-				try {
-					if (method === 'approve'){
-						await axios.patch(`${band}/schedule/${object.id}/approve`);
-
-					} else {
-						await axios.patch(`${band}/schedule/${object.id}/reject`);
-					}
-					this.$toast.success(this.$translations.updateSuccess);
-					this.fields.splice(this.fields.indexOf(object), 1);
-				} catch (error) {
-					this.$toast.error(this.$translations.tryLater, this.$translations.operationFiled);
-				}
 			}
 		},
 
