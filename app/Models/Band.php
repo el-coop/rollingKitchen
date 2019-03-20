@@ -113,7 +113,7 @@ class Band extends Model {
 		];
 	}
 
-	public function getPendingScheduleAttribute(){
+	public function getSchedulesForTableAttribute(){
 		return $this->schedules->map(function ($schedule) {
 			return [
 				'id' => $schedule->id,

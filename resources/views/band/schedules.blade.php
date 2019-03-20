@@ -12,7 +12,7 @@
                         label: '@lang('vue.budget')',
                         callback: 'localNumber'
                     }
-        ]" :init-fields="{{$band->pendingSchedule->values()}}">
+        ]" :init-fields="{{$band->schedulesForTable->values()}}">
         <template #actions="{field, onUpdate}">
             <div v-if="field.approved === 'pending'">
                 <approve-schedule :on-update="onUpdate" :object="field" :band="{{$band->id}}">

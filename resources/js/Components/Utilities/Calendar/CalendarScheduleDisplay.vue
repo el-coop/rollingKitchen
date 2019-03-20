@@ -84,7 +84,7 @@
                 if (this.init.some((initShow) => {
                     return initShow.approved === 'accepted' && initShow.band === show.band && parseFloat(initShow.payment) === parseFloat(show.payment);
                 })) {
-                    return 'is-info';
+                    return 'is-primary';
                 }
                 if (show.approved === 'rejected'){
                     return 'is-danger';
