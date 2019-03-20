@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Band;
 
+use App\Http\Requests\Band\ApproveScheduleRequest;
 use App\Http\Requests\Band\CreateBandMemberRequest;
 use App\Http\Requests\Band\DestroyBandMemberRequest;
+use App\Http\Requests\Band\RejectScheduleRequest;
 use App\Http\Requests\Band\UpdateBandMemberRequest;
 use App\Http\Requests\Band\UpdateBandRequest;
 use App\Http\Requests\Band\UpdatePaymentMethodRequest;
 use App\Models\Band;
+use App\Models\BandSchedule;
 use Auth;
 use App\Models\BandMember;
 use Illuminate\Foundation\Auth\ResetsPasswords;
@@ -52,6 +55,14 @@ class BandController extends Controller {
 		return [
 			'success' => true
 		];
+	}
+
+	public function approveSchedule(ApproveScheduleRequest $request, Band $band, BandSchedule $bandSchedule){
+		return $request->commit();
+	}
+
+	public function rejectSchedule(RejectScheduleRequest $request, Band $band, BandSchedule $bandSchedule){
+		return $request->commit();
 	}
 
 	public function broker() {

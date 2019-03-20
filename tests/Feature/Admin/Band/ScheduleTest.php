@@ -258,7 +258,7 @@ class ScheduleTest extends TestCase {
 			'stage_id' => $stage->id,
 			'payment' => 10,
 			'dateTime' => $dateTime->format('Y-m-d H:i:00'),
-			'approved' => true,
+			'approved' => 'accepted',
 		]);
 		
 		$this->actingAs($this->admin)->post(action('Admin\BandController@storeSchedule'), ['calendar' => [
@@ -274,7 +274,7 @@ class ScheduleTest extends TestCase {
 			'stage_id' => $this->stages->last()->id,
 			'payment' => 10,
 			'dateTime' => $dateTime->format('Y-m-d H:i:00'),
-			'approved' => true,
+			'approved' => 'accepted',
 		]);
 		
 		Event::assertDispatched(ShowUpdated::class, function ($event) use ($show) {
@@ -294,7 +294,7 @@ class ScheduleTest extends TestCase {
 			'stage_id' => $stage->id,
 			'payment' => 10,
 			'dateTime' => $dateTime->format('Y-m-d H:i:00'),
-			'approved' => true,
+			'approved' => 'accepted',
 		]);
 		
 		$this->actingAs($this->admin)->post(action('Admin\BandController@storeSchedule'), ['calendar' => [
@@ -310,7 +310,7 @@ class ScheduleTest extends TestCase {
 			'stage_id' => $stage->id,
 			'payment' => 5,
 			'dateTime' => $dateTime->format('Y-m-d H:i:00'),
-			'approved' => false,
+			'approved' => 'pending',
 		]);
 		
 		Event::assertDispatched(ShowUpdated::class, function ($event) use ($show) {
@@ -328,7 +328,7 @@ class ScheduleTest extends TestCase {
 			'stage_id' => $this->stages->random()->id,
 			'payment' => 10,
 			'dateTime' => $band->schedules->first()->dateTime,
-			'approved' => true,
+			'approved' => 'accepted',
 		])));
 		
 		Notification::assertSentTo($band->user, ShowUpdatedNotification::class);

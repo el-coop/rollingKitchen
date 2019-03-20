@@ -17,7 +17,7 @@ class CreateBandSchedulesTable extends Migration {
 			$table->bigInteger('stage_id')->unsigned();
 			$table->bigInteger('band_id')->unsigned();
 			$table->decimal('payment', 10, 2);
-			$table->boolean('approved')->default(false);
+			$table->string('approved')->default('pending');
 			
 			$table->timestamps();
 			

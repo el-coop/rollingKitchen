@@ -59,4 +59,6 @@ return [
 	'budget' => 'Budget',
 	'budgetUsed' => 'Budget used',
 	'budgetOverflow' => 'The current schedule is above budget',
+	'reject' => 'Reject',
+	'approve' => 'Approve'
 ];

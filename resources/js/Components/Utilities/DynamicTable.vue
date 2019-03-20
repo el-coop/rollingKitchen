@@ -172,7 +172,7 @@
 					const editedId = this.fields.findIndex((item) => {
 						return item.id === this.object.id;
 					});
-					this.fields.splice(editedId, 1, object);
+					this.fields.splice(editedId, 1, object); 
 				}
 				this.$modal.hide(`${this._uid}modal`);
 			},
@@ -187,7 +187,6 @@
 				}
 				this.deleteing = null;
 			},
-
 			async saveOrder() {
 				this.savingOrder = true;
 				const order = [];

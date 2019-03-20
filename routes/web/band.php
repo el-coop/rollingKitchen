@@ -13,5 +13,8 @@ Route::group(['prefix' => 'band', 'namespace' => 'Band'], function () {
 		Route::patch('/{band}/bandMember/{bandMember}', 'BandController@updateBandMember');
 		Route::delete('/{band}/bandMember/{bandMember}', 'BandController@destroyBandMember');
 
+		Route::patch('/{band}/schedule/{bandSchedule}/approve', 'BandController@approveSchedule');
+		Route::patch('/{band}/schedule/{bandSchedule}/reject', 'BandController@rejectSchedule');
+
 	});
 });
