@@ -758,4 +758,20 @@ class SupervisorTest extends TestCase {
 			'workFunction' => $this->workplace->workFunctions->first()->id])
 			->assertRedirect()->assertSessionHasErrors('endTime');
 	}
+	
+	public function test_hours_overflow_validation_with_previous_workers() {
+		$this->worker->user->approved = true;
+		$this->worker->user->save();
+		$this->shift->workers()->attach(factory(Worker::class)->create(),[
+			'start_time' => '20:00',
+			'end_time' => '23:00',
+			'work_function_id' => $this->workplace->workFunctions->first()->id
+		]);
+		$this->actingAs($this->supervisor)->post(action('Worker\SupervisorController@addWorkerToShift', $this->shift), [
+			'worker' => $this->worker->user->id,
+			'startTime' => '21:00',
+			'endTime' => '22:30',
+			'workFunction' => $this->workplace->workFunctions->first()->id])
+			->assertRedirect()->assertSessionHasErrors('endTime');
+	}
 }
