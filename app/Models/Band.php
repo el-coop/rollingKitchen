@@ -14,7 +14,7 @@ class Band extends Model {
 			$band->user->delete();
 		});
 	}
-
+	
 	protected $casts = [
 		'data' => 'array',
 	];
@@ -53,7 +53,10 @@ class Band extends Model {
 				],
 				'value' => $this->user->language ?? 'nl',
 			],
-			[
+		
+		]);
+		if ($this->exists) {
+			$fullData = $fullData->concat([[
 				'name' => 'paymentMethod',
 				'label' => __('band/band.paymentMethod'),
 				'type' => 'select',
@@ -62,9 +65,8 @@ class Band extends Model {
 					'individual' => __('band/band.individual')
 				],
 				'value' => $this->payment_method ?? 'band'
-			]
-		]);
-		if ($this->exists) {
+			]]);
+			
 			$fullData = $fullData->concat($this->getFieldsData());
 		}
 		return $fullData;
@@ -88,11 +90,11 @@ class Band extends Model {
 	public function schedules() {
 		return $this->hasMany(BandSchedule::class);
 	}
-
+	
 	public function getBandMembersForDatatableAttribute() {
 		return [
 			'model' => BandMember::class,
-			'where' => [['user_type', BandMember::class],['band_id', $this->id]],
+			'where' => [['user_type', BandMember::class], ['band_id', $this->id]],
 			'joins' => [['users', 'users.user_id', 'band_members.id']],
 			'fields' => [
 				[
@@ -112,8 +114,8 @@ class Band extends Model {
 			]
 		];
 	}
-
-	public function getSchedulesForTableAttribute(){
+	
+	public function getSchedulesForTableAttribute() {
 		return $this->schedules->map(function ($schedule) {
 			return [
 				'id' => $schedule->id,

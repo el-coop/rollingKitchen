@@ -2,8 +2,8 @@
 	<div class="field">
 		<label class="label" v-text="field.label"></label>
 		<div class="control">
-			<input type="hidden" v-for="(value, index) in selected" :name="`${field.name}[${index}]`" :value="value.id">
-			<multiselect v-model="selected" :options="field.options" :multiple="true" :label="field.optionsLabel"
+			<input type="hidden" v-for="(option, index) in value" :name="`${field.name}[${index}]`" :value="option.id">
+			<multiselect v-model="value" :options="field.options" :multiple="true" :label="field.optionsLabel"
 						 :hide-selected="true"
 						 track-by="id">
 			</multiselect>
@@ -25,7 +25,7 @@
 
 		data() {
 			return {
-				selected: this.field.value
+				value: this.field.value
 			}
 		}
 	}

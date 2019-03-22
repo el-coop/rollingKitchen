@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\Band\DestroyBandRequest;
 use App\Http\Requests\Admin\Band\UpdateBandRequest;
 use App\Http\Requests\ArtistManager\StoreBandScheduleRequest;
 use App\Models\Band;
+use App\Models\BandMember;
 use App\Models\BandSchedule;
 use App\Models\Stage;
 use Carbon\Carbon;
@@ -19,7 +20,8 @@ class BandController extends Controller {
 		$title = __('admin/artists.bands');
 		$fieldType = "Band";
 		$createTitle = __('admin/artists.createBand');
-		return view('admin.datatableWithNew', compact('title', 'createTitle', 'fieldType'));
+		$buttons = ['<a class="button is-light" href="' . action('Admin\FieldController@index', 'BandMember') . '">' . __('admin/bandMembers.fields') . '</a>'];
+		return view('admin.datatableWithNew', compact('title', 'createTitle', 'fieldType', 'buttons'));
 	}
 	
 	public function create() {
@@ -69,7 +71,7 @@ class BandController extends Controller {
 		$days = Carbon::parse($startDay)->diffInDays(Carbon::parse(app('settings')->get('schedule_end_day'))) + 1;
 		$startHour = app('settings')->get('schedule_start_hour');
 		$endHour = app('settings')->get('schedule_end_hour');
-	
+		
 		
 		return view('admin.bands.schedule', compact('bands', 'stages', 'schedules', 'budget', 'initBudget', 'startDay', 'startHour', 'days', 'endHour'));
 	}

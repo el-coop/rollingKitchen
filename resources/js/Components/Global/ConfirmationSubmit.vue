@@ -60,10 +60,11 @@
 					event.preventDefault();
 					console.log(this.subtitle);
 					this.$toast.question(this.subtitle, this.title, {
+						close: false,
 						timeout: false, position: 'center', buttons: [
 							[`<button>${this.yesText}</button>`, this.handleConfirm, true],
 							[`<button>${this.noText}</button>`, this.handleReject, false]
-						],
+						]
 					});
 				}
 			},

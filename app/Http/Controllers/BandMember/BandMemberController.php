@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\BandMember;
 
+use App;
 use App\Http\Requests\BandMember\UpdateBandMemberRequest;
 use App\Models\BandMember;
 use Illuminate\Foundation\Auth\ResetsPasswords;
@@ -21,7 +22,10 @@ class BandMemberController extends Controller {
 	}
 
 	public function show(BandMember $bandMember){
-		return view('bandMember.show', compact('bandMember'));
+		$locale = App::getLocale();
+		$privacyStatement = str_replace(PHP_EOL, '<br>', app('settings')->get("workers_privacy_statement_{$locale}"));
+		
+		return view('bandMember.show', compact('bandMember','privacyStatement'));
 	}
 
 	public function update(UpdateBandMemberRequest $request, BandMember $bandMember){
