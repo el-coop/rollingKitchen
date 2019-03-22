@@ -24,7 +24,7 @@
             label: this.$translations.endTime,
             subType: 'time',
         }
-        ]" :init-fields="shiftWorkers" :action="shift.closed ? '' : `${this.url}/worker`">
+        ]" sort-by="startTime" :init-fields="shiftWorkers" :action="shift.closed ? '' : `${this.url}/worker`">
 	</dynamic-table>
 	<div v-else class="has-text-centered">
 		<a class="button is-loading"></a>
