@@ -105,6 +105,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		Route::post('/edit', 'WorkerController@store');
 		Route::get('/edit/{worker}', 'WorkerController@edit');
 		Route::patch('/edit/{worker}', 'WorkerController@update');
+		Route::patch('/update/{worker}', 'WorkerController@nonAjaxUpdate');
 		Route::delete('/delete/{worker}', 'WorkerController@destroy');
 		Route::get('/{worker}', 'WorkerController@show');
 		

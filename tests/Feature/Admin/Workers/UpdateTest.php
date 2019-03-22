@@ -86,7 +86,7 @@ class UpdateTest extends TestCase {
 	public function test_admin_can_update_worker() {
 
 		$workplaces = $this->workplaces->random(2)->pluck('id');
-		$this->actingAs($this->admin->user)->patch(action('Admin\WorkerController@edit', $this->worker), [
+		$this->actingAs($this->admin->user)->patch(action('Admin\WorkerController@update', $this->worker), [
 			'name' => 'name',
 			'email' => 'test@best.com',
 			'type' => 1,
@@ -142,5 +142,65 @@ class UpdateTest extends TestCase {
 			'worker',
 			'workplaces'
 		]);
+	}
+
+	public function test_guest_cant_non_ajax_update_worker() {
+		$this->patch(action('Admin\WorkerController@nonAjaxUpdate', $this->worker))->assertRedirect(action('Auth\LoginController@login'));
+	}
+
+
+	public function test_worker_cant_non_ajax_update_worker() {
+		$this->actingAs($this->worker->user)->patch(action('Admin\WorkerController@nonAjaxUpdate', $this->worker))->assertForbidden();
+	}
+
+
+
+	public function test_accountant_cant_non_ajax_update_worker() {
+		$this->actingAs($this->accountant)->patch(action('Admin\WorkerController@nonAjaxUpdate', $this->worker))->assertForbidden();
+	}
+
+
+	public function test_kitchen_cant_non_ajax_update_worker() {
+		$this->actingAs($this->kitchen->user)->patch(action('Admin\WorkerController@nonAjaxUpdate', $this->worker))->assertForbidden();
+	}
+
+	public function test_admin_can_non_ajax_update_worker() {
+
+		$workplaces = $this->workplaces->random(2)->pluck('id');
+		$this->actingAs($this->admin->user)->patch(action('Admin\WorkerController@nonAjaxUpdate', $this->worker), [
+			'name' => 'name',
+			'email' => 'test@best.com',
+			'type' => 1,
+			'language' => 'en',
+			'worker' => [
+				'data' => 'bata',
+			],
+			'approved' => true,
+			'workplaces' => $workplaces->toArray(),
+		])->assertRedirect();
+
+		$this->assertDatabaseHas('users', [
+			'id' => $this->worker->user->id,
+			'name' => 'name',
+			'email' => 'test@best.com',
+			'language' => 'en',
+			'user_type' => Worker::class,
+		]);
+
+		$this->assertDatabaseHas('workers', [
+			'supervisor' => false,
+			'type' => 1,
+			'approved' => true,
+			'data' => json_encode([
+				'data' => 'bata',
+			]),
+		]);
+
+		foreach ($workplaces as $workplace) {
+			$this->assertDatabaseHas('worker_workplace', [
+				'worker_id' => $this->worker->id,
+				'workplace_id' => $workplace,
+			]);
+		}
 	}
 }
