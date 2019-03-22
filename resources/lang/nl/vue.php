@@ -60,5 +60,6 @@ return [
 	'budget' => 'TBT',
 	'budgetUsed' => 'TBT',
 	'budgetOverflow' => 'TBT',
-
+	'reject' => 'TBT',
+	'approve' => 'TBT'
 ];

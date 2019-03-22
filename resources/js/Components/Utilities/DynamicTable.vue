@@ -148,26 +148,26 @@
 		methods: {
 			sort() {
 				if (this.sortBy) {
-					console.log(this.fields);
 					this.fields.sort((a, b) => {
-						console.log(a);
 						a = a[this.sortBy].split(':');
 						b = b[this.sortBy].split(':');
 
 						if (parseInt(a[0]) < parseInt(b[0])) {
 							return -1;
-						} else if (parseInt(a[0]) > parseInt(b[0])) {
-							return 1;
-						} else if (parseInt(a[1]) < parseInt(b[1])) {
-							return -1;
-						} else if (parseInt(a[1]) > parseInt(b[1])) {
+						}
+						if (parseInt(a[0]) > parseInt(b[0])) {
 							return 1;
 						}
+						if (parseInt(a[1]) < parseInt(b[1])) {
+							return -1;
+						}
+						if (parseInt(a[1]) > parseInt(b[1])) {
+							return 1;
+						}
+
 						return 0;
 					});
 				}
-
-				return this.fields;
 			},
 
 			editObject(field) {
@@ -196,7 +196,9 @@
 					return item.id === object.id;
 				});
 				this.fields.splice(editedId, 1, object);
-				this.sort();
+				if (this.sortBy) {
+					this.sort();
+				}
 			},
 
 			updateObject(object) {
@@ -208,7 +210,9 @@
 					});
 					this.fields.splice(editedId, 1, object);
 				}
-				this.sort();
+				if (this.sortBy) {
+					this.sort();
+				}
 				this.$modal.hide(`${this._uid}modal`);
 			},
 			async destroy(field) {
