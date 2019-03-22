@@ -54,11 +54,15 @@ class Shift extends Model {
 		return $this->belongsToMany(Worker::class)->using(ShiftWorker::class)->withPivot('start_time', 'end_time', 'work_function_id');
 	}
 	
+	public function shiftWorkers() {
+		return $this->hasMany(ShiftWorker::class);
+	}
+	
 	public function getTotalHoursAttribute() {
 		$totalHours = new Carbon('today');
 		$startOfDay = $totalHours->clone();
-		$this->workers->each(function ($worker) use ($totalHours) {
-			$totalHours->add($worker->pivot->workedHours);
+		$this->shiftWorkers->each(function ($worker) use ($totalHours) {
+			$totalHours->add($worker->workedHours);
 		});
 		return $startOfDay->diffAsCarbonInterval($totalHours);
 	}

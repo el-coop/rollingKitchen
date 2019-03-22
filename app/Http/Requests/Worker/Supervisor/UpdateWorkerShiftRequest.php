@@ -48,7 +48,8 @@ class UpdateWorkerShiftRequest extends FormRequest {
 			'worker' => $shiftWorker->worker_id,
 			'startTime' => $this->input('startTime'),
 			'endTime' => $this->input('endTime'),
-			'workFunction' => $this->input('workFunction')
+			'workFunction' => $this->input('workFunction'),
+			'hours' => $shiftWorker->WorkedHours->total('hours')
 		];
 	}
 	
