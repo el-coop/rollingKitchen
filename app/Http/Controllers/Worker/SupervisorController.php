@@ -62,8 +62,8 @@ class SupervisorController extends Controller {
 				'worker' => $shiftWorker->worker_id,
 				'startTime' => date('H:i', strtotime($shiftWorker->start_time)),
 				'endTime' => date('H:i', strtotime($shiftWorker->end_time)),
-				'workFunction' => $shiftWorker->work_function_id
-			
+				'workFunction' => $shiftWorker->work_function_id,
+				'hours' => $shiftWorker->WorkedHours->total('hours')
 			];
 		});
 		return [

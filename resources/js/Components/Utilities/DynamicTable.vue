@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<slot :data="fields"></slot>
 		<div class="table-container">
 			<table class="table is-fullwidth">
 				<thead>
@@ -122,6 +123,10 @@
 			sortable: {
 				type: Boolean,
 				default: false
+			},
+
+			sortBy: {
+				type: String
 			}
 
 		},
@@ -136,7 +141,35 @@
 			}
 		},
 
+		mounted() {
+			this.sort();
+		},
+
 		methods: {
+			sort() {
+				if (this.sortBy) {
+					this.fields.sort((a, b) => {
+						a = a[this.sortBy].split(':');
+						b = b[this.sortBy].split(':');
+
+						if (parseInt(a[0]) < parseInt(b[0])) {
+							return -1;
+						}
+						if (parseInt(a[0]) > parseInt(b[0])) {
+							return 1;
+						}
+						if (parseInt(a[1]) < parseInt(b[1])) {
+							return -1;
+						}
+						if (parseInt(a[1]) > parseInt(b[1])) {
+							return 1;
+						}
+
+						return 0;
+					});
+				}
+			},
+
 			editObject(field) {
 				if (field.id && !this.edit) {
 					return;
@@ -163,6 +196,9 @@
 					return item.id === object.id;
 				});
 				this.fields.splice(editedId, 1, object);
+				if (this.sortBy) {
+					this.sort();
+				}
 			},
 
 			updateObject(object) {
@@ -172,7 +208,10 @@
 					const editedId = this.fields.findIndex((item) => {
 						return item.id === this.object.id;
 					});
-					this.fields.splice(editedId, 1, object); 
+					this.fields.splice(editedId, 1, object);
+				}
+				if (this.sortBy) {
+					this.sort();
 				}
 				this.$modal.hide(`${this._uid}modal`);
 			},

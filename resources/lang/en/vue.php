@@ -56,6 +56,7 @@ return [
 	'startTime' => 'Start Time',
 	'endTime' => 'End Time',
 	'export' => 'Export',
+	'totalHours' => 'Total hours',
 	'budget' => 'Budget',
 	'budgetUsed' => 'Budget used',
 	'budgetOverflow' => 'The current schedule is above budget',
