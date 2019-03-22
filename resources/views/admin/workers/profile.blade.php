@@ -15,9 +15,7 @@
 					$item['value'] = $item['type'] == 'multiselect' ? $item['value']: old($fieldName, $item['value']);
 					$item['error'] = $errors->has($fieldName) ? $errors->get($fieldName): null;
 					return $item;
-				}) }}"
-								class="mb-1"
-				>
+				}) }}" class="mb-1">
 				</dynamic-fields>
 				<button class="button is-fullwidth is-success">
 					@lang('global.save')
