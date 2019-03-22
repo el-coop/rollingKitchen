@@ -15,6 +15,7 @@ return [
 	'payment_per_hour_before_tax' => 'Freelancer Uurloon',
 	'payment_per_hour_after_tax' => 'Loonlijst Uurloon',
 	'fillProfile' => 'Profiel invullen',
+	'workplace' => 'TBT',
 	'createShift' => 'Shift creëren',
 	'approved' => 'Goedgekeurd',
 	'totalHours' => 'Aantal uren',
