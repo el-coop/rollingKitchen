@@ -110,6 +110,14 @@ class WorkerController extends Controller {
 	public function update(UpdateWorkerRequest $request, Worker $worker) {
 		return $request->commit();
 	}
+
+	public function nonAjaxUpdate(UpdateWorkerRequest $request, Worker $worker) {
+		$request->commit();
+		return redirect()->back()->with('toast', [
+			'type' => 'success',
+			'title' => '',
+			'message' => __('vue.updateSuccess')
+		]);	}
 	
 	public function destroy(DestroyWorkerRequest $request, Worker $worker) {
 		$request->commit();
