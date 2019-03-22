@@ -12,16 +12,16 @@
 				<dynamic-fields :fields="{{ $worker->fulldata->map(function($item) use($errors){
 					$fieldName = str_replace(']','',str_replace('[','.',$item['name']));
 
-					$item['value'] = old($fieldName, $item['value']);
+					$item['value'] = $item['type'] == 'multiselect' ? $item['value']: old($fieldName, $item['value']);
 					$item['error'] = $errors->has($fieldName) ? $errors->get($fieldName): null;
 					return $item;
 				}) }}"
 								class="mb-1"
-							>
+				>
 				</dynamic-fields>
-					<button class="button is-fullwidth is-success">
-						@lang('global.save')
-					</button>
+				<button class="button is-fullwidth is-success">
+					@lang('global.save')
+				</button>
 			</form>
 		</div>
 	</div>
