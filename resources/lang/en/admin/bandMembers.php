@@ -1,5 +1,6 @@
 <?php
 
 return [
-	'createBandMembers' => 'Create Band Member'
+	'createBandMembers' => 'Create Band Member',
+	'fields' => 'Band member fields'
 ];

@@ -16,7 +16,7 @@
             @if(!$band->submitted)
                 <confirmation-submit label="@lang('kitchen/kitchen.submitReview')"
                                      title="@lang('kitchen/kitchen.submitConfirmTitle')"
-                                     subtitle="@lang('kitchen/kitchen.submitConfirmSubtitle')"
+                                     subtitle=" "
                                      yes-text="@lang('global.yes')"
                                      no-text="@lang('global.no')" name="review" value="1"
                                      id="reviewButton"></confirmation-submit>
