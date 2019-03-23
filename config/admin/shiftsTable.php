@@ -28,7 +28,11 @@ return [
 	], [
 		'name' => 'closed',
 		'title' => 'admin/shifts.closed',
-		'callback' => 'boolean'
+		'callback' => 'boolean',
+		'filter' => [
+			'1' => 'global.yes',
+			'0' => 'global.no'
+		]
 	]],
 
 ];
