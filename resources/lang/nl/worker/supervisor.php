@@ -2,7 +2,7 @@
 
 return [
 	'manageWorkers' => 'Beheer Medewerkers',
-	'workFunctions' => 'Werk Functies',
-	'workFunction' => 'TBT',
+	'workFunctions' => 'Functies',
+	'workFunction' => 'Functie',
 	'crew' => 'Crew'
 ];
