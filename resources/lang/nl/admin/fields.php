@@ -16,5 +16,5 @@ return [
 	'none' => 'Medewerker',
 	'placeholder_nl' => 'Plaatshouder NL',
 	'placeholder_en' => 'Plaatshouder EN',
-	'Band' => 'TBT'
+	'Band' => 'Band'
 ];

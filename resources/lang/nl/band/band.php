@@ -1,9 +1,9 @@
 <?php
 
 return [
-	'paymentMethod' => 'TBT',
-	'individual' => 'TBT',
-	'bandMembers' => 'TBT',
-	'reject' => 'TBT',
-	'approve' => 'TBT'
+	'paymentMethod' => 'Betalingsmethode',
+	'individual' => 'Individueel',
+	'bandMembers' => 'Bandleden',
+	'reject' => 'Afkeuren',
+	'approve' => 'Goedkeuren'
 ];

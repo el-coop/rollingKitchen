@@ -1,8 +1,7 @@
 <?php
 
 return [
-	'kitchenName' => 'TBT',
-	'nameKitchen' => 'Naam Keuken',
+	'kitchenName' => 'Naam keuken',
 	'application' => 'Seizoensgegevens',
 	'submitConfirmSubtitle' => 'Je kunt de gegevens niet meer aanpassen.',
 	'submitConfirmTitle' => 'Indienen voor beoordeling?',

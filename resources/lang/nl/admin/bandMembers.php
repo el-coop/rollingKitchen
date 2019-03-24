@@ -1,6 +1,6 @@
 <?php
 
 return [
-	'createBandMembers' => 'TBT',
-	'fields' => 'TBT'
+	'createBandMembers' => 'Bandleden toevoegen',
+	'fields' => 'Velden'
 ];

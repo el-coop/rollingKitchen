@@ -1,6 +1,6 @@
 <?php
 
 return [
-	'bandMembers' => 'TBT',
-	'schedule' => 'TBT',
+	'bandMembers' => 'Bandleden',
+	'schedule' => 'Schema',
 ];

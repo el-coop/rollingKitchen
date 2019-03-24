@@ -1,12 +1,12 @@
 <?php
 
 return [
-	'artistManager' => 'TBT',
-	'createArtistManager' => 'TBT',
-	'artists' => 'TBT',
-	'bands' => 'TBT',
-	'createBand' => 'TBT',
-	'stages' => 'TBT',
-	'createStage' => 'TBT',
-	'schedule' => 'TBT'
+	'artistManager' => 'ArtiestenManager',
+	'createArtistManager' => 'Artiestenmanager toevoegen',
+	'artists' => 'Artiesten',
+	'bands' => 'Bands',
+	'createBand' => 'Band toevoegen',
+	'stages' => 'Podia',
+	'createStage' => 'Podium toevoegen',
+	'schedule' => 'Schema'
 ];
