@@ -38,6 +38,8 @@ class BackupEmail extends Mailable {
 		if ($mailTransport instanceof \Swift_SmtpTransport) {
 			/** @var \Swift_SmtpTransport $mailTransport */
 			$mailTransport->setHost(env('BACKUP_MAIL_HOST'));
+			$mailTransport->setPort(env('BACKUP_MAIL_PORT'));
+			$mailTransport->setEncryption(env('BACKUP_MAIL_ENCRYPTION'));
 			$mailTransport->setUsername(env('BACKUP_MAIL_USERNAME'));
 			$mailTransport->setPassword(env('BACKUP_MAIL_PASSWORD'));
 		}
