@@ -6,7 +6,7 @@
 				<thead>
 				<tr>
 					<th v-for="(column,index) in columns" v-text="column.label" :key="index"
-						v-if="!column.invisible"></th>
+						v-if="!column.invisible" :class="{'is-hidden-phone': column.responsiveHidden}"></th>
 					<th v-if="hasActions">
 					</th>
 					<th v-if="action"></th>
@@ -15,7 +15,8 @@
 				<draggable element="tbody" :list="fields" :options="draggable">
 					<tr v-for="(field, index) in fields" :key="`${index}${field.id}`">
 						<td v-if="!column.invisible" v-for="(column,colIndex) in columns" :key="`${index}_${colIndex}`"
-							v-html="valueDisplay(column,field[column.name])" @click="editObject(field)"></td>
+							v-html="valueDisplay(column,field[column.name])" @click="editObject(field)"
+							:class="{'is-hidden-phone': column.responsiveHidden}"></td>
 						<td v-if="hasActions">
 							<slot name="actions" :field="field" :on-update="replaceObject"></slot>
 						</td>
@@ -122,6 +123,10 @@
 			sortable: {
 				type: Boolean,
 				default: false
+			},
+
+			sortBy: {
+				type: String
 			}
 
 		},
@@ -136,7 +141,35 @@
 			}
 		},
 
+		mounted() {
+			this.sort();
+		},
+
 		methods: {
+			sort() {
+				if (this.sortBy) {
+					this.fields.sort((a, b) => {
+						a = a[this.sortBy].split(':');
+						b = b[this.sortBy].split(':');
+
+						if (parseInt(a[0]) < parseInt(b[0])) {
+							return -1;
+						}
+						if (parseInt(a[0]) > parseInt(b[0])) {
+							return 1;
+						}
+						if (parseInt(a[1]) < parseInt(b[1])) {
+							return -1;
+						}
+						if (parseInt(a[1]) > parseInt(b[1])) {
+							return 1;
+						}
+
+						return 0;
+					});
+				}
+			},
+
 			editObject(field) {
 				if (field.id && !this.edit) {
 					return;
@@ -163,6 +196,9 @@
 					return item.id === object.id;
 				});
 				this.fields.splice(editedId, 1, object);
+				if (this.sortBy) {
+					this.sort();
+				}
 			},
 
 			updateObject(object) {
@@ -173,6 +209,9 @@
 						return item.id === this.object.id;
 					});
 					this.fields.splice(editedId, 1, object);
+				}
+				if (this.sortBy) {
+					this.sort();
 				}
 				this.$modal.hide(`${this._uid}modal`);
 			},
@@ -187,7 +226,6 @@
 				}
 				this.deleteing = null;
 			},
-
 			async saveOrder() {
 				this.savingOrder = true;
 				const order = [];

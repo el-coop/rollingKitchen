@@ -20,7 +20,7 @@ class FieldsTests extends TestCase {
 	private $noneField;
 	private $worker;
 	
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		
 		foreach (['encrypted', 'required', 'protected', 'none'] as $order => $status) {

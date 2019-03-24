@@ -12,7 +12,7 @@ class CreateErrorsTable extends Migration {
 	 */
 	public function up() {
 		Schema::create('errors', function (Blueprint $table) {
-			$table->increments('id');
+			$table->bigIncrements('id');
 			$table->integer('user_id')->unsigned()->nullable();
 			$table->string('page');
 			$table->integer('error_id')->unsigned();

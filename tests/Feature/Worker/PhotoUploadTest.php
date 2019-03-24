@@ -23,7 +23,7 @@ class PhotoUploadTest extends TestCase {
 	private $workerPhoto;
 	private $file;
 	
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		
 		$this->admin = factory(User::class)->make();

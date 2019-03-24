@@ -28,7 +28,7 @@ class InvoicingTest extends TestCase {
 	private $invoices;
 	private $debtor;
 	
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->user = factory(User::class)->make();
 		factory(Admin::class)->create()->user()->save($this->user);

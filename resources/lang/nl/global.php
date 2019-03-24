@@ -21,6 +21,7 @@ return [
 	'password' => 'Wachtwoord',
 	'password_confirm' => 'Wachtwoord bevestigen',
 	'login' => 'Inloggen',
+	'logout' => 'TBT',
 	'register' => 'Aanmelden',
 	'language' => 'Taal',
 	'year' => 'Jaar',

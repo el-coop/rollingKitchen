@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use App\Models\Admin;
 use App\Models\Application;
+use App\Models\ArtistManager;
+use App\Models\Band;
+use App\Models\BandMember;
 use App\Models\Debtor;
 use App\Models\Developer;
 use App\Models\Error;
@@ -14,6 +17,7 @@ use App\Models\Kitchen;
 use App\Models\Pdf;
 use App\Models\Service;
 use App\Models\Shift;
+use App\Models\Stage;
 use App\Models\TaxReview;
 use App\Models\WorkedHoursExportColumn;
 use App\Models\Worker;
@@ -21,6 +25,9 @@ use App\Models\WorkerPhoto;
 use App\Models\WorkFunction;
 use App\Models\Workplace;
 use App\Policies\ApplicationPolicy;
+use App\Policies\ArtistManagerPolicy;
+use App\Policies\BandMemberPolicy;
+use App\Policies\BandPolicy;
 use App\Policies\DebtorPolicy;
 use App\Policies\ErrorPolicy;
 use App\Policies\FieldPolicy;
@@ -30,6 +37,7 @@ use App\Policies\InvoicePaymentPolicy;
 use App\Policies\PDFPOlicy;
 use App\Policies\ServicePolicy;
 use App\Policies\ShiftPolicy;
+use App\Policies\StagePolicy;
 use App\Policies\TaxReviewPolicy;
 use App\Policies\WorkedHoursExportColumnPolicy;
 use App\Policies\WorkerPhotoPolicy;
@@ -61,7 +69,11 @@ class AuthServiceProvider extends ServiceProvider {
 		WorkerPhoto::class => WorkerPhotoPolicy::class,
 		Shift::class => ShiftPolicy::class,
 		WorkedHoursExportColumn::class => WorkedHoursExportColumnPolicy::class,
-		TaxReview::class => TaxReviewPolicy::class
+		TaxReview::class => TaxReviewPolicy::class,
+		ArtistManager::class => ArtistManagerPolicy::class,
+		Band::class => BandPolicy::class,
+		Stage::class => StagePolicy::class,
+		BandMember::class => BandMemberPolicy::class
 	];
 	
 	/**

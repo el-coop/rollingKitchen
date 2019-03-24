@@ -12,7 +12,7 @@ class CreatePhpErrorsTable extends Migration {
 	 */
 	public function up() {
 		Schema::create('php_errors', function (Blueprint $table) {
-			$table->increments('id');
+			$table->bigIncrements('id');
 			$table->text('message');
 			$table->json('request');
 			$table->json('exception');

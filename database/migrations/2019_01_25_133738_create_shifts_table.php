@@ -12,8 +12,8 @@ class CreateShiftsTable extends Migration {
 	 */
 	public function up() {
 		Schema::create('shifts', function (Blueprint $table) {
-			$table->increments('id');
-			$table->integer('workplace_id')->unsigned();
+			$table->bigIncrements('id');
+			$table->bigInteger('workplace_id')->unsigned();
 			$table->date('date');
 			$table->integer('hours');
 			$table->boolean('closed')->default(false);

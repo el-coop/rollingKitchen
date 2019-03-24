@@ -14,10 +14,10 @@ class CreateShiftWorkerTable extends Migration
     public function up()
     {
         Schema::create('shift_worker', function (Blueprint $table) {
-            $table->increments('id');
-			$table->integer('worker_id')->unsigned()->nullable();
-			$table->integer('shift_id')->unsigned();
-			$table->integer('work_function_id')->unsigned();
+            $table->bigIncrements('id');
+			$table->bigInteger('worker_id')->unsigned()->nullable();
+			$table->bigInteger('shift_id')->unsigned();
+			$table->bigInteger('work_function_id')->unsigned();
 			$table->time('start_time');
 			$table->time('end_time');
 			$table->timestamps();

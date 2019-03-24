@@ -23,6 +23,12 @@
 				}
 				return this.error[0].replace(this.field.name.replace('[', '.').replace(']', '').replace('_', ' '), this.field.label);
 			}
+		},
+
+		watch: {
+			value(value) {
+				this.$emit('input', value);
+			}
 		}
 	}
 </script>

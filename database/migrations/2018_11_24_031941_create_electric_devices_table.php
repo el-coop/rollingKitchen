@@ -12,8 +12,8 @@ class CreateElectricDevicesTable extends Migration {
 	 */
 	public function up() {
 		Schema::create('electric_devices', function (Blueprint $table) {
-			$table->increments('id');
-			$table->integer('application_id')->unsigned();
+			$table->bigIncrements('id');
+			$table->bigInteger('application_id')->unsigned();
 			$table->string('name');
 			$table->integer('watts');
 			$table->timestamps();

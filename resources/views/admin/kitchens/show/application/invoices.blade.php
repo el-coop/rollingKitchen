@@ -1,6 +1,7 @@
 <dynamic-table :columns="[{
 					name: 'formattedNumber',
 					label: '@lang('admin/invoices.number')',
+					responsiveHidden: true,
 				},{
 					name: 'total',
 					label: '@lang('admin/invoices.amount')',
@@ -16,6 +17,7 @@
 					label: '@lang('admin/invoices.amountLeft')',
 					subType: 'number',
 					callback: 'localNumber',
+					responsiveHidden: true,
 				}]" :init-fields="{{ $application->invoices }}"
 			   action="{{ action('Admin\ApplicationInvoiceController@store', $application) }}" :modal="{
 			   		width: 1000,
@@ -24,7 +26,8 @@
 			   		pivotX: 1
 			   }" :form-from-url="true" form-button-text="@lang('admin/invoices.send')" :delete-allowed="false">
 	<template #actions="{field, onUpdate}">
-		<button @click="$bus.$emit('open-payment-modal', field, onUpdate)" class="button is-success">@lang('admin/invoices.managePayments')</button>
+		<button @click="$bus.$emit('open-payment-modal', field, onUpdate)"
+				class="button is-success">@lang('admin/invoices.managePayments')</button>
 	</template>
 </dynamic-table>
 <invoice-payments-modal>

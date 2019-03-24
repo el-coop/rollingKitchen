@@ -12,9 +12,9 @@ class CreateInvoiceItemsTable extends Migration {
 	 */
 	public function up() {
 		Schema::create('invoice_items', function (Blueprint $table) {
-			$table->increments('id');
-			$table->integer('invoice_id')->unsigned();
-			$table->integer('service_id')->unsigned()->nullable();
+			$table->bigIncrements('id');
+			$table->bigInteger('invoice_id')->unsigned();
+			$table->bigInteger('service_id')->unsigned()->nullable();
 			$table->integer('quantity')->unsigned();
 			$table->integer('tax')->default(0)->unsigned();
 			$table->decimal('unit_price', 10, 2)->unsigned();

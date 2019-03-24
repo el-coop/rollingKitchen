@@ -12,8 +12,7 @@ return [
 	'noKitchens' => 'Nobody',
 	'default_send_invoice' => 'Default Attach To Invoice',
 	'default_resend_invoice' => 'Default Attach On Resend Invoice',
-
-
+	
 	'registration_year' => 'Registration Year',
 	'general_registration_status' => 'Open Registration',
 	'general_registration_text_en' => 'Registration Text EN',
@@ -68,7 +67,42 @@ return [
 	'workers_profile_filled_subject_en' => 'Worker profile filled subject EN',
 	'workers_profile_filled_nl' => 'Worker profile filled body NL',
 	'workers_profile_filled_en' => 'Worker profile filled body EN',
+
+	'artist_managers_user_created_subject_nl' => 'Artist Manager created mail subject NL',
+	'artist_managers_user_created_subject_en' => 'Artist Manager mail subject EN',
+	'artist_managers_user_created_nl' => 'Artist Manager created mail body NL',
+	'artist_managers_user_created_en' => 'Artist Manager created mail body EN',
+
+	'bands_user_created_subject_nl' => 'Bands created mail subject NL',
+	'bands_user_created_subject_en' => 'Bands created mail subject EN',
+	'bands_user_created_nl' => 'Bands created mail body NL',
+	'bands_user_created_en' => 'Bands created mail body EN',
+	'schedule_budget' => 'Bands Budget',
 	
-	'workers_privacy_statement_nl' => 'Workers privacy statement NL',
-	'workers_privacy_statement_en' => 'Workers privacy statement EN'
+	'band_members_user_created_subject_nl' => 'Bands member created mail subject NL',
+	'band_members_user_created_subject_en' => 'Bands member created mail subject EN',
+	'band_members_user_created_nl' => 'Bands member created mail body NL',
+	'band_members_user_created_en' => 'Bands member created mail body EN',
+	
+	'schedule_deleted_subject_nl' => 'Show canceled subject NL',
+	'schedule_deleted_subject_en' => 'Show canceled subject EN',
+	'schedule_deleted_nl' => 'Show canceled body NL',
+	'schedule_deleted_en' => 'Show canceled body EN',
+	
+	'schedule_changed_subject_nl' => 'Show modified subject NL',
+	'schedule_changed_subject_en' => 'Show modified subject EN',
+	'schedule_stage_changed_nl' => 'Show modified stage NL',
+	'schedule_stage_changed_en' => 'Show modified stage EN',
+	'schedule_payment_changed_nl' => 'Show modified payment NL',
+	'schedule_payment_changed_en' => 'Show modified payment EN',
+	
+	'schedule_created_subject_nl' => 'Show created subject NL',
+	'schedule_created_subject_en' => 'Show created subject EN',
+	'schedule_created_nl' => 'Show created body NL',
+	'schedule_created_en' => 'Show created body EN',
+	
+	'schedule_start_day' => 'Schedule start day',
+	'schedule_end_day' => 'Schedule end day',
+	'schedule_start_hour' => 'Schedule start hour',
+	'schedule_end_hour' => 'Schedule end hour',
 ];

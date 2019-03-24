@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Admin\Fields;
 
 use App\Models\Application;
+use App\Models\Band;
+use App\Models\BandMember;
 use App\Models\Field;
 use App\Models\Kitchen;
 use App\Models\Worker;
@@ -28,7 +30,7 @@ class CreateFieldRequest extends FormRequest {
 		return [
 			'name_en' => 'required|string|' . Rule::unique('fields')->where('form', $this->input('form')),
 			'type' => 'required|string|in:text,textarea,checkbox',
-			'form' => 'required|string|in:' . Kitchen::class . ',' . Application::class . ',' . Worker::class,
+			'form' => 'required|string|in:' . Kitchen::class . ',' . Application::class . ',' . Worker::class . ',' . Band::class . ',' . BandMember::class,
 			'options' => 'required_if:type,checkbox|array',
 			'status' => 'required|string|in:protected,required,encrypted,none',
 			'name_nl' => 'required|string|' . Rule::unique('fields')->where('form', $this->input('form')),
@@ -56,6 +58,13 @@ class CreateFieldRequest extends FormRequest {
 				break;
 			case Worker::class:
 				$field->order = Worker::getLastFieldOrder() + 1;
+				break;
+			case Band::class:
+				$field->order = Band::getLastFieldOrder() + 1;
+				break;
+			case BandMember::class:
+				$field->order = BandMember::getLastFieldOrder() + 1;
+				break;
 		}
 		if ($field->type == 'checkbox') {
 			$field->options = $this->input('options');

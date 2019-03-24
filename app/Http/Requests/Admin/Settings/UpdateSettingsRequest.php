@@ -37,6 +37,7 @@ class UpdateSettingsRequest extends FormRequest {
 		};
 		
 		$rules['accountant_email'] = 'required|email';
+		$rules['schedule_budget'] = 'required|numeric|min:0';
 		unset($rules['general_registration_status']);
 		unset($rules['accountant_password']);
 		return $rules;

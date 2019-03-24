@@ -24,7 +24,7 @@
             label: this.$translations.endTime,
             subType: 'time',
         }
-        ]" :init-fields="shiftWorkers" :action="shift.closed ? '' : `${this.url}/worker`">
+        ]" sort-by="startTime" :init-fields="shiftWorkers" :action="shift.closed ? '' : `${this.url}/worker`">
 		<template #default="{data}">
 			<span>Total hours:</span>&nbsp;
 			<span v-text="sumHours(data)"></span>

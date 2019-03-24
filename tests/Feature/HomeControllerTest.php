@@ -12,7 +12,7 @@ class HomeControllerTest extends TestCase {
 
 	use WithFaker;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		Storage::fake('local');

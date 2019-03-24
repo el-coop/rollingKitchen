@@ -12,15 +12,16 @@ class CreateWorkFunctionsTable extends Migration {
 	 */
 	public function up() {
 		Schema::create('work_functions', function (Blueprint $table) {
-			$table->increments('id');
+			$table->bigIncrements('id');
+			$table->bigInteger('workplace_id')->unsigned();
 			$table->string('name');
 			$table->decimal('payment_per_hour_before_tax');
 			$table->decimal('payment_per_hour_after_tax');
-			$table->integer('workplace_id')->unsigned();
+			$table->timestamps();
+			
 			$table->foreign('workplace_id')
 				->references('id')->on('workplaces')
 				->onDelete('cascade');
-			$table->timestamps();
 		});
 	}
 

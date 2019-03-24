@@ -56,5 +56,10 @@ return [
 	'startTime' => 'Begintijd',
 	'endTime' => 'Eindtijd',
 	'export' => 'Exporteren',
-	'totalHours' => 'Aantal uren'
+	'totalHours' => 'Aantal uren',
+	'budget' => 'TBT',
+	'budgetUsed' => 'TBT',
+	'budgetOverflow' => 'TBT',
+	'reject' => 'TBT',
+	'approve' => 'TBT'
 ];

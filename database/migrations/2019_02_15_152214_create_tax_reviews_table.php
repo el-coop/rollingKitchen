@@ -12,11 +12,16 @@ class CreateTaxReviewsTable extends Migration {
 	 */
 	public function up() {
 		Schema::create('tax_reviews', function (Blueprint $table) {
-			$table->increments('id');
-			$table->integer('worker_id')->unsigned();
+			$table->bigIncrements('id');
+			$table->bigInteger('worker_id')->unsigned();
 			$table->string('name');
 			$table->string('file');
 			$table->timestamps();
+			
+			
+			$table->foreign('worker_id')
+				->references('id')->on('workers')
+				->onDelete('cascade');
 		});
 	}
 	

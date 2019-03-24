@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Band;
 use App\Models\Workplace;
 use App\Services\DatatableService;
 use Illuminate\Http\Request;
@@ -21,6 +22,17 @@ class DatatableController extends Controller {
 	public function supervisorList(Request $request, Workplace $workplace) {
 		$datatableService = new DatatableService($request, $workplace->{$request->input('attribute')});
 		return $this->list($request, $datatableService);
+	}
+
+	public function artistManagerList(Request $request){
+		$dataTableService = new DatatableService($request);
+		return $this->list($request,$dataTableService);
+	}
+
+	public function bandMemberList(Request $request, Band $band) {
+		$dataTableService = new DatatableService($request, $band->{$request->input('attribute')});
+		return $this->list($request,$dataTableService);
+
 	}
 	
 }

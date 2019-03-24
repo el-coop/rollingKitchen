@@ -6,8 +6,21 @@
 				<a href="{{ action('Admin\WorkerController@pdf', $worker) }}">Download PDF</a>
 			</h6>
 			<hr>
-			<dynamic-form :init-fields="{{ $worker->fulldata }}"
-						  url="{{ action('Admin\WorkerController@update', $worker) }}"></dynamic-form>
+			<form method="post" action="{{action('Admin\WorkerController@nonAjaxUpdate', $worker)}}">
+				@csrf
+				@method('patch')
+				<dynamic-fields :fields="{{ $worker->fulldata->map(function($item) use($errors){
+					$fieldName = str_replace(']','',str_replace('[','.',$item['name']));
+
+					$item['value'] = $item['type'] == 'multiselect' ? $item['value']: old($fieldName, $item['value']);
+					$item['error'] = $errors->has($fieldName) ? $errors->get($fieldName): null;
+					return $item;
+				}) }}" class="mb-1">
+				</dynamic-fields>
+				<button class="button is-fullwidth is-success">
+					@lang('global.save')
+				</button>
+			</form>
 		</div>
 	</div>
 	<div class="tile is-parent is-vertical">

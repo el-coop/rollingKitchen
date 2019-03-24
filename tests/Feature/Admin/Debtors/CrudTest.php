@@ -24,7 +24,7 @@ class CrudTest extends TestCase {
 	private $developer;
 	private $kitchen;
 	
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->admin = factory(User::class)->make();
 		factory(Admin::class)->create()->user()->save($this->admin);

@@ -12,8 +12,8 @@ class CreateApplicationsTable extends Migration {
 	 */
 	public function up() {
 		Schema::create('applications', function (Blueprint $table) {
-			$table->increments('id');
-			$table->integer('kitchen_id')->unsigned();
+			$table->bigIncrements('id');
+			$table->bigInteger('kitchen_id')->unsigned();
 			$table->integer('number')->nullable();
 			$table->string('status');
 			$table->year('year');
