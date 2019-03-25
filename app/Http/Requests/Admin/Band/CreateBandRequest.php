@@ -28,7 +28,7 @@ class CreateBandRequest extends FormRequest {
 			'name' => 'required',
 			'email' => 'required|email|unique:users',
 			'language' => 'required|in:en,nl',
-			'paymentMethod' => 'required|string|in:band,individual'
+//			'paymentMethod' => 'required|string|in:band,individual'
 		];
 	}
 
