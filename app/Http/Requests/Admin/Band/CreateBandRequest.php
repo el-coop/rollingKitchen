@@ -17,7 +17,7 @@ class CreateBandRequest extends FormRequest {
 	public function authorize() {
 		return $this->user()->can('create', Band::class);
 	}
-
+	
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -31,24 +31,24 @@ class CreateBandRequest extends FormRequest {
 //			'paymentMethod' => 'required|string|in:band,individual'
 		];
 	}
-
-	public function commit(){
+	
+	public function commit() {
 		$band = new Band;
 		$user = new User;
-
+		
 		$user->email = $this->input('email');
 		$user->name = $this->input('name');
 		$user->language = $this->input('language');
 		$user->password = '';
 		$band->data = [];
-		$band->payment_method = $this->input('paymentMethod');
+		$band->payment_method = $this->input('paymentMethod', 'band');
 		$band->save();
 		$band->user()->save($user);
-
+		
 		Password::broker()->sendResetLink(
 			['email' => $user->email]
 		);
-
+		
 		return [
 			'id' => $band->id,
 			'name' => $this->input('name'),
