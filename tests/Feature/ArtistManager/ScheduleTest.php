@@ -111,14 +111,14 @@ class ScheduleTest extends TestCase {
 			'band_id' => $bands->first()->id,
 			'stage_id' => $stages->first()->id,
 			'payment' => 10,
-			'dateTime' => $dateTime->format('Y-m-d H:i:00')
+			'date_time' => $dateTime->format('Y-m-d H:i:00')
 		]);
 		
 		$this->assertDatabaseHas('band_schedules', [
 			'band_id' => $bands->last()->id,
 			'stage_id' => $stages->last()->id,
 			'payment' => 100,
-			'dateTime' => $dateTime->format('Y-m-d H:i:00')
+			'date_time' => $dateTime->format('Y-m-d H:i:00')
 		]);
 		Event::assertDispatched(ShowCreated::class, function ($event) use ($bands, $stages) {
 			return $event->show->band->id == $bands->first()->id && $event->show->stage->id == $stages->first()->id && $event->show->payment == 10;
@@ -156,14 +156,14 @@ class ScheduleTest extends TestCase {
 			'band_id' => $bands->first()->id,
 			'stage_id' => $stages->first()->id,
 			'payment' => 10,
-			'dateTime' => $dateTime->format('Y-m-d H:i:00')
+			'date_time' => $dateTime->format('Y-m-d H:i:00')
 		]);
 		
 		$this->assertDatabaseMissing('band_schedules', [
 			'band_id' => $bands->last()->id,
 			'stage_id' => $stages->last()->id,
 			'payment' => 100,
-			'dateTime' => $dateTime->format('Y-m-d H:i:00')
+			'date_time' => $dateTime->format('Y-m-d H:i:00')
 		]);
 	}
 	
@@ -186,15 +186,15 @@ class ScheduleTest extends TestCase {
 			'band_id' => $bands->id,
 			'stage_id' => $stage->id,
 			'payment' => 10,
-			'dateTime' => $dateTime->format('Y-m-d H:i:00')
+			'date_time' => $dateTime->format('Y-m-d H:i:00')
 		]);
 		
 		$oldShows->each(function ($show) use ($dateTime) {
-			if ($show->dateTime != $dateTime->format('d/m/Y H:i')) {
+			if ($show->date_time != $dateTime->format('d/m/Y H:i')) {
 				$this->assertDatabaseMissing('band_schedules', [
 					'band' => $show->band_id,
 					'stage' => $show->stage_id,
-					'dateTime' => Carbon::createFromFormat('d/m/Y H:i', $show->dateTime)->format('Y-m-d H:i:00'),
+					'date_time' => Carbon::createFromFormat('d/m/Y H:i', $show->date_time)->format('Y-m-d H:i:00'),
 				]);
 				
 				Event::assertDispatched(ShowDeleted::class, function ($event) use ($show) {
@@ -225,7 +225,7 @@ class ScheduleTest extends TestCase {
 			'band_id' => $band->id,
 			'stage_id' => $stage->id,
 			'payment' => 10,
-			'dateTime' => $dateTime->format('Y-m-d H:i:00'),
+			'date_time' => $dateTime->format('Y-m-d H:i:00'),
 			'approved' => 'accepted',
 		]);
 		
@@ -241,12 +241,12 @@ class ScheduleTest extends TestCase {
 			'band_id' => $band->id,
 			'stage_id' => $this->stages->last()->id,
 			'payment' => 10,
-			'dateTime' => $dateTime->format('Y-m-d H:i:00'),
+			'date_time' => $dateTime->format('Y-m-d H:i:00'),
 			'approved' => 'accepted',
 		]);
 		
 		Event::assertDispatched(ShowUpdated::class, function ($event) use ($show) {
-			return $event->show->band_id == $show->band_id && $event->show->stage_id == $this->stages->last()->id && $event->show->payment == $show->payment && $event->show->dateTime == $show->dateTime;
+			return $event->show->band_id == $show->band_id && $event->show->stage_id == $this->stages->last()->id && $event->show->payment == $show->payment && $event->show->date_time == $show->date_time;
 		});
 	}
 	
@@ -261,7 +261,7 @@ class ScheduleTest extends TestCase {
 			'band_id' => $bands->id,
 			'stage_id' => $stage->id,
 			'payment' => 10,
-			'dateTime' => $dateTime->format('Y-m-d H:i:00'),
+			'date_time' => $dateTime->format('Y-m-d H:i:00'),
 			'approved' => 'accepted',
 		]);
 		
@@ -277,12 +277,12 @@ class ScheduleTest extends TestCase {
 			'band_id' => $bands->id,
 			'stage_id' => $stage->id,
 			'payment' => 5,
-			'dateTime' => $dateTime->format('Y-m-d H:i:00'),
+			'date_time' => $dateTime->format('Y-m-d H:i:00'),
 			'approved' => 'pending',
 		]);
 		
 		Event::assertDispatched(ShowUpdated::class, function ($event) use ($show) {
-			return $event->show->band_id == $show->band_id && $event->show->stage_id == $show->stage_id && $event->show->payment == 5 && $event->show->dateTime == $show->dateTime;
+			return $event->show->band_id == $show->band_id && $event->show->stage_id == $show->stage_id && $event->show->payment == 5 && $event->show->date_time == $show->date_time;
 		});
 	}
 	
@@ -295,7 +295,7 @@ class ScheduleTest extends TestCase {
 			'band_id' => $band->id,
 			'stage_id' => $this->stages->random()->id,
 			'payment' => 10,
-			'dateTime' => $band->schedules->first()->dateTime,
+			'date_time' => $band->schedules->first()->date_time,
 			'approved' => 'accepted',
 		])));
 		
@@ -304,17 +304,9 @@ class ScheduleTest extends TestCase {
 	
 	public function test_schedule_post_validation() {
 		Event::fake();
-		$bands = $this->bands->random();
-		$stage = $this->stages->first();
-		$dateTime = Carbon::now();
 		
 		
-		$this->actingAs($this->artistManager)->post(action('ArtistManager\ArtistManagerController@storeSchedule'), ['calenda' => [
-			$dateTime->format('d/m/Y H:i') => [[
-				'band' => $bands->id,
-				'stage' => $stage->id,
-				'payment' => 5,
-			]]
-		]])->assertRedirect()->assertSessionHasErrors('calendar');
+		$this->actingAs($this->artistManager)->post(action('ArtistManager\ArtistManagerController@storeSchedule'), ['calendar' => 'test'])
+			->assertRedirect()->assertSessionHasErrors('calendar');
 	}
 }

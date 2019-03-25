@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Band;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class BandSeeder extends Seeder {
@@ -9,7 +11,14 @@ class BandSeeder extends Seeder {
 	 * @return void
 	 */
 	public function run() {
-		factory(\App\Models\Band::class, 10)->create()->each(function ($band) {
+		factory(Band::class)->create()->each(function ($band){
+			$user = factory(User::class)->make([
+				'email' => 'band@kitchen.test',
+				'password' => bcrypt(123456)
+			]);
+			$band->user()->save($user);
+		});
+		factory(Band::class, 9)->create()->each(function ($band) {
 			$band->user()->save(factory(\App\Models\User::class)->make());
 		});
 	}

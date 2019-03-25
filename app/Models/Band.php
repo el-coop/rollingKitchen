@@ -120,7 +120,7 @@ class Band extends Model {
 			return [
 				'id' => $schedule->id,
 				'stage' => $schedule->stage->name,
-				'dateTime' => $schedule->dateTime,
+				'date_time' => $schedule->date_time,
 				'payment' => $schedule->payment,
 				'approved' => $schedule->approved
 			];
