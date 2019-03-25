@@ -90,7 +90,7 @@ class ScheduleTest extends TestCase {
 			->assertSuccessful()
 			->assertJsonFragment([
 				'stage' => $this->schedule->stage->name,
-				'dateTime' => $this->schedule->dateTime,
+				'date_time' => $this->schedule->date_time,
 				'approved' => 'accepted'
 			]);
 		$this->assertDatabaseHas('band_schedules', [
@@ -132,7 +132,7 @@ class ScheduleTest extends TestCase {
 			->assertSuccessful()
 			->assertJsonFragment([
 				'stage' => $this->schedule->stage->name,
-				'dateTime' => $this->schedule->dateTime,
+				'date_time' => $this->schedule->date_time,
 				'approved' => 'rejected'
 			]);
 		$this->assertDatabaseHas('band_schedules', [

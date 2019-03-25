@@ -4,7 +4,7 @@
                         label: '@lang('admin/artists.stages')'
                     },
                     {
-                        name: 'dateTime',
+                        name: 'date_time',
                         label: '@lang('vue.date')'
                     },
                     {

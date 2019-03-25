@@ -27,7 +27,7 @@ class StoreBandScheduleRequest extends FormRequest {
 	 */
 	public function rules() {
 		return [
-			'calendar' => 'required|array',
+			'calendar' => 'array',
 			'calendar.*' => 'required|array',
 			'calendar.*.*' => 'array',
 			'calendar.*.*.band' => 'required|exists:bands,id',
@@ -39,12 +39,14 @@ class StoreBandScheduleRequest extends FormRequest {
 	public function withValidator($validator) {
 		$validator->after(function ($validator) {
 			$budget = app('settings')->get('schedule_budget');
-			if (collect($this->input('calendar'))->sum(function ($dateTime) {
-					return collect($dateTime)->sum(function ($show) {
-						return $show['payment'];
-					});
-				}) > $budget) {
-				$validator->errors()->add('payment', __('vue.budgetOverflow'));
+			if(is_array($this->input('calendar'))){
+				if (collect($this->input('calendar'))->sum(function ($dateTime) {
+						return collect($dateTime)->sum(function ($show) {
+							return $show['payment'];
+						});
+					}) > $budget) {
+					$validator->errors()->add('payment', __('vue.budgetOverflow'));
+				}
 			}
 		});
 	}
@@ -53,11 +55,11 @@ class StoreBandScheduleRequest extends FormRequest {
 		
 		$existingSchedules = BandSchedule::all();
 		$newSchedules = collect([]);
-		foreach ($this->input('calendar') as $dateTime => $shows) {
+		foreach ($this->input('calendar', []) as $dateTime => $shows) {
 			foreach ($shows as $show) {
 				$schedule = new BandSchedule;
 				$schedule->band_id = $show['band'];
-				$schedule->dateTime = Carbon::createFromFormat('d/m/Y H:i', $dateTime);
+				$schedule->date_time = Carbon::createFromFormat('d/m/Y H:i', $dateTime);
 				$schedule->stage_id = $show['stage'];
 				$schedule->payment = $show['payment'];
 				$schedule->approved = 'pending';
@@ -72,7 +74,7 @@ class StoreBandScheduleRequest extends FormRequest {
 	
 	public function deleteOldSchedules($existingSchedules, $newSchedules) {
 		$existingSchedules->each(function ($schedule) use ($newSchedules) {
-			if (!$newSchedules->where('band_id', $schedule->band_id)->where('dateTime', $schedule->dateTime)->first()) {
+			if (!$newSchedules->where('band_id', $schedule->band_id)->where('date_time', $schedule->date_time)->first()) {
 				event(new ShowDeleted($schedule));
 			}
 		});
@@ -81,7 +83,7 @@ class StoreBandScheduleRequest extends FormRequest {
 	
 	public function persistNewSchedules($existingSchedules, $newSchedules) {
 		$newSchedules->each(function ($schedule) use ($existingSchedules) {
-			$timeSchedules = $existingSchedules->where('dateTime', $schedule->dateTime);
+			$timeSchedules = $existingSchedules->where('date_time', $schedule->date_time);
 			if ($existingSchedule = $timeSchedules->firstWhere('band_id', $schedule->band_id)) {
 				if ($existingSchedule->payment != $schedule->payment || $existingSchedule->stage_id != $schedule->stage_id) {
 					event(new ShowUpdated($schedule, $existingSchedule));

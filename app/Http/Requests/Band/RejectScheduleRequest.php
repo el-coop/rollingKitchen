@@ -37,7 +37,7 @@ class RejectScheduleRequest extends FormRequest {
 		return [
 			'id' => $this->schedule->id,
 			'stage' => $this->schedule->stage->name,
-			'dateTime' => $this->schedule->dateTime,
+			'date_time' => $this->schedule->date_time,
 			'payment' => $this->schedule->payment,
 			'approved' => $this->schedule->approved
 		];

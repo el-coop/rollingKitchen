@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder {
 		$this->call(SupervisorSeeder::class);
 		$this->call(BandSeeder::class);
 		$this->call(StageSeeder::class);
+		$this->call(ArtistManagerSeeder::class);
 //		$this->call(AccountantSeeder::class);
 	
 	
