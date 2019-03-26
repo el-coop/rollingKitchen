@@ -20,6 +20,11 @@ class PhotoController extends Controller {
 		$encryptedContents = Storage::get("public/photos/{$photo->file}");
 		$decryptedContents = Crypt::decrypt($encryptedContents);
 		
+		if (pathinfo($photo->file, PATHINFO_EXTENSION)) {
+			return response()->streamDownload(function () use ($decryptedContents) {
+				echo $decryptedContents;
+			}, $photo->file);
+		}
 		return response()->make($decryptedContents, 200, [
 			'Content-Type' => 'image/jpeg'
 		]);

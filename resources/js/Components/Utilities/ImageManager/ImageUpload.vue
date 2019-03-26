@@ -18,7 +18,7 @@
 					<span class="level is-mobile h-100 has-items-aligned-center">
 						<span class="level-left h-100">
 							<span class="level-item">
-								<img class="image is-max37-max64" :src="generateThumbnail(file)">
+								<img v-if="file.name.indexOf('.pdf') < 0" class="image is-max37-max64" :src="generateThumbnail(file)">
 							</span>
 							<span v-text="file.name" class="level-item"></span>
 						</span>

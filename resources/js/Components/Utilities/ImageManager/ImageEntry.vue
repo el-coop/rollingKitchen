@@ -3,7 +3,8 @@
 		<div class="level is-mobile">
 			<div class="level-left">
 				<div class="level-item">
-					<img class="image is-max37-max64" :src="image.url">
+					<span v-if="image.file.indexOf('.pdf') > 1">PDF</span>
+					<img v-else class="image is-max37-max64" :src="image.url">
 				</div>
 			</div>
 			<div class="level-right h-100">
