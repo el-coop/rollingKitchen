@@ -2,8 +2,15 @@
 	<div class="card">
 		<div v-for="(photo, index) in photos" :key="index" v-show="active == index" class="card-image">
 			<figure class="image is-5by3">
-				<img :src="photo.url">
-				<a :href="photo.url" target="_blank">
+				<a v-if="photo.file.indexOf('.pdf') > 1"
+				   :href="photo.url" target="_blank"
+				   class="not-image is-flex has-content-justified-center has-items-aligned-center">
+					<h4 class="title is-4" v-text="`${$translations.download} PDF`">
+					</h4>
+				</a>
+
+				<img v-else :src="photo.url">
+				<a :href="photo.url" target="_blank" class="button-link">
 					<button class="button is-primary">
 						<font-awesome-icon icon="external-link-square-alt"></font-awesome-icon>
 					</button>
@@ -89,7 +96,17 @@
 	.image {
 		position: relative;
 
-		> a {
+		> .not-image {
+			height: 100%;
+			width: 100%;
+			bottom: 0;
+			left: 0;
+			position: absolute;
+			right: 0;
+			top: 0;
+		}
+
+		> a.button-link {
 			opacity: 0.6;
 			position: absolute;
 			right: 1em;
