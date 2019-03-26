@@ -16,6 +16,7 @@
     	'@lang('admin/settings.noKitchens')',
     	'@lang('admin/settings.allKitchens')',
     	'@lang('admin/settings.acceptedKitchens')',
+    	'@lang('admin/artists.bands')'
     ],
     callback: 'numerateOptions'
 },{

@@ -11,10 +11,13 @@ use App\Http\Requests\Band\UpdateBandRequest;
 use App\Http\Requests\Band\UpdatePaymentMethodRequest;
 use App\Models\Band;
 use App\Models\BandSchedule;
+use App\Models\Pdf;
 use Auth;
+use App;
 use App\Models\BandMember;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Password;
 use App\Http\Controllers\Controller;
 
@@ -29,7 +32,10 @@ class BandController extends Controller {
 	}
 
 	public function show(Band $band) {
-		return view('band.band', compact('band'));
+		$locale = App::getLocale();
+		$pdfs = Pdf::where('visibility', 3)->get();
+		$message = app('settings')->get("bands_text_{$locale}");
+		return view('band.band', compact('band', 'pdfs', 'message'));
 	}
 
 	public function update(UpdateBandRequest $request, Band $band){
@@ -63,6 +69,10 @@ class BandController extends Controller {
 
 	public function rejectSchedule(RejectScheduleRequest $request, Band $band, BandSchedule $bandSchedule){
 		return $request->commit();
+	}
+
+	public function showPdf (Pdf $pdf) {
+		return Storage::download("public/pdf/{$pdf->file}", "{$pdf->name}.pdf");
 	}
 
 	public function broker() {
