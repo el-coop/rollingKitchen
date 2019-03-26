@@ -79,6 +79,8 @@ return [
 	'bands_user_created_subject_en' => 'Bands created mail subject EN',
 	'bands_user_created_nl' => 'Bands created mail body NL',
 	'bands_user_created_en' => 'Bands created mail body EN',
+	'bands_text_en' => 'Bands text EN',
+	'bands_text_nl' => 'Bands text NL',
 	'schedule_budget' => 'Bands Budget',
 	
 	'band_members_user_created_subject_nl' => 'Bands member created mail subject NL',

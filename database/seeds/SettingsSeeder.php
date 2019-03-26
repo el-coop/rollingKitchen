@@ -66,7 +66,9 @@ class SettingsSeeder extends Seeder {
 		$this->settingsFakeNoOverwrite('bands_user_created_subject_en', $faker->sentence);
 		$this->settingsFakeNoOverwrite('bands_user_created_nl', $faker->paragraph);
 		$this->settingsFakeNoOverwrite('bands_user_created_en', $faker->paragraph);
-		
+		$this->settingsFakeNoOverwrite('bands_text_en', $faker->paragraph);
+		$this->settingsFakeNoOverwrite('bands_text_nl', $faker->paragraph);
+
 		$this->settingsFakeNoOverwrite('band_members_user_created_subject_nl', $faker->sentence);
 		$this->settingsFakeNoOverwrite('band_members_user_created_subject_en', $faker->sentence);
 		$this->settingsFakeNoOverwrite('band_members_user_created_nl', $faker->paragraph);

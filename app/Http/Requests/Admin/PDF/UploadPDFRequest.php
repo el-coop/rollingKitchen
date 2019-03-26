@@ -25,7 +25,7 @@ class UploadPDFRequest extends FormRequest {
 		return [
 			'file' => 'required|file',
 			'name' => 'required|string|unique:pdfs',
-			'visibility' => 'required|in:0,1,2'
+			'visibility' => 'required|in:0,1,2,3'
 		];
 	}
 
