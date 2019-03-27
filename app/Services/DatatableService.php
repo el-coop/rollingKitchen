@@ -179,14 +179,16 @@ class DatatableService implements FromCollection, WithHeadings {
 	}
 	
 	protected function formatField($field) {
-		$formatted = $field;
+		$formatted = collect();
 		$config = collect($this->queryConfig['fields']);
 		foreach ($config as $columnConfig) {
 			$column = $columnConfig['name'];
-			if (!($columnConfig['visible'] ?? true)) {
-				unset($formatted->$column);
-			} else if (($columnConfig['callback'] ?? false) == 'translate') {
-				$formatted->$column = __("vue.{$formatted->$column}");
+			if ($columnConfig['visible'] ?? true) {
+				if (($columnConfig['callback'] ?? false) == 'translate') {
+					$formatted->put($column, __("vue.{$field->$column}"));
+				} else {
+					$formatted->put($column, $field->$column);
+				}
 			}
 		}
 		return $formatted;
