@@ -82,6 +82,11 @@ return [
 	'bands_text_en' => 'Bands text EN',
 	'bands_text_nl' => 'Bands text NL',
 	'schedule_budget' => 'Bands Budget',
+	'bands_confirmation_text_en' => 'Bands confirmation body EN',
+	'bands_confirmation_text_nl' => 'Bands confirmation body NL',
+	'bands_confirmation_subject_en' => 'Bands subject text EN',
+	'bands_confirmation_subject_nl' => 'Bands subject text NL',
+
 	
 	'band_members_user_created_subject_nl' => 'Bands member created mail subject NL',
 	'band_members_user_created_subject_en' => 'Bands member created mail subject EN',

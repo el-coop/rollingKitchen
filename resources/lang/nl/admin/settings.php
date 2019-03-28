@@ -83,6 +83,10 @@ return [
 	'bands_user_created_en' => 'Band gecreëerd email bericht NL',
 	'bands_text_en' => 'TBT',
 	'bands_text_nl' => 'TBT',
+	'bands_confirmation_text_en' => 'TBT',
+	'bands_confirmation_text_nl' => 'TBT',
+	'bands_confirmation_subject_en' => 'TBT',
+	'bands_confirmation_subject_nl' => 'TBT',
 	'schedule_budget' => 'Budget voor bands',
 	
 	'band_members_user_created_subject_nl' => 'Bandleden gecreëerd email onderwerp NL',
