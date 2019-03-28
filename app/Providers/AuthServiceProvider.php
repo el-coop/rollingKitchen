@@ -44,6 +44,7 @@ use App\Policies\WorkerPhotoPolicy;
 use App\Policies\WorkerPolicy;
 use App\Policies\WorkFunctionPolicy;
 use App\Policies\WorkplacePolicy;
+use function foo\func;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -85,6 +86,9 @@ class AuthServiceProvider extends ServiceProvider {
 		$this->registerPolicies();
 		Gate::define('update-settings', function ($user) {
 			return $user->user_type == Admin::class || $user->user_type == Developer::class;
+		});
+		Gate::define('update-confirmation-email', function ($user){
+			return $user->user_type == ArtistManager::class;
 		});
 	}
 }

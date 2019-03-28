@@ -24,7 +24,7 @@ class BandController extends Controller {
 		$buttons = [
 			'<a class="button is-light" href="' . action('Admin\FieldController@index', 'BandMember') . '">' . __('admin/bandMembers.fields') . '</a>',
 			'<ajax-form action="' . action('Admin\BandController@sendConfirmation') . '">
-				<button class="button is-success">' . __('admin/bands.sendConfirmation') . '</button>
+				<button class="button is-success mr-half">' . __('admin/bands.sendConfirmation') . '</button>
 			</ajax-form>'
 			];
 		return view('admin.datatableWithNew', compact('title', 'createTitle', 'fieldType', 'buttons'));
@@ -69,6 +69,9 @@ class BandController extends Controller {
 
 	public function sendConfirmation(SendConfirmationRequest $request){
 		$request->commit();
+		return [
+			'success' => true
+		];
 	}
 	
 	public function schedule() {

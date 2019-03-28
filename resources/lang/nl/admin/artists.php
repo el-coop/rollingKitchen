@@ -8,5 +8,7 @@ return [
 	'createBand' => 'Band toevoegen',
 	'stages' => 'Podia',
 	'createStage' => 'Podium toevoegen',
-	'schedule' => 'Schema'
+	'schedule' => 'Schema',
+	'confirmationEmail' => 'TBT'
+
 ];

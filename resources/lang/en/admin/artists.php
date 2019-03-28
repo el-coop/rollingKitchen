@@ -8,5 +8,6 @@ return [
 	'createBand' => 'Create Band',
 	'stages' => 'Stages',
 	'createStage' => 'Create Stage',
-	'schedule' => 'Schedule'
+	'schedule' => 'Schedule',
+	'confirmationEmail' => 'Confirmation Email'
 ];
