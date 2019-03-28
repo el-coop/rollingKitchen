@@ -12,7 +12,7 @@
 					<th v-if="action"></th>
 				</tr>
 				</thead>
-				<draggable element="tbody" :list="fields" :options="draggable">
+				<draggable tag="tbody" :list="fields" :disabled="!sortable">
 					<tr v-for="(field, index) in fields" :key="`${index}${field.id}`">
 						<td v-if="!column.invisible" v-for="(column,colIndex) in columns" :key="`${index}_${colIndex}`"
 							v-html="valueDisplay(column,field[column.name])" @click="editObject(field)"
@@ -245,11 +245,6 @@
 		},
 
 		computed: {
-			draggable() {
-				return {
-					disabled: !this.sortable
-				}
-			},
 
 			formFields() {
 				const fields = [];
