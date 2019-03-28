@@ -63,10 +63,10 @@ class DatatableServiceTest extends TestCase {
 			$object
 		]));
 		
-		$this->assertEquals((object)[
+		$this->assertEquals(collect([
 			'name' => 'New',
 			'year' => 2018,
-		], $datatableService->collection()->first());
+		]), $datatableService->collection()->first());
 	}
 	
 }
