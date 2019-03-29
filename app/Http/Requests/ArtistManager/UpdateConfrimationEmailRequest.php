@@ -35,6 +35,6 @@ class UpdateConfrimationEmailRequest extends FormRequest {
 		$settings->put('bands_confirmation_subject_en', $this->input('subject_en'));
 		$settings->put('bands_confirmation_subject_nl', $this->input('subject_nl'));
 		$settings->put('bands_confirmation_text_en', $this->input('text_en'));
-		$settings->put('bands_confirmation_text_en', $this->input('text_en'));
+		$settings->put('bands_confirmation_text_nl', $this->input('text_nl'));
 	}
 }
