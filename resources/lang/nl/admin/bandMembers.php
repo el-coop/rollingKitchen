@@ -2,5 +2,5 @@
 
 return [
 	'createBandMembers' => 'Bandleden toevoegen',
-	'fields' => 'Velden'
+	'fields' => 'Bandleden velden'
 ];
