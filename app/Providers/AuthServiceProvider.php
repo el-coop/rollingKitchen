@@ -44,7 +44,6 @@ use App\Policies\WorkerPhotoPolicy;
 use App\Policies\WorkerPolicy;
 use App\Policies\WorkFunctionPolicy;
 use App\Policies\WorkplacePolicy;
-use function foo\func;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
