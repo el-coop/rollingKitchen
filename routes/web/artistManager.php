@@ -8,6 +8,8 @@ Route::group(['prefix' => 'artistManager', 'namespace' => 'ArtistManager'], func
 	
 	Route::group(['prefix' => 'bands', 'middleware' => ['auth', 'userType:' . \App\Models\ArtistManager::class]], function () {
 		Route::get('/', 'ArtistManagerController@index');
+		Route::post('/sendConfirmation', 'ArtistManagerController@sendConfirmation');
+		Route::patch('/confirmationEmail', 'ArtistManagerController@updateConfirmationEmail');
 		Route::post('/', 'ArtistManagerController@storeSchedule');
 		Route::get('/edit', 'ArtistManagerController@create');
 		Route::post('/edit', 'ArtistManagerController@store');

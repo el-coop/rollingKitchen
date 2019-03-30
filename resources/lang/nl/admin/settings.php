@@ -77,12 +77,18 @@ return [
 	'artist_managers_user_created_nl' => 'Email bericht voor nieuwe Artiestenmanager NL',
 	'artist_managers_user_created_en' => 'Email bericht voor nieuwe Artiestenmanager EN',
 
+
 	'bands_user_created_subject_nl' => 'Email onderwerp voor nieuwe band NL',
 	'bands_user_created_subject_en' => 'Email onderwerp voor nieuwe band EN',
 	'bands_user_created_nl' => 'Email bericht voor nieuwe band NL',
 	'bands_user_created_en' => 'Email bericht voor nieuwe band EN',
 	'bands_text_en' => 'Tekst boven bandprofiel EN',
 	'bands_text_nl' => 'Tekst boven bandprofiel NL',
+  'bands_confirmation_text_en' => 'TBT',
+	'bands_confirmation_text_nl' => 'TBT',
+	'bands_confirmation_subject_en' => 'TBT',
+	'bands_confirmation_subject_nl' => 'TBT',
+
 	'schedule_budget' => 'Budget voor bands',
 	
 	'band_members_user_created_subject_nl' => 'Email onderwerp bandleden gecreëerd NL',

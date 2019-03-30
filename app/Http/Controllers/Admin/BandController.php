@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\Admin\Band\CreateBandRequest;
 use App\Http\Requests\Admin\Band\DestroyBandRequest;
+use App\Http\Requests\Admin\Band\SendConfirmationRequest;
 use App\Http\Requests\Admin\Band\UpdateBandRequest;
 use App\Http\Requests\ArtistManager\StoreBandScheduleRequest;
 use App\Models\Band;
@@ -20,7 +21,12 @@ class BandController extends Controller {
 		$title = __('admin/artists.bands');
 		$fieldType = "Band";
 		$createTitle = __('admin/artists.createBand');
-		$buttons = ['<a class="button is-light" href="' . action('Admin\FieldController@index', 'BandMember') . '">' . __('admin/bandMembers.fields') . '</a>'];
+		$buttons = [
+			'<a class="button is-light" href="' . action('Admin\FieldController@index', 'BandMember') . '">' . __('admin/bandMembers.fields') . '</a>',
+			'<ajax-form action="' . action('Admin\BandController@sendConfirmation') . '">
+				<button class="button is-success mr-half">' . __('admin/bands.sendConfirmation') . '</button>
+			</ajax-form>'
+			];
 		return view('admin.datatableWithNew', compact('title', 'createTitle', 'fieldType', 'buttons'));
 	}
 	
@@ -59,6 +65,13 @@ class BandController extends Controller {
 	
 	public function show(Band $band) {
 		return view('admin.bands.band', compact('band'));
+	}
+
+	public function sendConfirmation(SendConfirmationRequest $request){
+		$request->commit();
+		return [
+			'success' => true
+		];
 	}
 	
 	public function schedule() {

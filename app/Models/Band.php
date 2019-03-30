@@ -126,4 +126,11 @@ class Band extends Model {
 			];
 		});
 	}
+
+	public function getApprovedPaymentsAttribute(){
+		$schedules = $this->schedules->filter(function ($schedule) {
+			return $schedule->approved == 'accepted';
+		});
+		return $schedules->sum('payment');
+	}
 }
