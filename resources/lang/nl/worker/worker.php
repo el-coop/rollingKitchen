@@ -7,6 +7,6 @@ return [
 	'workedHours' => 'Gewerkte uren',
 	'workplace' => 'Werkplek',
 	'workerNotApproved' => 'Medewerker niet goedgekeurd',
-	'taxReviews' => 'BElasting informatie',
+	'taxReviews' => 'Belastingoverzicht',
 	'uploadId' => 'ID Foto'
 ];

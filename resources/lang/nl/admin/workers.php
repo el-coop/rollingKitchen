@@ -8,7 +8,7 @@ return [
 	'payroll' => 'Loonlijst',
 	'freelance' => 'Freelancer',
 	'volunteer' => 'Vrijwilliger',
-	'completed' => 'Completed',
+	'completed' => 'Voltooid',
 	'workplaces' => 'Werkplekken',
 	'addWorkplace' => 'Werkplek toevoegen',
 	'createWorkplace' => 'Werkplek creëren ',
