@@ -89,5 +89,8 @@ class AuthServiceProvider extends ServiceProvider {
 		Gate::define('update-confirmation-email', function ($user){
 			return $user->user_type == ArtistManager::class;
 		});
+		Gate::define('send-blast-message', function ($user) {
+			return $user->user_type == Admin::class || $user->user_type == Developer::class;
+		});
 	}
 }
