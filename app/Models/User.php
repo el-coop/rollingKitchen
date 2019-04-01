@@ -68,4 +68,12 @@ class User extends Authenticatable implements HasLocalePreference {
 		}
 	}
 
+	public function routeNotificationForNexmo($notification) {
+		foreach ($this->user->data as $key => $value){
+			if (stripos($key, 'phone number') !== false){
+				return $value;
+			}
+		}
+	}
+
 }

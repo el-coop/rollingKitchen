@@ -187,4 +187,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		Route::patch('/edit/{stage}', 'StageController@update');
 		Route::delete('/delete/{stage}', 'StageController@destroy');
 	});
+
+	Route::group(['prefix' => 'blastMessage'], function (){
+		Route::get('/', 'BlastMessageController@show');
+		Route::post('/', 'BlastMessageController@send');
+	});
 });
