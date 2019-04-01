@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Notifications\User\MessageSentNotification;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 
 class SendBlastMessageRequest extends FormRequest {
 	/**
@@ -27,11 +28,11 @@ class SendBlastMessageRequest extends FormRequest {
 	public function rules() {
 		return [
 			'destination' => 'required|array',
-			'subject_en' => 'required|string',
-			'subject_nl' => 'required|string',
 			'text_en' => 'required|string',
 			'text_nl' => 'required|string',
-			'channels' => 'required|array'
+			'channels' => 'required|array',
+			'subject_en' => Rule::requiredIf($this->isEmail()),
+			'subject_nl' => Rule::requiredIf($this->isEmail())
 		];
 	}
 	public function commit(){
@@ -50,5 +51,9 @@ class SendBlastMessageRequest extends FormRequest {
 				);
 			});
 		}
+	}
+
+	private function isEmail(){
+		return array_key_exists('mail',$this->input('channels'));
 	}
 }
