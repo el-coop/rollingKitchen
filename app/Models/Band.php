@@ -31,6 +31,10 @@ class Band extends Model {
 		return $this->morphOne(User::class, 'user');
 	}
 	
+	public function bandSongs() {
+		return $this->hasMany(BandSong::class);
+	}
+	
 	public function getFullDataAttribute() {
 		$fullData = collect([
 			[
@@ -126,8 +130,8 @@ class Band extends Model {
 			];
 		});
 	}
-
-	public function getApprovedPaymentsAttribute(){
+	
+	public function getApprovedPaymentsAttribute() {
 		$schedules = $this->schedules->filter(function ($schedule) {
 			return $schedule->approved == 'accepted';
 		});

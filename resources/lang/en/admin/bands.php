@@ -3,5 +3,5 @@
 return [
 	'bandMembers' => 'Band Members',
 	'schedule' => 'Schedule',
-	'sendConfirmation' => 'Send Confirmation'
+	'sendConfirmation' => 'Send Confirmation',
 ];

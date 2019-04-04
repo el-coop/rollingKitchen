@@ -157,6 +157,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 	
 	Route::group(['prefix' => 'bands'], function () {
 		Route::get('/', 'BandController@index');
+		Route::get('/setList', 'BandController@downloadSetList');
 		Route::post('/sendConfirmation', 'BandController@sendConfirmation');
 		Route::get('/schedule', 'BandController@schedule');
 		Route::post('/schedule', 'BandController@storeSchedule');
@@ -168,13 +169,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		Route::get('/{band}', 'BandController@show');
 		Route::patch('/update/{band}', 'BandController@nonAjaxUpdate');
 		Route::delete('{band}/delete/{bandMember}', 'BandMemberController@destroy');
-		Route::group(['prefix' => 'bandMembers'], function (){
+		Route::group(['prefix' => 'bandMembers'], function () {
 			Route::get('{band}/edit', 'BandMemberController@create');
 			Route::post('{band}/edit', 'BandMemberController@store');
 			Route::get('{band}/edit/{bandMember}', 'BandMemberController@edit');
 			Route::patch('{band}/edit/{bandMember}', 'BandMemberController@update');
-
-
+			
+			
 		});
 		
 	});
@@ -187,8 +188,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		Route::patch('/edit/{stage}', 'StageController@update');
 		Route::delete('/delete/{stage}', 'StageController@destroy');
 	});
-
-	Route::group(['prefix' => 'blastMessage'], function (){
+	
+	Route::group(['prefix' => 'blastMessage'], function () {
 		Route::get('/', 'BlastMessageController@show');
 		Route::post('/', 'BlastMessageController@send');
 	});
