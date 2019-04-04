@@ -8,7 +8,6 @@ use App\Models\Kitchen;
 use App\Models\User;
 use App\Models\WorkedHoursExportColumn;
 use App\Models\Worker;
-use App\Services\WorkedHoursService;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;

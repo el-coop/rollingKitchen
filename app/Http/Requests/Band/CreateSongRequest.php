@@ -15,7 +15,7 @@ class CreateSongRequest extends FormRequest {
 	 */
 	public function authorize() {
 		$this->band = $this->route('band');
-		return $this->user()->can('update', $this->band);
+		return $this->user()->can('manageSongs', $this->band);
 	}
 	
 	/**

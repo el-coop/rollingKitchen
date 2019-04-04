@@ -86,12 +86,16 @@ class BandPolicy {
 	public function schedule(User $user) {
 		return $user->user_type == Admin::class || $user->user_type == ArtistManager::class;
 	}
-
-	public function approveSchedule(User $user, Band $band){
+	
+	public function approveSchedule(User $user, Band $band) {
 		return $user->user_type == Band::class && $user->user_id == $band->id;
 	}
-
+	
 	public function sendConfirmation(User $user) {
 		return $user->user_type == Admin::class || $user->user_type == ArtistManager::class;
+	}
+	
+	public function manageSongs(User $user, Band $band) {
+		return $user->user_type == Admin::class || $user->user == $band;
 	}
 }

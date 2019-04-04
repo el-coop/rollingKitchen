@@ -2,8 +2,11 @@
 
 use Faker\Generator as Faker;
 
-$factory->define(App\BandSong::class, function (Faker $faker) {
-    return [
-        //
-    ];
+$factory->define(App\Models\BandSong::class, function (Faker $faker) {
+	return [
+		'title' => $faker->name(),
+		'composer' => $faker->name(),
+		'owned' => $faker->boolean(),
+		'protected' => $faker->boolean(),
+	];
 });
