@@ -2,23 +2,26 @@
 
 Route::group(['prefix' => 'band', 'namespace' => 'Band'], function () {
 	Route::get('/pdf/{pdf}', 'BandController@showPdf');
-
+	
 	Route::group(['middleware' => 'guest', 'prefix' => 'setPassword'], function () {
 		Route::get('/{token}', 'BandController@showResetForm');
 		Route::post('', 'BandController@reset');
 	});
-	Route::group(['middleware' => ['auth', 'can:view,band']], function (){
-		Route::get('/{band}', 'BandController@show');
-		Route::patch('/{band}', 'BandController@update');
-
-
-
-		Route::post('/{band}/bandMember', 'BandController@addBandMember');
-		Route::patch('/{band}/bandMember/{bandMember}', 'BandController@updateBandMember');
-		Route::delete('/{band}/bandMember/{bandMember}', 'BandController@destroyBandMember');
-
-		Route::patch('/{band}/schedule/{bandSchedule}/approve', 'BandController@approveSchedule');
-		Route::patch('/{band}/schedule/{bandSchedule}/reject', 'BandController@rejectSchedule');
-
+	Route::group(['prefix' => '{band}', 'middleware' => ['auth', 'can:view,band']], function () {
+		Route::get('/', 'BandController@show');
+		Route::patch('/', 'BandController@update');
+		
+		
+		Route::post('/bandMember', 'BandController@addBandMember');
+		Route::patch('/bandMember/{bandMember}', 'BandController@updateBandMember');
+		Route::delete('/bandMember/{bandMember}', 'BandController@destroyBandMember');
+		
+		Route::patch('/schedule/{bandSchedule}/approve', 'BandController@approveSchedule');
+		Route::patch('/schedule/{bandSchedule}/reject', 'BandController@rejectSchedule');
+		
+		Route::post('/song', 'SongController@create');
+		Route::patch('/song/{song}', 'SongController@update');
+		Route::delete('/song/{song}', 'SongController@destroy');
+		
 	});
 });

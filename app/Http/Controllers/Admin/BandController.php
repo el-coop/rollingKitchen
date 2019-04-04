@@ -11,9 +11,11 @@ use App\Models\Band;
 use App\Models\BandMember;
 use App\Models\BandSchedule;
 use App\Models\Stage;
+use App\Services\SetListService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Excel;
 
 class BandController extends Controller {
 	
@@ -25,8 +27,9 @@ class BandController extends Controller {
 			'<a class="button is-light" href="' . action('Admin\FieldController@index', 'BandMember') . '">' . __('admin/bandMembers.fields') . '</a>',
 			'<ajax-form action="' . action('Admin\BandController@sendConfirmation') . '">
 				<button class="button is-success mr-half">' . __('admin/bands.sendConfirmation') . '</button>
-			</ajax-form>'
-			];
+			</ajax-form>',
+			'<a class="button is-info" href="' . action('Admin\BandController@downloadSetList') . '" target="_blank">' . __('band/band.setList') . '</a>',
+		];
 		return view('admin.datatableWithNew', compact('title', 'createTitle', 'fieldType', 'buttons'));
 	}
 	
@@ -66,8 +69,8 @@ class BandController extends Controller {
 	public function show(Band $band) {
 		return view('admin.bands.band', compact('band'));
 	}
-
-	public function sendConfirmation(SendConfirmationRequest $request){
+	
+	public function sendConfirmation(SendConfirmationRequest $request) {
 		$request->commit();
 		return [
 			'success' => true
@@ -94,5 +97,9 @@ class BandController extends Controller {
 		return [
 			'success' => true
 		];
+	}
+	
+	public function downloadSetList(Excel $excel, SetListService $setListService) {
+		return $excel->download($setListService, 'setList.xls');
 	}
 }
