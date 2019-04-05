@@ -7,6 +7,7 @@ use App\Models\Application;
 use App\Models\ArtistManager;
 use App\Models\Band;
 use App\Models\BandMember;
+use App\Models\BandPaymentExportColumn;
 use App\Models\Debtor;
 use App\Models\Developer;
 use App\Models\Error;
@@ -27,6 +28,7 @@ use App\Models\Workplace;
 use App\Policies\ApplicationPolicy;
 use App\Policies\ArtistManagerPolicy;
 use App\Policies\BandMemberPolicy;
+use App\Policies\BandPaymentExportColumnPolicy;
 use App\Policies\BandPolicy;
 use App\Policies\DebtorPolicy;
 use App\Policies\ErrorPolicy;
@@ -73,7 +75,8 @@ class AuthServiceProvider extends ServiceProvider {
 		ArtistManager::class => ArtistManagerPolicy::class,
 		Band::class => BandPolicy::class,
 		Stage::class => StagePolicy::class,
-		BandMember::class => BandMemberPolicy::class
+		BandMember::class => BandMemberPolicy::class,
+		BandPaymentExportColumn::class => BandPaymentExportColumnPolicy::class
 	];
 	
 	/**

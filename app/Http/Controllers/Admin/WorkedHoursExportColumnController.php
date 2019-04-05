@@ -15,9 +15,13 @@ use Maatwebsite\Excel\Excel;
 class WorkedHoursExportColumnController extends Controller {
 	
 	public function show() {
-		$workedHoursOptions = WorkedHoursExportColumn::options();
-		$workedHours = WorkedHoursExportColumn::orderBy('order')->get();
-		return view('admin.workedHours.show', compact('workedHours', 'workedHoursOptions'));
+		$options = WorkedHoursExportColumn::options();
+		$alreadySelected = WorkedHoursExportColumn::orderBy('order')->get();
+		$downloadAction = action('Admin\WorkedHoursExportColumnController@export');
+		$addAction = action('Admin\WorkedHoursExportColumnController@create');
+		$title = __('admin/settings.workedHours');
+		$btn = __('admin/shifts.exportWorkedHours');
+		return view('admin.workedHours.show', compact('alreadySelected', 'options', 'downloadAction', 'addAction', 'title', 'btn'));
 	}
 	
 	public function create(CreateWorkedHoursExportColumnRequest $request) {
