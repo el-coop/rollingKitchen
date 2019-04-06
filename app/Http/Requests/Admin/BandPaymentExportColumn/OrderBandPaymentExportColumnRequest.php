@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\BandPaymentExportColumn;
+namespace App\Http\Requests\Admin\BandPaymentExportColumn;
 
 use App\Models\BandPaymentExportColumn;
 use Illuminate\Foundation\Http\FormRequest;

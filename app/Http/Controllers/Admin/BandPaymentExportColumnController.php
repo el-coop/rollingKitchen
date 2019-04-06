@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\BandPaymentExportColumn\CreateBandPaymentExportColumnRequest;
-use App\Http\Requests\BandPaymentExportColumn\DestroyBandPaymentExportColumnRequest;
-use App\Http\Requests\BandPaymentExportColumn\OrderBandPaymentExportColumnRequest;
-use App\Http\Requests\BandPaymentExportColumn\UpdateBandPaymentExportColumnRequest;
+use App\Http\Requests\Admin\BandPaymentExportColumn\CreateBandPaymentExportColumnRequest;
+use App\Http\Requests\Admin\BandPaymentExportColumn\DestroybandPaymentExportColumnRequest;
+use App\Http\Requests\Admin\BandPaymentExportColumn\OrderBandPaymentExportColumnRequest;
+use App\Http\Requests\Admin\BandPaymentExportColumn\UpdateBandPaymentExportColumnRequest;
 use App\Models\BandPaymentExportColumn;
 use App\Services\BandPaymentService;
 use Illuminate\Http\Request;

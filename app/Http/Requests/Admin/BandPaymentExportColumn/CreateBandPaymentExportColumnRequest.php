@@ -1,21 +1,19 @@
 <?php
 
-namespace App\Http\Requests\BandPaymentExportColumn;
+namespace App\Http\Requests\Admin\BandPaymentExportColumn;
 
 use App\Models\BandPaymentExportColumn;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateBandPaymentExportColumnRequest extends FormRequest {
-	protected $bandPaymentColumn;
+class CreateBandPaymentExportColumnRequest extends FormRequest {
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
 	 * @return bool
 	 */
 	public function authorize() {
-		$this->bandPaymentColumn = $this->route('bandPaymentExportColumn');
-		return $this->user()->can('update',$this->bandPaymentColumn);
+		return $this->user()->can('create', BandPaymentExportColumn::class);
 	}
 
 	/**
@@ -30,14 +28,18 @@ class UpdateBandPaymentExportColumnRequest extends FormRequest {
 			'name' => 'required|string'
 		];
 	}
-	public function commit(){
-		$this->bandPaymentColumn->column = $this->input('column');
-		$this->bandPaymentColumn->name = $this->input('name');
-		$this->bandPaymentColumn->save();
+
+	public function commit() {
+		$BandPaymentColumn = new BandPaymentExportColumn;
+		$BandPaymentColumn->column = $this->input('column');
+		$BandPaymentColumn->name = $this->input('name');
+		$BandPaymentColumn->order = BandPaymentExportColumn::count();
+		$BandPaymentColumn->save();
 		return [
-			'id' => $this->bandPaymentColumn->id,
+			'id' => $BandPaymentColumn->id,
 			'column' => $this->input('column'),
 			'name' => $this->input('name')
 		];
+
 	}
 }
