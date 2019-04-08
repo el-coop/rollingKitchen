@@ -1,21 +1,21 @@
 @extends('layouts.dashboard')
 
-@section('title',__('admin/settings.workedHours'))
+@section('title',$title)
 
 @section('content')
     <div class="box">
-        <a href="{{action('Admin\WorkedHoursExportColumnController@export')}}"  class="button is-info">@lang('admin/shifts.exportWorkedHours')</a>
+        <a href="{{$downloadAction}}"  class="button is-info">{{$btn}}</a>
     </div>
     <dynamic-table :columns="[{
             name: 'column',
             label: '@lang('vue.field')',
             type: 'select',
-            options: {{$workedHoursOptions}},
+            options: {{$options}},
             callback: 'numerateOptions'
         }, {
             name: 'name',
             label: '@lang('global.name')',
-        }]" :init-fields="{{collect($workedHours)}}" :sortable="true" action="{{action('Admin\WorkedHoursExportColumnController@create')}}">
+        }]" :init-fields="{{collect($alreadySelected)}}" :sortable="true" action="{{$addAction}}">
     </dynamic-table>
 
 @endsection

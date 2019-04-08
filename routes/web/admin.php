@@ -193,4 +193,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		Route::get('/', 'BlastMessageController@show');
 		Route::post('/', 'BlastMessageController@send');
 	});
+
+	Route::group(['prefix' => 'bandPayments'], function () {
+		Route::get('/', 'BandPaymentExportColumnController@show');
+		Route::patch('/order', 'BandPaymentExportColumnController@saveOrder');
+		Route::post('/', 'BandPaymentExportColumnController@create');
+		Route::patch('/{bandPaymentExportColumn}', 'BandPaymentExportColumnController@update');
+		Route::delete('/{bandPaymentExportColumn}', 'BandPaymentExportColumnController@destroy');
+		Route::get('/export', 'BandPaymentExportColumnController@export');
+	});
 });
