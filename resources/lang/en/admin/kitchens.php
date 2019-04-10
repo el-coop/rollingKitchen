@@ -6,5 +6,6 @@ return [
 	'new' => 'New',
 	'fields' => 'Fields',
 	'kitchen' => 'Kitchen',
-	'updatedAt' => 'Updated At'
+	'updatedAt' => 'Updated At',
+	'exportTitle' => 'Export Kitchens',
 ];

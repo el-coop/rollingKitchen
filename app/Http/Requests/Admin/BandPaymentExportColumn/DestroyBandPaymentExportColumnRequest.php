@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin\BandPaymentExportColumn;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DestroybandPaymentExportColumnRequest extends FormRequest {
+class DestroyBandPaymentExportColumnRequest extends FormRequest {
 	protected $bandPaymentColumn;
 	/**
 	 * Determine if the user is authorized to make this request.

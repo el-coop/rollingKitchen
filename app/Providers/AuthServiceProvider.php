@@ -15,6 +15,7 @@ use App\Models\Field;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\Kitchen;
+use App\Models\KitchenExportColumn;
 use App\Models\Pdf;
 use App\Models\Service;
 use App\Models\Shift;
@@ -34,6 +35,7 @@ use App\Policies\DebtorPolicy;
 use App\Policies\ErrorPolicy;
 use App\Policies\FieldPolicy;
 use App\Policies\InvoicePolicy;
+use App\Policies\KitchenExportColumnPolicy;
 use App\Policies\KitchenPolicy;
 use App\Policies\InvoicePaymentPolicy;
 use App\Policies\PDFPOlicy;
@@ -76,7 +78,8 @@ class AuthServiceProvider extends ServiceProvider {
 		Band::class => BandPolicy::class,
 		Stage::class => StagePolicy::class,
 		BandMember::class => BandMemberPolicy::class,
-		BandPaymentExportColumn::class => BandPaymentExportColumnPolicy::class
+		BandPaymentExportColumn::class => BandPaymentExportColumnPolicy::class,
+		KitchenExportColumn::class => KitchenExportColumnPolicy::class
 	];
 	
 	/**

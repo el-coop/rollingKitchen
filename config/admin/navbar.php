@@ -7,6 +7,7 @@ return [
 		'kitchen/kitchen.services' => 'Admin\ServiceController@index',
 		'admin/debtors.debtors' => 'Admin\DebtorController@index',
 		'admin/invoices.invoices' => 'Admin\ApplicationInvoiceController@index',
+		'admin/kitchens.exportTitle' => 'Admin\KitchenExportColumnController@show'
 	],
 	'admin/workers.workers' => [
 		'admin/workers.workers' => 'Admin\WorkerController@index',
