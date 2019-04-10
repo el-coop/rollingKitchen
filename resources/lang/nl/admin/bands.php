@@ -3,7 +3,7 @@
 return [
 	'bandMembers' => 'Bandleden',
 	'schedule' => 'Schema',
-	'sendConfirmation' => 'TBT',
-	'bandPayments' => 'TBT',
-	'exportBandPayments' => 'TBT'
+	'sendConfirmation' => 'bevestiging verzenden',
+	'bandPayments' => 'Betaling band',
+	'exportBandPayments' => 'Exporteer betalingen bands'
 ];

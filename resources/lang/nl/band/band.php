@@ -6,7 +6,7 @@ return [
 	'bandMembers' => 'Bandleden',
 	'reject' => 'Afkeuren',
 	'approve' => 'Goedkeuren',
-	'setList' => 'TBT',
+	'setList' => 'Setlijst',
 	'composer' => 'Componist/Tekstschrijver',
 	'owned' => 'Eigen Nummer',
 	'protected' => 'Beschermd Door BUMA/STEMRA',

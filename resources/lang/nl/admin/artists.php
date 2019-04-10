@@ -9,6 +9,6 @@ return [
 	'stages' => 'Podia',
 	'createStage' => 'Podium toevoegen',
 	'schedule' => 'Schema',
-	'confirmationEmail' => 'TBT'
+	'confirmationEmail' => 'Bevestigingsmail'
 
 ];
