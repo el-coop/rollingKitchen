@@ -1,12 +1,12 @@
 <?php
 
 return [
-	'title' => 'TBT',
-	'destination' => 'TBT',
-	'subjectEn' => 'TBT',
-	'subjectNl' => 'TBT',
-	'bodyEn' => 'TBT',
-	'bodyNl' => 'TBT',
-	'channels' => 'TBT',
-	'sms' => 'TBT'
+	'title' => 'Titel',
+	'destination' => 'Ontvanger',
+	'subjectEn' => 'Onderwerp EN',
+	'subjectNl' => 'Onderwerp NL',
+	'bodyEn' => 'Tekst EN',
+	'bodyNl' => 'Tekst NL',
+	'channels' => 'Verzend Via',
+	'sms' => 'SMS'
 ];

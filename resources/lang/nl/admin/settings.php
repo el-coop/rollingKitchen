@@ -84,10 +84,10 @@ return [
 	'bands_user_created_en' => 'Email bericht voor nieuwe band EN',
 	'bands_text_en' => 'Tekst boven bandprofiel EN',
 	'bands_text_nl' => 'Tekst boven bandprofiel NL',
-  'bands_confirmation_text_en' => 'TBT',
-	'bands_confirmation_text_nl' => 'TBT',
-	'bands_confirmation_subject_en' => 'TBT',
-	'bands_confirmation_subject_nl' => 'TBT',
+  	'bands_confirmation_text_en' => 'Email bericht bevestiging band EN',
+	'bands_confirmation_text_nl' => 'Email bericht bevestiging band NL',
+	'bands_confirmation_subject_en' => 'Email onderwerp bevestiging band EN',
+	'bands_confirmation_subject_nl' => 'Email onderwerp bevestiging band NL',
 
 	'schedule_budget' => 'Budget voor bands',
 	
