@@ -66,8 +66,6 @@ class Workplace extends Model {
 				'filter' => false
 			], [
 				'name' => 'completed',
-				'noTable' => true,
-				'title' => __('admin/workers.completed'),
 				'raw' => 'JSON_LENGTH(data) as completed',
 				'sortField' => 'completed',
 				'filter' => [
@@ -82,6 +80,7 @@ class Workplace extends Model {
 						return Field::where('form', Worker::class)->count();
 					}],
 				],
+				'title' => __('admin/workers.completed'),
 				'callback' => 'dataCompleted|' . Worker::class
 			], [
 				'name' => 'count(file)',
@@ -105,8 +104,11 @@ class Workplace extends Model {
 					'1' => __('global.yes'),
 					'0' => __('global.no')
 				]
+			], [
+				'name' => 'photoList',
+				'noTable' => true,
+				'visible' => false
 			]],
-		
 		];
 		
 	}

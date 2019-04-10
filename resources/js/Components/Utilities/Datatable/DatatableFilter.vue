@@ -60,6 +60,7 @@
 		methods: {
 			filter() {
 				this.$emit('filter', this.filters);
+				history.replaceState({}, "", `${window.location.origin}${window.location.pathname}?filters=` + JSON.stringify(this.filters));
 			}
 		}
 	}

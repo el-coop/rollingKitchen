@@ -6,7 +6,6 @@
 	@slot('exportButton', false)
 	<template #default="{object, onUpdate}">
 		<template v-if="object">
-
 			<dynamic-fields :fields="[{
 			name: 'date',
 			label: '@lang('admin/shifts.date')',
@@ -18,7 +17,7 @@
 			name: 'workplace',
 			label: '@lang('worker/worker.workplace')',
 			type: 'text',
-			value: '{{ $workplace->name }}',
+			value: `{{ $workplace->name }}`,
 			readonly: true
 		}, {
 			name: 'hours',

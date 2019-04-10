@@ -183,9 +183,8 @@
 			newObjectForm() {
 				this.$modal.show(`datatable-row${this._uid}`);
 				this.object = {};
-
-
 			},
+
 			paginationData(paginationData) {
 				this.$refs.pagination.setPaginationData(paginationData);
 				this.$refs.paginationInfo.setPaginationData(paginationData);
@@ -239,6 +238,7 @@
 					currentData[elementIndex] = this.object;
 				} else {
 					currentData.push(this.object);
+					this.$modal.hide(`datatable-row${this._uid}`);
 				}
 				this.$refs.table.setData(currentData);
 			},
