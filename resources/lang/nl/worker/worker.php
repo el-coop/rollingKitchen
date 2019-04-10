@@ -8,5 +8,6 @@ return [
 	'workplace' => 'Werkplek',
 	'workerNotApproved' => 'Medewerker niet goedgekeurd',
 	'taxReviews' => 'Belastingoverzicht',
-	'uploadId' => 'ID Foto'
+	'uploadId' => 'ID Foto',
+	'uploadInstructions' => 'Upload hier een foto van je paspoort of ID kaart. Let op: een rijbewijs is niet geldig als ID.'
 ];

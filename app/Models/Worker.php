@@ -29,7 +29,8 @@ class Worker extends Model {
 	];
 	
 	protected $appends = [
-		'workplacesList'
+		'workplacesList',
+		'photoList'
 	];
 	
 	static function indexPage() {
@@ -160,6 +161,10 @@ class Worker extends Model {
 		return $this->shifts()->where('closed', true)->get()->sum(function ($shift) {
 			return $shift->pivot->payment;
 		});
+	}
+	
+	public function getPhotoListAttribute() {
+		return $this->photos;
 	}
 }
 

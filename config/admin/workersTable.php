@@ -1,4 +1,7 @@
 <?php
+
+use App\Models\Field;
+
 return [
 	'model' => \App\Models\Worker::class,
 	'where' => [['user_type', \App\Models\Worker::class]],
@@ -23,6 +26,9 @@ return [
 		'name' => 'workplacesList',
 		'noTable' => true,
 		'filterFields' => ['workplaces.name'],
+		'filter' => function () {
+			return \App\Models\Workplace::all()->pluck('name', 'name');
+		},
 		'title' => 'admin/workers.workplaces',
 	], [
 		'name' => 'completed',
@@ -34,10 +40,10 @@ return [
 		],
 		'filterDefinitions' => [
 			'yes' => ['=', function () {
-				return \App\Models\Field::where('form', \App\Models\Worker::class)->count();
+				return Field::where('form', \App\Models\Worker::class)->count();
 			}],
 			'no' => ['<', function () {
-				return \App\Models\Field::where('form', \App\Models\Worker::class)->count();
+				return Field::where('form', \App\Models\Worker::class)->count();
 			}],
 		],
 		'title' => 'admin/workers.completed',

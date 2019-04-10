@@ -18,6 +18,9 @@
 						  :on-data-update="onUpdate"
 						  :method="object.id ? 'patch' : 'post'"
 			></dynamic-form>
+
+			<carousel v-if="object.name && object.photos.length > 0" class="mt-1" :photos="object.photos">
+			</carousel>
 		</template>
 	</template>
 @endcomponent

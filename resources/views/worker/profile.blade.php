@@ -16,6 +16,7 @@
 		</div>
 		<div class="column">
 			<h4 class="title is-4">@lang('worker/worker.uploadId')</h4>
+			<h5 class="subtitle is-6">@lang('worker/worker.uploadInstructions')</h5>
 			<image-manager url="{{ action('Worker\WorkerController@storePhoto', $worker) }}" :data="{
 					_token: '{{csrf_token()}}'
 				}"
