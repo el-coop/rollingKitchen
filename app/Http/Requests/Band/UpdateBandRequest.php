@@ -39,6 +39,14 @@ class UpdateBandRequest extends FormRequest {
 		}
 		return $rules->toArray();
 	}
+	
+	public function withValidator($validator) {
+		$validator->after(function ($validator) {
+			if ($this->input('review') && !$this->band->bandSongs->count()) {
+				$validator->errors()->add('tracks', __('bands/products.menuError'));
+			}
+		});
+	}
 
 	public function commit(){
 		$this->band->user->name = $this->input('name');

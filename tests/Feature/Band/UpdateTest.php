@@ -7,6 +7,7 @@ use App\Models\Admin;
 use App\Models\ArtistManager;
 use App\Models\Band;
 use App\Models\BandMember;
+use App\Models\BandSong;
 use App\Models\Kitchen;
 use App\Models\User;
 use App\Models\Worker;
@@ -24,7 +25,7 @@ class UpdateTest extends TestCase {
 	protected $band;
 	protected $bandMember;
 	protected $secondBand;
-
+	
 	protected function setUp(): void {
 		parent::setUp();
 		$this->admin = factory(User::class)->make();
@@ -46,8 +47,8 @@ class UpdateTest extends TestCase {
 		$this->secondBand = factory(User::class)->make();
 		factory(Band::class)->create()->user()->save($this->secondBand);
 	}
-
-	public function test_guest_cant_update_band(){
+	
+	public function test_guest_cant_update_band() {
 		$this->patch(action('Band\BandController@update', $this->band->user), [
 			'name' => 'name',
 			'email' => 'email',
@@ -56,8 +57,8 @@ class UpdateTest extends TestCase {
 			'language' => 'en'
 		])->assertRedirect(action('Auth\LoginController@login'));
 	}
-
-	public function test_kitchen_cant_update_band(){
+	
+	public function test_kitchen_cant_update_band() {
 		$this->actingAs($this->kitchen)->patch(action('Band\BandController@update', $this->band->user), [
 			'name' => 'name',
 			'email' => 'email',
@@ -66,8 +67,8 @@ class UpdateTest extends TestCase {
 			'language' => 'en'
 		])->assertForbidden();
 	}
-
-	public function test_admin_cant_update_band(){
+	
+	public function test_admin_cant_update_band() {
 		$this->actingAs($this->admin)->patch(action('Band\BandController@update', $this->band->user), [
 			'name' => 'name',
 			'email' => 'email',
@@ -76,8 +77,8 @@ class UpdateTest extends TestCase {
 			'language' => 'en'
 		])->assertForbidden();
 	}
-
-	public function test_worker_cant_update_band(){
+	
+	public function test_worker_cant_update_band() {
 		$this->actingAs($this->worker)->patch(action('Band\BandController@update', $this->band->user), [
 			'name' => 'name',
 			'email' => 'email',
@@ -86,8 +87,8 @@ class UpdateTest extends TestCase {
 			'language' => 'en'
 		])->assertForbidden();
 	}
-
-	public function test_band_member_cant_update_band(){
+	
+	public function test_band_member_cant_update_band() {
 		$this->actingAs($this->bandMember)->patch(action('Band\BandController@update', $this->band->user), [
 			'name' => 'name',
 			'email' => 'email',
@@ -96,8 +97,8 @@ class UpdateTest extends TestCase {
 			'language' => 'en'
 		])->assertForbidden();
 	}
-
-	public function test_accountant_cant_update_band(){
+	
+	public function test_accountant_cant_update_band() {
 		$this->actingAs($this->accountant)->patch(action('Band\BandController@update', $this->band->user), [
 			'name' => 'name',
 			'email' => 'email',
@@ -106,8 +107,8 @@ class UpdateTest extends TestCase {
 			'language' => 'en'
 		])->assertForbidden();
 	}
-
-	public function test_artist_manager_cant_update_band(){
+	
+	public function test_artist_manager_cant_update_band() {
 		$this->actingAs($this->artistManager)->patch(action('Band\BandController@update', $this->band->user), [
 			'name' => 'name',
 			'email' => 'email',
@@ -116,8 +117,8 @@ class UpdateTest extends TestCase {
 			'language' => 'en'
 		])->assertForbidden();
 	}
-
-	public function test_second_band_cant_update_band(){
+	
+	public function test_second_band_cant_update_band() {
 		$this->actingAs($this->secondBand)->patch(action('Band\BandController@update', $this->band->user), [
 			'name' => 'name',
 			'email' => 'email',
@@ -126,8 +127,8 @@ class UpdateTest extends TestCase {
 			'language' => 'en'
 		])->assertForbidden();
 	}
-
-	public function test_band_can_update_self(){
+	
+	public function test_band_can_update_self() {
 		$this->actingAs($this->band)->patch(action('Band\BandController@update', $this->band->user), [
 			'name' => 'name',
 			'email' => 'email@mail.com',
@@ -146,7 +147,42 @@ class UpdateTest extends TestCase {
 			'id' => $this->band->user->id
 		]);
 	}
-
+	
+	public function test_band_cant_submit_review_without_tracks() {
+		$this->actingAs($this->band)->patch(action('Band\BandController@update', $this->band->user), [
+			'name' => 'name',
+			'email' => 'email@mail.com',
+			'paymentMethod' => 'band',
+			'band' => ['test' => 'test'],
+			'language' => 'en',
+			'review' => true
+		])->assertRedirect()->assertSessionHasErrors('tracks');
+	}
+	
+	public function test_band_can_submit_review_with_tracks() {
+		$this->band->user->bandSongs()->save(factory(BandSong::class)->make());
+		$this->actingAs($this->band)->patch(action('Band\BandController@update', $this->band->user), [
+			'name' => 'name',
+			'email' => 'email@mail.com',
+			'paymentMethod' => 'band',
+			'band' => ['test' => 'test'],
+			'language' => 'en',
+			'review' => true
+		])->assertRedirect();
+		
+		$this->assertDatabaseHas('users', [
+			'name' => 'name',
+			'email' => 'email@mail.com',
+			'id' => $this->band->id
+		]);
+		$this->assertDatabaseHas('bands', [
+			'data' => json_encode(['test' => 'test']),
+			'payment_method' => 'band',
+			'id' => $this->band->user->id,
+			'submitted' => true
+		]);
+	}
+	
 	public function test_band_update_validation() {
 		$this->actingAs($this->band)->patch(action('Band\BandController@update', $this->band->user), [
 			'email' => 'bla',
@@ -155,9 +191,9 @@ class UpdateTest extends TestCase {
 			'band' => 'test',
 			'paymentMethod' => 'yay'
 		])->assertSessionHasErrors([
-			'email','name','language','band', 'paymentMethod'
+			'email', 'name', 'language', 'band', 'paymentMethod'
 		]);
-
+		
 	}
-
+	
 }
