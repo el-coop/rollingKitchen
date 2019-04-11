@@ -53,35 +53,35 @@ class DestroyTest extends TestCase {
 		]);
 	}
 
-	public function test_guest_cant_create_band_payment_column() {
+	public function test_guest_cant_destroy_band_payment_column() {
 		$this->delete(action('Admin\BandPaymentExportColumnController@destroy', $this->bandPaymentColumn))->assertRedirect(action('Auth\LoginController@login'));
 	}
 
-	public function test_kitchen_cant_create_band_payment_column() {
+	public function test_kitchen_cant_destroy_band_payment_column() {
 		$this->actingAs($this->kitchen)->delete(action('Admin\BandPaymentExportColumnController@destroy', $this->bandPaymentColumn))->assertForbidden();
 	}
 
-	public function test_worker_cant_create_band_payment_column() {
+	public function test_worker_cant_destroy_band_payment_column() {
 		$this->actingAs($this->worker)->delete(action('Admin\BandPaymentExportColumnController@destroy', $this->bandPaymentColumn))->assertForbidden();
 	}
 
-	public function test_band_cant_create_band_payment_column() {
+	public function test_band_cant_destroy_band_payment_column() {
 		$this->actingAs($this->band)->delete(action('Admin\BandPaymentExportColumnController@destroy', $this->bandPaymentColumn))->assertForbidden();
 	}
 
-	public function test_accountant_cant_create_band_payment_column() {
+	public function test_accountant_cant_destroy_band_payment_column() {
 		$this->actingAs($this->accountant)->delete(action('Admin\BandPaymentExportColumnController@destroy', $this->bandPaymentColumn))->assertForbidden();
 	}
 
-	public function test_band_member_cant_create_band_payment_column() {
+	public function test_band_member_cant_destroy_band_payment_column() {
 		$this->actingAs($this->bandMember)->delete(action('Admin\BandPaymentExportColumnController@destroy', $this->bandPaymentColumn))->assertForbidden();
 	}
 
-	public function test_artist_manager_cant_create_band_payment_column() {
+	public function test_artist_manager_cant_destroy_band_payment_column() {
 		$this->actingAs($this->artistManager)->delete(action('Admin\BandPaymentExportColumnController@destroy', $this->bandPaymentColumn))->assertForbidden();
 	}
 
-	public function test_admin_can_create_band_payment_column() {
+	public function test_admin_can_destroy_band_payment_column() {
 		$this->actingAs($this->admin)->delete(action('Admin\BandPaymentExportColumnController@destroy', $this->bandPaymentColumn))->assertSuccessful();
 
 		$this->assertDatabaseMissing('band_payment_export_columns', [

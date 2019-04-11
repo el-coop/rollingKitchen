@@ -84,7 +84,7 @@ class KitchenExportColumnPolicy {
 		//
 	}
 
-	public function order(User $user, KitchenExportColumn $kitchenExportColumn) {
+	public function order(User $user) {
 		return $user->user_type == Admin::class;
 
 	}

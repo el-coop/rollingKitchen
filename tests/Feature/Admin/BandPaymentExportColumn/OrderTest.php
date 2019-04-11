@@ -59,35 +59,35 @@ class OrderTest extends TestCase {
 		});
 	}
 
-	public function test_guest_cant_create_band_payment_column() {
+	public function test_guest_cant_order_band_payment_column() {
 		$this->patch(action('Admin\BandPaymentExportColumnController@saveOrder'))->assertRedirect(action('Auth\LoginController@login'));
 	}
 
-	public function test_kitchen_cant_create_band_payment_column() {
+	public function test_kitchen_cant_order_band_payment_column() {
 		$this->actingAs($this->kitchen)->patch(action('Admin\BandPaymentExportColumnController@saveOrder'))->assertForbidden();
 	}
 
-	public function test_worker_cant_create_band_payment_column() {
+	public function test_worker_cant_order_band_payment_column() {
 		$this->actingAs($this->worker)->patch(action('Admin\BandPaymentExportColumnController@saveOrder'))->assertForbidden();
 	}
 
-	public function test_band_cant_create_band_payment_column() {
+	public function test_band_cant_order_band_payment_column() {
 		$this->actingAs($this->band)->patch(action('Admin\BandPaymentExportColumnController@saveOrder'))->assertForbidden();
 	}
 
-	public function test_accountant_cant_create_band_payment_column() {
+	public function test_accountant_cant_order_band_payment_column() {
 		$this->actingAs($this->accountant)->patch(action('Admin\BandPaymentExportColumnController@saveOrder'))->assertForbidden();
 	}
 
-	public function test_band_member_cant_create_band_payment_column() {
+	public function test_band_member_cant_order_band_payment_column() {
 		$this->actingAs($this->bandMember)->patch(action('Admin\BandPaymentExportColumnController@saveOrder'))->assertForbidden();
 	}
 
-	public function test_artist_manager_cant_create_band_payment_column() {
+	public function test_artist_manager_cant_order_band_payment_column() {
 		$this->actingAs($this->artistManager)->patch(action('Admin\BandPaymentExportColumnController@saveOrder'))->assertForbidden();
 	}
 
-	public function test_admin_can_create_band_payment_column() {
+	public function test_admin_can_order_band_payment_column() {
 		$newOrder = $this->bandPaymentColumns->pluck('id')->shuffle()->toArray();
 		$this->actingAs($this->admin)->patch(action('Admin\BandPaymentExportColumnController@saveOrder'), [
 			'order' => $newOrder
