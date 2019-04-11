@@ -6,6 +6,7 @@ use App;
 use App\Models\Field;
 use App\Models\Kitchen;
 use App\Models\KitchenExportColumn;
+use App\Models\Service;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -47,14 +48,23 @@ class KitchenService implements FromCollection, WithHeadings {
 					$column = Field::find($column)->id;
 					$result->push($kitchen->data[$column] ?? '');
 					break;
-				case 'services':
+				case 'service':
 					$application = $kitchen->getCurrentApplication();
-					$services = $application->services->count();
-					$result->push($services);
+					$service = $application->services->find($column);
+					$result->push($service->pivot->quantity ?? 0);
+					break;
+				case 'application':
+					$application = $kitchen->getCurrentApplication();
+					if (is_numeric($column)){
+						$column = Field::find($column)->id;
+						$result->push($application->data[$column] ?? '');
+					} else {
+						$result->push($application->$column);
+					}
 					break;
 				default:
 					$result->push($kitchen->user->$column);
-
+					break;
 			}
 		}
 		return $result;
