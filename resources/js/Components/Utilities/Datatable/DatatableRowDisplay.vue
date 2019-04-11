@@ -2,7 +2,7 @@
 	<modal :name="`datatable-row${name}`" :adaptive="true" height="100%" :pivotY="0"
 		   :pivotX="1" :width="width">
 		<div class="modal-body box">
-			<button class="modal-close is-large" @click="$modal.hide('datatable-row')"></button>
+			<button class="modal-close is-large" @click="hide"></button>
 			<slot></slot>
 		</div>
 	</modal>
@@ -17,6 +17,11 @@
 			},
 			width: {
 				default: 600
+			}
+		},
+		methods: {
+			hide(){
+				this.$modal.hide(`datatable-row${this.name}`);
 			}
 		}
 	}
