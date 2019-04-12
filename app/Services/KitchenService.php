@@ -45,7 +45,6 @@ class KitchenService implements FromCollection, WithHeadings {
 			$column = strtok('.');
 			switch ($model) {
 				case 'kitchen':
-					$column = Field::find($column)->id;
 					$result->push($kitchen->data[$column] ?? '');
 					break;
 				case 'service':
@@ -56,7 +55,6 @@ class KitchenService implements FromCollection, WithHeadings {
 				case 'application':
 					$application = $kitchen->getCurrentApplication();
 					if (is_numeric($column)){
-						$column = Field::find($column)->id;
 						$result->push($application->data[$column] ?? '');
 					} else {
 						$result->push($application->$column);
