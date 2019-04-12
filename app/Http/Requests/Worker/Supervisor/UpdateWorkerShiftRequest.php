@@ -4,6 +4,7 @@ namespace App\Http\Requests\Worker\Supervisor;
 
 use App\Rules\HoursOverflow;
 use App\Rules\WorkerApproved;
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateWorkerShiftRequest extends FormRequest {
@@ -26,10 +27,12 @@ class UpdateWorkerShiftRequest extends FormRequest {
 	 * @return array
 	 */
 	public function rules() {
+		$previousLength = $this->calculatePreviousShiftLength($this->route('shiftWorker'));
+		
 		return [
 			'worker' => ['nullable', 'integer', new WorkerApproved],
 			'startTime' => 'required|date_format:H:i',
-			'endTime' => ['required', 'date_format:H:i', new HoursOverflow($this->input('startTime'), $this->shift->totalHours, $this->shift->hours)],
+			'endTime' => ['required', 'date_format:H:i', new HoursOverflow($this->input('startTime'), $this->shift->totalHours->sub($previousLength), $this->shift->hours)],
 			'workFunction' => 'required|integer'
 		];
 	}
@@ -51,6 +54,15 @@ class UpdateWorkerShiftRequest extends FormRequest {
 			'workFunction' => $this->input('workFunction'),
 			'hours' => $shiftWorker->WorkedHours->total('hours')
 		];
+	}
+	
+	protected function calculatePreviousShiftLength($previousShift) {
+		$startTime = new Carbon($previousShift->start_time);
+		$endTime = new Carbon($previousShift->end_time);
+		if ($endTime <= $startTime) {
+			$endTime->addDay();
+		}
+		return $startTime->diffAsCarbonInterval($endTime);
 	}
 	
 }
