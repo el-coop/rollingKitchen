@@ -53,35 +53,35 @@ class UpdateTest extends TestCase {
 		]);
 	}
 
-	public function test_guest_cant_create_band_payment_column() {
+	public function test_guest_cant_update_band_payment_column() {
 		$this->patch(action('Admin\BandPaymentExportColumnController@update', $this->bandPaymentColumn))->assertRedirect(action('Auth\LoginController@login'));
 	}
 
-	public function test_kitchen_cant_create_band_payment_column() {
+	public function test_kitchen_cant_update_band_payment_column() {
 		$this->actingAs($this->kitchen)->patch(action('Admin\BandPaymentExportColumnController@update', $this->bandPaymentColumn))->assertForbidden();
 	}
 
-	public function test_worker_cant_create_band_payment_column() {
+	public function test_worker_cant_update_band_payment_column() {
 		$this->actingAs($this->worker)->patch(action('Admin\BandPaymentExportColumnController@update', $this->bandPaymentColumn))->assertForbidden();
 	}
 
-	public function test_band_cant_create_band_payment_column() {
+	public function test_band_cant_update_band_payment_column() {
 		$this->actingAs($this->band)->patch(action('Admin\BandPaymentExportColumnController@update', $this->bandPaymentColumn))->assertForbidden();
 	}
 
-	public function test_accountant_cant_create_band_payment_column() {
+	public function test_accountant_cant_update_band_payment_column() {
 		$this->actingAs($this->accountant)->patch(action('Admin\BandPaymentExportColumnController@update', $this->bandPaymentColumn))->assertForbidden();
 	}
 
-	public function test_band_member_cant_create_band_payment_column() {
+	public function test_band_member_cant_update_band_payment_column() {
 		$this->actingAs($this->bandMember)->patch(action('Admin\BandPaymentExportColumnController@update', $this->bandPaymentColumn))->assertForbidden();
 	}
 
-	public function test_artist_manager_cant_create_band_payment_column() {
+	public function test_artist_manager_cant_update_band_payment_column() {
 		$this->actingAs($this->artistManager)->patch(action('Admin\BandPaymentExportColumnController@update', $this->bandPaymentColumn))->assertForbidden();
 	}
 
-	public function test_admin_can_create_band_payment_column() {
+	public function test_admin_can_update_band_payment_column() {
 		$this->actingAs($this->admin)->patch(action('Admin\BandPaymentExportColumnController@update', $this->bandPaymentColumn), [
 			'name' => 'test',
 			'column' => 'user.email'

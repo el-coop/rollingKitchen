@@ -6,5 +6,7 @@ return [
 	'new' => 'Nieuw',
 	'fields' => 'Velden',
 	'kitchen' => 'Keuken',
-	'updatedAt' => 'Bewerkt op'
+	'updatedAt' => 'Bewerkt op',
+	'exportTitle' => 'TBT',
+
 ];

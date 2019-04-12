@@ -7,6 +7,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		Route::delete('/delete/{kitchen}', 'KitchenController@destroy');
 		Route::get('/edit/{kitchen}', 'KitchenController@edit');
 		Route::patch('/edit/{kitchen}', 'KitchenController@update');
+
 	});
 	
 	Route::group(['prefix' => 'services'], function () {
@@ -201,5 +202,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		Route::patch('/{bandPaymentExportColumn}', 'BandPaymentExportColumnController@update');
 		Route::delete('/{bandPaymentExportColumn}', 'BandPaymentExportColumnController@destroy');
 		Route::get('/export', 'BandPaymentExportColumnController@export');
+	});
+	Route::group(['prefix' => 'exportKitchens'], function () {
+		Route::get('/', 'KitchenExportColumnController@show');
+		Route::patch('/order', 'KitchenExportColumnController@saveOrder');
+		Route::post('/', 'KitchenExportColumnController@create');
+		Route::patch('/{kitchenExportColumn}', 'KitchenExportColumnController@update');
+		Route::delete('/{kitchenExportColumn}', 'KitchenExportColumnController@destroy');
+		Route::get('/export', 'KitchenExportColumnController@export');
 	});
 });

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\Admin\BandPaymentExportColumn\CreateBandPaymentExportColumnRequest;
-use App\Http\Requests\Admin\BandPaymentExportColumn\DestroybandPaymentExportColumnRequest;
+use App\Http\Requests\Admin\BandPaymentExportColumn\DestroyBandPaymentExportColumnRequest;
 use App\Http\Requests\Admin\BandPaymentExportColumn\OrderBandPaymentExportColumnRequest;
 use App\Http\Requests\Admin\BandPaymentExportColumn\UpdateBandPaymentExportColumnRequest;
 use App\Models\BandPaymentExportColumn;
