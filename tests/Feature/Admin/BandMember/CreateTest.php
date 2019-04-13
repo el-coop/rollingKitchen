@@ -10,6 +10,8 @@ use App\Models\BandMember;
 use App\Models\Kitchen;
 use App\Models\User;
 use App\Models\Worker;
+use App\Notifications\BandMember\UserCreated;
+use Notification;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -112,13 +114,15 @@ class CreateTest extends TestCase {
 		$this->actingAs($this->artistManager)->post(action('Admin\BandMemberController@store', $this->band->user))->assertForbidden();
 	}
 	
-	public function test_admin_cant_store_band_member() {
+	public function test_admin_can_store_band_member() {
+		Notification::fake();
+		
 		$this->actingAs($this->admin)->post(action('Admin\BandMemberController@store', $this->band->user), [
 			'name' => 'name',
 			'email' => 'a@a.com',
-			'language' => 'en'
-		])
-			->assertSuccessful()
+			'language' => 'en',
+			'payment' => 0
+		])->assertSuccessful()
 			->assertJsonFragment([
 				'name' => 'name',
 				'email' => 'a@a.com'
@@ -132,5 +136,17 @@ class CreateTest extends TestCase {
 		$this->assertDatabaseHas('band_members', [
 			'id' => 2,
 		]);
+		
+		$bandMember = User::where(['email' => 'a@a.com', 'user_type' => BandMember::class])->first()->user;
+		Notification::assertSentTo($bandMember->user, UserCreated::class);
+	}
+	
+	public function test_admin_cant_go_over_budget() {
+		$this->actingAs($this->admin)->post(action('Admin\BandMemberController@store', $this->band->user), [
+			'name' => 'name',
+			'email' => 'a@a.com',
+			'language' => 'en',
+			'payment' => 10
+		])->assertRedirect()->assertSessionHasErrors('payment');
 	}
 }

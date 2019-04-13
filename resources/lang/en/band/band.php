@@ -11,6 +11,8 @@ return [
 	'composer' => 'Composer/Writer',
 	'owned' => 'Own Track',
 	'protected' => 'Protected By BUMA/STEMRA',
-	'title' => 'Title'
+	'title' => 'Title',
+	'sendInvoice' => 'Send Invoice',
+	'payment' => 'Payment',
 
 ];

@@ -80,7 +80,7 @@ class PageTest extends TestCase {
 	}
 
 	public function test_band_can_get_self_page(){
-		$this->actingAs($this->band)->get(action('Band\BandController@show', $this->band->user))->assertSuccessful()->assertSee(__('band/band.paymentMethod'));
+		$this->actingAs($this->band)->get(action('Band\BandController@show', $this->band->user))->assertSuccessful()->assertSee(__('band/band.sendInvoice'));
 	}
 
 
