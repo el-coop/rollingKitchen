@@ -7,6 +7,7 @@ use App\Models\Application;
 use App\Models\ArtistManager;
 use App\Models\Band;
 use App\Models\BandMember;
+use App\Models\BandMemberExportColumn;
 use App\Models\BandPaymentExportColumn;
 use App\Models\Debtor;
 use App\Models\Developer;
@@ -28,6 +29,7 @@ use App\Models\WorkFunction;
 use App\Models\Workplace;
 use App\Policies\ApplicationPolicy;
 use App\Policies\ArtistManagerPolicy;
+use App\Policies\BandMemberExportColumnPolicy;
 use App\Policies\BandMemberPolicy;
 use App\Policies\BandPaymentExportColumnPolicy;
 use App\Policies\BandPolicy;
@@ -79,7 +81,8 @@ class AuthServiceProvider extends ServiceProvider {
 		Stage::class => StagePolicy::class,
 		BandMember::class => BandMemberPolicy::class,
 		BandPaymentExportColumn::class => BandPaymentExportColumnPolicy::class,
-		KitchenExportColumn::class => KitchenExportColumnPolicy::class
+		KitchenExportColumn::class => KitchenExportColumnPolicy::class,
+		BandMemberExportColumn::class => BandMemberExportColumnPolicy::class
 	];
 	
 	/**

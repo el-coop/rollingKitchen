@@ -211,4 +211,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		Route::delete('/{kitchenExportColumn}', 'KitchenExportColumnController@destroy');
 		Route::get('/export', 'KitchenExportColumnController@export');
 	});
+	Route::group(['prefix' => 'exportBandMembers'], function () {
+		Route::get('/', 'BandMemberExportColumnController@show');
+		Route::patch('/order', 'BandMemberExportColumnController@saveOrder');
+		Route::post('/', 'BandMemberExportColumnController@create');
+		Route::patch('/{bandMemberExportColumn}', 'BandMemberExportColumnController@update');
+		Route::delete('/{bandMemberExportColumn}', 'BandMemberExportColumnController@destroy');
+		Route::get('/export', 'BandMemberExportColumnController@export');
+	});
 });
