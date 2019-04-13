@@ -47,7 +47,6 @@ class BandPaymentService implements FromCollection, WithHeadings {
 					$result->push($band->approvedPayments);
 
 				} else {
-					$column = Field::find($column)->id;
 					$result->push($band->data[$column] ?? '');
 				}
 			} else {

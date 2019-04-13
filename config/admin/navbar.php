@@ -20,7 +20,8 @@ return [
 		'admin/artists.artistManager' => 'Admin\ArtistManagerController@index',
 		'admin/artists.bands' => 'Admin\BandController@index',
 		'admin/artists.schedule' => 'Admin\BandController@schedule',
-		'admin/bands.bandPayments' => 'Admin\BandPaymentExportColumnController@show'
+		'admin/bands.bandPayments' => 'Admin\BandPaymentExportColumnController@show',
+		'admin/bandMembers.exportBandMembersTitle' => 'Admin\BandMemberExportColumnController@show'
 
 
 	],

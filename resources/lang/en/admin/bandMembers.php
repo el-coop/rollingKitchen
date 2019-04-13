@@ -2,5 +2,6 @@
 
 return [
 	'createBandMembers' => 'Create Band Member',
-	'fields' => 'Band member fields'
+	'fields' => 'Band member fields',
+	'exportBandMembersTitle' => 'Export Band Member Payment'
 ];
