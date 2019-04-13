@@ -17,6 +17,12 @@
                             nl: '@lang('global.nl')'
                         }
 
+                    },
+                    {
+                        name: 'payment',
+                        label: '@lang('band/band.payment')',
+                        type: 'text',
+                        subType: 'number',
                     }
         ]" :init-fields="{{$band->bandMembersForTable}}"
                    action="{{action('Band\BandController@addBandMember', $band)}}">

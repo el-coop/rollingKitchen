@@ -24,7 +24,7 @@ class UpdateBandMemberTest extends TestCase {
 	protected $band;
 	protected $bandMember;
 	protected $secondBand;
-
+	
 	protected function setUp(): void {
 		parent::setUp();
 		$this->admin = factory(User::class)->make();
@@ -46,76 +46,77 @@ class UpdateBandMemberTest extends TestCase {
 		$this->secondBand = factory(User::class)->make();
 		factory(Band::class)->create()->user()->save($this->secondBand);
 	}
-
-	public function test_guest_cant_update_band_member(){
+	
+	public function test_guest_cant_update_band_member() {
 		$this->patch(action('Band\BandController@updateBandMember', [$this->band->user, $this->bandMember->user]), [
 			'name' => 'name',
 			'email' => 'email',
 			'language' => 'en'
 		])->assertRedirect(action('Auth\LoginController@login'));
 	}
-
-	public function test_kitchen_cant_update_band_member(){
+	
+	public function test_kitchen_cant_update_band_member() {
 		$this->actingAs($this->kitchen)->patch(action('Band\BandController@updateBandMember', [$this->band->user, $this->bandMember->user]), [
 			'name' => 'name',
 			'email' => 'email',
 			'language' => 'en'
 		])->assertForbidden();
 	}
-
-	public function test_admin_cant_update_band_member(){
+	
+	public function test_admin_cant_update_band_member() {
 		$this->actingAs($this->admin)->patch(action('Band\BandController@updateBandMember', [$this->band->user, $this->bandMember->user]), [
 			'name' => 'name',
 			'email' => 'email',
 			'language' => 'en'
 		])->assertForbidden();
 	}
-
-	public function test_worker_cant_update_band_member(){
+	
+	public function test_worker_cant_update_band_member() {
 		$this->actingAs($this->worker)->patch(action('Band\BandController@updateBandMember', [$this->band->user, $this->bandMember->user]), [
 			'name' => 'name',
 			'email' => 'email',
 			'language' => 'en'
 		])->assertForbidden();
 	}
-
-	public function test_band_member_cant_update_band_member(){
+	
+	public function test_band_member_cant_update_band_member() {
 		$this->actingAs($this->bandMember)->patch(action('Band\BandController@updateBandMember', [$this->band->user, $this->bandMember->user]), [
 			'name' => 'name',
 			'email' => 'email',
 			'language' => 'en'
 		])->assertForbidden();
 	}
-
-	public function test_accountant_cant_update_band_member(){
+	
+	public function test_accountant_cant_update_band_member() {
 		$this->actingAs($this->accountant)->patch(action('Band\BandController@updateBandMember', [$this->band->user, $this->bandMember->user]), [
 			'name' => 'name',
 			'email' => 'email',
 			'language' => 'en'
 		])->assertForbidden();
 	}
-
-	public function test_artist_manager_cant_update_band_member(){
+	
+	public function test_artist_manager_cant_update_band_member() {
 		$this->actingAs($this->artistManager)->patch(action('Band\BandController@updateBandMember', [$this->band->user, $this->bandMember->user]), [
 			'name' => 'name',
 			'email' => 'email',
 			'language' => 'en'
 		])->assertForbidden();
 	}
-
-	public function test_second_band_cant_update_band_member(){
+	
+	public function test_second_band_cant_update_band_member() {
 		$this->actingAs($this->secondBand)->patch(action('Band\BandController@updateBandMember', [$this->band->user, $this->bandMember->user]), [
 			'name' => 'name',
 			'email' => 'email',
 			'language' => 'en'
 		])->assertForbidden();
 	}
-
-	public function test_band_can_update_band_member_self(){
+	
+	public function test_band_can_update_band_member_self() {
 		$this->actingAs($this->band)->patch(action('Band\BandController@updateBandMember', [$this->band->user, $this->bandMember->user]), [
 			'name' => 'name',
 			'email' => 'email@mail.com',
 			'language' => 'en',
+			'payment' => 0
 		])->assertSuccessful();
 		$this->assertDatabaseHas('users', [
 			'name' => 'name',
@@ -123,5 +124,14 @@ class UpdateBandMemberTest extends TestCase {
 			'user_type' => BandMember::class,
 			'id' => $this->bandMember->id
 		]);
+	}
+	
+	public function test_band_cant_update_band_member_over_budget() {
+		$this->actingAs($this->band)->patch(action('Band\BandController@updateBandMember', [$this->band->user, $this->bandMember->user]), [
+			'name' => 'name',
+			'email' => 'email@mail.com',
+			'language' => 'en',
+			'payment' => 10
+		])->assertRedirect()->assertSessionHasErrors('payment');
 	}
 }

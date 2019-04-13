@@ -11,5 +11,7 @@ return [
 	'composer' => 'Componist/Tekstschrijver',
 	'owned' => 'Eigen Nummer',
 	'protected' => 'Beschermd Door BUMA/STEMRA',
-	'title' => 'Titel'
+	'title' => 'Titel',
+	'sendInvoice' => 'Factuur Versturen',
+	'payment' => 'Betaling'
 ];

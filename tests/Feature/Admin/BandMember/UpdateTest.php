@@ -111,14 +111,14 @@ class UpdateTest extends TestCase {
 		$this->actingAs($this->artistManager)->patch(action('Admin\BandMemberController@update', [$this->band->user, $this->bandMember->user]))->assertForbidden();
 	}
 
-	public function test_admin_cant_update_band_member(){
+	public function test_admin_can_update_band_member(){
 		$this->actingAs($this->admin)->patch(action('Admin\BandMemberController@update', [$this->band->user, $this->bandMember->user]), [
 			'name' => 'name',
 			'email' => 'a@a.com',
 			'language' => 'en',
-			'bandmember' => ['test' => 'test']
-		])
-			->assertSuccessful()
+			'bandmember' => ['test' => 'test'],
+			'payment' => 0
+		])->assertSuccessful()
 			->assertJsonFragment([
 				'name' => 'name',
 				'email' => 'a@a.com'
@@ -134,5 +134,14 @@ class UpdateTest extends TestCase {
 			'id' => $this->bandMember->user->id,
 			'data' => json_encode(['test' => 'test'])
 		]);
+	}
+	
+	public function test_admin_cant_go_over_budget_on_update() {
+		$this->actingAs($this->admin)->patch(action('Admin\BandMemberController@update', [$this->band->user, $this->bandMember->user]), [
+			'name' => 'name',
+			'email' => 'a@a.com',
+			'language' => 'en',
+			'payment' => 10
+		])->assertRedirect()->assertSessionHasErrors('payment');
 	}
 }

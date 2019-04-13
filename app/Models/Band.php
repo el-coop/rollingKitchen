@@ -62,11 +62,11 @@ class Band extends Model {
 		if ($this->exists) {
 			$fullData = $fullData->concat([[
 				'name' => 'paymentMethod',
-				'label' => __('band/band.paymentMethod'),
+				'label' => __('band/band.sendInvoice'),
 				'type' => 'select',
 				'options' => [
-					'band' => __('admin/fields.Band'),
-					'individual' => __('band/band.individual')
+					'band' => __('global.yes'),
+					'individual' => __('global.no')
 				],
 				'value' => $this->payment_method ?? 'band'
 			]]);
@@ -86,7 +86,8 @@ class Band extends Model {
 				'id' => $bandMember->id,
 				'name' => $bandMember->user->name,
 				'email' => $bandMember->user->email,
-				'language' => $bandMember->user->language
+				'language' => $bandMember->user->language,
+				'payment' => $bandMember->payment,
 			];
 		});
 	}
@@ -114,6 +115,9 @@ class Band extends Model {
 					'name' => 'email',
 					'title' => __('global.email'),
 					'sortField' => 'email',
+				], [
+					'name' => 'payment',
+					'title' => __('band/band.payment')
 				]
 			]
 		];
@@ -136,5 +140,9 @@ class Band extends Model {
 			return $schedule->approved == 'accepted';
 		});
 		return $schedules->sum('payment');
+	}
+	
+	public function getAvailableBudgetAttribute() {
+		return $this->approved_payments - $this->bandMembers->sum('payment');
 	}
 }

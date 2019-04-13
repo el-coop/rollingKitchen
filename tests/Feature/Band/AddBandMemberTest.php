@@ -112,13 +112,14 @@ class AddBandMemberTest extends TestCase {
 			'language' => 'en'
 		])->assertForbidden();
 	}
-
+	
 	public function test_band_can_add_band_member_self(){
 		Notification::fake();
 		$this->actingAs($this->band)->post(action('Band\BandController@addBandMember', $this->band->user), [
 			'name' => 'name',
 			'email' => 'email@mail.com',
 			'language' => 'en',
+			'payment' => 0
 		])->assertSuccessful();
 		$this->assertDatabaseHas('users', [
 			'name' => 'name',
@@ -131,5 +132,14 @@ class AddBandMemberTest extends TestCase {
 		]);
 		$bandMember = User::where(['email' => 'email@mail.com', 'user_type' => BandMember::class])->first()->user;
 		Notification::assertSentTo($bandMember->user, UserCreated::class);
+	}
+	
+	public function test_band_cant_create_band_member_over_budget(){
+		$this->actingAs($this->band)->post(action('Band\BandController@addBandMember', $this->band->user), [
+			'name' => 'name',
+			'email' => 'email@mail.com',
+			'language' => 'en',
+			'payment' => 10
+		])->assertRedirect()->assertSessionHasErrors('payment');
 	}
 }
