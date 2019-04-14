@@ -52,7 +52,7 @@ class PhotoUploadTest extends TestCase {
 	public function test_other_worker_cant_upload_worker_photo() {
 		$worker = factory(User::class)->make();
 		factory(Worker::class)->create()->user()->save($worker);
-		$this->actingAs($this->kitchen)->post(action('Worker\WorkerController@storePhoto', $this->worker->user))->assertForbidden();
+		$this->actingAs($worker)->post(action('Worker\WorkerController@storePhoto', $this->worker->user))->assertForbidden();
 	}
 	
 	public function test_worker_can_upload_photo() {

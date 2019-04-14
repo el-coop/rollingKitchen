@@ -4,6 +4,9 @@ namespace Tests\Feature;
 
 use App\Models\Accountant;
 use App\Models\Admin;
+use App\Models\Band;
+use App\Models\BandMember;
+use App\Models\BandMemberPhoto;
 use App\Models\Kitchen;
 use App\Models\Photo;
 use App\Models\TaxReview;
@@ -26,6 +29,8 @@ class PhotoControllerTest extends TestCase {
 	private $workerPhoto;
 	private $accountant;
 	private $taxReview;
+	private $bandMember;
+	private $bandMemberPhoto;
 	
 	protected function setUp(): void {
 		parent::setUp();
@@ -41,6 +46,15 @@ class PhotoControllerTest extends TestCase {
 		factory(Worker::class)->create()->user()->save($this->worker);
 		$this->workerPhoto = factory(WorkerPhoto::class)->create([
 			'worker_id' => $this->worker->user->id
+		]);
+		
+		
+		$this->bandMember = factory(User::class)->make();
+		factory(BandMember::class)->create([
+			'band_id' => factory(Band::class)->create()->id
+		])->user()->save($this->bandMember);
+		$this->bandMemberPhoto = factory(BandMemberPhoto::class)->create([
+			'band_member_id' => $this->bandMember->user->id
 		]);
 		
 		$this->accountant = factory(User::class)->make();
@@ -104,7 +118,57 @@ class PhotoControllerTest extends TestCase {
 		
 		Crypt::shouldReceive('encrypt');
 		Crypt::shouldReceive('decrypt')->once()->with(Storage::get("public/photos/{$this->workerPhoto->file}"))->andReturn('');
-		$this->actingAs($this->worker)->get($this->workerPhoto->url)->assertSuccessful();
+		$this->actingAs($this->admin)->get($this->workerPhoto->url)->assertSuccessful();
+	}
+	
+	public function test_guest_cant_see_band_member_photo() {
+		$this->get($this->bandMemberPhoto->url)->assertRedirect(action('Auth\LoginController@showLoginForm'));
+	}
+	
+	public function test_kitchen_cant_see_band_member_photo() {
+		$this->actingAs($this->kitchen)->get($this->bandMemberPhoto->url)->assertForbidden();
+	}
+	
+	public function test_accountant_cant_see_band_member_photo() {
+		$this->actingAs($this->accountant)->get($this->bandMemberPhoto->url)->assertForbidden();
+	}
+	
+	public function test_worker_cant_see_band_member_photo() {
+		$this->actingAs($this->worker)->get($this->bandMemberPhoto->url)->assertForbidden();
+	}
+	
+	public function test_other_band_member_cant_see_band_member_photo() {
+		$bandMember = factory(User::class)->make();
+		factory(BandMember::class)->create([
+			'band_id' => factory(Band::class)->create()->id
+		])->user()->save($bandMember);
+		
+		$this->actingAs($bandMember)->get($this->bandMemberPhoto->url)->assertForbidden();
+	}
+	
+	public function test_band_member_can_see_own_decrypted_photo() {
+		$file = UploadedFile::fake()->create('demo.jpg');
+		$file->store('public/photos');
+		
+		$this->bandMemberPhoto->file = $file->hashName();
+		$this->bandMemberPhoto->save();
+		
+		Crypt::shouldReceive('encrypt');
+		Crypt::shouldReceive('decrypt')->once()->with(Storage::get("public/photos/{$this->bandMemberPhoto->file}"))->andReturn('');
+		$this->withoutExceptionHandling();
+		$this->actingAs($this->bandMember)->get($this->bandMemberPhoto->url)->assertSuccessful();
+	}
+	
+	public function test_admin_can_see_band_member_decrypted_photo() {
+		$file = UploadedFile::fake()->create('demo.jpg');
+		$file->store('public/photos');
+		
+		$this->bandMemberPhoto->file = $file->hashName();
+		$this->bandMemberPhoto->save();
+		
+		Crypt::shouldReceive('encrypt');
+		Crypt::shouldReceive('decrypt')->once()->with(Storage::get("public/photos/{$this->bandMemberPhoto->file}"))->andReturn('');
+		$this->actingAs($this->admin)->get($this->bandMemberPhoto->url)->assertSuccessful();
 	}
 	
 	

@@ -3,7 +3,7 @@
 use Faker\Generator as Faker;
 
 $factory->define(App\Models\BandMemberPhoto::class, function (Faker $faker) {
-    return [
-        //
-    ];
+	return [
+		'file' => 'demo.jpg'
+	];
 });
