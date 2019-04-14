@@ -118,6 +118,10 @@ class Band extends Model {
 				], [
 					'name' => 'payment',
 					'title' => __('band/band.payment')
+				], [
+					'name' => 'photoList',
+					'noTable' => true,
+					'visible' => false
 				]
 			]
 		];

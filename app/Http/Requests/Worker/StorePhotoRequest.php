@@ -9,6 +9,11 @@ use Storage;
 
 class StorePhotoRequest extends FormRequest {
 	/**
+	 * @var \Illuminate\Routing\Route|object|string
+	 */
+	private $worker;
+	
+	/**
 	 * Determine if the user is authorized to make this request.
 	 *
 	 * @return bool
