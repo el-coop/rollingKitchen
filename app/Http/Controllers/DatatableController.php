@@ -23,16 +23,16 @@ class DatatableController extends Controller {
 		$datatableService = new DatatableService($request, $workplace->{$request->input('attribute')});
 		return $this->list($request, $datatableService);
 	}
-
-	public function artistManagerList(Request $request){
+	
+	public function artistManagerList(Request $request) {
 		$dataTableService = new DatatableService($request);
-		return $this->list($request,$dataTableService);
-	}
-
-	public function bandMemberList(Request $request, Band $band) {
-		$dataTableService = new DatatableService($request, $band->{$request->input('attribute')});
-		return $this->list($request,$dataTableService);
-
+		return $this->list($request, $dataTableService);
 	}
 	
-}
+	public function bandMemberList(Request $request, Band $band) {
+		$dataTableService = new DatatableService($request, $band->{$request->input('attribute')});
+		return $this->list($request, $dataTableService);
+		
+	}
+	
+	}

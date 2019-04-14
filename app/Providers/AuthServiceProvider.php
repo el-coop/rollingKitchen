@@ -8,6 +8,7 @@ use App\Models\ArtistManager;
 use App\Models\Band;
 use App\Models\BandMember;
 use App\Models\BandMemberExportColumn;
+use App\Models\BandMemberPhoto;
 use App\Models\BandPaymentExportColumn;
 use App\Models\Debtor;
 use App\Models\Developer;
@@ -30,6 +31,7 @@ use App\Models\Workplace;
 use App\Policies\ApplicationPolicy;
 use App\Policies\ArtistManagerPolicy;
 use App\Policies\BandMemberExportColumnPolicy;
+use App\Policies\BandMemberPhotoPolicy;
 use App\Policies\BandMemberPolicy;
 use App\Policies\BandPaymentExportColumnPolicy;
 use App\Policies\BandPolicy;
@@ -82,7 +84,8 @@ class AuthServiceProvider extends ServiceProvider {
 		BandMember::class => BandMemberPolicy::class,
 		BandPaymentExportColumn::class => BandPaymentExportColumnPolicy::class,
 		KitchenExportColumn::class => KitchenExportColumnPolicy::class,
-		BandMemberExportColumn::class => BandMemberExportColumnPolicy::class
+		BandMemberExportColumn::class => BandMemberExportColumnPolicy::class,
+		BandMemberPhoto::class => BandMemberPhotoPolicy::class
 	];
 	
 	/**
@@ -95,7 +98,7 @@ class AuthServiceProvider extends ServiceProvider {
 		Gate::define('update-settings', function ($user) {
 			return $user->user_type == Admin::class || $user->user_type == Developer::class;
 		});
-		Gate::define('update-confirmation-email', function ($user){
+		Gate::define('update-confirmation-email', function ($user) {
 			return $user->user_type == ArtistManager::class;
 		});
 		Gate::define('send-blast-message', function ($user) {

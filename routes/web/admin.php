@@ -175,8 +175,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 			Route::post('{band}/edit', 'BandMemberController@store');
 			Route::get('{band}/edit/{bandMember}', 'BandMemberController@edit');
 			Route::patch('{band}/edit/{bandMember}', 'BandMemberController@update');
-			
-			
 		});
 		
 	});

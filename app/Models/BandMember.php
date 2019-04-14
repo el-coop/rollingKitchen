@@ -19,6 +19,10 @@ class BandMember extends Model {
 		'data' => 'array',
 	];
 	
+	protected $appends = [
+		'photoList'
+	];
+	
 	static function indexPage() {
 		return action('Admin\BandController@index', [], false);
 	}
@@ -69,5 +73,13 @@ class BandMember extends Model {
 			$fullData = $fullData->concat($this->getFieldsData());
 		}
 		return $fullData;
+	}
+	
+	public function photos() {
+		return $this->hasMany(BandMemberPhoto::class);
+	}
+	
+	public function getPhotoListAttribute() {
+		return $this->photos;
 	}
 }
