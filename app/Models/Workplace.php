@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use \Auth;
 use JustBetter\PaginationWithHavings\PaginationWithHavings;
 
 class Workplace extends Model {
@@ -44,7 +45,7 @@ class Workplace extends Model {
 	public function getWorkersForSupervisorAttribute() {
 		return [
 			'model' => Worker::class,
-			'where' => [['user_type', Worker::class], ['workplace_id', $this->id], ['supervisor', false]],
+			'where' => [['user_type', Worker::class], ['workplace_id', $this->id], ['user_id', '!=', Auth::user()->user_id]],
 			'joins' => [
 				['users', 'users.user_id', 'workers.id'],
 				['worker_workplace', 'worker_workplace.worker_id', 'workers.id'],
