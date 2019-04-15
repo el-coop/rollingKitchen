@@ -7,7 +7,7 @@ return [
 	'reject' => 'Afkeuren',
 	'approve' => 'Goedkeuren',
 	'setList' => 'Setlijst',
-	'setListError' => 'Setlijst error',
+	'setListError' => 'De lijst moet tenminste één nummer bevatten',
 	'composer' => 'Componist/Tekstschrijver',
 	'owned' => 'Eigen Nummer',
 	'protected' => 'Beschermd Door BUMA/STEMRA',
