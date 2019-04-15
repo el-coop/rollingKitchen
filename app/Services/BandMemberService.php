@@ -51,10 +51,16 @@ class BandMemberService implements FromCollection, WithHeadings {
 					$result->push($bandMember->band->user->name);
 					break;
 				case 'bandMember':
-					if ($column === 'payment') {
-						$result->push($bandMember->payment);
-					} else {
-						$result->push($bandMember->data[$column] ?? '');
+					switch ($column) {
+						case 'payment':
+							$result->push($bandMember->payment);
+							break;
+						case 'pdf':
+							$result->push(action('Admin\BandMemberController@pdf', $bandMember));
+							break;
+						default:
+							$result->push($bandMember->data[$column] ?? '');
+						
 					}
 					break;
 				default:

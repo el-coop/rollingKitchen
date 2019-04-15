@@ -13,5 +13,6 @@ return [
 	'protected' => 'Beschermd Door BUMA/STEMRA',
 	'title' => 'Titel',
 	'sendInvoice' => 'Factuur Versturen',
-	'payment' => 'Betaling'
+	'payment' => 'Betaling',
+	'bandMemberPdf' => 'TBT'
 ];
