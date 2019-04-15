@@ -14,5 +14,6 @@ return [
 	'title' => 'Title',
 	'sendInvoice' => 'Send Invoice',
 	'payment' => 'Payment',
+	'bandMemberPdf' => 'Band Member PDF'
 
 ];
