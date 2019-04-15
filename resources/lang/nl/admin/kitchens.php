@@ -7,6 +7,6 @@ return [
 	'fields' => 'Velden',
 	'kitchen' => 'Keuken',
 	'updatedAt' => 'Bewerkt op',
-	'exportTitle' => 'TBT',
+	'exportTitle' => 'Exporteer Keukens',
 
 ];

@@ -7,12 +7,12 @@ return [
 	'reject' => 'Afkeuren',
 	'approve' => 'Goedkeuren',
 	'setList' => 'Setlijst',
-	'setListError' => 'TBT',
+	'setListError' => 'Setlijst error',
 	'composer' => 'Componist/Tekstschrijver',
 	'owned' => 'Eigen Nummer',
 	'protected' => 'Beschermd Door BUMA/STEMRA',
 	'title' => 'Titel',
 	'sendInvoice' => 'Factuur Versturen',
 	'payment' => 'Betaling',
-	'bandMemberPdf' => 'TBT'
+	'bandMemberPdf' => 'Bandleden PDF'
 ];
