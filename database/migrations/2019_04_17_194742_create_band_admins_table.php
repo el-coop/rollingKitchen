@@ -16,7 +16,6 @@ class CreateBandAdminsTable extends Migration {
 			$table->string('name');
 			$table->decimal('payment', 6, 2);
 			$table->json('data');
-			$table->boolean('submitted')->default('false');
 			$table->bigInteger('band_id')->unsigned();
 			$table->timestamps();
 
