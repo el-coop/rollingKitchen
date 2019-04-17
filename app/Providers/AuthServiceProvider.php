@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Application;
 use App\Models\ArtistManager;
 use App\Models\Band;
+use App\Models\BandAdminPhoto;
 use App\Models\BandMember;
 use App\Models\BandMemberExportColumn;
 use App\Models\BandMemberPhoto;
@@ -30,6 +31,7 @@ use App\Models\WorkFunction;
 use App\Models\Workplace;
 use App\Policies\ApplicationPolicy;
 use App\Policies\ArtistManagerPolicy;
+use App\Policies\BandAdminPhotoPolicy;
 use App\Policies\BandMemberExportColumnPolicy;
 use App\Policies\BandMemberPhotoPolicy;
 use App\Policies\BandMemberPolicy;
@@ -85,7 +87,8 @@ class AuthServiceProvider extends ServiceProvider {
 		BandPaymentExportColumn::class => BandPaymentExportColumnPolicy::class,
 		KitchenExportColumn::class => KitchenExportColumnPolicy::class,
 		BandMemberExportColumn::class => BandMemberExportColumnPolicy::class,
-		BandMemberPhoto::class => BandMemberPhotoPolicy::class
+		BandMemberPhoto::class => BandMemberPhotoPolicy::class,
+		BandAdminPhoto::class => BandAdminPhotoPolicy::class
 	];
 	
 	/**

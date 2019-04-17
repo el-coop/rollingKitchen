@@ -6,8 +6,10 @@ use App\Http\Requests\Admin\Band\CreateBandRequest;
 use App\Http\Requests\Admin\Band\DestroyBandRequest;
 use App\Http\Requests\Admin\Band\SendConfirmationRequest;
 use App\Http\Requests\Admin\Band\UpdateBandRequest;
+use App\Http\Requests\Admin\BandAdmin\UpdateBandAdminRequest;
 use App\Http\Requests\ArtistManager\StoreBandScheduleRequest;
 use App\Models\Band;
+use App\Models\BandAdmin;
 use App\Models\BandMember;
 use App\Models\BandSchedule;
 use App\Models\Stage;
@@ -101,5 +103,14 @@ class BandController extends Controller {
 	
 	public function downloadSetList(Excel $excel, SetListService $setListService) {
 		return $excel->download($setListService, 'setList.xls');
+	}
+
+	public function updateAdmin(UpdateBandAdminRequest $request, BandAdmin $bandAdmin) {
+		$request->commit();
+		return redirect()->back()->with([
+			'type' => 'success',
+			'title' => '',
+			'message' => __('vue.updateSuccess', [], $request->input('language'))
+		]);
 	}
 }

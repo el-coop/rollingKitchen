@@ -19,6 +19,10 @@ Route::group(['prefix' => 'band', 'namespace' => 'Band'], function () {
 			
 			Route::patch('/schedule/{bandSchedule}/approve', 'BandController@approveSchedule');
 			Route::patch('/schedule/{bandSchedule}/reject', 'BandController@rejectSchedule');
+
+			Route::patch('/admin/{bandAdmin}', 'BandAdminController@update');
+			Route::post('/admin/{bandAdmin}/photo', 'BandAdminController@storePhoto');
+			Route::delete('/admin/{bandAdmin}/photo/{photo}', 'BandAdminController@destroyPhoto');
 		});
 		
 		Route::group(['middleware' => ['auth', 'can:manageSongs,band']], function () {

@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Band;
 
 use App\Models\Band;
+use App\Models\BandAdmin;
 use App\Models\Field;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -58,6 +59,14 @@ class UpdateBandRequest extends FormRequest {
 		}
 		$this->band->data = array_filter($this->input('band'));
 		$this->band->payment_method = $this->input('paymentMethod');
+		if ($this->input('paymentMethod') == 'individual' && !$this->band->admin()->exists()){
+			$this->addAdmin();
+		}
 		$this->band->save();
+	}
+
+	protected function addAdmin() {
+		$bandAdmin = new BandAdmin;
+		$this->band->admin()->save($bandAdmin);
 	}
 }
