@@ -25,7 +25,7 @@ class BandMemberController extends Controller {
 	
 	public function show(BandMember $bandMember) {
 		$locale = App::getLocale();
-		$privacyStatement = str_replace(PHP_EOL, '<br>', app('settings')->get("workers_privacy_statement_{$locale}"));
+		$privacyStatement = str_replace(PHP_EOL, '<br>', app('settings')->get("band_members_privacy_statement_{$locale}"));
 		
 		return view('bandMember.show', compact('bandMember', 'privacyStatement'));
 	}

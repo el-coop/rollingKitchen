@@ -93,6 +93,14 @@ return [
 	'band_members_user_created_nl' => 'Bands member created mail body NL',
 	'band_members_user_created_en' => 'Bands member created mail body EN',
 	
+	'band_members_profile_filled_subject_nl' => 'Band member profile filled subject NL',
+	'band_members_profile_filled_subject_en' => 'Band member profile filled subject EN',
+	'band_members_profile_filled_nl' => 'Band member profile filled text NL',
+	'band_members_profile_filled_en' => 'Band member profile filled text EN',
+	
+	'band_members_privacy_statement_nl' => 'Band member privacy statement NL',
+	'band_members_privacy_statement_en' => 'Band member privacy statement EN',
+	
 	'schedule_deleted_subject_nl' => 'Show canceled subject NL',
 	'schedule_deleted_subject_en' => 'Show canceled subject EN',
 	'schedule_deleted_nl' => 'Show canceled body NL',

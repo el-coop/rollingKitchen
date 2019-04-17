@@ -23,7 +23,8 @@
 					<image-manager url="{{ action('BandMember\BandMemberController@storePhoto', $bandMember) }}" :data="{
 						_token: '{{csrf_token()}}'
 					}"
-								   :init-images="{{ $bandMember->photos }}" delete-url="/bandMember/{{ $bandMember->id }}/photo">
+								   :init-images="{{ $bandMember->photos }}"
+								   delete-url="/bandMember/{{ $bandMember->id }}/photo">
 					</image-manager>
 					@if($errors->has('photos'))
 						<p class="help is-danger">{{$errors->first('photos')}}</p>
