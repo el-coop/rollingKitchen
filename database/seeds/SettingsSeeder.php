@@ -72,12 +72,21 @@ class SettingsSeeder extends Seeder {
 		$this->settingsFakeNoOverwrite('bands_confirmation_subject_en', $faker->sentence);
 		$this->settingsFakeNoOverwrite('bands_confirmation_text_nl', $faker->sentence);
 		$this->settingsFakeNoOverwrite('bands_confirmation_text_en', $faker->sentence);
-
-
+		
+		
 		$this->settingsFakeNoOverwrite('band_members_user_created_subject_nl', $faker->sentence);
 		$this->settingsFakeNoOverwrite('band_members_user_created_subject_en', $faker->sentence);
 		$this->settingsFakeNoOverwrite('band_members_user_created_nl', $faker->paragraph);
 		$this->settingsFakeNoOverwrite('band_members_user_created_en', $faker->paragraph);
+		
+		
+		$this->settingsFakeNoOverwrite('band_members_profile_filled_subject_nl', $faker->sentence);
+		$this->settingsFakeNoOverwrite('band_members_profile_filled_subject_en', $faker->sentence);
+		$this->settingsFakeNoOverwrite('band_members_profile_filled_nl', $faker->paragraph);
+		$this->settingsFakeNoOverwrite('band_members_profile_filled_en', $faker->paragraph);
+		
+		$this->settingsFakeNoOverwrite('band_members_privacy_statement_nl', $faker->paragraph);
+		$this->settingsFakeNoOverwrite('band_members_privacy_statement_en', $faker->paragraph);
 		
 		$this->settingsFakeNoOverwrite('workers_privacy_statement_nl', $faker->paragraph);
 		$this->settingsFakeNoOverwrite('workers_privacy_statement_en', $faker->paragraph);

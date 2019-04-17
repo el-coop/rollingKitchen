@@ -96,6 +96,14 @@ return [
 	'band_members_user_created_nl' => 'Email bericht bandleden gecreëerd NL',
 	'band_members_user_created_en' => 'Email bericht bandleden gecreëerd EN',
 	
+	'band_members_profile_filled_subject_nl' => 'TBT',
+	'band_members_profile_filled_subject_en' => 'TBT',
+	'band_members_profile_filled_nl' => 'TBT',
+	'band_members_profile_filled_en' => 'TBT',
+	
+	'band_members_privacy_statement_nl' => 'TBT',
+	'band_members_privacy_statement_en' => 'TBT',
+	
 	'schedule_deleted_subject_nl' => 'Optreden geannuleerd email onderwerp NL',
 	'schedule_deleted_subject_en' => 'Optreden geannuleerd email onderwerp EN',
 	'schedule_deleted_nl' => 'Optreden geannuleerd email bericht NL',
