@@ -39,6 +39,7 @@ class ProfileFilledNotification extends Notification {
 		$message = explode(PHP_EOL, app('settings')->get("band_members_profile_filled_{$notifiable->language}"));
 		
 		$email = (new MailMessage)
+			->from(env('MAIL_BANDS_FROM_ADDRESS'))
 			->subject(app('settings')->get("band_members_profile_filled_subject_{$notifiable->language}"))
 			->greeting(__('notification.greeting', ['name' => $notifiable->name]));
 		

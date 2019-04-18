@@ -39,6 +39,7 @@ class ShowCreatedNotification extends Notification {
 		$message = explode(PHP_EOL, app('settings')->get("schedule_created_{$notifiable->language}"));
 		
 		$email = (new MailMessage)
+			->from(env('MAIL_BANDS_FROM_ADDRESS'))
 			->subject(app('settings')->get("schedule_created_subject_{$notifiable->language}"))
 			->greeting(__('notification.greeting', ['name' => $notifiable->name]));
 		
