@@ -61,6 +61,7 @@ class ShowUpdatedNotification extends Notification {
 		}
 		
 		$email = (new MailMessage)
+			->from(env('MAIL_BANDS_FROM_ADDRESS'))
 			->subject(app('settings')->get("schedule_changed_subject{$notifiable->language}"))
 			->greeting(__('notification.greeting', ['name' => $notifiable->name]));
 		

@@ -38,6 +38,7 @@ class ConfirmationNotification extends Notification {
 	public function toMail($notifiable) {
 		$message = explode(PHP_EOL, str_replace('[amount]',$notifiable->user->approvedPayments,app('settings')->get("bands_confirmation_text_{$notifiable->language}")));
 		$email = (new MailMessage)
+			->from(env('MAIL_BANDS_FROM_ADDRESS'))
 			->subject(app('settings')->get("bands_confirmation_subject_{$notifiable->language}"))
 			->greeting(__('notification.greeting', ['name' => $notifiable->name]));
 
