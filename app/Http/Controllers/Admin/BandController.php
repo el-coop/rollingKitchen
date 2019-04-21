@@ -13,8 +13,14 @@ use App\Models\BandAdmin;
 use App\Models\BandMember;
 use App\Models\BandSchedule;
 use App\Models\Stage;
+use App\Services\BandMemberService;
 use App\Services\SetListService;
 use Carbon\Carbon;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use Storage;
+use Crypt;
+use View;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Excel;
@@ -107,10 +113,29 @@ class BandController extends Controller {
 
 	public function updateAdmin(UpdateBandAdminRequest $request, BandAdmin $bandAdmin) {
 		$request->commit();
-		return redirect()->back()->with([
+		return back()->with('toast', [
 			'type' => 'success',
 			'title' => '',
 			'message' => __('vue.updateSuccess', [], $request->input('language'))
 		]);
+	}
+
+	public function adminPdf(BandAdmin $bandAdmin, BandMemberService $bandMemberService) {
+		$data = $bandMemberService->adminIndividual($bandAdmin);
+
+		$images = $bandAdmin->photos->map(function ($photo) {
+			$encryptedContents = Storage::get("public/photos/{$photo->file}");
+			$decryptedContents = base64_encode(Crypt::decrypt($encryptedContents));
+
+			return "data:image/jpg;base64,{$decryptedContents}";
+		});
+		$options = new Options();
+
+		$options->set('isRemoteEnabled', true);
+		$pdf = new Dompdf($options);
+		$pdf->loadHtml(View::make('admin.bandMember.pdf', compact('data', 'images')));
+		$pdf->render();
+
+		return $pdf->stream("{$bandAdmin->name}.pdf");
 	}
 }

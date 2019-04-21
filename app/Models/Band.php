@@ -151,6 +151,10 @@ class Band extends Model {
 	}
 	
 	public function getAvailableBudgetAttribute() {
-		return $this->approved_payments - $this->bandMembers->sum('payment') - $this->admin->payment;
+		$adminPayment = 0;
+		if ($this->admin()->exists()){
+			$adminPayment = $this->admin->payment;
+		}
+		return $this->approved_payments - $this->bandMembers->sum('payment') - $adminPayment;
 	}
 }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Band;
 
-use App\Http\Requests\Admin\BandAdmin\UpdateBandAdminRequest;
 use App\Http\Requests\Band\BandAdmin\StorePhotoRequest;
+use App\Http\Requests\Band\BandAdmin\UpdateBandAdminRequest;
 use App\Models\Band;
 use App\Models\BandAdmin;
 use App\Models\BandAdminPhoto;

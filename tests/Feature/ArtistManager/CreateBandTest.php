@@ -131,7 +131,7 @@ class CreateBandTest extends TestCase {
 			'name' => 'name',
 			'email' => 'test@test.com',
 			'language' => 'en',
-			'paymentMethod' => 'individual',
+			'paymentMethod' => 'band',
 
 		])
 			->assertSuccessful()
@@ -149,7 +149,7 @@ class CreateBandTest extends TestCase {
 		$newBand = User::where(['email' => 'test@test.com', 'user_type' => Band::class])->first()->user;
 		$this->assertDatabaseHas('bands', [
 			'id' => $newBand->id,
-			'payment_method' => 'individual',
+			'payment_method' => 'band',
 
 		]);
 		Notification::assertSentTo($newBand->user, UserCreated::class);

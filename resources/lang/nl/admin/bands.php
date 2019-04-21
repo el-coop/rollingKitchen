@@ -5,5 +5,6 @@ return [
 	'schedule' => 'Schema',
 	'sendConfirmation' => 'bevestiging verzenden',
 	'bandPayments' => 'Betaling band',
-	'exportBandPayments' => 'Exporteer betalingen bands'
+	'exportBandPayments' => 'Exporteer betalingen bands',
+	'admin' => 'TBT'
 ];

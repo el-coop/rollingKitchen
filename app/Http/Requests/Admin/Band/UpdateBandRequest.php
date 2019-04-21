@@ -54,6 +54,7 @@ class UpdateBandRequest extends FormRequest {
 
 	protected function addAdmin() {
 		$bandAdmin = new BandAdmin;
+		$bandAdmin->data = [];
 		$this->band->admin()->save($bandAdmin);
 	}
 }

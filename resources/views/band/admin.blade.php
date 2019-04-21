@@ -10,7 +10,7 @@
 	$item['value'] = old($fieldName, $item['value']);
 	$item['error'] = $errors->has($fieldName) ? $errors->get($fieldName): null;
 	return $item;
-}) }}" class="mb-1" :hide="['payment']"></dynamic-fields>
+}) }}" class="mb-1"></dynamic-fields>
             </div>
             <div class="column">
                 <h4 class="title is-4">@lang('worker/worker.uploadId')</h4>
@@ -30,7 +30,14 @@
             <button class="button is-link">
                 @lang('global.save')
             </button>
+            @if(!$band->admin->submitted)
+                <confirmation-submit label="@lang('kitchen/kitchen.submitReview')"
+                                     title="@lang('kitchen/kitchen.submitConfirmTitle')"
+                                     subtitle="{{$privacyStatement}}"
+                                     yes-text="@lang('global.yes')"
+                                     no-text="@lang('global.no')" name="review" value="1"
+                                     id="reviewButton"></confirmation-submit>
+            @endif
         </div>
     </form>
-</div>
 </div>
