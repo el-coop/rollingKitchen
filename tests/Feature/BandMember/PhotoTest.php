@@ -23,7 +23,6 @@ class PhotoTest extends TestCase {
 	protected $admin;
 	protected $kitchen;
 	protected $worker;
-	private $kitchenPhoto;
 	private $bandMemberPhoto;
 	private $file;
 	private $bandMember;
