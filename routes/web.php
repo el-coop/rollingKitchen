@@ -26,6 +26,8 @@ Route::get('/language/{language}', 'LocaleController@set');
 Route::get('/images/{photo}', 'PhotoController@show');
 Route::get('/images/worker/{photo}', 'PhotoController@worker')->middleware(['auth', 'can:view,photo']);
 Route::get('/images/bandMember/{photo}', 'PhotoController@bandMember')->middleware(['auth', 'can:view,photo']);
+Route::get('/images/bandAdmin/{photo}', 'PhotoController@bandAdmin')->middleware(['auth', 'can:view,photo']);
+
 Route::get('/taxReviews/{taxReview}', 'PhotoController@taxReview')->middleware(['auth', 'can:view,taxReview']);
 Route::group(['middleware' => ['auth', 'userType:' . \App\Models\Admin::class]], function () {
 	Route::get('datatable/list', 'DatatableController@list');

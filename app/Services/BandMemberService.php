@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App;
 use App\Models\Band;
+use App\Models\BandAdmin;
 use App\Models\BandMember;
 use App\Models\BandMemberExportColumn;
 use App\Models\Field;
@@ -14,28 +15,29 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class BandMemberService implements FromCollection, WithHeadings {
-	
+
 	use  Exportable;
-	
+
 	public function headings(): array {
 		return BandMemberExportColumn::orderBy('order')->get()->pluck('name')->toArray();
 	}
-	
-	
+
+
 	public function collection() {
-		$bandMembers = BandMember::whereHas('band', function ($query) {
-			$query->where('payment_method', 'individual')->whereHas('schedules', function ($query) {
-				$query->where('approved', 'accepted');
-			});
-		})->orderBy('band_id')->get();
+		$bands = Band::where('payment_method', 'individual')->whereHas('schedules', function ($query) {
+			$query->where('approved', 'accepted');
+		})->get();
 		$fields = BandMemberExportColumn::orderBy('order')->get()->pluck('column');
 		$data = collect();
-		foreach ($bandMembers as $bandMember) {
-			$data->push($this->listData($fields, $bandMember));
+		foreach ($bands as $band) {
+			$data->push($this->listAdminData($fields, $band->admin));
+			foreach ($band->bandMembers as $bandMember){
+				$data->push($this->listData($fields,$bandMember));
+			}
 		}
 		return $data;
 	}
-	
+
 	/**
 	 * @param $fields
 	 * @param $bandMember
@@ -60,7 +62,7 @@ class BandMemberService implements FromCollection, WithHeadings {
 							break;
 						default:
 							$result->push($bandMember->data[$column] ?? '');
-						
+
 					}
 					break;
 				default:
@@ -70,9 +72,48 @@ class BandMemberService implements FromCollection, WithHeadings {
 		}
 		return $result;
 	}
-	
+
 	public function individual(BandMember $bandMember) {
 		$fields = BandMemberExportColumn::orderBy('order')->get();
 		return $fields->pluck('name')->combine($this->listData($fields->pluck('column'), $bandMember));
+	}
+
+	public function listAdminData($fields, BandAdmin $bandAdmin) {
+		$result = collect();
+		foreach ($fields as $field) {
+			$model = strtok($field, '.');
+			$column = strtok('.');
+			switch ($model) {
+				case 'band':
+					$result->push($bandAdmin->band->user->name);
+					break;
+				case 'bandMember':
+					switch ($column) {
+						case 'payment':
+							$result->push($bandAdmin->payment);
+							break;
+						case 'pdf':
+							$result->push(action('Admin\BandController@adminPdf', $bandAdmin));
+							break;
+						default:
+							$result->push($bandAdmin->data[$column] ?? '');
+
+					}
+					break;
+				default:
+					if ($model == 'name') {
+						$result->push($bandAdmin->name);
+					} else {
+						$result->push($bandAdmin->band->user->email);
+					}
+					break;
+			}
+		}
+		return $result;
+	}
+
+	public function adminIndividual(BandAdmin $bandAdmin) {
+		$fields = BandMemberExportColumn::orderBy('order')->get();
+		return $fields->pluck('name')->combine($this->listAdminData($fields->pluck('column'), $bandAdmin));
 	}
 }

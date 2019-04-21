@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin\Band;
 
+use App\Models\BandAdmin;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateBandRequest extends FormRequest {
@@ -38,6 +39,9 @@ class UpdateBandRequest extends FormRequest {
 		$this->band->user->language = $this->input('language');
 		$this->band->data = array_filter($this->input('band'));
 		$this->band->payment_method = $this->input('paymentMethod');
+		if ($this->input('paymentMethod') == 'individual' && !$this->band->admin()->exists()){
+			$this->addAdmin();
+		}
 		$this->band->save();
 		$this->band->user->save();
 
@@ -46,5 +50,11 @@ class UpdateBandRequest extends FormRequest {
 			'name' => $this->input('name'),
 			'email' => $this->input('email')
 		];
+	}
+
+	protected function addAdmin() {
+		$bandAdmin = new BandAdmin;
+		$bandAdmin->data = [];
+		$this->band->admin()->save($bandAdmin);
 	}
 }

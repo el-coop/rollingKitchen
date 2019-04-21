@@ -35,7 +35,8 @@ class BandController extends Controller {
 		$locale = App::getLocale();
 		$pdfs = Pdf::where('visibility', 3)->get();
 		$message = app('settings')->get("bands_text_{$locale}");
-		return view('band.band', compact('band', 'pdfs', 'message'));
+		$privacyStatement = str_replace(PHP_EOL, '<br>', app('settings')->get("band_members_privacy_statement_{$locale}"));
+		return view('band.band', compact('band', 'pdfs', 'message', 'privacyStatement'));
 	}
 
 	public function update(UpdateBandRequest $request, Band $band){

@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Admin;
 use App\Models\ArtistManager;
+use App\Models\BandAdmin;
 use App\Models\Developer;
 use App\Models\User;
 use App\Models\Band;
@@ -97,5 +98,10 @@ class BandPolicy {
 	
 	public function manageSongs(User $user, Band $band) {
 		return $user->user_type == Admin::class || $user->user == $band;
+	}
+
+	public function adminBandPdf(User $user) {
+		return $user->user_type == Admin::class || $user->user_type == Accountant::class;
+
 	}
 }

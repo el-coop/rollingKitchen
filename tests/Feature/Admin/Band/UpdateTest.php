@@ -171,6 +171,9 @@ class UpdateTest extends TestCase {
 			'id' => $this->secondBand->user->id,
 			'payment_method' => 'individual'
 		]);
+		$this->assertDatabaseHas('band_admins', [
+			'band_id' => $this->secondBand->user->id
+		]);
 	}
 
 	public function test_guest_cant_non_ajax_update_band() {
@@ -254,6 +257,9 @@ class UpdateTest extends TestCase {
 			'data' => json_encode(['test' => 'test']),
 			'id' => $this->secondBand->user->id,
 			'payment_method' => 'individual'
+		]);
+		$this->assertDatabaseHas('band_admins', [
+			'band_id' => $this->secondBand->user->id
 		]);
 	}
 }

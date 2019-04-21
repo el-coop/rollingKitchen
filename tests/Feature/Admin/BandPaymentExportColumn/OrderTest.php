@@ -44,7 +44,7 @@ class OrderTest extends TestCase {
 		factory(Accountant::class)->create()->user()->save($this->accountant);
 		$this->band = factory(User::class)->make();
 		factory(Band::class)->create([
-			'payment_method' => 'individual'
+			'payment_method' => 'band'
 		])->user()->save($this->band);
 		$this->bandMember = factory(User::class)->make();
 		factory(BandMember::class)->create([

@@ -30,6 +30,10 @@ class Band extends Model {
 	public function user() {
 		return $this->morphOne(User::class, 'user');
 	}
+
+	public function admin() {
+		return $this->hasOne(BandAdmin::class);
+	}
 	
 	public function bandSongs() {
 		return $this->hasMany(BandSong::class);
@@ -147,6 +151,10 @@ class Band extends Model {
 	}
 	
 	public function getAvailableBudgetAttribute() {
-		return $this->approved_payments - $this->bandMembers->sum('payment');
+		$adminPayment = 0;
+		if ($this->admin()->exists()){
+			$adminPayment = $this->admin->payment;
+		}
+		return $this->approved_payments - $this->bandMembers->sum('payment') - $adminPayment;
 	}
 }

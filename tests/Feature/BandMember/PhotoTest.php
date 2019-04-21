@@ -23,7 +23,6 @@ class PhotoTest extends TestCase {
 	protected $admin;
 	protected $kitchen;
 	protected $worker;
-	private $kitchenPhoto;
 	private $bandMemberPhoto;
 	private $file;
 	private $bandMember;
@@ -46,7 +45,7 @@ class PhotoTest extends TestCase {
 		factory(ArtistManager::class)->create()->user()->save($this->artistManager);
 		$this->band = factory(User::class)->make();
 		factory(Band::class)->create([
-			'payment_method' => 'individual'
+			'payment_method' => 'band'
 		])->user()->save($this->band);
 		$this->bandMember = factory(User::class)->make();
 		factory(BandMember::class)->create([

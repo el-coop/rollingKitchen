@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BandAdmin;
+use App\Models\BandAdminPhoto;
 use App\Models\BandMemberPhoto;
 use App\Models\Kitchen;
 use App\Models\Photo;
@@ -35,6 +37,20 @@ class PhotoController extends Controller {
 		$encryptedContents = Storage::get("public/photos/{$photo->file}");
 		$decryptedContents = Crypt::decrypt($encryptedContents);
 		
+		if (pathinfo($photo->file, PATHINFO_EXTENSION)) {
+			return response()->streamDownload(function () use ($decryptedContents) {
+				echo $decryptedContents;
+			}, $photo->file);
+		}
+		return response()->make($decryptedContents, 200, [
+			'Content-Type' => 'image/jpeg'
+		]);
+	}
+
+	public function bandAdmin(BandAdminPhoto $photo ) {
+		$encryptedContents = Storage::get("public/photos/{$photo->file}");
+		$decryptedContents = Crypt::decrypt($encryptedContents);
+
 		if (pathinfo($photo->file, PATHINFO_EXTENSION)) {
 			return response()->streamDownload(function () use ($decryptedContents) {
 				echo $decryptedContents;
