@@ -81,7 +81,7 @@ class UpdateTest extends TestCase {
 
 	public function test_band_can_update_band_admin() {
 		$this->actingAs($this->band)->patch(action('Band\BandAdminController@update', [$this->band->user, $this->bandAdmin]), [
-			'name' => 'name',
+			'adminName' => 'name',
 			'bandmember' => ['test' => 'test'],
 			'payment' => 0
 		])->assertRedirect();

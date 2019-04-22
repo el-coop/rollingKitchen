@@ -81,7 +81,7 @@ class BandAdminTest extends TestCase {
 
 	public function test_admin_can_update_band_admin() {
 		$this->actingAs($this->admin)->patch(action('Admin\BandController@updateAdmin', $this->bandAdmin), [
-			'name' => 'name',
+			'adminName' => 'name',
 			'bandmember' => ['test' => 'test'],
 			'payment' => 0
 		])->assertRedirect();
@@ -94,7 +94,7 @@ class BandAdminTest extends TestCase {
 
 	public function test_admin_cant_go_over_budget_on_update() {
 		$this->actingAs($this->admin)->patch(action('Admin\BandController@updateAdmin', $this->bandAdmin), [
-			'name' => 'name',
+			'adminName' => 'name',
 			'payment' => 10,
 			'bandmemeber' => json_encode(['test' => 'test'])
 		])->assertRedirect()->assertSessionHasErrors('payment');
