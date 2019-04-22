@@ -10,7 +10,10 @@
             'band' => $band
             ])
                 @endcomponent</tab>
-            <tab label="@lang('admin/bands.admin')">@component('admin.bands.band.admin',[
+            <tab @if($errors->has('adminName'))
+                 :start-open="true"
+                 @endif
+                 label="@lang('admin/bands.admin')">@component('admin.bands.band.admin',[
 				'bandAdmin' => $band->admin
 			])
                 @endcomponent</tab>
