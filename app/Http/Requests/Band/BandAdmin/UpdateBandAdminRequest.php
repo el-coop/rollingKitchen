@@ -31,7 +31,7 @@ class UpdateBandAdminRequest extends FormRequest {
 			$maxPayment = 0;
 		}
 		$rules = collect([
-			'name' => 'required',
+			'adminName' => 'required',
 			'bandmember' => 'required|array',
 			'payment' => 'required|numeric|min:0|max:' . $maxPayment,
 		]);
@@ -51,9 +51,8 @@ class UpdateBandAdminRequest extends FormRequest {
 		});
 	}
 
-
 	public function commit() {
-		$this->bandAdmin->name = $this->input('name');
+		$this->bandAdmin->name = $this->input('adminName');
 		$this->bandAdmin->data = array_filter($this->input('bandmember'));
 		$this->bandAdmin->payment = $this->input('payment');
 		if ($this->input('review') && !$this->bandAdmin->submitted) {

@@ -29,7 +29,7 @@ class BandAdmin extends Model {
 	public function getFullDataAttribute() {
 		$fullData = collect([
 			[
-				'name' => 'name',
+				'name' => 'adminName',
 				'label' => __('global.name'),
 				'type' => 'text',
 				'value' => $this->name ?? '',

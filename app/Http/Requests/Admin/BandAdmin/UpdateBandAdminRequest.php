@@ -27,14 +27,14 @@ class UpdateBandAdminRequest extends FormRequest {
 			$maxPayment = 0;
 		}
 		return [
-			'name' => 'required|string',
+			'adminName' => 'required|string',
 			'bandmember' => 'required|array',
 			'payment' => 'required|numeric|min:0|max:' . $maxPayment,
 		];
 	}
 
 	public function commit() {
-		$this->bandAdmin->name = $this->input('name');
+		$this->bandAdmin->name = $this->input('adminName');
 		$this->bandAdmin->payment = $this->input('payment');
 		$this->bandAdmin->data = array_filter($this->input('bandmember'));
 		$this->bandAdmin->save();
