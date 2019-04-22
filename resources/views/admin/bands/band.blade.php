@@ -10,7 +10,7 @@
             'band' => $band
             ])
                 @endcomponent</tab>
-            <tab @if($errors->has('adminName'))
+            <tab @if(Session::exists('bandAdminError'))
                  :start-open="true"
                  @endif
                  label="@lang('admin/bands.admin')">@component('admin.bands.band.admin',[

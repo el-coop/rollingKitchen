@@ -10,7 +10,7 @@
 		<tab label="@lang('worker/worker.profile')">@include('band.profile')</tab>
 		@if($band->payment_method == 'individual')
 			<tab label="@lang('band/band.bandMembers')">@include('band.bandMembers')</tab>
-			<tab @if($errors->has('adminName'))
+			<tab @if(Session::exists('bandAdminError'))
 				 	:start-open="true"
 				 @endif
 				 label="@lang('admin/bands.admin')">@include('band.admin')</tab>
