@@ -2,5 +2,7 @@
 
 return [
 	'createBandMembers' => 'Bandleden toevoegen',
-	'fields' => 'Bandleden velden'
+	'fields' => 'Bandleden velden',
+	'exportBandMembersTitle' => 'Exporteer betalingen bandleden'
+
 ];
