@@ -46,7 +46,7 @@ class KitchenExportColumnController extends Controller {
 		];
 	}
 
-	public function export(Excel $excel, KitchenService $bandPaymentService) {
-		return $excel->download($bandPaymentService, 'kitchens.xls');
+	public function export(Excel $excel, KitchenService $kitchenService) {
+		return $excel->download($kitchenService, 'kitchens.xls');
 	}
 }

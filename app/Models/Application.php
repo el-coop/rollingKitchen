@@ -107,7 +107,9 @@ class Application extends Model {
 			->groupBy('service_id')->first()->quantity;
 		
 		$requestedQuantity = $this->serviceQuantity($service);
-		if (!$requestedQuantity || $paidQuantity > $requestedQuantity) {
+		if ($paidQuantity < 1) {
+			$this->services()->detach($service->id);
+		} else if (!$requestedQuantity || $paidQuantity != $requestedQuantity) {
 			$this->services()->syncWithoutDetaching([$service->id => [
 				'quantity' => $paidQuantity
 			]]);

@@ -15,7 +15,7 @@ class CreateInvoiceItemsTable extends Migration {
 			$table->bigIncrements('id');
 			$table->bigInteger('invoice_id')->unsigned();
 			$table->bigInteger('service_id')->unsigned()->nullable();
-			$table->integer('quantity')->unsigned();
+			$table->integer('quantity');
 			$table->integer('tax')->default(0)->unsigned();
 			$table->decimal('unit_price', 10, 2)->unsigned();
 			$table->string('name');

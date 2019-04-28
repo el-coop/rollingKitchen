@@ -1,7 +1,7 @@
 <template>
 	<div class="columns is-mobile">
 		<div class="column is-2">
-			<input v-model="quantity" required type="number" min="1" @keypress.enter.prevent
+			<input v-model="quantity" required type="number" @keypress.enter.prevent
 				   :name="`${name}[${index}][quantity]`" class="input">
 		</div>
 		<div class="column is-2">
