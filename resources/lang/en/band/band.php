@@ -13,7 +13,7 @@ return [
 	'protected' => 'Protected By BUMA/STEMRA',
 	'title' => 'Title',
 	'sendInvoice' => 'Send Invoice',
-	'payment' => 'Payment',
+	'payment' => 'Payment to individual bandmember',
 	'bandMemberPdf' => 'Band Member PDF'
 
 ];
