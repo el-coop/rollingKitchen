@@ -14,5 +14,7 @@ return [
 	'title' => 'Titel',
 	'sendInvoice' => 'Factuur Versturen',
 	'payment' => 'Betaling aan individueel bandlid',
-	'bandMemberPdf' => 'Bandleden PDF'
+	'bandMemberPdf' => 'Bandleden PDF',
+	'createBandMemberToast' => 'TBT',
+	'createBandMemberToastTitle' => 'TBT'
 ];
