@@ -14,6 +14,8 @@ return [
 	'title' => 'Title',
 	'sendInvoice' => 'Send Invoice',
 	'payment' => 'Payment to individual bandmember',
-	'bandMemberPdf' => 'Band Member PDF'
+	'bandMemberPdf' => 'Band Member PDF',
+	'createBandMemberToast' => 'You have changed the payment method, please create band members',
+	'createBandMemberToastTitle' => 'Please Create Band Members'
 
 ];

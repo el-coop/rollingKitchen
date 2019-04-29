@@ -1,7 +1,7 @@
 <template>
     <div>
-        <button @click="reject" class="button is-danger" v-text="this.$translations.reject"></button>
         <button @click="approve" class="button is-info" v-text="this.$translations.approve"></button>
+        <button @click="reject" class="button is-danger" v-text="this.$translations.reject"></button>
     </div>
 </template>
 
