@@ -157,4 +157,8 @@ class Band extends Model {
 		}
 		return $this->approved_payments - $this->bandMembers->sum('payment') - $adminPayment;
 	}
+
+	public function pdf() {
+		return $this->hasOne(BandPdf::class);
+	}
 }

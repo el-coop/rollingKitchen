@@ -6,6 +6,7 @@ use App\Models\Pdf;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdatePDFRequest extends FormRequest {
+	protected $pdf;
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
