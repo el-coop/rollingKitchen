@@ -19,11 +19,15 @@
 			type: {
 				type: String,
 				required: true
-			}
+			},
+            position: {
+			    type: String,
+                default: 'bottomRight'
+            }
 		},
 
 		mounted() {
-			this.$toast[this.type](this.message, this.title);
+			this.$toast[this.type](this.message, this.title,{'position': this.position});
 		}
 	}
 </script>

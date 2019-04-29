@@ -40,12 +40,22 @@ class BandController extends Controller {
 	}
 
 	public function update(UpdateBandRequest $request, Band $band){
+		if ($band->payment_method == 'band' && $request->input('paymentMethod') == 'individual'){
+			$toast = [
+				'type' => 'success',
+				'title' => __('band/band.createBandMemberToastTitle', [], $request->input('language')),
+				'message' => __('band/band.createBandMemberToast', [], $request->input('language')),
+				'position' => 'topCenter'
+			];
+		} else {
+			 $toast = [
+				'type' => 'success',
+				'title' => '',
+				'message' => __('vue.updateSuccess', [], $request->input('language'))
+			];
+		}
 		$request->commit();
-		return back()->with('toast', [
-			'type' => 'success',
-			'title' => '',
-			'message' => __('vue.updateSuccess', [], $request->input('language'))
-		]);
+		return back()->with('toast', $toast);
 	}
 
 	public function addBandMember(CreateBandMemberRequest $request, Band $band){
