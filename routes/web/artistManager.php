@@ -16,5 +16,7 @@ Route::group(['prefix' => 'artistManager', 'namespace' => 'ArtistManager'], func
 		Route::get('/edit/{band}', 'ArtistManagerController@edit');
 		Route::patch('/edit/{band}', 'ArtistManagerController@update');
 		Route::delete('/delete/{band}', 'ArtistManagerController@destroy');
+		Route::get('/pdf/{bandPdf}', 'ArtistManagerController@showPdf');
+
 	});
 });

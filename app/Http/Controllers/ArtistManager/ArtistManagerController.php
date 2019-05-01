@@ -9,9 +9,11 @@ use App\Http\Requests\Admin\Band\UpdateBandRequest;
 use App\Http\Requests\ArtistManager\StoreBandScheduleRequest;
 use App\Http\Requests\ArtistManager\UpdateConfrimationEmailRequest;
 use App\Models\Band;
+use App\Models\BandPdf;
 use App\Models\BandSchedule;
 use App\Models\Stage;
 use Auth;
+use Storage;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Foundation\Auth\ResetsPasswords;
@@ -119,5 +121,10 @@ class ArtistManagerController extends Controller {
 	
 	public function redirectTo() {
 		return Auth::user()->user->homePage();
+	}
+
+	public function showPdf(BandPdf $bandPdf) {
+		$filename = str_replace(' ', '_', $bandPdf->band->user->name) . "_technical_requirements";
+		return Storage::download("public/pdf/band/{$bandPdf->file}", "{$filename}.pdf");
 	}
 }
