@@ -25,7 +25,7 @@
                 @slot('customUrl', '\artistManager\bands')
                 @slot('createTitle', __('admin/artists.createBand'))
                 @slot('withEditLink', false)
-                @slot('extraSlotView', 'components.bandPdfLink')
+                @slot('extraHeaderView', 'components.bandPdfLink')
             @endcomponent
         </tab>
         <tab label="@lang('admin/artists.confirmationEmail')">

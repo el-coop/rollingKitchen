@@ -29,7 +29,7 @@ class BandPdfTest extends TestCase {
 	protected $band;
 	protected $bandAdmin;
 	protected $bandMember;
-
+	
 	protected function setUp(): void {
 		parent::setUp();
 		$this->admin = factory(User::class)->make();
@@ -49,55 +49,55 @@ class BandPdfTest extends TestCase {
 			'band_id' => $this->band->user->id
 		])->user()->save($this->bandMember);
 	}
-
+	
 	public function test_guest_cant_upload_band_pdf() {
 		$this->post(action('Band\BandController@uploadFile', $this->band->user))->assertRedirect(action('Auth\LoginController@login'));
 	}
-
+	
 	public function test_worker_cant_upload_band_pdf() {
 		$this->actingAs($this->worker)->post(action('Band\BandController@uploadFile', $this->band->user))->assertForbidden();
-
+		
 	}
-
+	
 	public function test_accountant_cant_upload_band_pdf() {
 		$this->actingAs($this->accountant)->post(action('Band\BandController@uploadFile', $this->band->user))->assertForbidden();
-
+		
 	}
-
+	
 	public function test_kitchen_cant_upload_band_pdf() {
 		$this->actingAs($this->kitchen)->post(action('Band\BandController@uploadFile', $this->band->user))->assertForbidden();
-
+		
 	}
-
+	
 	public function test_band_member_cant_upload_band_pdf() {
 		$this->actingAs($this->bandMember)->post(action('Band\BandController@uploadFile', $this->band->user))->assertForbidden();
-
+		
 	}
-
+	
 	public function test_artist_manager_cant_upload_band_pdf() {
 		$this->actingAs($this->artistManager)->post(action('Band\BandController@uploadFile', $this->band->user))->assertForbidden();
-
+		
 	}
-
+	
 	public function test_admin_cant_upload_band_pdf() {
 		$this->actingAs($this->admin)->post(action('Band\BandController@uploadFile', $this->band->user))->assertForbidden();
-
+		
 	}
-
+	
 	public function test_band_can_upload_band_pdf() {
 		Storage::fake('local');
 		$pdf = UploadedFile::fake()->create('test.pdf');
 		$this->actingAs($this->band)->post(action('Band\BandController@uploadFile', $this->band->user), [
 			'file' => $pdf
-		])->assertSuccessful();
+		])->assertRedirect()->assertSessionHas('toast');
 		$this->assertDatabaseHas('band_pdfs', [
 			'band_id' => $this->band->user->id
 		]);
 		$pdf = BandPdf::first();
 		Storage::disk('local')->assertExists('public/pdf/band/' . $pdf->file);
-
+		
 	}
-
+	
 	public function test_upload_replaces_file() {
 		Storage::fake('local');
 		$pdf = UploadedFile::fake()->create('test.pdf');
@@ -109,13 +109,13 @@ class BandPdfTest extends TestCase {
 		$newPdf = UploadedFile::fake()->create('new.pdf');
 		$this->actingAs($this->band)->post(action('Band\BandController@uploadFile', $this->band->user), [
 			'file' => $newPdf
-		])->assertSuccessful();
+		])->assertRedirect()->assertSessionHas('toast');
 		$newPdf = $this->band->user->pdf;
 		Storage::disk('local')->assertMissing('public/pdf/band/' . $oldPdf->file);
 		Storage::disk('local')->assertExists('public/pdf/band/' . $newPdf->file);
 		$this->assertDatabaseHas('band_pdfs', [
 			'band_id' => $this->band->user->id
 		]);
-
+		
 	}
 }
