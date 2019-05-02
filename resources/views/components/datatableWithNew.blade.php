@@ -30,6 +30,9 @@
                     </div>
                 @endif
             </div>
+            @isset($extraHeaderView)
+                @include($extraHeaderView)
+            @endisset
             <dynamic-form :url="'{{Request::url() }}/edit' + (object.id ? `/${object.id}` : '')"
                           :on-data-update="onUpdate"
                           :method="object.id ? 'patch' : 'post'"

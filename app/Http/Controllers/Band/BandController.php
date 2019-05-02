@@ -22,15 +22,15 @@ use Password;
 use App\Http\Controllers\Controller;
 
 class BandController extends Controller {
-
+	
 	use ResetsPasswords;
-
+	
 	public function showResetForm(Request $request, $token = null) {
 		return view('worker.setPassword')->with(
 			['token' => $token, 'email' => $request->email]
 		);
 	}
-
+	
 	public function show(Band $band) {
 		$locale = App::getLocale();
 		$pdfs = Pdf::where('visibility', 3)->get();
@@ -38,9 +38,9 @@ class BandController extends Controller {
 		$privacyStatement = str_replace(PHP_EOL, '<br>', app('settings')->get("band_members_privacy_statement_{$locale}"));
 		return view('band.band', compact('band', 'pdfs', 'message', 'privacyStatement'));
 	}
-
-	public function update(UpdateBandRequest $request, Band $band){
-		if ($band->payment_method == 'band' && $request->input('paymentMethod') == 'individual'){
+	
+	public function update(UpdateBandRequest $request, Band $band) {
+		if ($band->payment_method == 'band' && $request->input('paymentMethod') == 'individual') {
 			$toast = [
 				'type' => 'success',
 				'title' => __('band/band.createBandMemberToastTitle', [], $request->input('language')),
@@ -48,7 +48,7 @@ class BandController extends Controller {
 				'position' => 'topCenter'
 			];
 		} else {
-			 $toast = [
+			$toast = [
 				'type' => 'success',
 				'title' => '',
 				'message' => __('vue.updateSuccess', [], $request->input('language'))
@@ -57,45 +57,50 @@ class BandController extends Controller {
 		$request->commit();
 		return back()->with('toast', $toast);
 	}
-
-	public function addBandMember(CreateBandMemberRequest $request, Band $band){
+	
+	public function addBandMember(CreateBandMemberRequest $request, Band $band) {
 		return $request->commit();
 	}
-
-	public function updateBandMember(UpdateBandMemberRequest $request, Band $band, BandMember $bandMember){
+	
+	public function updateBandMember(UpdateBandMemberRequest $request, Band $band, BandMember $bandMember) {
 		return $request->commit();
 	}
-
-	public function destroyBandMember(DestroyBandMemberRequest $request, Band $band, BandMember $bandMember){
+	
+	public function destroyBandMember(DestroyBandMemberRequest $request, Band $band, BandMember $bandMember) {
 		$request->commit();
-
+		
 		return [
 			'success' => true
 		];
 	}
-
-	public function approveSchedule(ApproveScheduleRequest $request, Band $band, BandSchedule $bandSchedule){
+	
+	public function approveSchedule(ApproveScheduleRequest $request, Band $band, BandSchedule $bandSchedule) {
 		return $request->commit();
 	}
-
-	public function rejectSchedule(RejectScheduleRequest $request, Band $band, BandSchedule $bandSchedule){
+	
+	public function rejectSchedule(RejectScheduleRequest $request, Band $band, BandSchedule $bandSchedule) {
 		return $request->commit();
 	}
-
-	public function showPdf (Pdf $pdf) {
+	
+	public function showPdf(Pdf $pdf) {
 		return Storage::download("public/pdf/{$pdf->file}", "{$pdf->name}.pdf");
 	}
-
+	
 	public function broker() {
 		return Password::broker('workers');
 	}
-
-
+	
+	
 	public function redirectTo() {
 		return Auth::user()->user->homePage();
 	}
-
+	
 	public function uploadFile(UploadBandPdfRequest $request, Band $band) {
-		return $request->commit();
+		$request->commit();
+		return back()->with('toast', [
+			'type' => 'success',
+			'title' => '',
+			'message' => __('vue.updateSuccess', [], $request->input('language'))
+		]);
 	}
 }
