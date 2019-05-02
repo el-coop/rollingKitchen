@@ -15,6 +15,6 @@ return [
 	'sendInvoice' => 'Factuur Versturen',
 	'payment' => 'Betaling aan individueel bandlid',
 	'bandMemberPdf' => 'Bandleden PDF',
-	'createBandMemberToast' => 'TBT',
-	'createBandMemberToastTitle' => 'TBT'
+	'createBandMemberToast' => 'Je hebt de betalingsmethode gewijzigd, graag bandleden creëren',
+	'createBandMemberToastTitle' => 'Graag bandleden creëren'
 ];
