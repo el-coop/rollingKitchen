@@ -11,7 +11,8 @@ Route::group(['prefix' => 'band', 'namespace' => 'Band'], function () {
 		Route::group(['middleware' => ['auth', 'can:view,band']], function () {
 			Route::get('/', 'BandController@show');
 			Route::patch('/', 'BandController@update');
-			
+
+			Route::post('/pdf', 'BandController@uploadFile');
 			
 			Route::post('/bandMember', 'BandController@addBandMember');
 			Route::patch('/bandMember/{bandMember}', 'BandController@updateBandMember');

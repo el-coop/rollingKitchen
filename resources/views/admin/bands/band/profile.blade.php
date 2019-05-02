@@ -11,4 +11,9 @@
 }) }}" class="mb-1"></dynamic-fields>
         <button class="button is-success">@lang('global.save')</button>
     </form>
+    @if($band->pdf)
+        <div>
+            <a href="{{action('Admin\BandController@showPdf', $band->pdf)}}">@lang('band/band.technicalRequirements')</a>
+        </div>
+    @endif
 </div>

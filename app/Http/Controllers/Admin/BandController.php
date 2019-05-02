@@ -11,6 +11,7 @@ use App\Http\Requests\ArtistManager\StoreBandScheduleRequest;
 use App\Models\Band;
 use App\Models\BandAdmin;
 use App\Models\BandMember;
+use App\Models\BandPdf;
 use App\Models\BandSchedule;
 use App\Models\Stage;
 use App\Services\BandMemberService;
@@ -137,5 +138,10 @@ class BandController extends Controller {
 		$pdf->render();
 
 		return $pdf->stream("{$bandAdmin->name}.pdf");
+	}
+
+	public function showPdf(BandPdf $bandPdf) {
+		$filename = str_replace(' ', '_', $bandPdf->band->user->name) . "_technical_requirements";
+		return Storage::download("public/pdf/band/{$bandPdf->file}", "{$filename}.pdf");
 	}
 }

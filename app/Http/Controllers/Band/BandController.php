@@ -8,7 +8,7 @@ use App\Http\Requests\Band\DestroyBandMemberRequest;
 use App\Http\Requests\Band\RejectScheduleRequest;
 use App\Http\Requests\Band\UpdateBandMemberRequest;
 use App\Http\Requests\Band\UpdateBandRequest;
-use App\Http\Requests\Band\UpdatePaymentMethodRequest;
+use App\Http\Requests\Band\UploadBandPdfRequest;
 use App\Models\Band;
 use App\Models\BandSchedule;
 use App\Models\Pdf;
@@ -93,5 +93,9 @@ class BandController extends Controller {
 
 	public function redirectTo() {
 		return Auth::user()->user->homePage();
+	}
+
+	public function uploadFile(UploadBandPdfRequest $request, Band $band) {
+		return $request->commit();
 	}
 }

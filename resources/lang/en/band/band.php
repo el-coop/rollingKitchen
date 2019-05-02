@@ -16,6 +16,7 @@ return [
 	'payment' => 'Payment to individual bandmember',
 	'bandMemberPdf' => 'Band Member PDF',
 	'createBandMemberToast' => 'You have changed the payment method, please create band members',
-	'createBandMemberToastTitle' => 'Please Create Band Members'
+	'createBandMemberToastTitle' => 'Please Create Band Members',
+	'technicalRequirements' => 'Band Technical Requirements'
 
 ];
