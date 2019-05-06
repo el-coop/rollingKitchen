@@ -62,13 +62,15 @@ class ShowUpdatedNotification extends Notification {
 		
 		$email = (new MailMessage)
 			->from(env('MAIL_BANDS_FROM_ADDRESS'))
-			->subject(app('settings')->get("schedule_changed_subject{$notifiable->language}"))
+			->subject(app('settings')->get("schedule_changed_subject_{$notifiable->language}"))
 			->greeting(__('notification.greeting', ['name' => $notifiable->name]));
 		
 		
 		foreach ($message as $line) {
 			$email->line($line);
 		}
+		
+		$email->action(__('global.login', [], $notifiable->language), action('Auth\LoginController@showLoginForm', [], true));
 		
 		return $email;
 	}
