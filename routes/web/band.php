@@ -1,7 +1,6 @@
 <?php
 
 Route::group(['prefix' => 'band', 'namespace' => 'Band'], function () {
-	Route::get('/pdf/{pdf}', 'BandController@showPdf');
 	
 	Route::group(['middleware' => 'guest', 'prefix' => 'setPassword'], function () {
 		Route::get('/{token}', 'BandController@showResetForm');
@@ -11,8 +10,9 @@ Route::group(['prefix' => 'band', 'namespace' => 'Band'], function () {
 		Route::group(['middleware' => ['auth', 'can:view,band']], function () {
 			Route::get('/', 'BandController@show');
 			Route::patch('/', 'BandController@update');
-
+			
 			Route::post('/pdf', 'BandController@uploadFile');
+			Route::get('/pdf', 'BandController@showPdf');
 			
 			Route::post('/bandMember', 'BandController@addBandMember');
 			Route::patch('/bandMember/{bandMember}', 'BandController@updateBandMember');

@@ -99,21 +99,21 @@ class ArtistManagerController extends Controller {
 			'success' => true
 		];
 	}
-
-	public function sendConfirmation(SendConfirmationRequest $request){
+	
+	public function sendConfirmation(SendConfirmationRequest $request) {
 		$request->commit();
 		return [
 			'success' => true
 		];
 	}
-
+	
 	public function updateConfirmationEmail(UpdateConfrimationEmailRequest $request) {
 		$request->commit();
 		return [
 			'success' => true
 		];
 	}
-
+	
 	public function broker() {
 		return Password::broker('workers');
 	}
@@ -122,9 +122,9 @@ class ArtistManagerController extends Controller {
 	public function redirectTo() {
 		return Auth::user()->user->homePage();
 	}
-
+	
 	public function showPdf(BandPdf $bandPdf) {
-		$filename = str_replace(' ', '_', $bandPdf->band->user->name) . "_technical_requirements";
+		$filename = str_replace(' ', '_', $bandPdf->band->user->name . '_' . __('band/band.technicalRequirements'));
 		return Storage::download("public/pdf/band/{$bandPdf->file}", "{$filename}.pdf");
 	}
 }

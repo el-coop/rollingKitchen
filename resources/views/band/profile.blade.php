@@ -18,22 +18,8 @@
 }) }}" class="mb-1"></dynamic-fields>
 			</div>
 			<div class="column">
-				<h4 class="title is-4">@lang('band/band.technicalRequirements')</h4>
-				@if($band->pdf)
-					<h6 class="subtitle is-6">
-						<a href="{{action('Admin\BandController@showPdf', $band->pdf)}}">@lang('vue.download')</a>
-					</h6>
-				@endif
-				<form method="post" enctype="multipart/form-data"
-					  action="{{action('Band\BandController@uploadFile', $band)}}">
-					@csrf
-					<file-field :field="{
-                     	name: 'file',
-                        type: 'file',
-                        label: '@lang('admin/settings.chooseFile')',
-					}"></file-field>
-					<button class="button is-success is-fullwidth">@lang('vue.upload')</button>
-				</form>
+				<band-pdf-form band-id="{{ $band->id }}"
+							   :init-has-pdf="{{ $band->pdf ? 'true' : 'false' }}"></band-pdf-form>
 			</div>
 		</div>
 
