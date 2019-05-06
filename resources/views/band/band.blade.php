@@ -7,12 +7,12 @@
 		@include('band.message')
 	@endif
 	<tabs class="mb-1">
-		<tab label="@lang('worker/worker.profile')">@include('band.profile')</tab>
+		<tab label="@lang('band/band.information')">@include('band.profile')</tab>
 		@if($band->payment_method == 'individual')
-            <tab @if(Session::exists('bandAdminError'))
-                 :start-open="true"
-                 @endif
-                 label="@lang('admin/bands.admin')">@include('band.admin')</tab>
+			<tab @if(Session::exists('bandAdminError'))
+				 :start-open="true"
+				 @endif
+				 label="@lang('worker/worker.profile')">@include('band.admin')</tab>
 			<tab label="@lang('band/band.bandMembers')">@include('band.bandMembers')</tab>
 
 		@endif

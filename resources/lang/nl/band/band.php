@@ -17,5 +17,6 @@ return [
 	'bandMemberPdf' => 'Bandleden PDF',
 	'createBandMemberToast' => 'Je hebt de betalingsmethode gewijzigd, graag bandleden creëren',
 	'createBandMemberToastTitle' => 'Graag bandleden creëren',
-	'technicalRequirements' => 'Technische vereisten voor de band'
+	'technicalRequirements' => 'Technische vereisten voor de band',
+	'information' => 'Band informatie'
 ];
