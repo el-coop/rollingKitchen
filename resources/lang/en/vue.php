@@ -61,5 +61,7 @@ return [
 	'budgetUsed' => 'Budget used',
 	'budgetOverflow' => 'The current schedule is above budget',
 	'reject' => 'Reject',
-	'approve' => 'Approve'
+	'approve' => 'Approve',
+	'technicalRequirements' => 'Band Technical Requirements',
+	'chooseFile' => 'Choose a file',
 ];

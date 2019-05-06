@@ -82,8 +82,10 @@ class BandController extends Controller {
 		return $request->commit();
 	}
 	
-	public function showPdf(Pdf $pdf) {
-		return Storage::download("public/pdf/{$pdf->file}", "{$pdf->name}.pdf");
+	public function showPdf(Band $band) {
+		$pdf = $band->pdf;
+		$filename = str_replace(' ', '_', $band->user->name . '_' . __('band/band.technicalRequirements'));
+		return Storage::download("public/pdf/band/{$pdf->file}", "{$filename}.pdf");
 	}
 	
 	public function broker() {
