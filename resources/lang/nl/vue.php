@@ -62,6 +62,6 @@ return [
 	'budgetOverflow' => 'Budgetoverschrijding',
 	'reject' => 'Afkeuren',
 	'approve' => 'Goedkeuren',
-	'technicalRequirements' => 'Technische vereisten voor de band',
+	'technicalRequirements' => 'Technische rider',
 	'chooseFile' => 'Kies een bestand',
 ];
