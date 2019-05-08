@@ -70,10 +70,10 @@ return [
 	'workers_privacy_statement_nl' => 'Workers privacy statement NL',
 	'workers_privacy_statement_en' => 'Workers privacy statement EN',
 
-	'artist_managers_user_created_subject_nl' => 'Artist Manager created mail subject NL',
-	'artist_managers_user_created_subject_en' => 'Artist Manager mail subject EN',
-	'artist_managers_user_created_nl' => 'Artist Manager created mail body NL',
-	'artist_managers_user_created_en' => 'Artist Manager created mail body EN',
+	'artist_managers_user_created_subject_nl' => 'Stage manager created mail subject NL',
+	'artist_managers_user_created_subject_en' => 'Stage manager mail subject EN',
+	'artist_managers_user_created_nl' => 'Stage Manager created mail body NL',
+	'artist_managers_user_created_en' => 'Stage manager created mail body EN',
 
 	'bands_user_created_subject_nl' => 'Bands created mail subject NL',
 	'bands_user_created_subject_en' => 'Bands created mail subject EN',

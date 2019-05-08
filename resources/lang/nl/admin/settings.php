@@ -72,10 +72,10 @@ return [
 	'workers_privacy_statement_nl' => 'Werknemerst privacy verklaring NL',
 	'workers_privacy_statement_en' => 'Werknemerst privacy verklaring EN',
 
-	'artist_managers_user_created_subject_nl' => 'Email onderwerp voor nieuwe Artiestenmanager NL',
-	'artist_managers_user_created_subject_en' => 'Email onderwerp voor nieuwe Artiestenmanager EN',
-	'artist_managers_user_created_nl' => 'Email bericht voor nieuwe Artiestenmanager NL',
-	'artist_managers_user_created_en' => 'Email bericht voor nieuwe Artiestenmanager EN',
+	'artist_managers_user_created_subject_nl' => 'Email onderwerp voor nieuwe stage manager NL',
+	'artist_managers_user_created_subject_en' => 'Email onderwerp voor nieuwe stage manager EN',
+	'artist_managers_user_created_nl' => 'Email bericht voor nieuwe stage manager NL',
+	'artist_managers_user_created_en' => 'Email bericht voor nieuwe stage manager EN',
 
 
 	'bands_user_created_subject_nl' => 'Email onderwerp voor nieuwe band NL',

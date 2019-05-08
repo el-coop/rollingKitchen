@@ -6,5 +6,5 @@ return [
 	'sendConfirmation' => 'bevestiging verzenden',
 	'bandPayments' => 'Betaling band',
 	'exportBandPayments' => 'Exporteer betalingen bands',
-	'admin' => 'Band manager'
+	'admin' => 'Stage manager'
 ];

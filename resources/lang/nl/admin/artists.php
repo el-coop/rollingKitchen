@@ -1,8 +1,8 @@
 <?php
 
 return [
-	'artistManager' => 'ArtiestenManager',
-	'createArtistManager' => 'Artiestenmanager toevoegen',
+	'artistManager' => 'Stage Manager',
+	'createArtistManager' => 'Stage manager toevoegen',
 	'artists' => 'Artiesten',
 	'bands' => 'Bands',
 	'createBand' => 'Band toevoegen',
