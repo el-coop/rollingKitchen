@@ -33,13 +33,14 @@ class StoreBandScheduleRequest extends FormRequest {
 			'calendar.*.*.band' => 'required|exists:bands,id',
 			'calendar.*.*.payment' => 'required|min:1',
 			'calendar.*.*.stage' => 'required|exists:stages,id',
+			'calendar.*.*.endTime' => 'required|date_format:H:i',
 		];
 	}
 	
 	public function withValidator($validator) {
 		$validator->after(function ($validator) {
 			$budget = app('settings')->get('schedule_budget');
-			if(is_array($this->input('calendar'))){
+			if (is_array($this->input('calendar'))) {
 				if (collect($this->input('calendar'))->sum(function ($dateTime) {
 						return collect($dateTime)->sum(function ($show) {
 							return $show['payment'];
@@ -57,11 +58,13 @@ class StoreBandScheduleRequest extends FormRequest {
 		$newSchedules = collect([]);
 		foreach ($this->input('calendar', []) as $dateTime => $shows) {
 			foreach ($shows as $show) {
+				$endTime = explode(':', $show['endTime']);
 				$schedule = new BandSchedule;
 				$schedule->band_id = $show['band'];
 				$schedule->date_time = Carbon::createFromFormat('d/m/Y H:i', $dateTime);
 				$schedule->stage_id = $show['stage'];
 				$schedule->payment = $show['payment'];
+				$schedule->end_time = Carbon::createFromFormat('d/m/Y H:i', $dateTime)->hours($endTime[0])->minutes($endTime[1]);
 				$schedule->approved = 'pending';
 				$newSchedules->push($schedule);
 			}

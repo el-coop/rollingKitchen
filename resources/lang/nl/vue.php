@@ -64,4 +64,8 @@ return [
 	'approve' => 'Goedkeuren',
 	'technicalRequirements' => 'Technische vereisten voor de band',
 	'chooseFile' => 'Kies een bestand',
+	'band' => 'Band',
+	'stage' => 'Podia',
+	'payment' => 'Betaling',
+	'endTime' => 'Eindtijd'
 ];

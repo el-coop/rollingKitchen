@@ -87,7 +87,7 @@ class BandController extends Controller {
 	}
 	
 	public function schedule() {
-		$schedules = BandSchedule::select('date_time', 'stage_id as stage', 'band_id as band', 'payment', 'approved')->get()->groupBy('date_time');
+		$schedules = BandSchedule::select('date_time', 'end_time', 'stage_id as stage', 'band_id as band', 'payment', 'approved')->get()->groupBy('date_time');
 		$bands = Band::select('id')->with('user')->get()->pluck('user.name', 'id');
 		$stages = Stage::select('id', 'name')->get()->pluck('name', 'id');
 		$budget = app('settings')->get('schedule_budget');
@@ -98,7 +98,25 @@ class BandController extends Controller {
 		$endHour = app('settings')->get('schedule_end_hour');
 		
 		
-		return view('admin.bands.schedule', compact('bands', 'stages', 'schedules', 'budget', 'initBudget', 'startDay', 'startHour', 'days', 'endHour'));
+		$takenTimes = collect();
+		$schedules->each(function ($schedule, $startTime) use ($takenTimes) {
+			$showTime = Carbon::createFromFormat('d/m/Y H:i', $startTime);
+			$schedule->each(function ($show) use ($showTime, $takenTimes) {
+				$startTime = $showTime->clone()->addMinutes(30);
+				$endTime = $show->end_date_time;
+				while ($startTime < $endTime) {
+					$startTimeKey = $startTime->format('d/m/Y H:i');
+					if ($takenTimes->has($startTimeKey)) {
+						$takenTimes->get($startTimeKey)->push($show);
+					} else {
+						$takenTimes->put($startTimeKey, collect([$show]));
+					}
+					$startTime->addMinutes(30);
+				}
+			});
+		});
+		
+		return view('admin.bands.schedule', compact('bands', 'stages', 'schedules', 'budget', 'initBudget', 'startDay', 'startHour', 'days', 'endHour', 'takenTimes'));
 	}
 	
 	public function storeSchedule(StoreBandScheduleRequest $request) {

@@ -31,7 +31,7 @@ class ArtistManagerController extends Controller {
 	}
 	
 	public function index() {
-		$schedules = BandSchedule::select('date_time', 'stage_id as stage', 'band_id as band', 'payment', 'approved')->get()->groupBy('date_time');
+		$schedules = BandSchedule::select('date_time', 'end_time','stage_id as stage', 'band_id as band', 'payment', 'approved')->get()->groupBy('date_time');
 		$bands = Band::select('id')->with('user')->get()->pluck('user.name', 'id');
 		$stages = Stage::select('id', 'name')->get()->pluck('name', 'id');
 		$budget = app('settings')->get('schedule_budget');

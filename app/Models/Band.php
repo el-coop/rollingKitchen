@@ -30,7 +30,7 @@ class Band extends Model {
 	public function user() {
 		return $this->morphOne(User::class, 'user');
 	}
-
+	
 	public function admin() {
 		return $this->hasOne(BandAdmin::class);
 	}
@@ -137,6 +137,7 @@ class Band extends Model {
 				'id' => $schedule->id,
 				'stage' => $schedule->stage->name,
 				'date_time' => $schedule->date_time,
+				'end_time' => $schedule->end_time,
 				'payment' => $schedule->payment,
 				'approved' => $schedule->approved
 			];
@@ -152,12 +153,12 @@ class Band extends Model {
 	
 	public function getAvailableBudgetAttribute() {
 		$adminPayment = 0;
-		if ($this->admin()->exists()){
+		if ($this->admin()->exists()) {
 			$adminPayment = $this->admin->payment;
 		}
 		return $this->approved_payments - $this->bandMembers->sum('payment') - $adminPayment;
 	}
-
+	
 	public function pdf() {
 		return $this->hasOne(BandPdf::class);
 	}

@@ -1,13 +1,17 @@
 <schedule :budget="{{ $budget }}" :init-budget="{{ $initBudget }}">
 	<template #default="{submitting, updateBudget}">
-		<calendar start-date="{{ $startDay }}" :start-hour="{{ $startHour }}" :number-of-days="{{ $days }}" :end-hour="{{ $endHour }}"
+		<calendar start-date="{{ $startDay }}" :start-hour="{{ $startHour }}" :number-of-days="{{ $days }}"
+				  :end-hour="{{ $endHour }}"
 				  options-title="@lang('admin/artists.bands')"
 				  :init-data="{{ $schedules->count() ? $schedules : '{}' }}"
+				  :init-taken="{{ $takenTimes }}"
+				  :on-update="updateBudget"
 				  :options="{{ $bands }}">
-			<template #entry="{rawData,processedData, edit, init, dateTime}">
+			<template #entry="{rawData,processedData, edit, init, dateTime, taken, updateTaken}">
 				<calendar-schedule-display v-if="processedData" :data="processedData" :edit="edit" :init="init"
 										   :bands="{{$bands}}" :stages="{{ $stages }}"
-										   :date-time="dateTime" :on-update="updateBudget"></calendar-schedule-display>
+										   :taken="taken"
+										   :date-time="dateTime" :on-update="updateTaken"></calendar-schedule-display>
 			</template>
 			<template #options>
 				<div class="buttons">

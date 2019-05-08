@@ -34,6 +34,8 @@
 								<template #default="{rawData, processedData, edit}">
 									<slot name="entry" :rawData="rawData" :processedData="processedData"
 										  :edit="edit"
+										  :update-taken="updateTaken"
+										  :taken="initTaken[`${date(calcDate(realStartDate,i - 1))} ${formatTime(startHour + (n-1) * interval)}`] || []"
 										  :dateTime="`${date(calcDate(realStartDate,i - 1))} ${formatTime(startHour + (n-1) * interval)}`"
 										  :init="initData[`${date(calcDate(realStartDate,i - 1))} ${formatTime(startHour + (n-1) * interval)}`] || []"></slot>
 								</template>
@@ -101,6 +103,12 @@
 					return {};
 				}
 			},
+			initTaken: {
+				type: Object,
+				default() {
+					return {};
+				}
+			},
 			startDate: {
 				type: String,
 				required: true
@@ -142,7 +150,13 @@
 			resizeable: {
 				type: Boolean,
 				default: false,
-			}
+			},
+			onUpdate: {
+				type: Function,
+				default: () => {
+
+				}
+			},
 		},
 
 		mounted() {
@@ -176,12 +190,16 @@
 				return newDate;
 			},
 
+			updateTaken(value){
+				this.onUpdate(value);
+			},
+
 			setWidth() {
 				const totalWidth = this.$el.parentElement.getBoundingClientRect().width;
 				if (totalWidth === 0) {
 					window.setTimeout(() => {
 						this.setWidth();
-					},500);
+					}, 500);
 					return;
 				}
 				const optionsWidth = this.$refs.options.getBoundingClientRect().width / this.columnWidth;

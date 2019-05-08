@@ -14,6 +14,7 @@ class CreateBandSchedulesTable extends Migration {
 		Schema::create('band_schedules', function (Blueprint $table) {
 			$table->bigIncrements('id');
 			$table->timestamp('date_time');
+			$table->timestamp('end_time');
 			$table->bigInteger('stage_id')->unsigned();
 			$table->bigInteger('band_id')->unsigned();
 			$table->decimal('payment', 10, 2);
