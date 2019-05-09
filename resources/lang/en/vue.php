@@ -64,4 +64,8 @@ return [
 	'approve' => 'Approve',
 	'technicalRequirements' => 'Technical rider',
 	'chooseFile' => 'Choose a file',
+	'band' => 'Band',
+	'stage' => 'Stage',
+	'payment' => 'Payment',
+	'endTime' => 'End time'
 ];

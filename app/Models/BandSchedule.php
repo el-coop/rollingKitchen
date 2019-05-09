@@ -17,4 +17,12 @@ class BandSchedule extends Model {
 	public function getDateTimeAttribute($value) {
 		return Carbon::parse($value)->format('d/m/Y H:i');
 	}
+	
+	public function getEndTimeAttribute($value) {
+		return Carbon::parse($value)->format('H:i');
+	}
+	
+	public function getEndDateTimeAttribute($value) {
+		return Carbon::parse($this->attributes['end_time']);
+	}
 }

@@ -181,7 +181,7 @@
 				if (totalWidth === 0) {
 					window.setTimeout(() => {
 						this.setWidth();
-					},500);
+					}, 500);
 					return;
 				}
 				const optionsWidth = this.$refs.options.getBoundingClientRect().width / this.columnWidth;

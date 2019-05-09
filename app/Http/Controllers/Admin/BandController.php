@@ -87,7 +87,7 @@ class BandController extends Controller {
 	}
 	
 	public function schedule() {
-		$schedules = BandSchedule::select('date_time', 'stage_id as stage', 'band_id as band', 'payment', 'approved')->get()->groupBy('date_time');
+		$schedules = BandSchedule::select('date_time', 'end_time', 'stage_id as stage', 'band_id as band', 'payment', 'approved')->get()->groupBy('date_time');
 		$bands = Band::select('id')->with('user')->get()->pluck('user.name', 'id');
 		$stages = Stage::select('id', 'name')->get()->pluck('name', 'id');
 		$budget = app('settings')->get('schedule_budget');
@@ -96,7 +96,6 @@ class BandController extends Controller {
 		$days = Carbon::parse($startDay)->diffInDays(Carbon::parse(app('settings')->get('schedule_end_day'))) + 1;
 		$startHour = app('settings')->get('schedule_start_hour');
 		$endHour = app('settings')->get('schedule_end_hour');
-		
 		
 		return view('admin.bands.schedule', compact('bands', 'stages', 'schedules', 'budget', 'initBudget', 'startDay', 'startHour', 'days', 'endHour'));
 	}

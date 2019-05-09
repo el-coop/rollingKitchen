@@ -100,10 +100,12 @@ class ScheduleTest extends TestCase {
 				'band' => $bands->first()->id,
 				'stage' => $stages->first()->id,
 				'payment' => 10,
+				'endTime' => $dateTime->addHour()->format('H:i')
 			], [
 				'band' => $bands->last()->id,
 				'stage' => $stages->last()->id,
 				'payment' => 100,
+				'endTime' => $dateTime->addHour()->format('H:i')
 			]]
 		]])->assertSuccessful()->assertJson(['success' => true]);
 		
@@ -111,14 +113,16 @@ class ScheduleTest extends TestCase {
 			'band_id' => $bands->first()->id,
 			'stage_id' => $stages->first()->id,
 			'payment' => 10,
-			'date_time' => $dateTime->format('Y-m-d H:i:00')
+			'date_time' => $dateTime->subHours(2)->format('Y-m-d H:i:00'),
+			'end_time' => $dateTime->addHour()->format('Y-m-d H:i:00')
 		]);
 		
 		$this->assertDatabaseHas('band_schedules', [
 			'band_id' => $bands->last()->id,
 			'stage_id' => $stages->last()->id,
 			'payment' => 100,
-			'date_time' => $dateTime->format('Y-m-d H:i:00')
+			'date_time' => $dateTime->subHour()->format('Y-m-d H:i:00'),
+			'end_time' => $dateTime->addHours(2)->format('Y-m-d H:i:00'),
 		]);
 		Event::assertDispatched(ShowCreated::class, function ($event) use ($bands, $stages) {
 			return $event->show->band->id == $bands->first()->id && $event->show->stage->id == $stages->first()->id && $event->show->payment == 10;
@@ -179,6 +183,7 @@ class ScheduleTest extends TestCase {
 				'band' => $bands->id,
 				'stage' => $stage->id,
 				'payment' => 10,
+				'endTime' => $dateTime->addHour()->format('H:i')
 			]]
 		]])->assertSuccessful()->assertJson(['success' => true]);
 		
@@ -186,7 +191,8 @@ class ScheduleTest extends TestCase {
 			'band_id' => $bands->id,
 			'stage_id' => $stage->id,
 			'payment' => 10,
-			'date_time' => $dateTime->format('Y-m-d H:i:00')
+			'date_time' => $dateTime->subHour()->format('Y-m-d H:i:00'),
+			'end_time' => $dateTime->addHour()->format('Y-m-d H:i:00')
 		]);
 		
 		$oldShows->each(function ($show) use ($dateTime) {
@@ -234,6 +240,7 @@ class ScheduleTest extends TestCase {
 				'band' => $band->id,
 				'stage' => $this->stages->last()->id,
 				'payment' => 10,
+				'endTime' => $dateTime->addHour()->format('H:i')
 			]]
 		]])->assertSuccessful()->assertJson(['success' => true]);
 		
@@ -241,7 +248,8 @@ class ScheduleTest extends TestCase {
 			'band_id' => $band->id,
 			'stage_id' => $this->stages->last()->id,
 			'payment' => 10,
-			'date_time' => $dateTime->format('Y-m-d H:i:00'),
+			'date_time' => $dateTime->subHour()->format('Y-m-d H:i:00'),
+			'end_time' => $dateTime->addHour()->format('Y-m-d H:i:00'),
 			'approved' => 'accepted',
 		]);
 		
@@ -270,6 +278,7 @@ class ScheduleTest extends TestCase {
 				'band' => $bands->id,
 				'stage' => $stage->id,
 				'payment' => 5,
+				'endTime' => $dateTime->addHour()->format('H:i'),
 			]]
 		]])->assertSuccessful()->assertJson(['success' => true]);
 		
@@ -277,7 +286,8 @@ class ScheduleTest extends TestCase {
 			'band_id' => $bands->id,
 			'stage_id' => $stage->id,
 			'payment' => 5,
-			'date_time' => $dateTime->format('Y-m-d H:i:00'),
+			'date_time' => $dateTime->subHour()->format('Y-m-d H:i:00'),
+			'end_time' => $dateTime->addHour()->format('Y-m-d H:i:00'),
 			'approved' => 'pending',
 		]);
 		
