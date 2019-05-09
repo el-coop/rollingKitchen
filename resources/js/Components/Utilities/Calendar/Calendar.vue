@@ -142,13 +142,7 @@
 			resizeable: {
 				type: Boolean,
 				default: false,
-			},
-			onUpdate: {
-				type: Function,
-				default: () => {
-
-				}
-			},
+			}
 		},
 
 		mounted() {

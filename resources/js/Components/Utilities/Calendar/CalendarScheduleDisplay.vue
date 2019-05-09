@@ -96,17 +96,6 @@
 			}
 
 		},
-
-		computed: {
-			takenEntries() {
-				return [...this.taken].sort((a, b) => {
-					if (this.stages[a.stage] > this.stages[b.stage]) {
-						return 1;
-					}
-					return -1;
-				})
-			}
-		},
 		watch: {
 			data(value) {
 				if (!value.band) {
@@ -134,9 +123,5 @@
 
 	.tags {
 		cursor: pointer;
-	}
-
-	.is-ghost {
-		opacity: 0.5;
 	}
 </style>
