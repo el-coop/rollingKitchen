@@ -97,26 +97,7 @@ class BandController extends Controller {
 		$startHour = app('settings')->get('schedule_start_hour');
 		$endHour = app('settings')->get('schedule_end_hour');
 		
-		
-		$takenTimes = collect();
-		$schedules->each(function ($schedule, $startTime) use ($takenTimes) {
-			$showTime = Carbon::createFromFormat('d/m/Y H:i', $startTime);
-			$schedule->each(function ($show) use ($showTime, $takenTimes) {
-				$startTime = $showTime->clone()->addMinutes(30);
-				$endTime = $show->end_date_time;
-				while ($startTime < $endTime) {
-					$startTimeKey = $startTime->format('d/m/Y H:i');
-					if ($takenTimes->has($startTimeKey)) {
-						$takenTimes->get($startTimeKey)->push($show);
-					} else {
-						$takenTimes->put($startTimeKey, collect([$show]));
-					}
-					$startTime->addMinutes(30);
-				}
-			});
-		});
-		
-		return view('admin.bands.schedule', compact('bands', 'stages', 'schedules', 'budget', 'initBudget', 'startDay', 'startHour', 'days', 'endHour', 'takenTimes'));
+		return view('admin.bands.schedule', compact('bands', 'stages', 'schedules', 'budget', 'initBudget', 'startDay', 'startHour', 'days', 'endHour'));
 	}
 	
 	public function storeSchedule(StoreBandScheduleRequest $request) {

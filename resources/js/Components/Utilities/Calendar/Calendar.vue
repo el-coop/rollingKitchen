@@ -34,8 +34,6 @@
 								<template #default="{rawData, processedData, edit}">
 									<slot name="entry" :rawData="rawData" :processedData="processedData"
 										  :edit="edit"
-										  :update-taken="updateTaken"
-										  :taken="initTaken[`${date(calcDate(realStartDate,i - 1))} ${formatTime(startHour + (n-1) * interval)}`] || []"
 										  :dateTime="`${date(calcDate(realStartDate,i - 1))} ${formatTime(startHour + (n-1) * interval)}`"
 										  :init="initData[`${date(calcDate(realStartDate,i - 1))} ${formatTime(startHour + (n-1) * interval)}`] || []"></slot>
 								</template>
@@ -98,12 +96,6 @@
 
 		props: {
 			initData: {
-				type: Object,
-				default() {
-					return {};
-				}
-			},
-			initTaken: {
 				type: Object,
 				default() {
 					return {};
@@ -188,10 +180,6 @@
 				const newDate = new Date(date);
 				newDate.setDate(date.getDate() + days);
 				return newDate;
-			},
-
-			updateTaken(value){
-				this.onUpdate(value);
 			},
 
 			setWidth() {

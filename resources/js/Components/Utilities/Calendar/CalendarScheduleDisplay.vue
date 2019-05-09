@@ -19,15 +19,7 @@
 			<span class="tag" :class="approveStatus(entry)"
 				  v-text="stages[entry.stage]"></span>
 			<span class="tag is-dark" v-text="bands[entry.band]"></span>
-			<a class="tag is-delete" @click.stop="remove(entry.stage)"></a>
-		</div>
-
-
-		<div class="tags has-addons is-ghost" v-for="entry in takenEntries" :key="`taken_${entry.stage}`"
-			 @click.stop="openModal({id: entry.band,stage: entry.stage,payment: entry.payment,end_time: entry.end_time})">
-			<span class="tag" :class="approveStatus(entry)"
-				  v-text="stages[entry.stage]"></span>
-			<span class="tag is-dark" v-text="bands[entry.band]"></span>
+			<span class="tag is-light" v-text="entry.end_time"></span>
 			<a class="tag is-delete" @click.stop="remove(entry.stage)"></a>
 		</div>
 	</div>
@@ -58,12 +50,6 @@
 				required: true
 			},
 			init: {
-				type: Array,
-				default() {
-					return [];
-				}
-			},
-			taken: {
 				type: Array,
 				default() {
 					return [];

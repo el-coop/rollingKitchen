@@ -13,6 +13,5 @@
 		@slot('days', $days)
 		@slot('startHour', $startHour)
 		@slot('endHour', $endHour)
-		@slot('takenTimes', $takenTimes)
 	@endcomponent
 @endsection
