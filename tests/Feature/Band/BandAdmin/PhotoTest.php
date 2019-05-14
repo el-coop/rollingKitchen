@@ -82,8 +82,8 @@ class PhotoTest extends TestCase {
 	public function test_other_band_cant_upload_band_admin_photo() {
 		$band = factory(User::class)->make();
 		factory(Band::class)->create([
-			'payment_method' => 'band'
-		])->user()->save($this->band);
+			'payment_method' => 'band',
+		])->user()->save($band);
 		$this->actingAs($band)->post(action('Band\BandAdminController@storePhoto', [$this->band->user, $this->bandAdmin]))->assertForbidden();
 	}
 
@@ -203,7 +203,7 @@ class PhotoTest extends TestCase {
 		$band = factory(User::class)->make();
 		factory(Band::class)->create([
 			'payment_method' => 'band'
-		])->user()->save($this->band);
+		])->user()->save($band);
 		$this->actingAs($band)->delete(action('Band\BandAdminController@destroyPhoto', [
 			'band' => $this->band->user,
 			'bandAdmin' => $this->bandAdmin,

@@ -9,7 +9,7 @@
 			type: 'file',
 			label: $translations.chooseFile,
 		}]" method="post" :headers="{'Content-Type': 'multipart/form-data'}" :button-text="$translations.upload"
-					  :url="url" @object-update="hasPdf = true">
+					  :url="url" @object-update="handleSubmit">
 		</dynamic-form>
 	</div>
 </template>
@@ -38,7 +38,8 @@
 
 		methods: {
 			handleSubmit() {
-
+				this.hasPdf = true;
+				this.$emit('pdf-uploaded');
 			}
 		},
 

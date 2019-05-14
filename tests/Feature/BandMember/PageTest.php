@@ -23,7 +23,7 @@ class PageTest extends TestCase {
 	protected $accountant;
 	protected $band;
 	protected $bandMember;
-
+	
 	protected function setUp(): void {
 		parent::setUp();
 		$this->admin = factory(User::class)->make();
@@ -45,36 +45,36 @@ class PageTest extends TestCase {
 			'band_id' => $this->band->user->id
 		])->user()->save($this->bandMember);
 	}
-
-	public function test_guest_cant_get_band_member_page(){
+	
+	public function test_guest_cant_get_band_member_page() {
 		$this->get(action('BandMember\BandMemberController@show', $this->bandMember->user))->assertRedirect(action('Auth\LoginController@login'));
 	}
-
-	public function test_kitchen_cant_get_band_member_page(){
+	
+	public function test_kitchen_cant_get_band_member_page() {
 		$this->actingAs($this->kitchen)->get(action('BandMember\BandMemberController@show', $this->bandMember->user))->assertForbidden();
 	}
-
-	public function test_worker_cant_get_band_member_page(){
+	
+	public function test_worker_cant_get_band_member_page() {
 		$this->actingAs($this->worker)->get(action('BandMember\BandMemberController@show', $this->bandMember->user))->assertForbidden();
 	}
-
-	public function test_band_cant_get_band_member_page(){
+	
+	public function test_band_cant_get_band_member_page() {
 		$this->actingAs($this->band)->get(action('BandMember\BandMemberController@show', $this->bandMember->user))->assertForbidden();
 	}
-
-	public function test_accountant_cant_get_band_member_page(){
+	
+	public function test_accountant_cant_get_band_member_page() {
 		$this->actingAs($this->accountant)->get(action('BandMember\BandMemberController@show', $this->bandMember->user))->assertForbidden();
 	}
-
-	public function test_band_member_can_get_band_member_page(){
-		$this->actingAs($this->bandMember)->get(action('BandMember\BandMemberController@show', $this->bandMember->user))->assertSuccessful()->assertSee($this->bandMember->name);
+	
+	public function test_band_member_can_get_band_member_page() {
+		$this->actingAs($this->bandMember)->get(action('BandMember\BandMemberController@show', $this->bandMember->user))->assertSuccessful()->assertSee(htmlspecialchars($this->bandMember->name));
 	}
-
-	public function test_artist_manager_cant_get_band_member_page(){
+	
+	public function test_artist_manager_cant_get_band_member_page() {
 		$this->actingAs($this->artistManager)->get(action('BandMember\BandMemberController@show', $this->bandMember->user))->assertForbidden();
 	}
-
-	public function test_admin_cant_get_band_member_page(){
+	
+	public function test_admin_cant_get_band_member_page() {
 		$this->actingAs($this->admin)->get(action('BandMember\BandMemberController@show', $this->bandMember->user))->assertForbidden();
 	}
 }
