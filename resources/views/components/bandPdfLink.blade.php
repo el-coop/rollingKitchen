@@ -1,3 +1,3 @@
-<h6 v-if="object.pdf" class="subtitle is-5">
-    <a :href="'{{Request::url() }}/pdf/' + `${object.pdf}`" >@lang('band/band.technicalRequirements')</a>
-</h6>
+<band-pdf-form :band-id="`${object.id}`" class="mt-1"
+			   @pdf-uploaded="() => {object.pdf = 1;onUpdate(object);}"
+			   :init-has-pdf="object.pdf ? true : false"></band-pdf-form>
