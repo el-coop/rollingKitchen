@@ -140,8 +140,9 @@ class BandController extends Controller {
 	}
 	
 	public function showPdf(BandPdf $bandPdf) {
-		$filename = str_replace(' ', '_', $bandPdf->band->user->name . '_' . __('band/band.technicalRequirements'));
 		
-		return Storage::download("public/pdf/band/{$bandPdf->file}", "{$filename}.pdf");
+		$filename = str_replace(' ', '_', $bandPdf->band->user->name . '_' . __('band/band.technicalRequirements'));
+		$extension = pathinfo($bandPdf->file, PATHINFO_EXTENSION);
+		return Storage::download("public/pdf/band/{$bandPdf->file}", "{$filename}.$extension");
 	}
 }
