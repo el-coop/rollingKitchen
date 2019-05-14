@@ -8,7 +8,7 @@
 				return `<span class="tag is-danger">${this.$translations.no}</span>`;
 			},
 			boolean(value) {
-				if (value) {
+				if (value && value !== '0') {
 					return `<span class="tag is-success">${this.$translations.yes}</span>`;
 				}
 				return `<span class="tag is-danger">${this.$translations.no}</span>`;
