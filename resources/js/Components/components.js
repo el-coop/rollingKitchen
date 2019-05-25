@@ -15,6 +15,7 @@ Vue.component('ExportWorkedHours', require('./Shift/ExportWorkedHours').default)
 Vue.component('Schedule', require('./Schedule/Schedule').default);
 Vue.component('ApproveSchedule', require('./Band/ApproveSchedule').default);
 Vue.component('BandPdfForm', require('./Band/BandPdfForm').default);
+Vue.component('ServicesForm', require('./Admin/ServicesForm').default);
 
 // utilities
 Vue.component('Drawer', require('./Utilities/Drawer').default);

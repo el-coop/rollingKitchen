@@ -7,7 +7,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		Route::delete('/delete/{kitchen}', 'KitchenController@destroy');
 		Route::get('/edit/{kitchen}', 'KitchenController@edit');
 		Route::patch('/edit/{kitchen}', 'KitchenController@update');
-
+		
 	});
 	
 	Route::group(['prefix' => 'services'], function () {
@@ -66,6 +66,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		Route::get('/edit/{application}', 'ApplicationController@edit');
 		Route::patch('/edit/{application}', 'ApplicationController@update');
 		Route::patch('/dimensions/{application}', 'ApplicationController@updateDimensions');
+		Route::patch('/services/{application}', 'ApplicationController@updateServices');
 	});
 	
 	Route::group(['prefix' => 'settings'], function () {
@@ -194,7 +195,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		Route::get('/', 'BlastMessageController@show');
 		Route::post('/', 'BlastMessageController@send');
 	});
-
+	
 	Route::group(['prefix' => 'bandPayments'], function () {
 		Route::get('/', 'BandPaymentExportColumnController@show');
 		Route::patch('/order', 'BandPaymentExportColumnController@saveOrder');
