@@ -94,7 +94,7 @@ class ScheduleTest extends TestCase {
 		app('settings')->put('schedule_budget', 120);
 		$bands = $this->bands->random(2);
 		$stages = $this->stages->random(2);
-		$dateTime = Carbon::now();
+		$dateTime = Carbon::today()->addHours(21);
 		$this->actingAs($this->artistManager)->post(action('ArtistManager\ArtistManagerController@storeSchedule'), ['calendar' => [
 			$dateTime->format('d/m/Y H:i') => [[
 				'band' => $bands->first()->id,
@@ -176,7 +176,7 @@ class ScheduleTest extends TestCase {
 		Event::fake();
 		$bands = $this->bands->random();
 		$stage = $this->stages->random();
-		$dateTime = Carbon::now();
+		$dateTime = Carbon::today()->addHours(21);
 		$oldShows = BandSchedule::all();
 		$this->actingAs($this->artistManager)->post(action('ArtistManager\ArtistManagerController@storeSchedule'), ['calendar' => [
 			$dateTime->format('d/m/Y H:i') => [[
@@ -225,7 +225,7 @@ class ScheduleTest extends TestCase {
 		Event::fake();
 		$band = $this->bands->random();
 		$stage = $this->stages->first();
-		$dateTime = Carbon::now();
+		$dateTime = Carbon::today()->addHours(21);
 		
 		$show = factory(BandSchedule::class)->create([
 			'band_id' => $band->id,
@@ -263,7 +263,7 @@ class ScheduleTest extends TestCase {
 		Event::fake();
 		$bands = $this->bands->random();
 		$stage = $this->stages->first();
-		$dateTime = Carbon::now();
+		$dateTime = Carbon::today()->addHours(21);
 		
 		$show = factory(BandSchedule::class)->create([
 			'band_id' => $bands->id,
