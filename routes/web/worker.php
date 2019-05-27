@@ -22,6 +22,8 @@ Route::group(['prefix' => 'worker', 'namespace' => 'Worker'], function () {
 			Route::delete('{workplace}/delete/{worker}', 'SupervisorController@destroyWorker');
 			Route::group(['prefix' => 'workplace'], function () {
 				
+				Route::post('{workplace}/shifts', 'SupervisorController@exportShifts')->middleware('can:update,workplace');
+
 				Route::get('{workplace}/worker', 'SupervisorController@createWorker');
 				Route::post('{workplace}/worker', 'SupervisorController@storeWorker');
 				

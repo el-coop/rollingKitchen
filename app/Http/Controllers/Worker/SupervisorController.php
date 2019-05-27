@@ -19,9 +19,11 @@ use App\Models\ShiftWorker;
 use App\Models\Worker;
 use App\Models\WorkFunction;
 use App\Models\Workplace;
+use App\Services\WorkplaceShiftsExportService;
 use function foo\func;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Excel;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class SupervisorController extends Controller {
@@ -87,5 +89,12 @@ class SupervisorController extends Controller {
 	
 	public function removeWorkerFromShift(RemoveWorkerFromShiftRequest $request, Shift $shift, ShiftWorker $shiftWorker) {
 		return $request->commit();
+	}
+	
+	public function exportShifts(Excel $excel, Request $request, Workplace $workplace) {
+		$days = $workplace->shifts()->orderBy('date')->with('workplace', 'shiftWorkers')->get()->filter(function ($day, $index) use ($request) {
+			return in_array($index, $request->input('days'));
+		});
+		return $excel->download(new WorkplaceShiftsExportService($days), "{$workplace->name}.xls");
 	}
 }
