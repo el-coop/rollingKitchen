@@ -1,9 +1,26 @@
 @component('components.nonConfigDatatable', [
     'attribute' => 'shiftsForSupervisor',
     'fields' => $shiftsTable['fields'],
-    'url' => "/supervisorDatatable/{$workplace->id}"
+    'url' => "/supervisorDatatable/{$workplace->id}",
+    'exportButton' => false
 ])
-	@slot('exportButton', false)
+	@slot('buttons')
+		<form method="post" action="{{ action('Worker\SupervisorController@exportShifts', $workplace) }}">
+			@csrf
+			<checkbox-field :field="{
+				label: '@lang('admin/shifts.date')',
+				name: 'days',
+				options: [
+					@foreach($workplace->shifts->sortBy('date') as $shift)
+					{
+						name: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$shift->date)->format('d/m/Y')}}',
+					},
+					@endforeach
+					]
+				}"></checkbox-field>
+			<button class="button is-success">@lang('vue.export')</button>
+		</form>
+	@endslot
 	<template #default="{object, onUpdate}">
 		<template v-if="object">
 			<dynamic-fields :fields="[{
