@@ -69,11 +69,16 @@ class User extends Authenticatable implements HasLocalePreference {
 	}
 
 	public function routeNotificationForNexmo($notification) {
-		foreach ($this->user->data as $key => $value){
-			if (stripos($key, 'phone number') !== false){
-				return $value;
+		$field = Field::where('form', $this->user_type)->whereRaw("LOWER (name_en) LIKE '%phone number%'")->first();
+		$number =$this->user->data[$field->id];
+		if ($number[0] == '0'){
+			if ($number[1] == '0'){
+				$number = substr_replace($number, '+', 0,2);
+			} else {
+				$number = substr_replace($number, '+31', 0,1);
 			}
 		}
+		return $number;
 	}
 
 }
