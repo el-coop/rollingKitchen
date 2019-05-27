@@ -28,9 +28,14 @@
 			<p class="title">
 				@lang('global.photos')
 			</p>
-			<carousel :photos="{{ $worker->photos }}">
-
-			</carousel>
+			<image-manager url="{{ action('Worker\WorkerController@storePhoto', $worker) }}" :data="{
+					_token: '{{csrf_token()}}'
+				}" :init-images="{{ $worker->photos }}" delete-url="/worker/{{ $worker->id }}/photo">
+				<template #display="{images}">
+					<carousel :photos="images">
+					</carousel>
+				</template>
+			</image-manager>
 		</div>
 	</div>
 </div>

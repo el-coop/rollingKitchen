@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<slot name="display" :images="images"></slot>
 		<image-list :images="images" :delete-url="deleteUrl" @deleted="removeImage"></image-list>
 		<image-upload :url="url" :data="data" @uploaded="uploaded"></image-upload>
 	</div>
