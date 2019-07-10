@@ -68,6 +68,7 @@ class Invoice extends Model {
 		$individualTax = true;
 		$taxOptions = [
 			'21' => '21%',
+			'9' => '9%',
 			'6' => '6%',
 			'0' => '0',
 		];

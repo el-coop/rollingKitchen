@@ -114,6 +114,7 @@ class InvoicingTest extends TestCase {
 				'value' => [],
 				'taxOptions' => [
 					'21' => '21%',
+					'9' => '9%',
 					'6' => '6%',
 					'0' => '0',
 				]]);
@@ -370,6 +371,7 @@ class InvoicingTest extends TestCase {
 			'type' => 'invoice',
 			'taxOptions' => [
 				'21' => '21%',
+				'9' => '9%',
 				'6' => '6%',
 				'0' => '0',
 			]]);
