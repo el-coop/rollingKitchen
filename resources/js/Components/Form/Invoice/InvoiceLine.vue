@@ -5,7 +5,7 @@
 				   :name="`${name}[${index}][quantity]`" class="input">
 		</div>
 		<div class="column is-2">
-			<input v-model="unitPrice" required type="number" min="0" @keypress.enter.prevent
+			<input v-model="unitPrice" required type="number" min="0" step="0.01" @keypress.enter.prevent
 				   :name="`${name}[${index}][unitPrice]`" class="input">
 		</div>
 		<div class="column is-2" v-if="individualTax">
@@ -105,6 +105,7 @@
 				let val = 0;
 				if (this.value.quantity && this.value.unitPrice) {
 					val = (this.value.quantity * this.value.unitPrice) * (1 + this.tax / 100);
+					val = val.toFixed(2);
 				}
 				if (val != this.totalVal) {
 					this.$emit('total', val);
