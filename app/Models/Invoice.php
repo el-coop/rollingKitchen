@@ -6,6 +6,7 @@ use App\Services\InvoiceService;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 use Auth;
+use Illuminate\Support\Facades\App;
 
 class Invoice extends Model {
 
@@ -53,7 +54,10 @@ class Invoice extends Model {
 	}
 
 	public function getTotalAttribute() {
-		return $this->amount + $this->taxAmount;
+		
+		$decimalPoint = App::getLocale() == 'nl' ? ',' : '.';
+		$thousandSeparator = App::getLocale() == 'nl' ? '.' : ',';
+		return  number_format($this->amount + $this->taxAmount,2,$decimalPoint,$thousandSeparator);
 	}
 
 	public function getFullDataAttribute() {
