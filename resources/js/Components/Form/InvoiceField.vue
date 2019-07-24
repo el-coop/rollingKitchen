@@ -116,7 +116,7 @@
 		computed: {
 			totalSum() {
 				return this.sum.reduce((total, num) => {
-					return total + num;
+					return parseFloat(total) + parseFloat(num);
 				});
 			}
 		}
