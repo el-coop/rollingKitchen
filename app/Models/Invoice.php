@@ -9,22 +9,23 @@ use Auth;
 use Illuminate\Support\Facades\App;
 
 class Invoice extends Model {
-
+	
 	protected $appends = [
 		'total',
 		'taxAmount',
 		'formattedNumber',
+		'formattedTotal',
 		'totalPaid',
 		'amountLeft'
 	];
-
+	
 	protected static function boot() {
 		parent::boot();
 		static::deleted(function ($invoice) {
 			$invoice->items->each->delete();
 		});
 	}
-
+	
 	static function getNumber() {
 		$year = app('settings')->get('registration_year');
 		$number = static::where('prefix', $year)->count() + 1;
@@ -37,7 +38,7 @@ class Invoice extends Model {
 		}
 		return "{$padding}{$number}";
 	}
-
+	
 	public function getFormattedNumberAttribute() {
 		$padding = '';
 		if (strlen($this->number) == 1) {
@@ -45,25 +46,29 @@ class Invoice extends Model {
 		} else if (strlen($this->number) == 2) {
 			$padding = '0';
 		}
-
+		
 		return "{$this->prefix}-{$padding}{$this->number}";
 	}
-
+	
 	public function getTaxAmountAttribute() {
 		return $this->amount * $this->tax / 100;
 	}
-
+	
 	public function getTotalAttribute() {
+		return $this->amount + $this->taxAmount;
 		
+	}
+	
+	public function getFormattedTotalAttribute() {
 		$decimalPoint = App::getLocale() == 'nl' ? ',' : '.';
 		$thousandSeparator = App::getLocale() == 'nl' ? '.' : ',';
-		return  number_format($this->amount + $this->taxAmount,2,$decimalPoint,$thousandSeparator);
+		return number_format($this->total, 2, $decimalPoint, $thousandSeparator);
 	}
-
+	
 	public function getFullDataAttribute() {
 		$language = $this->owner instanceof Application ? $this->owner->kitchen->user->language : $this->owner->language;
 		$settings = app('settings');
-
+		
 		$pdfs = collect([]);
 		$options = collect([]);
 		$items = $this->formattedItems;
@@ -94,7 +99,7 @@ class Invoice extends Model {
 				$message = $settings->get("invoices_default_email_{$language}", '');
 			}
 		}
-
+		
 		return [[
 			'name' => 'recipient',
 			'label' => __('admin/invoices.recipient'),
@@ -148,15 +153,15 @@ class Invoice extends Model {
 			'value' => true
 		]];
 	}
-
+	
 	public function owner() {
 		return $this->morphTo();
 	}
-
+	
 	public function items() {
 		return $this->hasMany(InvoiceItem::class);
 	}
-
+	
 	public function getFormattedItemsAttribute() {
 		return $this->items->map(function ($item) {
 			return [
@@ -167,19 +172,19 @@ class Invoice extends Model {
 			];
 		});
 	}
-
+	
 	public function services() {
 		return $this->hasManyThrough(Service::class, InvoiceItem::class);
 	}
-
+	
 	public function payments() {
 		return $this->hasMany(InvoicePayment::class);
 	}
-
+	
 	public function getTotalPaidAttribute() {
 		return $this->payments->sum('amount');
 	}
-
+	
 	public function getAmountLeftAttribute() {
 		return $this->total - $this->totalPaid;
 	}
