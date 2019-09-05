@@ -4,7 +4,9 @@
 
 @section('content')
     <div class="box">
-        <a href="{{$downloadAction}}"  class="button is-info">{{$btn}}</a>
+        <link-date-selector href="{{$downloadAction}}" name="date">
+            <a class="button is-info">{{$btn}}</a>
+        </link-date-selector>
     </div>
     <dynamic-table :columns="[{
             name: 'column',
