@@ -84,7 +84,7 @@ class MotherlistTest extends TestCase {
 		
 		foreach ($this->kitchens as $kitchen) {
 			$response->assertJsonFragment([
-				'id' => $kitchen->id,
+				'id' => "{$kitchen->id}",
 				'name' => $kitchen->user->name,
 				'email' => $kitchen->user->email,
 				'status' => $kitchen->status,
@@ -142,7 +142,7 @@ class MotherlistTest extends TestCase {
 		
 		foreach ($kitchens as $kitchen) {
 			$response->assertJsonFragment([
-				'id' => $kitchen->id,
+				'id' => "{$kitchen->id}",
 				'name' => $kitchen->user->name,
 				'email' => $kitchen->user->email,
 				'status' => $kitchen->status,

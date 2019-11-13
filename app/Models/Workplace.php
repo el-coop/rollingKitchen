@@ -4,10 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use \Auth;
-use JustBetter\PaginationWithHavings\PaginationWithHavings;
 
 class Workplace extends Model {
-	use PaginationWithHavings;
 	
 	protected static function boot() {
 		parent::boot();

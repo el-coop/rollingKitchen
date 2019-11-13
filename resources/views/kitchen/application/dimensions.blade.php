@@ -5,15 +5,17 @@
 	readonly: {{ !$application->isOpen() ? 'true' : 'false'}},
 	type: 'text',
 	subType: 'number',
+	step: 0.1,
 	placeholder: '@lang('kitchen/dimensions.inMeters')',
 	error: {{ $errors->has('length') ? collect($errors->get('length')) : 'null'}},
 },{
 	name : 'width',
 	label : '@lang('kitchen/dimensions.width')',
-	value: '{{ old('width', $application->length != 0 ? $application->length  : '') }}',
+	value: '{{ old('width', $application->width != 0 ? $application->width  : '') }}',
 	readonly: {{ ! $application->isOpen() ? 'true' : 'false'}},
 	type: 'text',
 	subType: 'number',
+	step: 0.1,
 	placeholder: '@lang('kitchen/dimensions.inMeters')',
 	error: {{ $errors->has('width') ? collect($errors->get('width')) : 'null'}},
 },{
@@ -23,6 +25,7 @@
 	readonly: {{ ! $application->isOpen() ? 'true' : 'false'}},
 	type: 'text',
 	subType: 'number',
+	step: 0.1,
 	placeholder: '@lang('kitchen/dimensions.inMeters')',
     error: {{ $errors->has('terrace_length') ? collect($errors->get('terrace_length')) :  'null'}},
 },{
@@ -32,6 +35,7 @@
 	readonly: {{ ! $application->isOpen() ? 'true' : 'false'}},
 	type: 'text',
 	subType: 'number',
+	step: 0.1,
 	placeholder: '@lang('kitchen/dimensions.inMeters')',
     error: {{ $errors->has('terrace_width') ? collect($errors->get('terrace_width')) : 'null'}},
 }]">

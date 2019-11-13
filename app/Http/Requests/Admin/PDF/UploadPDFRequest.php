@@ -23,7 +23,7 @@ class UploadPDFRequest extends FormRequest {
 	 */
 	public function rules() {
 		return [
-			'file' => 'required|file',
+			'file' => 'required|file|clamav',
 			'name' => 'required|string|unique:pdfs',
 			'visibility' => 'required|in:0,1,2,3'
 		];

@@ -7,7 +7,7 @@ $factory->define(\App\Models\Application::class, function (Faker $faker) {
 	$terrace = $faker->boolean;
 	
 	return [
-		'status' => array_random(['pending', 'accepted', 'rejected']),
+		'status' => Illuminate\Support\Arr::random(['pending', 'accepted', 'rejected']),
 		'year' => $faker->year,
 		'length' => $faker->randomFloat(2, 0, 15),
 		'width' => $faker->randomFloat(2, 0, 15),

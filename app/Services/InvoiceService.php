@@ -68,7 +68,7 @@ class InvoiceService {
 	}
 	
 	public function getOptions() {
-		$result = Service::where('category', '!=', 'socket')->get()->map(function ($service) {
+		$result = Service::all()->map(function ($service) {
 			return [
 				'item' => $service->{"name_{$this->language}"},
 				'unitPrice' => $service->price

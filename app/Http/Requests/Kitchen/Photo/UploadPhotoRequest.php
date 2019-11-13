@@ -25,7 +25,7 @@ class UploadPhotoRequest extends FormRequest {
 	 */
 	public function rules() {
 		return [
-			'photo' => 'required|image'
+			'photo' => 'required|image|clamav'
 		];
 	}
 	
