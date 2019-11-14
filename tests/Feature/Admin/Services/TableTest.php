@@ -104,7 +104,7 @@ class TableTest extends TestCase {
 
 		foreach ($services as $service) {
 			$response->assertJsonFragment([
-				'id' => $service->id,
+				'id' => "{$service->id}",
 				'name_nl' => $service->name_nl,
 				'name_en' => $service->name_en,
 				'category' => $service->category,

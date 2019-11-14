@@ -116,42 +116,42 @@ class PhotoTest extends TestCase {
 	
 	public function test_guest_cant_delete_band_member_photo() {
 		$this->delete(action('BandMember\BandMemberController@destroyPhoto', [
-			'worker' => $this->bandMember->user,
+			'bandMember' => $this->bandMember->user,
 			'photo' => $this->bandMemberPhoto
 		]))->assertRedirect(action('Auth\LoginController@showLoginForm'));
 	}
 	
 	public function test_kitchen_cant_delete_band_member_photo() {
 		$this->actingAs($this->kitchen)->delete(action('BandMember\BandMemberController@destroyPhoto', [
-			'worker' => $this->bandMember->user,
+			'bandMember' => $this->bandMember->user,
 			'photo' => $this->bandMemberPhoto
 		]))->assertForbidden();
 	}
 	
 	public function test_accountant_cant_delete_band_member_photo() {
 		$this->actingAs($this->accountant)->delete(action('BandMember\BandMemberController@destroyPhoto', [
-			'worker' => $this->bandMember->user,
+			'bandMember' => $this->bandMember->user,
 			'photo' => $this->bandMemberPhoto
 		]))->assertForbidden();
 	}
 	
 	public function test_worker_cant_delete_band_member_photo() {
 		$this->actingAs($this->worker)->delete(action('BandMember\BandMemberController@destroyPhoto', [
-			'worker' => $this->bandMember->user,
+			'bandMember' => $this->bandMember->user,
 			'photo' => $this->bandMemberPhoto
 		]))->assertForbidden();
 	}
 	
 	public function test_band_cant_delete_band_member_photo() {
 		$this->actingAs($this->band)->delete(action('BandMember\BandMemberController@destroyPhoto', [
-			'worker' => $this->bandMember->user,
+			'bandMember' => $this->bandMember->user,
 			'photo' => $this->bandMemberPhoto
 		]))->assertForbidden();
 	}
 	
 	public function test_artist_manager_cant_delete_band_member_photo() {
 		$this->actingAs($this->artistManager)->delete(action('BandMember\BandMemberController@destroyPhoto', [
-			'worker' => $this->bandMember->user,
+			'bandMember' => $this->bandMember->user,
 			'photo' => $this->bandMemberPhoto
 		]))->assertForbidden();
 	}
@@ -162,14 +162,14 @@ class PhotoTest extends TestCase {
 			'band_id' => $this->band->user->id
 		])->user()->save($bandMember);
 		$this->actingAs($bandMember)->delete(action('BandMember\BandMemberController@destroyPhoto', [
-			'worker' => $this->bandMember->user,
+			'bandMember' => $this->bandMember->user,
 			'photo' => $this->bandMemberPhoto
 		]))->assertForbidden();
 	}
 	
 	public function test_admin_cant_delete_band_member_photo() {
 		$this->actingAs($this->admin)->delete(action('BandMember\BandMemberController@destroyPhoto', [
-			'worker' => $this->bandMember->user,
+			'bandMember' => $this->bandMember->user,
 			'photo' => $this->bandMemberPhoto
 		]))->assertForbidden();
 	}
@@ -179,7 +179,7 @@ class PhotoTest extends TestCase {
 		$file->store('public/photos');
 		
 		$this->actingAs($this->bandMember)->delete(action('BandMember\BandMemberController@destroyPhoto', [
-			'worker' => $this->bandMember->user,
+			'bandMember' => $this->bandMember->user,
 			'photo' => $this->bandMemberPhoto
 		]))->assertSuccessful()->assertJson([
 			'success' => true

@@ -27,4 +27,8 @@ return [
 	'invoiceSent' => 'Factuur verstuurd',
 	'amountLeft' => 'Resterend bedrag',
 	'billingDetailsMissing' => 'Het creëren van een factuur is mislukt, vanwege het ontbreken van bedrijfsgegevens',
+    
+    'paid' => 'TBT',
+    'notPaid' => 'TBT',
+    'partially Paid' => 'TBT',
 ];

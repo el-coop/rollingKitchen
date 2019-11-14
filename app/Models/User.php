@@ -7,13 +7,11 @@ use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use JustBetter\PaginationWithHavings\PaginationWithHavings;
 use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 
 
 class User extends Authenticatable implements HasLocalePreference {
 	use Notifiable;
-	use PaginationWithHavings;
 
 
 	/**

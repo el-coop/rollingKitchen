@@ -27,7 +27,7 @@ class StoreTaxReviewRequest extends FormRequest {
 	 */
 	public function rules() {
 		return [
-			'file' => 'file|required',
+			'file' => 'file|required|clamav',
 			'name' => 'required'
 		];
 	}

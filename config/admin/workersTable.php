@@ -24,8 +24,8 @@ return [
 		'sortField' => 'name',
 	], [
 		'name' => 'workplacesList',
-		'noTable' => true,
-		'filterFields' => ['workplaces.name'],
+        'raw' => 'GROUP_CONCAT(workplaces.name) as workplacesList',
+        'filterFields' => ['workplaces.name'],
 		'filter' => function () {
 			return \App\Models\Workplace::all()->pluck('name', 'name');
 		},

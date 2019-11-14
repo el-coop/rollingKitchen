@@ -63,7 +63,7 @@ class PageTest extends TestCase {
 	public function test_datatable_gets_data(){
 		$response = $this->actingAs($this->admin)->get(action('DatatableController@list', ['table' => 'admin.artistManagerTable', 'per_page' => 20]));
 		$response->assertJsonFragment([
-			'id' => $this->artistManager->user->id,
+			'id' => "{$this->artistManager->user->id}",
 			'name' => $this->artistManager->name,
 			'email' => $this->artistManager->email
 		]);

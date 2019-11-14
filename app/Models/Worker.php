@@ -5,12 +5,10 @@ namespace App\Models;
 use App\Models\Traits\HasFields;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use JustBetter\PaginationWithHavings\PaginationWithHavings;
 
 
 class Worker extends Model {
     use HasFields;
-    use PaginationWithHavings;
     
     protected static function boot() {
         parent::boot();

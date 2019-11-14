@@ -1,8 +1,8 @@
 <template>
-	<form @submit.prevent="submit">
-		<slot name="errors" v-if="errors" :error="errors"></slot>
-		<slot></slot>
-	</form>
+    <form @submit.prevent="submit">
+        <slot name="errors" v-if="errors" :error="errors"></slot>
+        <slot></slot>
+    </form>
 </template>
 
 <script>
@@ -60,7 +60,7 @@
 			jsonify(formData) {
 				const data = {};
 
-				formData.forEach((value, key) => {
+				for (let [key,value] of formData.entries()) {
 					const keyVals = key.replace(/\]/g, '').split('[');
 					let lastUpdated = data;
 					let lastKey;
@@ -74,7 +74,8 @@
 						lastKey = keyName;
 					});
 					lastUpdated[lastKey] = value;
-				});
+				}
+
 				return data;
 			},
 
@@ -160,7 +161,7 @@
 </script>
 
 <style scoped lang="scss">
-	form.is-fullwidth {
-		width: 100%;
-	}
+    form.is-fullwidth {
+        width: 100%;
+    }
 </style>

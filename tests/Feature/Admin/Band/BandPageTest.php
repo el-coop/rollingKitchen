@@ -150,7 +150,7 @@ class BandPageTest extends TestCase {
 		]));
 		$response->assertJsonFragment([
 			'name' => $this->bandMember->name,
-			'id' => $this->bandMember->user->id,
+			'id' => "{$this->bandMember->user->id}",
 		]);
 	}
 }

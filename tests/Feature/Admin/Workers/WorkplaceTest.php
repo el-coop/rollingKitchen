@@ -59,7 +59,7 @@ class WorkplaceTest extends TestCase {
 		$response = $this->actingAs($this->admin->user)->get(action('DatatableController@list', ['table' => 'admin.workplacesTable', 'per_page' => 20]));
 		foreach ($this->workplaces as $workplace) {
 			$response->assertJsonFragment([
-				'id' => $workplace->id,
+				'id' => "{$workplace->id}",
 				'name' => $workplace->name
 			]);
 		}
