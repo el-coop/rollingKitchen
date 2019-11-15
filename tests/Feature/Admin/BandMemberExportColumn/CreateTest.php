@@ -78,19 +78,16 @@ class CreateTest extends TestCase {
 	public function test_admin_can_create_band_member_column() {
 		$this->actingAs($this->admin)->post(action('Admin\BandMemberExportColumnController@create'), [
 			'column' => 'user.name',
-			'name' => 'name'
 		])->assertSuccessful();
 
 		$this->assertDatabaseHas('band_member_export_columns', [
 			'column' => 'user.name',
-			'name' => 'name'
 		]);
 	}
 
 	public function test_create_band_member_column_validation() {
 		$this->actingAs($this->admin)->post(action('Admin\BandMemberExportColumnController@create'), [
 			'column' => 'name',
-			'name' => 'name'
 		])->assertSessionHasErrors(['column']);
 	}
 }

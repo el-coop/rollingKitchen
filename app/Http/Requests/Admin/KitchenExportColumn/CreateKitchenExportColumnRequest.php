@@ -25,20 +25,17 @@ class CreateKitchenExportColumnRequest extends FormRequest {
 		$columnOptions = array_keys(KitchenExportColumn::options()->toArray());
 		return [
 			'column' => ['required', 'string', Rule::in($columnOptions)],
-			'name' => 'required|string'
 		];
 	}
 
 	public function commit() {
 		$kitchenExportColumn = new KitchenExportColumn;
 		$kitchenExportColumn->column = $this->input('column');
-		$kitchenExportColumn->name = $this->input('name');
 		$kitchenExportColumn->order = KitchenExportColumn::count();
 		$kitchenExportColumn->save();
 		return [
 			'id' => $kitchenExportColumn->id,
 			'column' => $this->input('column'),
-			'name' => $this->input('name')
 		];
 
 	}

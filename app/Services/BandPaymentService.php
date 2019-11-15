@@ -16,7 +16,10 @@ class BandPaymentService implements FromCollection, WithHeadings {
 	use  Exportable;
 
 	public function headings(): array {
-		return BandPaymentExportColumn::orderBy('order')->get()->pluck('name')->toArray();
+        $options = BandPaymentExportColumn::options();
+        return BandPaymentExportColumn::orderBy('order')->get()->map(function ($column) use ($options) {
+            return $options[$column->column];
+        })->toArray();
 	}
 
 

@@ -18,7 +18,10 @@ class WorkedHoursService implements FromCollection, WithHeadings {
     use  Exportable;
     
     public function headings(): array {
-        return WorkedHoursExportColumn::orderBy('order')->get()->pluck('name')->toArray();
+        $options = WorkedHoursExportColumn::options();
+        return WorkedHoursExportColumn::orderBy('order')->get()->map(function ($column) use ($options) {
+            return $options[$column->column];
+        })->toArray();
     }
     
     public function individual(Worker $worker) {

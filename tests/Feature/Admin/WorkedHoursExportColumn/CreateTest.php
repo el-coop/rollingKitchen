@@ -33,42 +33,35 @@ class CreateTest extends TestCase {
 	public function test_guest_cant_create_worked_hours_export_column() {
 		$this->post(action('Admin\WorkedHoursExportColumnController@create'), [
 			'column' => 'worker.type',
-			'name' => 'name'
 		])->assertRedirect(action('Auth\LoginController@login'));
 	}
 
 	public function test_kitchen_cant_create_worked_hours_export_column() {
 		$this->actingAs($this->kitchen)->post(action('Admin\WorkedHoursExportColumnController@create'), [
 			'column' => 'worker.type',
-			'name' => 'name'
 		])->assertForbidden();
 	}
 
 	public function test_worker_cant_create_worked_hours_export_column() {
 		$this->actingAs($this->worker)->post(action('Admin\WorkedHoursExportColumnController@create'), [
 			'column' => 'worker.type',
-			'name' => 'name'
 		])->assertForbidden();
 	}
 
 	public function test_accountant_cant_create_worked_hours_export_column() {
 		$this->actingAs($this->accountant)->post(action('Admin\WorkedHoursExportColumnController@create'), [
 			'column' => 'worker.type',
-			'name' => 'name'
 		])->assertForbidden();
 	}
 
 	public function test_admin_can_create_worked_hours_export_column() {
 		$this->actingAs($this->admin)->post(action('Admin\WorkedHoursExportColumnController@create'), [
 			'column' => 'worker.type',
-			'name' => 'name'
 		])->assertSuccessful()
 			->assertJsonFragment([
-				'name' => 'name',
 				'column' => 'worker.type'
 			]);
 		$this->assertDatabaseHas('worked_hours_export_columns', [
-			'name' => 'name',
 			'column' => 'worker.type'
 		]);
 	}
@@ -76,10 +69,8 @@ class CreateTest extends TestCase {
 	public function test_create__worked_hours_export_column_validation() {
 		$this->actingAs($this->admin)->post(action('Admin\WorkedHoursExportColumnController@create'), [
 			'column' => 'error',
-			'name' => 0
 		])->assertRedirect()
 			->assertSessionHasErrors([
-				'name',
 				'column'
 			]);
 	}

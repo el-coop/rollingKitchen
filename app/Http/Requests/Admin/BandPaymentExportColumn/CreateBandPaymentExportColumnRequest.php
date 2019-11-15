@@ -25,20 +25,17 @@ class CreateBandPaymentExportColumnRequest extends FormRequest {
 		$columnOptions = array_keys(BandPaymentExportColumn::options()->toArray());
 		return [
 			'column' => ['required', 'string', Rule::in($columnOptions)],
-			'name' => 'required|string'
 		];
 	}
 
 	public function commit() {
 		$BandPaymentColumn = new BandPaymentExportColumn;
 		$BandPaymentColumn->column = $this->input('column');
-		$BandPaymentColumn->name = $this->input('name');
 		$BandPaymentColumn->order = BandPaymentExportColumn::count();
 		$BandPaymentColumn->save();
 		return [
 			'id' => $BandPaymentColumn->id,
 			'column' => $this->input('column'),
-			'name' => $this->input('name')
 		];
 
 	}
