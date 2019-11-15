@@ -27,17 +27,14 @@ class UpdateKitchenExportColumnRequest extends FormRequest {
 		$columnOptions = array_keys(KitchenExportColumn::options()->toArray());
 		return [
 			'column' => ['required', 'string', Rule::in($columnOptions)],
-			'name' => 'required|string'
 		];
 	}
 	public function commit(){
 		$this->kitchenExportColumn->column = $this->input('column');
-		$this->kitchenExportColumn->name = $this->input('name');
 		$this->kitchenExportColumn->save();
 		return [
 			'id' => $this->kitchenExportColumn->id,
 			'column' => $this->input('column'),
-			'name' => $this->input('name')
 		];
 	}
 }

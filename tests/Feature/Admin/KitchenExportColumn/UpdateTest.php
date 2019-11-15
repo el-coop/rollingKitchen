@@ -83,13 +83,11 @@ class UpdateTest extends TestCase {
 
 	public function test_admin_can_update_kitchen_column() {
 		$this->actingAs($this->admin)->patch(action('Admin\KitchenExportColumnController@update', $this->kitchenColumn), [
-			'name' => 'test',
 			'column' => 'user.email'
 		])->assertSuccessful();
 
 		$this->assertDatabaseHas('kitchen_export_columns', [
 			'id' => $this->kitchenColumn->id,
-			'name' => 'test',
 			'column' => 'user.email'
 		]);
 	}

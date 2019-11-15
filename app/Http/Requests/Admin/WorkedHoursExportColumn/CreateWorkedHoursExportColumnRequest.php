@@ -26,20 +26,17 @@ class CreateWorkedHoursExportColumnRequest extends FormRequest {
 		$columnOptions = array_keys(WorkedHoursExportColumn::options()->toArray());
 		return [
 			'column' => ['required', 'string', Rule::in($columnOptions)],
-			'name' => 'required|string'
 		];
 	}
 
 	public function commit() {
 		$workedHoursColumn = new WorkedHoursExportColumn;
 		$workedHoursColumn->column = $this->input('column');
-		$workedHoursColumn->name = $this->input('name');
 		$workedHoursColumn->order = WorkedHoursExportColumn::count();
 		$workedHoursColumn->save();
 		return [
 			'id' => $workedHoursColumn->id,
 			'column' => $this->input('column'),
-			'name' => $this->input('name')
 		];
 
 	}

@@ -374,6 +374,8 @@ class KitchenControllerTest extends TestCase {
 	}
 
 	public function test_kitchen_can_submit_unsubmitted_application() {
+        $admin = factory(User::class)->make();
+        factory(Admin::class)->create()->user()->save($admin);
 
 		\Notification::fake();
 
@@ -473,8 +475,9 @@ class KitchenControllerTest extends TestCase {
 			'application_id' => $application->id,
 			'service_id' => $services->get(1)->id,
 		]);
-
-		Notification::assertSentTo([$application->kitchen->user], ApplicationSubmittedNotification::class);
+        
+        Notification::assertSentTo([$application->kitchen->user], ApplicationSubmittedNotification::class);
+        Notification::assertSentTo([$admin], \App\Notifications\Admin\ApplicationSubmittedNotification::class);
 	}
 
 	public function test_kitchen_can_submit_reopened_application() {

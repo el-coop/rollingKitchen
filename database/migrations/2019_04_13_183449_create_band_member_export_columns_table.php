@@ -15,7 +15,6 @@ class CreateBandMemberExportColumnsTable extends Migration
     {
         Schema::create('band_member_export_columns', function (Blueprint $table) {
             $table->bigIncrements('id');
-			$table->string('name');
 			$table->integer('order');
 			$table->string('column');
             $table->timestamps();

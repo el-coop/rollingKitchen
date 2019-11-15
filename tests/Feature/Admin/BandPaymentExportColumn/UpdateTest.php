@@ -83,13 +83,11 @@ class UpdateTest extends TestCase {
 
 	public function test_admin_can_update_band_payment_column() {
 		$this->actingAs($this->admin)->patch(action('Admin\BandPaymentExportColumnController@update', $this->bandPaymentColumn), [
-			'name' => 'test',
 			'column' => 'user.email'
 		])->assertSuccessful();
 
 		$this->assertDatabaseHas('band_payment_export_columns', [
 			'id' => $this->bandPaymentColumn->id,
-			'name' => 'test',
 			'column' => 'user.email'
 		]);
 	}

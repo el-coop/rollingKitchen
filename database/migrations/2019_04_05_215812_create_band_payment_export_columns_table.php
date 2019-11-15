@@ -15,7 +15,6 @@ class CreateBandPaymentExportColumnsTable extends Migration
     {
         Schema::create('band_payment_export_columns', function (Blueprint $table) {
 			$table->bigIncrements('id');
-			$table->string('name');
 			$table->integer('order');
 			$table->string('column');
 			$table->timestamps();

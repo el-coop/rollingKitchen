@@ -14,9 +14,6 @@
             type: 'select',
             options: {{$options}},
             callback: 'numerateOptions'
-        }, {
-            name: 'name',
-            label: '@lang('global.name')',
         }]" :init-fields="{{collect($alreadySelected)}}" :sortable="true" action="{{$addAction}}">
     </dynamic-table>
 
