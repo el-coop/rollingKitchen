@@ -13,40 +13,41 @@ use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Excel;
 
 class KitchenExportColumnController extends Controller {
-
-	public function show() {
-		$options = KitchenExportColumn::options();
-		$alreadySelected = KitchenExportColumn::orderBy('order')->get();
-		$downloadAction = action('Admin\KitchenExportColumnController@export');
-		$addAction = action('Admin\KitchenExportColumnController@create');
-		$title = __('admin/kitchens.exportTitle');
-		$btn =__('admin/kitchens.exportTitle');
-		return view('admin.workedHours.show', compact('options', 'alreadySelected', 'downloadAction', 'addAction', 'title', 'btn'));
-	}
-
-	public function create(CreateKitchenExportColumnRequest $request) {
-		return $request->commit();
-	}
-
-	public function update(UpdateKitchenExportColumnRequest $request, KitchenExportColumn $kitchenExportColumn) {
-		return $request->commit();
-	}
-
-	public function destroy(DestroyKitchenExportColumnRequest $request, KitchenExportColumn $kitchenExportColumn) {
-		$request->commit();
-		return [
-			'success' => true
-		];
-	}
-
-	public function saveOrder(OrderKitchenExportColumnRequest $request) {
-		$request->commit();
-		return [
-			'success' => true
-		];
-	}
-
-	public function export(Excel $excel, KitchenService $kitchenService) {
-		return $excel->download($kitchenService, 'kitchens.xls');
-	}
+    
+    public function show() {
+        $options = KitchenExportColumn::options();
+        $alreadySelected = KitchenExportColumn::orderBy('order')->get();
+        $downloadAction = action('Admin\KitchenExportColumnController@export');
+        $addAction = action('Admin\KitchenExportColumnController@create');
+        $title = __('admin/kitchens.exportTitle');
+        $btn = __('admin/kitchens.exportTitle');
+        $extraButtons = 'admin.kitchens.exportAllButton';
+        return view('admin.workedHours.show', compact('options', 'alreadySelected', 'downloadAction', 'addAction', 'title', 'btn','extraButtons'));
+    }
+    
+    public function create(CreateKitchenExportColumnRequest $request) {
+        return $request->commit();
+    }
+    
+    public function update(UpdateKitchenExportColumnRequest $request, KitchenExportColumn $kitchenExportColumn) {
+        return $request->commit();
+    }
+    
+    public function destroy(DestroyKitchenExportColumnRequest $request, KitchenExportColumn $kitchenExportColumn) {
+        $request->commit();
+        return [
+            'success' => true
+        ];
+    }
+    
+    public function saveOrder(OrderKitchenExportColumnRequest $request) {
+        $request->commit();
+        return [
+            'success' => true
+        ];
+    }
+    
+    public function export(Excel $excel, KitchenService $kitchenService) {
+        return $excel->download($kitchenService, 'kitchens.xls');
+    }
 }
