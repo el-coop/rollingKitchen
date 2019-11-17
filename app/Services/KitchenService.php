@@ -18,6 +18,9 @@ class KitchenService implements FromCollection, WithHeadings {
     
     public function headings(): array {
         $options = KitchenExportColumn::options();
+        if (request()->get('all', false)) {
+            return $options->values()->toArray();
+        }
         return KitchenExportColumn::orderBy('order')->get()->map(function ($column) use ($options) {
             return $options[$column->column];
         })->toArray();
@@ -28,7 +31,11 @@ class KitchenService implements FromCollection, WithHeadings {
         $kitchens = Kitchen::whereHas('applications', function ($query) {
             $query->where([['status', '=', 'accepted'], ['year', '=', app('settings')->get('registration_year')]]);
         })->get();
-        $fields = KitchenExportColumn::orderBy('order')->get()->pluck('column');
+        if (request()->get('all', false)) {
+            $fields = KitchenExportColumn::options()->keys();
+        } else {
+            $fields = KitchenExportColumn::orderBy('order')->get()->pluck('column');
+        }
         $data = collect();
         foreach ($kitchens as $kitchen) {
             $data->push($this->listData($fields, $kitchen));

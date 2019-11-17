@@ -3,10 +3,13 @@
 @section('title',$title)
 
 @section('content')
-    <div class="box">
-        <link-date-selector href="{{$downloadAction}}" name="date">
-            <a class="button is-info">{{$btn}}</a>
-        </link-date-selector>
+    <div class="box is-flex">
+        @isset($extraButtons)
+            @include($extraButtons)
+        @endif
+        <component is="{{$withDate ?? false ? 'link-date-selector' : 'a'}}" href="{{$downloadAction}}" name="date">
+            <button class="button is-info">{{$btn}}</button>
+        </component>
     </div>
     <dynamic-table :columns="[{
             name: 'column',

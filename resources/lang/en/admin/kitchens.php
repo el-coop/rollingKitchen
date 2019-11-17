@@ -7,5 +7,6 @@ return [
 	'fields' => 'Fields',
 	'kitchen' => 'Kitchen',
 	'updatedAt' => 'Updated At',
-	'exportTitle' => 'Export Kitchens',
+    'exportTitle' => 'Export Kitchens',
+    'exportAllData' => 'Export All Data',
 ];
