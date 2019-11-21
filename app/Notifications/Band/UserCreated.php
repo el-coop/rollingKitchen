@@ -2,6 +2,7 @@
 
 namespace App\Notifications\Band;
 
+use App\Notifications\SendAsMuzik;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -9,6 +10,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 
 class UserCreated extends Notification {
 	use Queueable;
+	use SendAsMuzik;
 	public $token;
 
 	/**
@@ -38,18 +40,17 @@ class UserCreated extends Notification {
 	 * @return \Illuminate\Notifications\Messages\MailMessage
 	 */
 	public function toMail($notifiable) {
-		$message = explode(PHP_EOL, app('settings')->get("bands_user_created_{$notifiable->language}"));
-		$email = (new MailMessage)
-			->from(env('MAIL_BANDS_FROM_ADDRESS'))
-			->subject(app('settings')->get("bands_user_created_subject_{$notifiable->language}"))
-			->greeting(__('notification.greeting', ['name' => $notifiable->name]));
+		$message = explode(PHP_EOL, app('settings')->get("bands_user_created_en"));
+		$email = $this->usingMusicSmtp()
+			->subject(app('settings')->get("bands_user_created_subject_en"))
+			->greeting(__('notification.greeting', ['name' => 'nur']));
 
 
 		foreach ($message as $line) {
 			$email->line($line);
 		}
 
-		$email->action(__('admin/workers.fillProfile', [], $notifiable->language), action('Band\BandController@showResetForm', $this->token, true));
+		$email->action(__('admin/workers.fillProfile', [], 'en'), action('Band\BandController@showResetForm', $this->token, true));
 
 		return $email;
 	}
@@ -65,4 +66,5 @@ class UserCreated extends Notification {
 			//
 		];
 	}
+	
 }

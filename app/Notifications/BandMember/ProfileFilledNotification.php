@@ -2,6 +2,7 @@
 
 namespace App\Notifications\BandMember;
 
+use App\Notifications\SendAsMuzik;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -9,6 +10,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 
 class ProfileFilledNotification extends Notification {
 	use Queueable;
+	use SendAsMuzik;
 	
 	/**
 	 * Create a new notification instance.
@@ -37,10 +39,9 @@ class ProfileFilledNotification extends Notification {
 	 */
 	public function toMail($notifiable) {
 		$message = explode(PHP_EOL, app('settings')->get("band_members_profile_filled_{$notifiable->language}"));
-		
-		$email = (new MailMessage)
-			->from(env('MAIL_BANDS_FROM_ADDRESS'))
-			->subject(app('settings')->get("band_members_profile_filled_subject_{$notifiable->language}"))
+        
+        $email = $this->usingMusicSmtp()
+            ->subject(app('settings')->get("band_members_profile_filled_subject_{$notifiable->language}"))
 			->greeting(__('notification.greeting', ['name' => $notifiable->name]));
 		
 		

@@ -16,7 +16,7 @@ class SettingsServiceProvider extends ServiceProvider {
 	 * @return void
 	 */
 	public function boot() {
-		if (today() > Carbon::create(date('Y'), 12, 14) && $this->app->settings->get('registration_year') == date('Y')) {
+		if (today() > Carbon::create(date('Y'), 11, 14) && $this->app->settings->get('registration_year') == date('Y')) {
 			$year = date('Y') + 1;
 			$this->app->settings->put('registration_year', $year);
 		}

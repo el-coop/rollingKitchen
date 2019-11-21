@@ -3,6 +3,7 @@
 namespace App\Notifications\Band;
 
 use App\Models\BandSchedule;
+use App\Notifications\SendAsMuzik;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -10,6 +11,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 
 class ShowDeletedNotification extends Notification {
 	use Queueable;
+	use SendAsMuzik;
 	
 	/**
 	 * Create a new notification instance.
@@ -37,10 +39,9 @@ class ShowDeletedNotification extends Notification {
 	 */
 	public function toMail($notifiable) {
 		$message = explode(PHP_EOL, app('settings')->get("schedule_deleted_{$notifiable->language}"));
-		
-		$email = (new MailMessage)
-			->from(env('MAIL_BANDS_FROM_ADDRESS'))
-			->subject(app('settings')->get("schedule_deleted_subject_{$notifiable->language}"))
+        
+        $email = $this->usingMusicSmtp()
+            ->subject(app('settings')->get("schedule_deleted_subject_{$notifiable->language}"))
 			->greeting(__('notification.greeting', ['name' => $notifiable->name]));
 		
 		
