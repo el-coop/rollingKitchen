@@ -125,5 +125,7 @@ return [
 	'schedule_end_day' => 'Laatste dag schema',
 	'schedule_start_hour' => 'Begintijd schema',
 	'schedule_end_hour' => 'Eindtijd schema',
+    
+    'application_waste_processing_fee' => 'Afvalverwerkings kosten'
 
 ];

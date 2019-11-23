@@ -9,7 +9,7 @@ return [
 	'deleteConfirmTitle' => 'Alles verwijderen?',
 	'submitReview' => 'Indienen voor beoordeling',
 	'businessInformation' => 'Bedrijfsgegevens',
-	'kitchenInformation' => 'Keuken informatie',
+	'kitchenInformation' => 'Informatie keuken',
 	'services' => 'Services',
 	'pastApplications' => 'Aanmeldingen voorgaande jaren',
 	'photoValidation' => 'Foto upload, of één van de volgende velden: website/facebook/instagram, vereist',

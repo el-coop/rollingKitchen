@@ -42,7 +42,7 @@
 	<div class="control">
 		<button class="button is-static">
 			<b>@lang('kitchen/services.trash')
-				€ {{ number_format(50,2,$decimalPoint,$thousandSeparator) }}</b>
+				€ {{ number_format(app('settings')->get('application_waste_processing_fee'),2,$decimalPoint,$thousandSeparator) }}</b>
 		</button>
 	</div>
 </div>

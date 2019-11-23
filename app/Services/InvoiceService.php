@@ -109,7 +109,7 @@ class InvoiceService {
 		], [
 			'quantity' => 1,
 			'item' => __('kitchen/services.trash', [], $this->language),
-			'unitPrice' => 50
+			'unitPrice' => app('settings')->get('application_waste_processing_fee')
 		]];
 	}
 }

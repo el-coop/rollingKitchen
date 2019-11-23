@@ -38,7 +38,8 @@
 													   value="{{$setting}}" required>
 												@break
 												@case('schedule_start_hour')
-												@case('schedule_end_hour')
+                                                @case('schedule_end_hour')
+                                                @case('application_waste_processing_fee')
 												<input type="number" name="{{$key}}" class="input"
 													   value="{{$setting}}" step="0.5" required>
 												@break

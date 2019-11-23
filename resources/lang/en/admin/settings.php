@@ -122,4 +122,6 @@ return [
 	'schedule_end_day' => 'Schedule end day',
 	'schedule_start_hour' => 'Schedule start hour',
 	'schedule_end_hour' => 'Schedule end hour',
+    
+    'application_waste_processing_fee' => 'Waste processing fee'
 ];
