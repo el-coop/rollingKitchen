@@ -45,6 +45,7 @@ class DatabaseBackup extends Command {
 			->setDbName(env('DB_DATABASE'))
 			->setUserName(env('DB_USERNAME'))
 			->setPassword(env('DB_PASSWORD'))
+            ->doNotCreateTables()
 			->dumpToFile(storage_path('app/backups/backup.sql'));
 		
 		$this->sendBackup();
