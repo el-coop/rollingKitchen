@@ -46,6 +46,8 @@ class DatabaseBackup extends Command {
 			->setUserName(env('DB_USERNAME'))
 			->setPassword(env('DB_PASSWORD'))
             ->doNotCreateTables()
+            ->excludeTables('migrations')
+            ->addExtraOption('--complete-insert')
 			->dumpToFile(storage_path('app/backups/backup.sql'));
 		
 		$this->sendBackup();
