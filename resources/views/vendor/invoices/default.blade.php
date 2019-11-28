@@ -43,7 +43,8 @@
 		<div class="panel panel-default">
 			<div class="panel-body">
 				{!! $invoice->customer_details->count() == 0 ? '<i>No customer details</i><br />' : '' !!}
-				{{ $invoice->customer_details->get('name') }}<br/>
+                {{ $invoice->customer_details->get('name') }}<br/>
+                {{ $invoice->customer_details->get('contactPerson') }}<br/>
 				{{ $invoice->customer_details->get('phone') }}<br/>
 				{{ $invoice->customer_details->get('location') }}<br/>
 				{{ $invoice->customer_details->get('zip') }} {{ $invoice->customer_details->get('city') }}

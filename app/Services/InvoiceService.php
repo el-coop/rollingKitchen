@@ -51,6 +51,7 @@ class InvoiceService {
 			->footnote(str_replace(PHP_EOL, '<br>', $settings->get("invoices_footer_{$this->language}")))
 			->customer([
 				'name' => $this->recipient->name,
+				'contactPerson' => $this->recipient->data[1],
 				'phone' => $this->recipient->data[5],
 				'location' => $this->recipient->data[2],
 				'zip' => $this->recipient->data[3],
