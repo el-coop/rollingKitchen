@@ -12,7 +12,7 @@ use Illuminate\Queue\InteractsWithQueue;
 
 class SendApplicationSubmittedNotification implements ShouldQueue {
     use InteractsWithQueue;
-    
+
     /**
      * Create the event listener.
      *
@@ -21,7 +21,7 @@ class SendApplicationSubmittedNotification implements ShouldQueue {
     public function __construct() {
         //
     }
-    
+
     /**
      * Handle the event.
      *
@@ -29,8 +29,8 @@ class SendApplicationSubmittedNotification implements ShouldQueue {
      * @return void
      */
     public function handle(ApplicationSubmitted $event) {
-        $admins = User::where('user_type', Admin::class)->get();
-        $admins->each->notify(new ApplicationSubmittedNotification($event->application));
-        
+        $admin = User::where('user_type', Admin::class)->first();
+        $admin->notify(new ApplicationSubmittedNotification($event->application));
+
     }
 }

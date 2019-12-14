@@ -11,7 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 class SendAppplicationResubmittedNotification implements ShouldQueue {
 	use InteractsWithQueue;
-	
+
 	/**
 	 * Create the event listener.
 	 *
@@ -20,7 +20,7 @@ class SendAppplicationResubmittedNotification implements ShouldQueue {
 	public function __construct() {
 		//
 	}
-	
+
 	/**
 	 * Handle the event.
 	 *
@@ -28,7 +28,7 @@ class SendAppplicationResubmittedNotification implements ShouldQueue {
 	 * @return void
 	 */
 	public function handle(ApplicationResubmitted $event) {
-		$admins = User::where('user_type', Admin::class)->get();
-		$admins->each->notify(new ApplicationResubmittedNotification($event->application));
+		$admin = User::where('user_type', Admin::class)->first();
+		$admin->notify(new ApplicationResubmittedNotification($event->application));
 	}
 }
