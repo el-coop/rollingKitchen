@@ -14,6 +14,6 @@ return [
 	'pastApplications' => 'Aanmeldingen voorgaande jaren',
 	'photoValidation' => 'Foto upload, of één van de volgende velden: website/facebook/instagram, vereist',
 	'pdfsTitle' => 'Belangrijke bestanden',
-    'exportAllData' => 'TBT',
+    'exportAllData' => 'Exporteer alle gegevens',
 
 ];
