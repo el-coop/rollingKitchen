@@ -14,22 +14,25 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class WorkedHoursService implements FromCollection, WithHeadings {
-    
+
     use  Exportable;
-    
+
     public function headings(): array {
         $options = WorkedHoursExportColumn::options();
         return WorkedHoursExportColumn::orderBy('order')->get()->map(function ($column) use ($options) {
             return $options[$column->column];
         })->toArray();
     }
-    
+
     public function individual(Worker $worker) {
+        $options = WorkedHoursExportColumn::options();
         $fields = WorkedHoursExportColumn::where('column', 'NOT LIKE', 'shift%')->orderBy('order')->get();
-        return $fields->pluck('name')->combine($this->listData($fields->pluck('column'), $worker));
-        
+        return $fields->map(function ($column) use ($options) {
+            return $options[$column->column];
+        })->combine($this->listData($fields->pluck('column'), $worker));
+
     }
-    
+
     public function collection() {
         $shifts = Shift::where('closed', true)
             ->where('date', '>', request()->input('date', Carbon::parse('first day of January')))
@@ -58,10 +61,10 @@ class WorkedHoursService implements FromCollection, WithHeadings {
                 return $item[$dateIndex];
             }
             return $item;
-            
+
         });
     }
-    
+
     /**
      * @param $fields
      * @param $shift
@@ -77,7 +80,7 @@ class WorkedHoursService implements FromCollection, WithHeadings {
                 case 'shift':
                     if ($column == 'workplace_id') {
                         $result->push($shift->workplace->name);
-                        
+
                     } else {
                         $result->push($shift->$column);
                     }
