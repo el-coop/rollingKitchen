@@ -8,7 +8,7 @@ use Illuminate\Validation\Rule;
 
 class EditFieldRequest extends FormRequest {
 	protected $field;
-	
+
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
@@ -18,7 +18,7 @@ class EditFieldRequest extends FormRequest {
 		$this->field = $this->route('field');
 		return $this->user()->can('update', $this->field);
 	}
-	
+
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -28,14 +28,14 @@ class EditFieldRequest extends FormRequest {
 		return [
 			'name_en' => 'required|string|' . Rule::unique('fields')->where('form', $this->field->form)->ignore($this->field->id),
 			'name_nl' => 'required|string|' . Rule::unique('fields')->where('form', $this->field->form)->ignore($this->field->id),
-			'type' => 'required|string|in:text,textarea,checkbox',
+			'type' => 'required|string|in:text,textarea,checkbox,date',
 			'status' => 'required|string|in:protected,required,encrypted,none',
 			'options' => 'required_if:type,checkbox|array',
 			'placeholder_nl' => 'nullable|string',
 			'placeholder_en' => 'nullable|string'
 		];
 	}
-	
+
 	public function commit() {
 		$this->field->name_en = $this->input('name_en');
 		$this->field->name_nl = $this->input('name_nl');

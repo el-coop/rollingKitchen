@@ -20,7 +20,7 @@ class CreateFieldRequest extends FormRequest {
 	public function authorize() {
 		return $this->user()->can('create', Field::class);
 	}
-	
+
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -29,7 +29,7 @@ class CreateFieldRequest extends FormRequest {
 	public function rules() {
 		return [
 			'name_en' => 'required|string|' . Rule::unique('fields')->where('form', $this->input('form')),
-			'type' => 'required|string|in:text,textarea,checkbox',
+			'type' => 'required|string|in:text,textarea,checkbox,date',
 			'form' => 'required|string|in:' . Kitchen::class . ',' . Application::class . ',' . Worker::class . ',' . Band::class . ',' . BandMember::class,
 			'options' => 'required_if:type,checkbox|array',
 			'status' => 'required|string|in:protected,required,encrypted,none',
@@ -38,9 +38,9 @@ class CreateFieldRequest extends FormRequest {
 			'placeholder_en' => 'nullable|string'
 		];
 	}
-	
+
 	public function commit() {
-		
+
 		$field = new Field;
 		$field->form = $this->input('form');
 		$field->name_en = $this->input('name_en');

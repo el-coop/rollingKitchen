@@ -9,5 +9,5 @@ return [
 	'workerNotApproved' => 'Worker Not Approved',
 	'taxReviews' => 'Tax Reviews',
 	'uploadId' => 'ID Photo',
-	'uploadInstructions' => 'Upload here a photo of passport or ID card. Note: A driver licence is not a valid ID.'
+	'uploadInstructions' => 'Upload photo of passport or ID card (front and back). Note: A driver\'s license is not a valid ID.'
 ];

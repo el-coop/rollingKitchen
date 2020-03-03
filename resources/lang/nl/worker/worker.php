@@ -9,5 +9,5 @@ return [
 	'workerNotApproved' => 'Medewerker niet goedgekeurd',
 	'taxReviews' => 'Belastingoverzicht',
 	'uploadId' => 'ID Foto',
-	'uploadInstructions' => 'Upload hier een foto van je paspoort of ID kaart. Let op: een rijbewijs is niet geldig als ID.'
+	'uploadInstructions' => 'Upload hier een foto van je paspoort of de voor- en achterkant van je ID kaart. Let op: een rijbewijs is niet geldig als ID.'
 ];

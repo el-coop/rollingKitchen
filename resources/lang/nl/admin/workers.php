@@ -21,5 +21,6 @@ return [
 	'totalHours' => 'Aantal uren',
 	'pdf' => 'PDF',
 	'shiftPayment' => 'Betaling shift',
-	'totalPayment' => 'Betaling totaal'
+	'totalPayment' => 'Betaling totaal',
+    'submitted' => 'Ingediend',
 ];
