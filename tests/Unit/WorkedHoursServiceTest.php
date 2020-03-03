@@ -21,7 +21,7 @@ class WorkedHoursServiceTest extends TestCase {
 	protected $workplaces;
 	protected $workedHoursColumns;
 	protected $workedHoursService;
-	
+
 	protected function setUp(): void {
 		parent::setUp();
 		$this->workplaces = factory(Workplace::class, 10)->create()->each(function ($workplace) {
@@ -49,27 +49,27 @@ class WorkedHoursServiceTest extends TestCase {
 		});
 		$this->workedHoursService = new WorkedHoursService;
 	}
-	
+
 	public function test_sets_heading() {
 		$headings = $this->workedHoursService->headings();
 		$expectedHeadings = WorkedHoursExportColumn::orderBy('order')->get()->pluck('name')->toArray();
 		$this->assertEquals($expectedHeadings, $headings);
 	}
-	
+
 	public function test_collection() {
 		$collection = $this->workedHoursService->collection();
 		$data = $this->collect();
 		$this->assertEquals($data, $collection);
 	}
-	
+
 	public function test_individual() {
 		$worker = Worker::first();
 		$individual = $this->workedHoursService->individual($worker);
 		$fields = WorkedHoursExportColumn::where('column', 'NOT LIKE', 'shift%')->orderBy('order')->get();
 		$data = $fields->pluck('name')->combine($this->getData($fields->pluck('column'), $worker));
-		$this->assertEquals($data, $individual);
+		$this->assertEquals($data, collect($individual->toArray()));
 	}
-	
+
 	private function collect() {
 		$shifts = Shift::where('closed', true)->where('date', '>', Carbon::parse('first day of January'))->get();
 		$fields = WorkedHoursExportColumn::orderBy('order')->get()->pluck('column')->toArray();
@@ -81,7 +81,7 @@ class WorkedHoursServiceTest extends TestCase {
 		}
 		return $data;
 	}
-	
+
 	/**
 	 * @param $fields
 	 * @param $shift
@@ -97,7 +97,7 @@ class WorkedHoursServiceTest extends TestCase {
 				case 'shift':
 					if ($column == 'workplace_id') {
 						$workedHourRow->push($shift->workplace->name);
-						
+
 					} else {
 						$workedHourRow->push($shift->$column);
 					}
@@ -105,7 +105,7 @@ class WorkedHoursServiceTest extends TestCase {
 				case 'worker':
 					if ($column == 'type') {
 						$workedHourRow->push($worker->type);
-						
+
 					} else {
 						$column = Field::find($column)->id;
 						$workedHourRow->push($worker->data[$column]);
