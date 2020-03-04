@@ -54,7 +54,6 @@ return [
 	'closeShift' => 'Shift sluiten',
 	'field' => 'Veld',
 	'startTime' => 'Begintijd',
-	'endTime' => 'Eindtijd',
 	'export' => 'Exporteren',
 	'totalHours' => 'Aantal uren',
 	'budget' => 'Budget',

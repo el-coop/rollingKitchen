@@ -21,5 +21,6 @@ return [
 	'totalHours' => 'Total hours',
 	'pdf' => 'Workers PDF',
 	'shiftPayment' => 'Shift Payment',
-	'totalPayment' => 'Total Payment'
+	'totalPayment' => 'Total Payment',
+    'submitted' => 'Submitted',
 ];

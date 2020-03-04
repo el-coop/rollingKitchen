@@ -29,7 +29,8 @@
 					responsiveHidden: true,
 					options: {
 						text: '@lang('admin/fields.text')',
-						textarea: '@lang('admin/fields.textarea')',
+                        textarea: '@lang('admin/fields.textarea')',
+                        date: '@lang('admin/fields.date')',
 					},
 					translate: true
 				},{
