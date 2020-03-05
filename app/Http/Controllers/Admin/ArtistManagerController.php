@@ -14,7 +14,8 @@ class ArtistManagerController extends Controller {
 	public function index() {
 		$title = __('admin/artists.artistManager');
 		$createTitle = __('admin/artists.createArtistManager');
-		return view('admin.datatableWithNew', compact('title', 'createTitle'));
+		$withEditLink = false;
+		return view('admin.datatableWithNew', compact('title', 'createTitle', 'withEditLink'));
 	}
 
 	public function create(){

@@ -17,6 +17,25 @@ return [
 			'name' => 'email',
 			'title' => 'global.email',
 			'sortField' => 'email',
-		]
+		],
+        [
+            'name' => 'completed',
+            'raw' => 'JSON_LENGTH(data) as completed',
+            'sortField' => 'completed',
+            'filter' => [
+                'yes' => 'global.yes',
+                'no' => 'global.no'
+            ],
+            'filterDefinitions' => [
+                'yes' => ['=', function () {
+                    return Field::where('form', \App\Models\Band::class)->count();
+                }],
+                'no' => ['<', function () {
+                    return Field::where('form', \App\Models\Band::class)->count();
+                }],
+            ],
+            'title' => 'admin/workers.completed',
+            'callback' => 'dataCompleted|' . \App\Models\Band::class
+        ]
 	]
 ];
