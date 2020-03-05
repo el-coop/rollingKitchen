@@ -16,8 +16,8 @@
 			<tab label="@lang('band/band.bandMembers')">@include('band.bandMembers')</tab>
 
 		@endif
-		<tab label="@lang('admin/artists.schedule')">@include('band.schedules')</tab>
 		<tab label="@lang('band/band.setList')">@include('band.setList')</tab>
-	</tabs>
+        <tab label="@lang('admin/artists.schedule')">@include('band.schedules')</tab>
+    </tabs>
 
 @endsection
