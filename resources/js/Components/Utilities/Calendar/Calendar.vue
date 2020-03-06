@@ -1,5 +1,11 @@
 <template>
 	<div>
+        <div class="select">
+            <select v-model="filter">
+                <option :value="0">Filter:</option>
+                <option v-for="(option, key) in options" :value="key" :key="`calendarFilter${key}`" v-text="option"/>
+            </select>
+        </div>
 		<div class="columns is-mobile">
 			<div class="column is-flex is-column has-items-aligned-center" v-if="loaded">
 				<div class="buttons"
@@ -34,6 +40,7 @@
 								<template #default="{rawData, processedData, edit}">
 									<slot name="entry" :rawData="rawData" :processedData="processedData"
 										  :edit="edit"
+                                          :filter="filter"
 										  :dateTime="`${date(calcDate(realStartDate,i - 1))} ${formatTime(startHour + (n-1) * interval)}`"
 										  :init="initData[`${date(calcDate(realStartDate,i - 1))} ${formatTime(startHour + (n-1) * interval)}`] || []"></slot>
 								</template>
@@ -165,7 +172,8 @@
 				currentlyDisplaying: Math.min(this.maxParallel, this.numberOfDays),
 				raw: null,
 				output: null,
-				loaded: false
+				loaded: false,
+                filter: 0
 			};
 		},
 
