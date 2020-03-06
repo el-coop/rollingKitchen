@@ -4,8 +4,8 @@
 				  options-title="@lang('admin/artists.bands')"
 				  :init-data="{{ $schedules->count() ? $schedules : '{}' }}"
 				  :options="{{ $bands }}">
-			<template #entry="{rawData,processedData, edit, init, dateTime}">
-				<calendar-schedule-display v-if="processedData" :data="processedData" :edit="edit" :init="init"
+			<template #entry="{rawData,processedData, edit, init, dateTime, filter}">
+				<calendar-schedule-display v-if="processedData" :data="processedData" :edit="edit" :init="init" :filter="filter"
 										   :bands="{{$bands}}" :stages="{{ $stages }}"
 										   :date-time="dateTime" :on-update="updateBudget"></calendar-schedule-display>
 			</template>
