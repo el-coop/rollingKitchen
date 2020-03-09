@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\Admin\Band\CreateBandRequest;
 use App\Http\Requests\Admin\Band\DestroyBandRequest;
 use App\Http\Requests\Admin\Band\SendConfirmationRequest;
+use App\Http\Requests\Admin\Band\SendScheduleEmailRequest;
 use App\Http\Requests\Admin\Band\UpdateBandRequest;
 use App\Http\Requests\Admin\BandAdmin\UpdateBandAdminRequest;
 use App\Http\Requests\ArtistManager\StoreBandScheduleRequest;
@@ -148,5 +149,9 @@ class BandController extends Controller {
 		$filename = str_replace(' ', '_', $bandPdf->band->user->name . '_' . __('band/band.technicalRequirements'));
 		$extension = pathinfo($bandPdf->file, PATHINFO_EXTENSION);
 		return Storage::download("public/pdf/band/{$bandPdf->file}", "{$filename}.$extension");
+	}
+
+    public function sendBandEmail(SendScheduleEmailRequest $request){
+	    $request->commit();
 	}
 }

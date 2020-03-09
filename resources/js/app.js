@@ -4,6 +4,7 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+
 require('./bootstrap');
 
 window.Vue = require('vue');
@@ -18,12 +19,13 @@ import {
 	faFileUpload,
 	faTimesCircle,
 	faEuroSign,
-	faExternalLinkSquareAlt
+	faExternalLinkSquareAlt,
+    faSearch
 } from '@fortawesome/free-solid-svg-icons'
 
 require('./ErrorHandler');
 
-library.add(faLink, faSignOutAlt, faBars, faFileUpload, faTimesCircle, faEuroSign, faExternalLinkSquareAlt);
+library.add(faLink, faSignOutAlt, faBars, faFileUpload, faTimesCircle, faEuroSign, faExternalLinkSquareAlt, faSearch);
 
 Vue.use(VModal);
 Vue.use(VueIziToast);

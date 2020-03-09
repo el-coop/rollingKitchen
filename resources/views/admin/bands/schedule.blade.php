@@ -13,5 +13,6 @@
 		@slot('days', $days)
 		@slot('startHour', $startHour)
 		@slot('endHour', $endHour)
+        @slot('sendAction', action('Admin\BandController@sendBandEmail'))
 	@endcomponent
 @endsection

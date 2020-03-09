@@ -17,6 +17,7 @@ Vue.component('ApproveSchedule', require('./Band/ApproveSchedule').default);
 Vue.component('BandPdfForm', require('./Band/BandPdfForm').default);
 Vue.component('ServicesForm', require('./Admin/ServicesForm').default);
 Vue.component('LinkDateSelector', require('./Global/LinkDateSelector').default);
+Vue.component('SendEmailModal', require('./Band/SendEmailModal').default);
 
 // utilities
 Vue.component('Drawer', require('./Utilities/Drawer').default);

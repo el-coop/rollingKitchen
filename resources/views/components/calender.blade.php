@@ -13,6 +13,7 @@
 				<div class="buttons">
 					<button class="button is-primary is-fullwidth" type="submit"
 							:class="{'is-loading' : submitting}">@lang('global.save')</button>
+                    <button class="button is-info is-fullwidth" type="button" @click="$modal.show('sendEmailModal')"> @lang('global.email') @lang('admin/artists.bands')</button>
 				</div>
 			</template>
 			<template #modal="{input, output}">
@@ -26,3 +27,5 @@
 		</div>
 	</template>
 </schedule>
+<send-email-modal action="{{$sendAction}}" :bands="{{$bands}}">
+</send-email-modal>
