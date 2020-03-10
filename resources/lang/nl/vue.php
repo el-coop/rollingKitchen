@@ -17,7 +17,8 @@ return [
 	'yes' => 'Ja',
 	'no' => 'Nee',
 	'filters' => 'Filters',
-	'download' => 'Download',
+    'filter' => 'Filter',
+    'download' => 'Download',
 	'text' => 'Tekst',
 	'textarea' => 'Tekstveld',
 	'saveOrder' => 'Opslaan',
@@ -66,5 +67,9 @@ return [
 	'band' => 'Band',
 	'stage' => 'Podia',
 	'payment' => 'Betaling',
-	'endTime' => 'Eindtijd'
+	'endTime' => 'Eindtijd',
+    'setlistUpload' => 'Bestaande setlijst uploaden',
+    'ownNumbers' => 'Eigen nummers? ',
+    'both' => 'Beide',
+    'areTheyProtected' => 'Zijn ze beschermd?',
 ];

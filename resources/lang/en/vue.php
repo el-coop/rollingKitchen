@@ -17,7 +17,8 @@ return [
 	'yes' => 'Yes',
 	'no' => 'No',
 	'filters' => 'Filters',
-	'download' => 'Download',
+    'filter' => 'Filter',
+    'download' => 'Download',
 	'text' => 'Text',
     'textarea' => 'Textarea',
 	'saveOrder' => 'Save Order',
@@ -66,5 +67,9 @@ return [
 	'band' => 'Band',
 	'stage' => 'Stage',
 	'payment' => 'Payment',
-	'endTime' => 'End time'
+	'endTime' => 'End time',
+    'setlistUpload' => 'Upload existing setlist',
+    'ownNumbers' => 'Own numbers?',
+    'both' => 'Both',
+    'areTheyProtected' => 'Are they protected?',
 ];
