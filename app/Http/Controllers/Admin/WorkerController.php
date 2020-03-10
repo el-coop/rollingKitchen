@@ -107,8 +107,12 @@ class WorkerController extends Controller {
     }
 
     public function edit(Worker $worker) {
-
-        return $worker->fullData;
+        return $worker->fullData->map(function ($item){
+            if ($item['name'] == 'liability'){
+                $item['disabled'] = true;
+            }
+            return $item;
+        });
 
     }
 

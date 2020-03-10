@@ -6,7 +6,8 @@
 				   @keypress.enter.prevent>
 			<span v-text="option.name"></span>&nbsp;&nbsp;
 		</label>
-	</div>
+        <p v-if="error" class="help is-danger" v-text="errorText"></p>
+    </div>
 </template>
 
 <script>

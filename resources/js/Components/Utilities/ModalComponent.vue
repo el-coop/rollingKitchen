@@ -5,7 +5,7 @@
 		   :pivotX="pivotX"
 		   ref="modal">
 		<div class="box h-100 modal-body">
-			<button class="modal-close is-large" @click="$modal.hide(name)"></button>
+			<button class="modal-close is-large" type="button" @click="$modal.hide(name)"></button>
 			<slot/>
 		</div>
 	</modal>

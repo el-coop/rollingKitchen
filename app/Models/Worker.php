@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\HasFields;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
 
 
 class Worker extends Model {
@@ -118,6 +119,19 @@ class Worker extends Model {
                 ]],
             ]);
             $fullData = $fullData->concat($this->getFieldsData());
+            $fullData = $fullData->push([
+                'name' => 'liability',
+                'label' => __('worker/worker.liabilityLabel'),
+                'type' => 'CheckboxPopup',
+                'value' => $this->liability,
+                'checked' => $this->liability,
+                'disabled' => false,
+                'popup' => [
+                    'a' => __('worker/worker.liabilityPopupLink'),
+                    'label' => __('worker/worker.liabilityPopupLabel'),
+                    'text' => app('settings')->get('workers_liability_popup_' . App::GetLocale())
+                ]
+            ]);
         }
 
         return $fullData;

@@ -12,6 +12,9 @@
                 @csrf
                 @method('patch')
                 <dynamic-fields :fields="{{ $worker->fulldata->map(function($item) use($errors){
+                    if ($item['name'] == 'liability'){
+                         $item['disabled'] = true;
+                    }
 					$fieldName = str_replace(']','',str_replace('[','.',$item['name']));
 
 					$item['value'] = $item['type'] == 'multiselect' ? $item['value']: old($fieldName, $item['value']);
