@@ -11,7 +11,7 @@
 					return $item;
 				}) }}"
 							class="mb-1"
-							:hide="{{ collect(['supervisor','approved','workplaces'])->concat($rightSideFields) }}">
+							:hide="{{ collect(['supervisor','approved','submitted','paid','workplaces'])->concat($rightSideFields) }}">
 			</dynamic-fields>
 		</div>
 		<div class="column">
