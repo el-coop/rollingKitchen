@@ -12,7 +12,7 @@ return [
 	'noKitchens' => 'Nobody',
 	'default_send_invoice' => 'Default Attach To Invoice',
 	'default_resend_invoice' => 'Default Attach On Resend Invoice',
-	
+
 	'registration_year' => 'Registration Year',
 	'general_registration_status' => 'Open Registration',
 	'general_registration_text_en' => 'Registration Text EN',
@@ -57,12 +57,12 @@ return [
 	'accountant' => 'Accountant',
 	'accountant_email' => "Accountant's Email",
 	'accountant_password' => "Accountant's Password",
-	
+
 	"workers_tax_review_uploaded_subject_nl" => 'Tax review uploaded subject NL',
 	"workers_tax_review_uploaded_subject_en" => 'Tax review uploaded subject EN',
 	"workers_tax_review_uploaded_nl" => 'Tax review uploaded body NL',
 	"workers_tax_review_uploaded_en" => 'Tax review uploaded body EN',
-	
+
 	'workers_profile_filled_subject_nl' => 'Worker profile filled subject NL',
 	'workers_profile_filled_subject_en' => 'Worker profile filled subject EN',
 	'workers_profile_filled_nl' => 'Worker profile filled body NL',
@@ -87,41 +87,44 @@ return [
 	'bands_confirmation_subject_en' => 'Bands subject text EN',
 	'bands_confirmation_subject_nl' => 'Bands subject text NL',
 
-	
+
 	'band_members_user_created_subject_nl' => 'Bands member created mail subject NL',
 	'band_members_user_created_subject_en' => 'Bands member created mail subject EN',
 	'band_members_user_created_nl' => 'Bands member created mail body NL',
 	'band_members_user_created_en' => 'Bands member created mail body EN',
-	
+
 	'band_members_profile_filled_subject_nl' => 'Band member profile filled subject NL',
 	'band_members_profile_filled_subject_en' => 'Band member profile filled subject EN',
 	'band_members_profile_filled_nl' => 'Band member profile filled text NL',
 	'band_members_profile_filled_en' => 'Band member profile filled text EN',
-	
+
 	'band_members_privacy_statement_nl' => 'Band member privacy statement NL',
 	'band_members_privacy_statement_en' => 'Band member privacy statement EN',
-	
+
 	'schedule_deleted_subject_nl' => 'Show canceled subject NL',
 	'schedule_deleted_subject_en' => 'Show canceled subject EN',
 	'schedule_deleted_nl' => 'Show canceled body NL',
 	'schedule_deleted_en' => 'Show canceled body EN',
-	
+
 	'schedule_changed_subject_nl' => 'Show modified subject NL',
 	'schedule_changed_subject_en' => 'Show modified subject EN',
 	'schedule_stage_changed_nl' => 'Show modified stage NL',
 	'schedule_stage_changed_en' => 'Show modified stage EN',
 	'schedule_payment_changed_nl' => 'Show modified payment NL',
 	'schedule_payment_changed_en' => 'Show modified payment EN',
-	
+
 	'schedule_created_subject_nl' => 'Show created subject NL',
 	'schedule_created_subject_en' => 'Show created subject EN',
 	'schedule_created_nl' => 'Show created body NL',
 	'schedule_created_en' => 'Show created body EN',
-	
+
 	'schedule_start_day' => 'Schedule start day',
 	'schedule_end_day' => 'Schedule end day',
 	'schedule_start_hour' => 'Schedule start hour',
 	'schedule_end_hour' => 'Schedule end hour',
-    
-    'application_waste_processing_fee' => 'Waste processing fee'
+
+    'application_waste_processing_fee' => 'Waste processing fee',
+
+    'workers_liability_popup_en' => 'Workers Liability Popup Text EN',
+    'workers_liability_popup_nl' => 'Workers Liability Popup Text NL'
 ];

@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class BandPdfTest extends TestCase {
+class BandSetlistTest extends TestCase {
 	use RefreshDatabase;
 	use WithFaker;
 	protected $admin;

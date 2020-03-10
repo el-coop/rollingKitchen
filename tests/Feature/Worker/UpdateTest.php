@@ -113,7 +113,7 @@ class UpdateTest extends TestCase {
 		Event::assertNotDispatched(WorkerProfileFilled::class);
 	}
 
-	public function test_worker_can_submit_self_when_has_photo() {
+	public function test_worker_can_submit_self_when_has_photo_and_accepted_terms() {
 		factory(WorkerPhoto::class)->create([
 			'worker_id' => $this->worker->user->id
 		]);
@@ -127,7 +127,8 @@ class UpdateTest extends TestCase {
 			'worker' => [
 				'data'
 			],
-			'review' => true
+			'review' => true,
+            'liability' => 'on'
 		])->assertSessionHas('toast');
 
 		$this->assertDatabaseHas('users', [
@@ -149,7 +150,7 @@ class UpdateTest extends TestCase {
 		});
 	}
 
-	public function test_worker_must_have_a_photo() {
+	public function test_worker_must_have_a_photo_and_accept_terms() {
 
 		Event::fake();
 
@@ -161,7 +162,7 @@ class UpdateTest extends TestCase {
 				'data'
 			],
 			'review' => true
-		])->assertSessionHasErrors('photos');
+		])->assertSessionHasErrors(['photos', 'liability']);
 
 		$this->assertDatabaseMissing('users', [
 			'user_id' => $this->worker->user_id,
@@ -201,7 +202,8 @@ class UpdateTest extends TestCase {
 			'worker' => [
 				'data'
 			],
-			'review' => true
+			'review' => true,
+            'liability' => 'on'
 		])->assertSessionHas('toast');
 
 		$this->assertDatabaseHas('users', [
