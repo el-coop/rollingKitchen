@@ -5,11 +5,12 @@ namespace App\Models;
 use App\Models\Traits\HasFields;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
 
 
 class Worker extends Model {
     use HasFields;
-    
+
     protected static function boot() {
         parent::boot();
         static::deleting(function ($worker) {
@@ -21,28 +22,28 @@ class Worker extends Model {
             $worker->shifts()->detach();
         });
     }
-    
+
     protected $casts = [
         'data' => 'array',
     ];
-    
+
     protected $appends = [
         'workplacesList',
         'photoList'
     ];
-    
+
     static function indexPage() {
         return action('Admin\WorkerController@index', [], false);
     }
-    
+
     public function homePage() {
         return action('Worker\WorkerController@index', $this);
     }
-    
+
     public function user() {
         return $this->morphOne(User::class, 'user');
     }
-    
+
     public function getFullDataAttribute() {
         $fullData = collect([
             [
@@ -91,7 +92,7 @@ class Worker extends Model {
                 ]],
             ],
         ]);
-        
+
         if ($this->exists) {
             $fullData = $fullData->push([
                 'name' => 'approved',
@@ -102,28 +103,41 @@ class Worker extends Model {
                 ]],
             ]);
             $fullData = $fullData->concat($this->getFieldsData());
+            $fullData = $fullData->push([
+                'name' => 'liability',
+                'label' => __('worker/worker.liabilityLabel'),
+                'type' => 'CheckboxPopup',
+                'value' => $this->liability,
+                'checked' => $this->liability,
+                'disabled' => false,
+                'popup' => [
+                    'a' => __('worker/worker.liabilityPopupLink'),
+                    'label' => __('worker/worker.liabilityPopupLabel'),
+                    'text' => app('settings')->get('workers_liability_popup_' . App::GetLocale())
+                ]
+            ]);
         }
-        
+
         return $fullData;
     }
-    
+
     public function workplaces() {
         return $this->belongsToMany(Workplace::class)->withTimestamps();
     }
-    
+
     public function getWorkplacesListAttribute() {
         return $this->workplaces->implode('name', ', ');
-        
+
     }
-    
+
     public function photos() {
         return $this->hasMany(WorkerPhoto::class);
     }
-    
+
     public function isSupervisor() {
         return $this->supervisor;
     }
-    
+
     public function isMySupervisor(User $user) {
         $user = $user->user;
         if ($user->isSupervisor()) {
@@ -135,12 +149,12 @@ class Worker extends Model {
         }
         return false;
     }
-    
+
     public function shifts() {
         return $this->belongsToMany(Shift::class)->using(ShiftWorker::class)->withPivot('start_time', 'end_time', 'work_function_id')->where('shifts.date', '>', Carbon::parse('first day of January'));
     }
-    
-    
+
+
     public function getWorkedHoursAttribute() {
         $shifts = $this->shifts()->where('closed', true)
             ->where('date', '>', request()->input('date', 0))
@@ -152,11 +166,11 @@ class Worker extends Model {
         });
         return $startOfDay->diffAsCarbonInterval($totalHours);
     }
-    
+
     public function taxReviews() {
         return $this->hasMany(TaxReview::class);
     }
-    
+
     public function getTotalPaymentAttribute() {
         return $this->shifts()->where('closed', true)
             ->where('date', '>', request()->input('date', 0))
@@ -164,7 +178,7 @@ class Worker extends Model {
                 return $shift->pivot->payment;
             });
     }
-    
+
     public function getPhotoListAttribute() {
         return $this->photos;
     }

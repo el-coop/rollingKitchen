@@ -24,10 +24,10 @@ class UpdateTest extends TestCase {
 	protected $accountant;
 	private $kitchenPhoto;
 	private $workerPhoto;
-	
+
 	protected function setUp(): void {
 		parent::setUp();
-		
+
 		$this->admin = factory(User::class)->make();
 		factory(Admin::class)->create()->user()->save($this->admin);
 		$this->kitchen = factory(User::class)->make();
@@ -37,21 +37,21 @@ class UpdateTest extends TestCase {
 		$this->worker = factory(User::class)->make();
 		factory(Worker::class)->create()->user()->save($this->worker);
 	}
-	
+
 	public function test_guest_cant_see_worker_page() {
 		$this->get(action('Worker\WorkerController@index', $this->worker->user))->assertRedirect(action('Auth\LoginController@showLoginForm'));
 	}
-	
+
 	public function test_kitchen_cant_see_worker_page() {
 		$this->actingAs($this->kitchen)->get(action('Worker\WorkerController@index', $this->worker->user))->assertForbidden();
 	}
-	
+
 	public function test_other_worker_cant_see_worker_page() {
 		$worker = factory(User::class)->make();
 		factory(Worker::class)->create()->user()->save($worker);
 		$this->actingAs($worker)->get(action('Worker\WorkerController@index', $this->worker->user))->assertForbidden();
 	}
-	
+
 	public function test_worker_can_see_own_page() {
 		$this->actingAs($this->worker)->get(action('Worker\WorkerController@index', $this->worker->user))->assertSuccessful();
 	}
@@ -59,15 +59,15 @@ class UpdateTest extends TestCase {
 	public function test_accountant_cant_see_worker_page() {
 		$this->actingAs($this->accountant)->get(action('Worker\WorkerController@index', $this->worker->user))->assertForbidden();
 	}
-	
+
 	public function test_admin_can_see_worker_page() {
 		$this->actingAs($this->admin)->get(action('Worker\WorkerController@index', $this->worker->user))->assertSuccessful();
 	}
-	
+
 	public function test_guest_cant_update_worker() {
 		$this->patch(action('Worker\WorkerController@update', $this->worker->user))->assertRedirect(action('Auth\LoginController@showLoginForm'));
 	}
-	
+
 	public function test_kitchen_cant_update_worker() {
 		$this->actingAs($this->kitchen)->patch(action('Worker\WorkerController@update', $this->worker->user))->assertForbidden();
 	}
@@ -75,25 +75,26 @@ class UpdateTest extends TestCase {
 	public function test_accountant_cant_update_worker() {
 		$this->actingAs($this->accountant)->patch(action('Worker\WorkerController@update', $this->worker->user))->assertForbidden();
 	}
-	
+
 	public function test_other_worker_cant_update_worker() {
 		$worker = factory(User::class)->make();
 		factory(Worker::class)->create()->user()->save($worker);
 		$this->actingAs($worker)->patch(action('Worker\WorkerController@update', $this->worker->user))->assertForbidden();
 	}
-	
+
 	public function test_worker_can_update_self() {
 		Event::fake();
-		
+
 		$this->actingAs($this->worker)->patch(action('Worker\WorkerController@update', $this->worker->user), [
 			'email' => 'bla@gla.bla',
 			'name' => 'game',
 			'language' => 'en',
 			'worker' => [
 				'data'
-			]
+			],
+            'liability' => 'on'
 		])->assertSessionHas('toast');
-		
+
 		$this->assertDatabaseHas('users', [
 			'user_id' => $this->worker->user_id,
 			'user_type' => Worker::class,
@@ -101,23 +102,24 @@ class UpdateTest extends TestCase {
 			'name' => 'game',
 			'language' => 'en'
 		]);
-		
+
 		$this->assertDatabaseHas('workers', [
 			'id' => $this->worker->user_id,
 			'data' => json_encode(['data']),
-			'submitted' => false
+			'submitted' => false,
+            'liability' => true
 		]);
-		
+
 		Event::assertNotDispatched(WorkerProfileFilled::class);
 	}
-	
+
 	public function test_worker_can_submit_self_when_has_photo() {
 		factory(WorkerPhoto::class)->create([
 			'worker_id' => $this->worker->user->id
 		]);
-		
+
 		Event::fake();
-		
+
 		$this->actingAs($this->worker)->patch(action('Worker\WorkerController@update', $this->worker->user), [
 			'email' => 'bla@gla.bla',
 			'name' => 'game',
@@ -127,7 +129,7 @@ class UpdateTest extends TestCase {
 			],
 			'review' => true
 		])->assertSessionHas('toast');
-		
+
 		$this->assertDatabaseHas('users', [
 			'user_id' => $this->worker->user_id,
 			'user_type' => Worker::class,
@@ -135,22 +137,22 @@ class UpdateTest extends TestCase {
 			'name' => 'game',
 			'language' => 'en'
 		]);
-		
+
 		$this->assertDatabaseHas('workers', [
 			'id' => $this->worker->user_id,
 			'data' => json_encode(['data']),
 			'submitted' => true
 		]);
-		
+
 		Event::assertDispatched(WorkerProfileFilled::class, function ($event) {
 			return $event->worker->id === $this->worker->user->id;
 		});
 	}
-	
+
 	public function test_worker_must_have_a_photo() {
-		
+
 		Event::fake();
-		
+
 		$this->actingAs($this->worker)->patch(action('Worker\WorkerController@update', $this->worker->user), [
 			'email' => 'bla@gla.bla',
 			'name' => 'game',
@@ -160,7 +162,7 @@ class UpdateTest extends TestCase {
 			],
 			'review' => true
 		])->assertSessionHasErrors('photos');
-		
+
 		$this->assertDatabaseMissing('users', [
 			'user_id' => $this->worker->user_id,
 			'user_type' => Worker::class,
@@ -168,30 +170,30 @@ class UpdateTest extends TestCase {
 			'name' => 'game',
 			'language' => 'en'
 		]);
-		
+
 		$this->assertDatabaseMissing('workers', [
 			'id' => $this->worker->user_id,
 			'data' => json_encode(['data']),
 			'submitted' => true
 		]);
-		
+
 		Event::assertNotDispatched(WorkerProfileFilled::class, function ($event) {
 			return $event->worker->id === $this->worker->user->id;
 		});
 	}
-	
-	
+
+
 	public function test_worker_filled_notification_only_sent_once() {
-		
+
 		factory(WorkerPhoto::class)->create([
 			'worker_id' => $this->worker->user->id
 		]);
-		
+
 		Event::fake();
-		
+
 		$this->worker->user->submitted = true;
 		$this->worker->user->save();
-		
+
 		$this->actingAs($this->worker)->patch(action('Worker\WorkerController@update', $this->worker->user), [
 			'email' => 'bla@gla.bla',
 			'name' => 'game',
@@ -201,7 +203,7 @@ class UpdateTest extends TestCase {
 			],
 			'review' => true
 		])->assertSessionHas('toast');
-		
+
 		$this->assertDatabaseHas('users', [
 			'user_id' => $this->worker->user_id,
 			'user_type' => Worker::class,
@@ -209,26 +211,26 @@ class UpdateTest extends TestCase {
 			'name' => 'game',
 			'language' => 'en'
 		]);
-		
+
 		$this->assertDatabaseHas('workers', [
 			'id' => $this->worker->user_id,
 			'data' => json_encode(['data']),
 			'submitted' => true
 		]);
-		
+
 		Event::assertNotDispatched(WorkerProfileFilled::class, function ($event) {
 			return $event->worker->id === $this->worker->user->id;
 		});
 	}
-	
+
 	public function test_notifies_worker_when_profile_is_filled() {
 		Notification::fake();
-		
+
 		event(new WorkerProfileFilled($this->worker->user));
-		
+
 		Notification::assertSentTo($this->worker, ProfileFilledNotification::class);
 	}
-	
+
 	public function test_admin_can_update_worker() {
 		$this->actingAs($this->admin)->patch(action('Worker\WorkerController@update', $this->worker->user), [
 			'email' => 'bla@gla.bla',
@@ -238,21 +240,22 @@ class UpdateTest extends TestCase {
 				'data'
 			]
 		])->assertSessionHas('toast');
-		
+
 		$this->assertDatabaseHas('users', [
 			'user_id' => $this->worker->user_id,
 			'user_type' => Worker::class,
 			'email' => 'bla@gla.bla',
 			'name' => 'game',
-			'language' => 'en'
+			'language' => 'en',
 		]);
-		
+
 		$this->assertDatabaseHas('workers', [
 			'id' => $this->worker->user_id,
-			'data' => json_encode(['data'])
-		]);
+			'data' => json_encode(['data']),
+            'liability' => false
+        ]);
 	}
-	
+
 	public function test_worker_update_validation() {
 		$this->actingAs($this->worker)->patch(action('Worker\WorkerController@update', $this->worker->user), [
 			'email' => 'bla',
@@ -262,6 +265,6 @@ class UpdateTest extends TestCase {
 		])->assertSessionHasErrors([
 			'email', 'name', 'language', 'worker'
 		]);
-		
+
 	}
 }
