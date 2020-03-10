@@ -17,7 +17,5 @@
 		</form>
 	</div>
 	<div class="column">
-		<band-pdf-form band-id="{{ $band->id }}"
-					   :init-has-pdf="{{ $band->pdf ? 'true' : 'false' }}"></band-pdf-form>
 	</div>
 </div>
