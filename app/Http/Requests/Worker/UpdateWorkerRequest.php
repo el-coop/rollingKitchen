@@ -33,13 +33,11 @@ class UpdateWorkerRequest extends FormRequest {
 			'language' => 'required|in:en,nl',
 			'worker' => 'required|array',
 		]);
-
 		if ($this->input('review') || $this->worker->submitted) {
 			$requiredFieldsRules = Field::getRequiredFields(Worker::class);
 			$protectedFieldsRules = Field::getProtectedFields(Worker::class);
-			$rules = $rules->merge($requiredFieldsRules)->merge($protectedFieldsRules);
+			$rules = $rules->merge($requiredFieldsRules)->merge($protectedFieldsRules)->merge(['liability' => 'accepted']);
 		}
-
 		return $rules->toArray();
 	}
 

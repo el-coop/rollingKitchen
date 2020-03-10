@@ -10,6 +10,7 @@
         <modal-component name="popup">
             <div v-text="field.popup.text"></div>
         </modal-component>
+        <p v-if="error" class="help is-danger" v-text="errorText"></p>
     </div>
 </template>
 
