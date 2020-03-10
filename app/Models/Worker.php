@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Worker extends Model {
     use HasFields;
-    
+
     protected static function boot() {
         parent::boot();
         static::deleting(function ($worker) {
@@ -21,28 +21,28 @@ class Worker extends Model {
             $worker->shifts()->detach();
         });
     }
-    
+
     protected $casts = [
         'data' => 'array',
     ];
-    
+
     protected $appends = [
         'workplacesList',
         'photoList'
     ];
-    
+
     static function indexPage() {
         return action('Admin\WorkerController@index', [], false);
     }
-    
+
     public function homePage() {
         return action('Worker\WorkerController@index', $this);
     }
-    
+
     public function user() {
         return $this->morphOne(User::class, 'user');
     }
-    
+
     public function getFullDataAttribute() {
         $fullData = collect([
             [
@@ -91,8 +91,16 @@ class Worker extends Model {
                 ]],
             ],
         ]);
-        
+
         if ($this->exists) {
+            $fullData = $fullData->push([
+                'name' => 'submitted',
+                'type' => 'Checkbox',
+                'value' => $this->submitted,
+                'options' => [[
+                    'name' => __('admin/workers.submitted'),
+                ]],
+            ]);
             $fullData = $fullData->push([
                 'name' => 'approved',
                 'type' => 'Checkbox',
@@ -101,29 +109,37 @@ class Worker extends Model {
                     'name' => __('admin/workers.approved'),
                 ]],
             ]);
+            $fullData = $fullData->push([
+                'name' => 'paid',
+                'type' => 'Checkbox',
+                'value' => $this->paid,
+                'options' => [[
+                    'name' => __('admin/invoices.paid'),
+                ]],
+            ]);
             $fullData = $fullData->concat($this->getFieldsData());
         }
-        
+
         return $fullData;
     }
-    
+
     public function workplaces() {
         return $this->belongsToMany(Workplace::class)->withTimestamps();
     }
-    
+
     public function getWorkplacesListAttribute() {
         return $this->workplaces->implode('name', ', ');
-        
+
     }
-    
+
     public function photos() {
         return $this->hasMany(WorkerPhoto::class);
     }
-    
+
     public function isSupervisor() {
         return $this->supervisor;
     }
-    
+
     public function isMySupervisor(User $user) {
         $user = $user->user;
         if ($user->isSupervisor()) {
@@ -135,12 +151,12 @@ class Worker extends Model {
         }
         return false;
     }
-    
+
     public function shifts() {
         return $this->belongsToMany(Shift::class)->using(ShiftWorker::class)->withPivot('start_time', 'end_time', 'work_function_id')->where('shifts.date', '>', Carbon::parse('first day of January'));
     }
-    
-    
+
+
     public function getWorkedHoursAttribute() {
         $shifts = $this->shifts()->where('closed', true)
             ->where('date', '>', request()->input('date', 0))
@@ -152,11 +168,11 @@ class Worker extends Model {
         });
         return $startOfDay->diffAsCarbonInterval($totalHours);
     }
-    
+
     public function taxReviews() {
         return $this->hasMany(TaxReview::class);
     }
-    
+
     public function getTotalPaymentAttribute() {
         return $this->shifts()->where('closed', true)
             ->where('date', '>', request()->input('date', 0))
@@ -164,7 +180,7 @@ class Worker extends Model {
                 return $shift->pivot->payment;
             });
     }
-    
+
     public function getPhotoListAttribute() {
         return $this->photos;
     }
