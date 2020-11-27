@@ -14,5 +14,6 @@ return [
 	'pastApplications' => 'Past Applications',
 	'photoValidation' => 'You must upload photos or fill at least on of the following: website/facebook/instagram',
 	'pdfsTitle' => 'Files for your consideration',
-    'usePastApplication' => "Use Past Application"
+    'usePastApplication' => "Use Past Application",
+    'fill' => 'Fill Application'
 ];

@@ -126,7 +126,6 @@ class BandController extends Controller {
 
 	public function adminPdf(BandAdmin $bandAdmin, BandMemberService $bandMemberService) {
 		$data = $bandMemberService->adminIndividual($bandAdmin);
-
 		$images = $bandAdmin->photos->map(function ($photo) {
 			$encryptedContents = Storage::get("public/photos/{$photo->file}");
 			$decryptedContents = base64_encode(Crypt::decrypt($encryptedContents));

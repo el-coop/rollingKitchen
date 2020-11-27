@@ -28,6 +28,7 @@ Route::group(['prefix' => 'kitchen', 'namespace' => 'Kitchen'], function () {
 		Route::delete('/{kitchen}/photo/{photo}', 'KitchenController@destroyPhoto');
 	});
     Route::group(['prefix' => 'applications/{application}', 'middleware' => ['auth', 'can:update,application']], function (){
+        Route::patch('/use-past-application', 'KitchenController@usePastApplication');
         Route::group(['prefix' => 'products'], function () {
             Route::post('/', 'ApplicationProductController@create');
             Route::patch('/{product}', 'ApplicationProductController@update');

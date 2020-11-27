@@ -7,6 +7,7 @@ use App\Http\Requests\Kitchen\CreateKitchenRequest;
 use App\Http\Requests\Kitchen\DestroyKitchenRequest;
 use App\Http\Requests\Kitchen\Photo\UploadPhotoRequest;
 use App\Http\Requests\Kitchen\UpdateKitchenRequest;
+use App\Http\Requests\Kitchen\UsePastApplicationRequest;
 use App\Models\Application;
 use App\Models\Kitchen;
 use App\Models\Pdf;
@@ -139,5 +140,14 @@ class KitchenController extends Controller {
 
     public function redirectTo() {
         return Auth::user()->user->homePage();
+    }
+
+    public function usePastApplication(UsePastApplicationRequest $request, Application $application) {
+        $request->commit();
+        return back()->with('toast', [
+            'type' => 'success',
+            'title' => '',
+            'message' => __('vue.updateSuccess', [], $request->input('language'))
+        ]);
     }
 }

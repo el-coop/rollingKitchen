@@ -33,10 +33,9 @@ class WorkFunctionTest extends TestCase {
 		$this->kitchen->user()->save(factory(User::class)->make());
 		$this->accountant = factory(User::class)->make();
 		factory(Accountant::class)->create()->user()->save($this->accountant);
-		$this->workplace = factory(Workplace::class)->create()->each(function ($workplace) {
-			$this->workFunction = factory(WorkFunction::class)->make();
-			$workplace->workFunctions()->save($this->workFunction);
-		});
+		$this->workplace = factory(Workplace::class)->create();
+        $this->workFunction = factory(WorkFunction::class)->make();
+        $this->workplace->workFunctions()->save($this->workFunction);
 	}
 
 	/**
@@ -73,14 +72,14 @@ class WorkFunctionTest extends TestCase {
 			'name' => 'name',
 			'payment_per_hour_after_tax' => 10,
 			'payment_per_hour_before_tax' => 12,
-			'workplace_id' => 1
+			'workplace_id' => $this->workplace->id
 		]);
 
 		$this->assertDatabaseHas('work_functions', [
 			'name' => 'name',
 			'payment_per_hour_before_tax' => 12,
 			'payment_per_hour_after_tax' => 10,
-			'workplace_id' => 1
+			'workplace_id' => $this->workplace->id
 		]);
 	}
 
@@ -91,7 +90,7 @@ class WorkFunctionTest extends TestCase {
 	}
 
 	public function test_kitchen_cant_delete_workFunction() {
-		$this->actingAs($this->kitchen->user)->delete(action('Admin\WorkplaceController@destroyWorkFunction', [$this->workplace, $this->workFunction]))->assertForbidden();
+		$this->actingAs($this->kitchen->user)->delete(action('Admin\WorkplaceController@destroyWorkFunction', [$this->workplace, $this->workFunction]))->dump()->assertForbidden();
 	}
 
 	public function test_worker_cant_delete_workFunction() {

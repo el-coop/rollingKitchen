@@ -12,9 +12,5 @@
     </div>
     <div class="column">
         @include('kitchen.application.products')
-        @if(!$pastApplications->isEmpty())
-            @include('kitchen.usePastApplication')
-        @endif
     </div>
-
 </div>

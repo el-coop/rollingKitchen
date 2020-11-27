@@ -84,7 +84,7 @@ class MotherlistTest extends TestCase {
 		
 		foreach ($this->kitchens as $kitchen) {
 			$response->assertJsonFragment([
-				'id' => "{$kitchen->id}",
+				'id' => $kitchen->id,
 				'name' => $kitchen->user->name,
 				'email' => $kitchen->user->email,
 				'status' => $kitchen->status,
@@ -131,10 +131,8 @@ class MotherlistTest extends TestCase {
 		$newKitchen = $this->kitchens->first();
 		$newKitchen->status = 'new';
 		$newKitchen->save();
-		
 		$response = $this->actingAs($this->admin->user)
 			->get(action('DatatableController@list', ['table' => 'admin.kitchensTable', 'per_page' => 20, 'filter' => '{"status":"new"}']));
-		
 		$kitchens = $this->kitchens->filter(function ($kitchen) {
 			return $kitchen->status == 'new';
 		});
@@ -142,7 +140,7 @@ class MotherlistTest extends TestCase {
 		
 		foreach ($kitchens as $kitchen) {
 			$response->assertJsonFragment([
-				'id' => "{$kitchen->id}",
+				'id' => $kitchen->id,
 				'name' => $kitchen->user->name,
 				'email' => $kitchen->user->email,
 				'status' => $kitchen->status,
@@ -261,7 +259,7 @@ class MotherlistTest extends TestCase {
 	}
 	
 	public function test_kitchen_cant_delete_another_kitchen() {
-		$kitchen = Kitchen::find(2);
+		$kitchen = $this->kitchens->last();
 		$this->actingAs($kitchen->user)->delete(action('Admin\KitchenController@destroy', $this->kitchens->first()))->assertForbidden();
 	}
 	

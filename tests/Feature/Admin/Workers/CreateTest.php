@@ -110,7 +110,7 @@ class CreateTest extends TestCase {
 		]);
 		
 		$this->assertDatabaseHas('workers', [
-			'supervisor' => false,
+			'supervisor' => 0,
 			'type' => 0,
 			'data' => json_encode([])
 		]);

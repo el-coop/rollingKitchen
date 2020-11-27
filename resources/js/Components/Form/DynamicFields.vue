@@ -69,6 +69,7 @@
         			let field = this.renderFields.shift();
         			field.value = fieldValues[field.name];
 					this.renderFields.push(field);
+					// this.$set(this.renderFields, i, )
 				}
 			}
 		},

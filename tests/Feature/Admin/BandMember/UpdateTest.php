@@ -132,7 +132,7 @@ class UpdateTest extends TestCase {
 		]);
 		$this->assertDatabaseHas('band_members', [
 			'id' => $this->bandMember->user->id,
-			'data' => json_encode(['test' => 'test'])
+			'data' => json_encode(['test' => 'test']),
 		]);
 	}
 	

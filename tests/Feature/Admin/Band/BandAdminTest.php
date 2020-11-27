@@ -101,24 +101,24 @@ class BandAdminTest extends TestCase {
 	}
 
 	public function test_guest_cant_see_band_admin_pdf() {
-		$this->get(action('Admin\BandController@adminPdf', $this->bandMember->user))->assertStatus(401);
+		$this->get(action('Admin\BandController@adminPdf', $this->bandAdmin))->assertStatus(401);
 	}
 
 
 	public function test_kitchen_cant_see_band_admin_pdf() {
-		$this->actingAs($this->kitchen)->get(action('Admin\BandController@adminPdf', $this->bandMember->user))->assertForbidden();
+		$this->actingAs($this->kitchen)->get(action('Admin\BandController@adminPdf', $this->bandAdmin))->assertForbidden();
 	}
 
 	public function test_worker_cant_see_band_admin_pdf() {
-		$this->actingAs($this->worker)->get(action('Admin\BandController@adminPdf', $this->bandMember->user))->assertForbidden();
+		$this->actingAs($this->worker)->get(action('Admin\BandController@adminPdf', $this->bandAdmin))->assertForbidden();
 	}
 
 	public function test_band_member_cant_see_band_admin_pdf() {
-		$this->actingAs($this->bandMember)->get(action('Admin\BandController@adminPdf', $this->bandMember->user))->assertForbidden();
+		$this->actingAs($this->bandMember)->get(action('Admin\BandController@adminPdf', $this->bandAdmin))->assertForbidden();
 	}
 
 	public function test_band_cant_see_band_admin_pdf() {
-		$this->actingAs($this->band)->get(action('Admin\BandController@adminPdf', $this->bandMember->user))->assertForbidden();
+		$this->actingAs($this->band)->get(action('Admin\BandController@adminPdf', $this->bandAdmin))->assertForbidden();
 	}
 
 	public function test_admin_can_see_band_admin_pdf() {

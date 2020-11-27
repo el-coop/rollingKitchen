@@ -133,12 +133,12 @@ class CreateTest extends TestCase {
 			'language' => 'en',
 			'user_type' => BandMember::class
 		]);
-		$this->assertDatabaseHas('band_members', [
-			'id' => 2,
-		]);
 		
 		$bandMember = User::where(['email' => 'a@a.com', 'user_type' => BandMember::class])->first()->user;
 		Notification::assertSentTo($bandMember->user, UserCreated::class);
+        $this->assertDatabaseHas('band_members', [
+            'id' => $bandMember->id
+        ]);
 	}
 	
 	public function test_admin_cant_go_over_budget() {

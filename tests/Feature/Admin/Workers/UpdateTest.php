@@ -107,9 +107,9 @@ class UpdateTest extends TestCase {
 		]);
 
 		$this->assertDatabaseHas('workers', [
-			'supervisor' => false,
+			'supervisor' => 0,
 			'type' => 1,
-			'approved' => true,
+			'approved' => 1,
 			'data' => json_encode([
 				'data' => 'bata',
 			]),
@@ -188,9 +188,9 @@ class UpdateTest extends TestCase {
 		]);
 
 		$this->assertDatabaseHas('workers', [
-			'supervisor' => false,
+			'supervisor' => 0,
 			'type' => 1,
-			'approved' => true,
+			'approved' => 1,
 			'data' => json_encode([
 				'data' => 'bata',
 			]),

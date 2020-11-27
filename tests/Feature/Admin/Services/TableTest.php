@@ -74,7 +74,7 @@ class TableTest extends TestCase {
 	}
 
 	public function test_datatable_get_table_data_sorted() {
-		$response = $this->actingAs($this->admin->user)->get(action('DatatableController@list', ['table' => 'admin.servicesTable', 'per_page' => 20, 'sort' => 'name|asc']));
+		$response = $this->actingAs($this->admin->user)->get(action('DatatableController@list', ['table' => 'admin.servicesTable', 'per_page' => 20, 'sort' => "price|asc"]));
 
 		$services = array_values($this->services->map(function ($service) {
 			return [
@@ -82,12 +82,11 @@ class TableTest extends TestCase {
 				'name_nl' => $service->name_nl,
 				'name_en' => $service->name_en,
 				'type' => $service->type,
-				'price' => $service,
+				'price' => $service->price,
 			];
-		})->sortBy('name')->toArray());
-
+		})->sortBy("price")->toArray());
 		foreach ($response->json()['data'] as $key => $responseFragment) {
-			$this->assertEquals($responseFragment['id'], $services[$key]['id']);
+            $this->assertEquals($responseFragment['id'], $services[$key]['id']);
 		}
 	}
 
@@ -101,14 +100,13 @@ class TableTest extends TestCase {
 		$services = $this->services->filter(function ($service) {
 			return $service->category == 'safety';
 		});
-
 		foreach ($services as $service) {
 			$response->assertJsonFragment([
-				'id' => "{$service->id}",
+				'id' => $service->id,
 				'name_nl' => $service->name_nl,
+                'price' => "{$service->price}.00",
 				'name_en' => $service->name_en,
 				'category' => $service->category,
-				'price' => (string)$service->price,
 			]);
 		}
 	}

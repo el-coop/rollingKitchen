@@ -18,7 +18,6 @@ Vue.component('BandPdfForm', require('./Band/BandPdfForm').default);
 Vue.component('BandSetlistForm', require('./Band/BandSetlistForm').default);
 Vue.component('ServicesForm', require('./Admin/ServicesForm').default);
 Vue.component('LinkDateSelector', require('./Global/LinkDateSelector').default);
-Vue.component('PastApplicationPicker', require('./Kitchen/PastApplicationPicker').default);
 
 // utilities
 Vue.component('Drawer', require('./Utilities/Drawer').default);
