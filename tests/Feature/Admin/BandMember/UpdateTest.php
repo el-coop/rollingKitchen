@@ -130,12 +130,13 @@ class UpdateTest extends TestCase {
 			'user_type' => BandMember::class,
 			'id' => $this->bandMember->id
 		]);
-		$this->assertDatabaseHas('band_members', [
+		$this->assertDatabaseHas('band_memkbers', [
 			'id' => $this->bandMember->user->id,
-			'data' => json_encode(['test' => 'test']),
 		]);
+		$bandMember = BandMember::find($this->bandMember->user->id);
+		$this->assertEquals($bandMember->data,collect(['test' => 'test']));
 	}
-	
+
 	public function test_admin_cant_go_over_budget_on_update() {
 		$this->actingAs($this->admin)->patch(action('Admin\BandMemberController@update', [$this->band->user, $this->bandMember->user]), [
 			'name' => 'name',
