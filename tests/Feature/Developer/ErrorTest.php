@@ -104,7 +104,7 @@ class ErrorTest extends TestCase {
 		$response = $this->actingAs($this->developer->user)->get(action('DatatableController@list', ['table' => 'developer.phpErrorsTable', 'per_page' => 20]));
 		foreach ($this->phpErrors as $phpError) {
 			$response->assertJsonFragment([
-				'id' => "{$phpError->error->id}",
+				'id' => $phpError->error->id,
 				'message' => $phpError->message,
 				'page' => $phpError->error->page
 			]);
@@ -115,7 +115,7 @@ class ErrorTest extends TestCase {
 		$response = $this->actingAs($this->developer->user)->get(action('DatatableController@list', ['table' => 'developer.jsErrorsTable', 'per_page' => 20]));
 		foreach ($this->jsErrors as $jsError) {
 			$response->assertJsonFragment([
-				'id' => "{$jsError->error->id}",
+				'id' => $jsError->error->id,
 				'message' => $jsError->message,
 				'page' => $jsError->error->page
 			]);

@@ -27,7 +27,7 @@ class KitchenServiceTest extends TestCase {
 		$this->services = factory(Service::class, 10)->create();
 		$this->kitchens = factory(Kitchen::class, 5)->create()->each(function ($kitchen) use ($applicationYear) {
 			$kitchen->user()->save(factory(User::class)->make());
-			$application = factory(Application::class)->make(['year' => $applicationYear]);
+			$application = factory(Application::class)->make(['year' => $applicationYear ?? now()->year]);
 			$kitchen->applications()->save($application);
 			Service::inRandomOrder()->limit(3)->get()->each(function ($service) use ($application) {
 				$application->services()->save($service, ['quantity' => random_int(1, 5)]);

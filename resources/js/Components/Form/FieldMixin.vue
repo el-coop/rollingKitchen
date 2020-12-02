@@ -28,7 +28,11 @@
 		watch: {
 			value(value) {
 				this.$emit('input', value);
-			}
+			},
+
+            'field.value'(value){
+			    this.value = value;
+            }
 		}
 	}
 </script>

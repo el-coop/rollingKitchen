@@ -9,4 +9,5 @@ return [
 	'updatedAt' => 'Updated At',
     'exportTitle' => 'Export Kitchens',
     'exportAllData' => 'Export All Data',
+    'createKitchen' => 'Create Kitchen'
 ];

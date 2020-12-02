@@ -84,7 +84,7 @@ class ApplicationTest extends TestCase {
 		$response = $this->actingAs($this->admin->user)->get(action('DatatableController@list', ['table' => 'admin.applicationsTable', 'per_page' => 20]));
 		foreach ($this->applications as $application) {
 			$response->assertJsonFragment([
-				'id' => "{$application->id}",
+				'id' => $application->id,
 				'name' => $application->kitchen->user->name,
 				'year' => $application->year,
 				'status' => $application->status,
@@ -118,7 +118,7 @@ class ApplicationTest extends TestCase {
 		
 		foreach ($applications as $application) {
 			$response->assertJsonFragment([
-				'id' => "{$application->id}",
+				'id' => $application->id,
 				'year' => $application->year,
 				'status' => $application->status,
 			]);

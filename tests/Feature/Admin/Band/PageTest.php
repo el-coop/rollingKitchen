@@ -71,7 +71,7 @@ class PageTest extends TestCase {
 	public function test_datatable_gets_data(){
 		$response = $this->actingAs($this->admin)->get(action('DatatableController@list', ['table' => 'admin.bandsTable', 'per_page' => 20]));
 		$response->assertJsonFragment([
-			'id' => "{$this->band->user->id}",
+			'id' => $this->band->user->id,
 			'name' => $this->band->name,
 			'email' => $this->band->email
 		]);

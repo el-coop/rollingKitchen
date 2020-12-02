@@ -31,8 +31,8 @@ class KitchenPolicy {
 	 * @return mixed
 	 */
 	public function create(User $user) {
-		//
-	}
+        return $user->user_type == Admin::class;
+    }
 
 	/**
 	 * Determine whether the user can update the kitchen.

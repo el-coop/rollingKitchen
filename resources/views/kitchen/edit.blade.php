@@ -27,6 +27,9 @@
 			</template>
 		</tabs>
 	</form>
+	<div class="box mb-1">
+		@include('kitchen.usePastApplication')
+	</div>
 	@if(session()->has('fireworks'))
 		<fireworks-modal
 				text="{{ str_replace(PHP_EOL,'<br>',app('settings')->get('application_success_modal_' . App::getLocale())) }}"></fireworks-modal>

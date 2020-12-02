@@ -69,7 +69,7 @@ class TableTest extends TestCase {
 		$response = $this->actingAs($this->admin)->get(action('DatatableController@list', ['table' => 'admin.shiftsTable', 'per_page' => 20]));
 		foreach ($this->shifts as $shift) {
 			$response->assertJsonFragment([
-				'id' => "{$shift->id}",
+				'id' => $shift->id,
 				'date' => $shift->date
 			]);
 		}

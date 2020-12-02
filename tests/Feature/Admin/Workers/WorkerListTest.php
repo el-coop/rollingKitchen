@@ -63,7 +63,7 @@ class WorkerListTest extends TestCase {
 		$response = $this->actingAs($this->admin->user)->get(action('DatatableController@list', ['table' => 'admin.workersTable', 'per_page' => 20]));
 		foreach ($workers as $worker) {
 			$response->assertJsonFragment([
-				'id' => "{$worker->id}",
+				'id' => $worker->id,
 				'name' => $worker->user->name
 			]);
 		}
@@ -85,7 +85,7 @@ class WorkerListTest extends TestCase {
 		$this->assertCount($workersWithName->count(), $response->decodeResponseJson()['data']);
 		foreach ($workersWithName as $workerWithName) {
 			$response->assertJsonFragment([
-				'id' => "{$workerWithName->id}",
+				'id' => $workerWithName->id,
 				'name' => $workerWithName->user->name
 			]);
 		}
@@ -108,7 +108,7 @@ class WorkerListTest extends TestCase {
 		$this->assertCount($workersWithWorkplace->count(), $response->decodeResponseJson()['data']);
 		foreach ($workersWithWorkplace as $workerWithWorkplace) {
 			$response->assertJsonFragment([
-				'id' => "{$workerWithWorkplace->id}",
+				'id' => $workerWithWorkplace->id,
 				'name' => $workerWithWorkplace->user->name
 			]);
 		}

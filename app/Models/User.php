@@ -46,7 +46,7 @@ class User extends Authenticatable implements HasLocalePreference {
 	}
 
 	public function sendPasswordResetNotification($token) {
-		if ($this->password !== '' || !in_array($this->user_type,[Worker::class, ArtistManager::class, Band::class, BandMember::class])) {
+		if ($this->password !== '' || !in_array($this->user_type,[Worker::class, ArtistManager::class, Band::class, BandMember::class, Kitchen::class])) {
 			$this->notify(new ResetPasswordNotification($token));
 			return;
 		}
@@ -60,6 +60,9 @@ class User extends Authenticatable implements HasLocalePreference {
 			case BandMember::class:
 				$this->notify(new \App\Notifications\BandMember\UserCreated($token));
 				break;
+            case Kitchen::class:
+                $this->notify(new \App\Notifications\Kitchen\UserCreated($token));
+                break;
 			default:
 				$this->notify(new UserCreated($token));
 				break;

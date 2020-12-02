@@ -198,8 +198,8 @@ class ScheduleTest extends TestCase {
 		$oldShows->each(function ($show) use ($dateTime) {
 			if ($show->date_time != $dateTime->format('d/m/Y H:i')) {
 				$this->assertDatabaseMissing('band_schedules', [
-					'band' => $show->band_id,
-					'stage' => $show->stage_id,
+					'band_id' => $show->band_id,
+					'stage_id' => $show->stage_id,
 					'date_time' => Carbon::createFromFormat('d/m/Y H:i', $show->date_time)->format('Y-m-d H:i:00'),
 				]);
 				

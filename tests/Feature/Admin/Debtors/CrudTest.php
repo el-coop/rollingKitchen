@@ -102,7 +102,7 @@ class CrudTest extends TestCase {
 		
 		foreach ($debtors as $debtor) {
 			$response->assertJsonFragment([
-				'id' => "{$debtor->id}",
+				'id' => $debtor->id,
 				'name' => $debtor->name,
 				'email' => $debtor->email,
 			]);
