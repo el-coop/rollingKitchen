@@ -91,8 +91,6 @@ class CreateTest extends TestCase {
 	}
 	
 	public function test_admin_can_create_a_shift() {
-
-		$this->withoutExceptionHandling();
 		$workplace = $this->workplaces->random();
 		$date = Carbon::now();
 		$this->actingAs($this->admin)->post(action('Admin\ShiftController@store'), [

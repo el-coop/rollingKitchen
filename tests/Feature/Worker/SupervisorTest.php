@@ -721,7 +721,6 @@ class SupervisorTest extends TestCase {
     }
     
     public function test_supervisor_can_get_shift_datatable() {
-        $this->withoutExceptionHandling();
         $response = $this->actingAs($this->supervisor)->get(action('DatatableController@supervisorList', [
             'workplace' => $this->workplace,
             'attribute' => 'shiftsForSupervisor',

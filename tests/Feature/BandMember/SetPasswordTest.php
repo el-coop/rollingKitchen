@@ -119,7 +119,6 @@ class SetPasswordTest extends TestCase {
 	}
 
 	public function test_can_set_password_with_correct_credentials() {
-		$this->withoutExceptionHandling();
 		$this->post(action('BandMember\BandMemberController@reset'), [
 			'token' => '111',
 			'email' => $this->bandMember->email,

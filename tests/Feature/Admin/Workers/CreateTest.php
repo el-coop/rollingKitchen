@@ -89,7 +89,6 @@ class CreateTest extends TestCase {
 	}
 	
 	public function test_admin_can_create_a_worker() {
-		$this->withoutExceptionHandling();
 		Notification::fake();
 		$workplaces = $this->workplaces->random(2)->pluck('id');
 		$worker = $this->actingAs($this->admin)->post(action('Admin\WorkerController@store'), [

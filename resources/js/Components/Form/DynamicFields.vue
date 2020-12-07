@@ -58,23 +58,6 @@
                 this.$toast.error(this.$translations.tryLater, this.$translations.operationFiled);
             }
             this.loading = false;
-		},
-		methods: {
-        	populateFields(payload){
-        		let fieldValues = payload;
-        		let newFields = [];
-        		let len = this.renderFields.length;
-        		let i;
-        		for (i = 0; i < len; i++) {
-        			let field = this.renderFields.shift();
-        			field.value = fieldValues[field.name];
-					this.renderFields.push(field);
-					// this.$set(this.renderFields, i, )
-				}
-			}
-		},
-		mounted(){
-			this.$bus.$on('use-application', this.populateFields);
 		}
 	}
 </script>
