@@ -88,8 +88,9 @@ class BandAdminTest extends TestCase {
 		$this->assertDatabaseHas('band_admins', [
 			'name' => 'name',
 			'id' => $this->bandAdmin->id,
-			'data' => json_encode(['test' => 'test'])
 		]);
+		$bandAdmin = BandAdmin::find($this->bandAdmin->id);
+		$this->assertEquals(collect(['test' => 'test']), $bandAdmin->data);
 	}
 
 	public function test_admin_cant_go_over_budget_on_update() {

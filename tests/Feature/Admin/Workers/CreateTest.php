@@ -112,9 +112,7 @@ class CreateTest extends TestCase {
 		$this->assertDatabaseHas('workers', [
 			'supervisor' => 0,
 			'type' => 0,
-			'data' => json_encode([])
 		]);
-		
 		foreach ($workplaces as $workplace) {
 			$this->assertDatabaseHas('worker_workplace', [
 				'worker_id' => $worker['id'],

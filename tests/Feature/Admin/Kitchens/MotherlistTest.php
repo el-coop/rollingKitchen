@@ -228,11 +228,13 @@ class MotherlistTest extends TestCase {
 		$this->assertDatabaseHas('kitchens', [
 			'id' => $kitchen->id,
 			'status' => 'motherlist',
-			'data' => json_encode([
-				'test' => 'best',
-				'jest' => 'rest',
-			]),
 		]);
+
+		$updatedKitchen = Kitchen::find($kitchen->id);
+		$this->assertEquals(collect([
+            'test' => 'best',
+            'jest' => 'rest',
+        ]), $updatedKitchen->data);
 		
 	}
 	

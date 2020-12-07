@@ -69,7 +69,6 @@ class TaxReviewTest extends TestCase {
 	
 	public function test_admin_can_upload_tax_review() {
 		Event::fake();
-		$this->withoutExceptionHandling();
 		Storage::fake('local');
 		Crypt::shouldReceive('encrypt')->twice();
 		$file = UploadedFile::fake()->image('photo.jpg');

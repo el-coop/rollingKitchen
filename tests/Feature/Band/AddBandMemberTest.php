@@ -127,8 +127,8 @@ class AddBandMemberTest extends TestCase {
 			'user_type' => BandMember::class
 		]);
 
-		$bandMember = User::where(['email' => 'email@mail.com', 'user_type' => BandMember::class])->first()->user;
-		Notification::assertSentTo($bandMember->user, UserCreated::class);
+		$bandMember = User::where(['email' => 'email@mail.com', 'user_type' => BandMember::class])->first();
+		Notification::assertSentTo($bandMember, UserCreated::class);
         $this->assertDatabaseHas('band_members', [
             'band_id' => $this->band->user->id,
             'id' => $bandMember->user->id

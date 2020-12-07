@@ -211,11 +211,12 @@ class ApplicationTest extends TestCase {
 			'id' => $application->id,
 			'year' => 2014,
 			'status' => 'pending',
-			'data' => json_encode([
-				'test' => 'best',
-				'rest' => 'quest'
-			])
 		]);
+		$updatedAplication = Application::find($application->id);
+		$this->assertEquals(collect([
+            'test' => 'best',
+            'rest' => 'quest'
+        ]), $updatedAplication->data);
 	}
 	
 	public function test_admin_can_update_application_dimensions() {

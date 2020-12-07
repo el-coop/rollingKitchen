@@ -302,11 +302,10 @@ class SupervisorTest extends TestCase {
         
         $this->assertDatabaseHas('workers', [
             'supervisor' => false,
-            'type' => 1,
-            'data' => json_encode([
-                'data' => 'bata',
-            ]),
+            'type' => 1
         ]);
+        $worker = Worker::find($this->worker->user->id);
+        $this->assertEquals(collect(['data' => 'bata']), $worker->data);
     }
     
     public function test_guest_cant_get_shift() {

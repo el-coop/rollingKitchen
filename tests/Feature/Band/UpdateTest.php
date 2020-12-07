@@ -142,10 +142,11 @@ class UpdateTest extends TestCase {
 			'id' => $this->band->id
 		]);
 		$this->assertDatabaseHas('bands', [
-			'data' => json_encode(['test' => 'test']),
 			'payment_method' => 'band',
 			'id' => $this->band->user->id
 		]);
+        $band = Band::find($this->band->user->id);
+        $this->assertEquals(collect(['test'=>'test']), $band->data);
 	}
 	
 	public function test_band_cant_submit_review_without_tracks() {
@@ -176,11 +177,12 @@ class UpdateTest extends TestCase {
 			'id' => $this->band->id
 		]);
 		$this->assertDatabaseHas('bands', [
-			'data' => json_encode(['test' => 'test']),
 			'payment_method' => 'band',
 			'id' => $this->band->user->id,
 			'submitted' => true
 		]);
+		$band = Band::find($this->band->user->id);
+		$this->assertEquals(collect(['test'=>'test']), $band->data);
 	}
 	
 	public function test_band_update_validation() {

@@ -105,10 +105,11 @@ class UpdateTest extends TestCase {
 
 		$this->assertDatabaseHas('workers', [
 			'id' => $this->worker->user_id,
-			'data' => json_encode(['data']),
 			'submitted' => false,
             'liability' => true
 		]);
+        $worker = Worker::find($this->worker->user->id);
+        $this->assertEquals(collect(['data']), $worker->data);
 
 		Event::assertNotDispatched(WorkerProfileFilled::class);
 	}
@@ -141,9 +142,10 @@ class UpdateTest extends TestCase {
 
 		$this->assertDatabaseHas('workers', [
 			'id' => $this->worker->user_id,
-			'data' => json_encode(['data']),
 			'submitted' => true
 		]);
+        $worker = Worker::find($this->worker->user->id);
+        $this->assertEquals(collect(['data']), $worker->data);
 
 		Event::assertDispatched(WorkerProfileFilled::class, function ($event) {
 			return $event->worker->id === $this->worker->user->id;
@@ -216,10 +218,10 @@ class UpdateTest extends TestCase {
 
 		$this->assertDatabaseHas('workers', [
 			'id' => $this->worker->user_id,
-			'data' => json_encode(['data']),
 			'submitted' => true
 		]);
-
+        $worker = Worker::find($this->worker->user->id);
+        $this->assertEquals(collect(['data']), $worker->data);
 		Event::assertNotDispatched(WorkerProfileFilled::class, function ($event) {
 			return $event->worker->id === $this->worker->user->id;
 		});
@@ -253,9 +255,10 @@ class UpdateTest extends TestCase {
 
 		$this->assertDatabaseHas('workers', [
 			'id' => $this->worker->user_id,
-			'data' => json_encode(['data']),
             'liability' => false
         ]);
+		$worker = Worker::find($this->worker->user->id);
+		$this->assertEquals(collect(['data']), $worker->data);
 	}
 
 	public function test_worker_update_validation() {
