@@ -40,8 +40,7 @@
 		data(){
             return {
                 renderFields: [],
-                loading: false,
-				fieldValues: {}
+                loading: false
             }
         },
         async created() {

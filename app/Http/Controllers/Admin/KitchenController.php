@@ -11,7 +11,6 @@ use App\Http\Requests\Kitchen\DestroyKitchenRequest;
 use App\Models\Kitchen;
 use App\Models\Service;
 use App\Models\User;
-use function foo\func;
 use Illuminate\Http\Request;
 
 class KitchenController extends Controller {
