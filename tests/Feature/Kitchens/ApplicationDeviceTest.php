@@ -175,14 +175,14 @@ class ApplicationDeviceTest extends TestCase {
 	public function test_admin_can_edit_device() {
 		$this->actingAs($this->admin)->patch(action('Kitchen\ApplicationDeviceController@update', ['application' => $this->application, 'device' => $this->device]), [
 			'name' => 'test',
-			'watts' => 0.01
+			'watts' => 1
 		])->assertSuccessful();
 
 		$this->assertDatabaseHas('electric_devices', [
 			'id' => $this->device->id,
 			'application_id' => $this->application->id,
 			'name' => 'test',
-			'watts' => 0.01
+			'watts' => 1
 		]);
 	}
 
@@ -191,14 +191,14 @@ class ApplicationDeviceTest extends TestCase {
 		$this->application->save();
 		$this->actingAs($this->kitchen)->patch(action('Kitchen\ApplicationDeviceController@update', ['application' => $this->application, 'device' => $this->device]), [
 			'name' => 'test',
-			'watts' => 0.01
+			'watts' => 1
 		])->assertSuccessful();
 
 		$this->assertDatabaseHas('electric_devices', [
 			'id' => $this->device->id,
 			'application_id' => $this->application->id,
 			'name' => 'test',
-			'watts' => 0.01
+			'watts' => 1
 		]);
 	}
 
@@ -227,7 +227,6 @@ class ApplicationDeviceTest extends TestCase {
 			'id' => $this->device->id,
 			'application_id' => $this->application->id,
 			'name' => '',
-			'price' => 'gla'
 		]);
 	}
 

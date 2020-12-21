@@ -7,19 +7,23 @@ use App\Http\Requests\Kitchen\CreateKitchenRequest;
 use App\Http\Requests\Kitchen\DestroyKitchenRequest;
 use App\Http\Requests\Kitchen\Photo\UploadPhotoRequest;
 use App\Http\Requests\Kitchen\UpdateKitchenRequest;
+use App\Http\Requests\Kitchen\UsePastApplicationRequest;
 use App\Models\Application;
 use App\Models\Kitchen;
 use App\Models\Pdf;
 use App\Models\Photo;
 use App\Models\Service;
 use Auth;
+use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Support\Facades\Password;
 use Storage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class KitchenController extends Controller {
-	
-	/**
+    use ResetsPasswords;
+
+    /**
 	 * Show the form for creating a new resource.
 	 *
 	 * @return \Illuminate\Http\Response
@@ -123,4 +127,27 @@ class KitchenController extends Controller {
 			'success' => true
 		];
 	}
+
+    public function showResetForm(Request $request, $token = null) {
+        return view('worker.setPassword')->with(
+            ['token' => $token, 'email' => $request->email]
+        );
+    }
+
+    public function broker() {
+        return Password::broker('workers');
+    }
+
+    public function redirectTo() {
+        return Auth::user()->user->homePage();
+    }
+
+    public function usePastApplication(UsePastApplicationRequest $request, Application $application) {
+        $request->commit();
+        return back()->with('toast', [
+            'type' => 'success',
+            'title' => '',
+            'message' => __('vue.updateSuccess', [], $request->input('language'))
+        ]);
+    }
 }

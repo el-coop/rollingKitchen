@@ -68,7 +68,7 @@ class UpdateTest extends TestCase {
 				'label' => __('worker/worker.workplace'),
 				'type' => 'select',
 				'options' => Workplace::select('id', 'name')->get()->pluck('name', 'id'),
-				'value' => "{$this->shift->workplace_id}",
+				'value' => $this->shift->workplace_id,
 			]);
 	}
 

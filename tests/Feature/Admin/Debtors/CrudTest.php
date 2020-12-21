@@ -102,7 +102,7 @@ class CrudTest extends TestCase {
 		
 		foreach ($debtors as $debtor) {
 			$response->assertJsonFragment([
-				'id' => "{$debtor->id}",
+				'id' => $debtor->id,
 				'name' => $debtor->name,
 				'email' => $debtor->email,
 			]);
@@ -178,17 +178,17 @@ class CrudTest extends TestCase {
 			'id' => $debtor->id,
 			'name' => 'testname',
 			'email' => 'test@emial.com',
-			'language' => 'nl',
-			'data' => json_encode([
-				'1' => 1,
-				'2' => 2,
-				'3' => 3,
-				'4' => 4,
-				'5' => 5,
-			])
-		
-		]);
-	}
+			'language' => 'nl'
+			]);
+		$updatedDebtor = Debtor::find($debtor->id);
+        $this->assertEquals(collect([
+            '1' => 1,
+            '2' => 2,
+            '3' => 3,
+            '4' => 4,
+            '5' => 5,
+        ]), $updatedDebtor->data);
+    }
 	
 	public function test_update_debtor_validates() {
 		$debtor = $this->debtors->random();
@@ -222,14 +222,16 @@ class CrudTest extends TestCase {
 			'name' => 'testname',
 			'email' => 'test@emial.com',
 			'language' => 'nl',
-			'data' => json_encode([
-				'1' => 1,
-				'2' => 2,
-				'3' => 3,
-				'4' => 4,
-				'5' => 5,
-			])
+
 		]);
+        $debtor = Debtor::where(['name' => 'testname'])->first();
+        $this->assertEquals(collect([
+            '1' => 1,
+            '2' => 2,
+            '3' => 3,
+            '4' => 4,
+            '5' => 5,
+        ]), $debtor->data);
 	}
 	
 	public function test_guest_cant_create_debtor() {

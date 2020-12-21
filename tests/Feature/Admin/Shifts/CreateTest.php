@@ -9,6 +9,7 @@ use App\Models\Shift;
 use App\Models\User;
 use App\Models\Worker;
 use App\Models\Workplace;
+use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -90,21 +91,21 @@ class CreateTest extends TestCase {
 	}
 	
 	public function test_admin_can_create_a_shift() {
-		$this->withoutExceptionHandling();
 		$workplace = $this->workplaces->random();
+		$date = Carbon::now();
 		$this->actingAs($this->admin)->post(action('Admin\ShiftController@store'), [
-			'date' => '1/1/2029',
+			'date' => $date,
 			'hours' => '10',
 			'workplace' => $workplace->id
 		])->assertSuccessful()->assertJsonFragment([
-			'date' => '1/1/2029',
+			'date' => $date,
 			'hours' => '10',
 			'name' => $workplace->name
 		]);
 		
 		$this->assertDatabaseHas('shifts', [
-			'date' => '1/1/2029',
-			'hours' => '10',
+			'date' => $date->format('Y-m-d'),
+			'hours' => 10,
 			'workplace_id' => $workplace->id,
 			'closed' => false
 		]);

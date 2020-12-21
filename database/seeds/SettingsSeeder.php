@@ -120,6 +120,11 @@ class SettingsSeeder extends Seeder {
 		$this->settingsFakeNoOverwrite('schedule_deleted_nl', $faker->paragraph);
 		$this->settingsFakeNoOverwrite('schedule_deleted_en', $faker->paragraph);
 
+        $this->settingsFakeNoOverwrite('kitchen_user_created_subject_nl', $faker->sentence);
+        $this->settingsFakeNoOverwrite('kitchen_user_created_subject_en', $faker->sentence);
+        $this->settingsFakeNoOverwrite('kitchen_user_created_nl', $faker->paragraph);
+        $this->settingsFakeNoOverwrite('kitchen_user_created_en', $faker->paragraph);
+
 	}
 
 	protected function settingsFakeNoOverwrite($key, $value) {

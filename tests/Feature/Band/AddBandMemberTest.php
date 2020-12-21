@@ -126,12 +126,13 @@ class AddBandMemberTest extends TestCase {
 			'email' => 'email@mail.com',
 			'user_type' => BandMember::class
 		]);
-		$this->assertDatabaseHas('band_members', [
-			'band_id' => $this->band->user->id,
-			'id' => 2
-		]);
-		$bandMember = User::where(['email' => 'email@mail.com', 'user_type' => BandMember::class])->first()->user;
-		Notification::assertSentTo($bandMember->user, UserCreated::class);
+
+		$bandMember = User::where(['email' => 'email@mail.com', 'user_type' => BandMember::class])->first();
+		Notification::assertSentTo($bandMember, UserCreated::class);
+        $this->assertDatabaseHas('band_members', [
+            'band_id' => $this->band->user->id,
+            'id' => $bandMember->user->id
+        ]);
 	}
 	
 	public function test_band_cant_create_band_member_over_budget(){

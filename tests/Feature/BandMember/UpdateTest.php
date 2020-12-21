@@ -124,10 +124,10 @@ class UpdateTest extends TestCase {
 		]);
 		$this->assertDatabaseHas('band_members', [
 			'id' => $this->bandMember->user->id,
-			'data' => json_encode(['test' => 'test']),
 			'submitted' => false
 		]);
-		
+        $bandMember = BandMember::find($this->bandMember->user->id);
+        $this->assertEquals(collect(['test' => 'test']), $bandMember->data);
 		Event::assertNotDispatched(BandMemberProfileFilled::class);
 	}
 	
@@ -152,9 +152,10 @@ class UpdateTest extends TestCase {
 		]);
 		$this->assertDatabaseHas('band_members', [
 			'id' => $this->bandMember->user->id,
-			'data' => json_encode(['test' => 'test']),
 			'submitted' => true
 		]);
+        $bandMember = BandMember::find($this->bandMember->user->id);
+        $this->assertEquals(collect(['test' => 'test']), $bandMember->data);
 		
 		Event::assertDispatched(BandMemberProfileFilled::class, function ($event) {
 			return $event->bandMember->id === $this->bandMember->user->id;

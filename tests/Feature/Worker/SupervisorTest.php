@@ -38,8 +38,7 @@ class SupervisorTest extends TestCase {
         factory(Worker::class)->create()->user()->save($this->worker);
         $this->workplace = factory(Workplace::class)->create();
         factory(WorkFunction::class, 3)->make()->each(function ($workFunction) {
-            $workplace = Workplace::first();
-            $workplace->workFunctions()->save($workFunction);
+            $this->workplace->workFunctions()->save($workFunction);
         });
         $this->supervisor = factory(User::class)->make();
         factory(Worker::class)->create(['supervisor' => true])->user()->save($this->supervisor);
@@ -205,7 +204,7 @@ class SupervisorTest extends TestCase {
         ]))->assertSuccessful();
         $response->assertJsonFragment([
             'name' => $this->worker->name,
-            'id' => "{$this->worker->user->id}",
+            'id' => $this->worker->user->id,
         ]);
     }
     
@@ -303,11 +302,10 @@ class SupervisorTest extends TestCase {
         
         $this->assertDatabaseHas('workers', [
             'supervisor' => false,
-            'type' => 1,
-            'data' => json_encode([
-                'data' => 'bata',
-            ]),
+            'type' => 1
         ]);
+        $worker = Worker::find($this->worker->user->id);
+        $this->assertEquals(collect(['data' => 'bata']), $worker->data);
     }
     
     public function test_guest_cant_get_shift() {
@@ -727,12 +725,12 @@ class SupervisorTest extends TestCase {
             'workplace' => $this->workplace,
             'attribute' => 'shiftsForSupervisor',
             'per_page' => 20,
-            'sort' => 'name|asc'
+            'sort' => 'date|asc'
         ]))->assertSuccessful();
         $response->assertJsonFragment([
             'date' => $this->shift->date,
-            'id' => "{$this->shift->id}",
-            'hours' => "{$this->shift->hours}"
+            'id' => $this->shift->id,
+            'hours' => $this->shift->hours
         ]);
     }
     

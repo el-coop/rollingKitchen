@@ -3,10 +3,13 @@
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\Models\Admin::class], 'namespace' => 'Admin'], function () {
 	Route::group(['prefix' => 'kitchens'], function () {
 		Route::get('/', 'KitchenController@index');
+        Route::get('/edit', 'KitchenController@create');
+        Route::post('/edit', 'KitchenController@store');
 		Route::get('/{kitchen}', 'KitchenController@show');
 		Route::delete('/delete/{kitchen}', 'KitchenController@destroy');
 		Route::get('/edit/{kitchen}', 'KitchenController@edit');
 		Route::patch('/edit/{kitchen}', 'KitchenController@update');
+
 		
 	});
 	

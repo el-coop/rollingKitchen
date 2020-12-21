@@ -167,14 +167,15 @@ class UpdateTest extends TestCase {
 			'id' => $this->secondBand->id
 		]);
 		$this->assertDatabaseHas('bands', [
-			'data' => json_encode(['test' => 'test']),
 			'id' => $this->secondBand->user->id,
 			'payment_method' => 'individual'
 		]);
 		$this->assertDatabaseHas('band_admins', [
 			'band_id' => $this->secondBand->user->id
 		]);
-	}
+		$band = Band::find($this->secondBand->user->id);
+        $this->assertEquals(collect(['test' => 'test']), $band->data);
+    }
 
 	public function test_guest_cant_non_ajax_update_band() {
 		$this->patch(action('Admin\BandController@nonAjaxUpdate', $this->secondBand->user), [
@@ -254,12 +255,13 @@ class UpdateTest extends TestCase {
 			'id' => $this->secondBand->id
 		]);
 		$this->assertDatabaseHas('bands', [
-			'data' => json_encode(['test' => 'test']),
 			'id' => $this->secondBand->user->id,
 			'payment_method' => 'individual'
 		]);
 		$this->assertDatabaseHas('band_admins', [
 			'band_id' => $this->secondBand->user->id
 		]);
-	}
+		$band = Band::find($this->secondBand->user->id);
+        $this->assertEquals(collect(['test' => 'test']), $band->data);
+    }
 }

@@ -157,9 +157,10 @@ class UpdateBandTest extends TestCase {
 			'id' => $this->secondBand->id
 		]);
 		$this->assertDatabaseHas('bands', [
-			'data' => json_encode(['test' => 'test']),
 			'id' => $this->secondBand->user->id,
 			'payment_method' => 'band'
 		]);
+		$band = Band::find($this->secondBand->user->id);
+		$this->assertEquals(collect(['test' => 'test']), $band->data);
 	}
 }

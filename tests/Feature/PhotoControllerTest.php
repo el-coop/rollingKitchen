@@ -105,7 +105,6 @@ class PhotoControllerTest extends TestCase {
 		
 		Crypt::shouldReceive('encrypt');
 		Crypt::shouldReceive('decrypt')->once()->with(Storage::get("public/photos/{$this->workerPhoto->file}"))->andReturn('');
-		$this->withoutExceptionHandling();
 		$this->actingAs($this->worker)->get($this->workerPhoto->url)->assertSuccessful();
 	}
 	
@@ -155,7 +154,6 @@ class PhotoControllerTest extends TestCase {
 		
 		Crypt::shouldReceive('encrypt');
 		Crypt::shouldReceive('decrypt')->once()->with(Storage::get("public/photos/{$this->bandMemberPhoto->file}"))->andReturn('');
-		$this->withoutExceptionHandling();
 		$this->actingAs($this->bandMember)->get($this->bandMemberPhoto->url)->assertSuccessful();
 	}
 	
@@ -214,7 +212,6 @@ class PhotoControllerTest extends TestCase {
 		
 		Crypt::shouldReceive('encrypt');
 		Crypt::shouldReceive('decrypt')->once()->with(Storage::get("public/taxReviews/{$this->taxReview->file}"))->andReturn('');
-		$this->withoutExceptionHandling();
 		$this->actingAs($this->worker)->get($this->taxReview->url)->assertSuccessful();
 	}
 	

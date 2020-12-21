@@ -57,8 +57,8 @@
                 this.$toast.error(this.$translations.tryLater, this.$translations.operationFiled);
             }
             this.loading = false;
-        },
-    }
+		}
+	}
 </script>
 
 <style scoped>

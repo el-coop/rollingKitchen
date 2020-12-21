@@ -75,8 +75,9 @@ class DeletedInvoiceOwnerTest extends TestCase {
 		$this->assertDatabaseHas('deleted_invoice_owners', [
 			'email' => $this->kitchen->email,
 			'name' => $this->kitchen->name,
-			'data' => json_encode($this->kitchen->user->data)
 		]);
+		$deletedInvoiceOwner = DeletedInvoiceOwner::where('name', $this->kitchen->name)->first();
+		$this->assertEquals($this->kitchen->user->data->toArray(), $deletedInvoiceOwner->data);
 	}
 	
 	public function test_deleted_owner_created_on_debtor_delete() {
@@ -88,9 +89,9 @@ class DeletedInvoiceOwnerTest extends TestCase {
 		$this->assertDatabaseHas('deleted_invoice_owners', [
 			'email' => $this->debtor->email,
 			'name' => $this->debtor->name,
-			'data' => json_encode($this->debtor->data)
 		]);
-		
+        $deletedInvoiceOwner = DeletedInvoiceOwner::where('name', $this->debtor->name)->first();
+        $this->assertEquals($this->debtor->data->toArray(), $deletedInvoiceOwner->data);
 	}
 	
 	public function test_guest_cant_get_deleted_invoice_owner() {
