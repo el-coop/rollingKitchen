@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class SettingsController extends Controller {
-	
+
 	public function show() {
 		$settings = app('settings');
 		$generalSettings = collect([
@@ -22,14 +22,15 @@ class SettingsController extends Controller {
 			'admin/artists.artistManager' => $settings->allStartingWith('artist_managers_'),
 			'admin/bands.bandMembers' => $settings->allStartingWith('band_members_'),
 			'admin/bands.schedule' => $settings->allStartingWith('schedule_'),
-			'admin/settings.accountant' => $settings->allStartingWith('accountant_')
+            'admin/settings.accountant' => $settings->allStartingWith('accountant_'),
+			'admin/settings.kitchen' => $settings->allStartingWith('kitchen_')
 		];
 		return view('admin.settings.show', compact('tabs'));
 	}
-	
+
 	public function update(UpdateSettingsRequest $request) {
 		$request->commit();
-		
+
 		return redirect()->back()->with('toast', [
 			'type' => 'success',
 			'title' => '',

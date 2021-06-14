@@ -126,5 +126,11 @@ return [
     'application_waste_processing_fee' => 'Waste processing fee',
 
     'workers_liability_popup_en' => 'Workers Liability Popup Text EN',
-    'workers_liability_popup_nl' => 'Workers Liability Popup Text NL'
+    'workers_liability_popup_nl' => 'Workers Liability Popup Text NL',
+
+    'kitchen' => 'Kitchen invitation',
+    'kitchen_user_created_subject_nl' => 'Invite subject NL',
+    'kitchen_user_created_subject_en'  => 'Invite subject EN',
+    'kitchen_user_created_nl' => 'Invite body NL',
+    'kitchen_user_created_en' => 'Invite body EN'
 ];
