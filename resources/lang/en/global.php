@@ -26,7 +26,11 @@ return [
 	'language' => 'Language',
 	'year' => 'Year',
 	'pdfs' => 'PDFs',
-	
+
 	'delete' => 'Delete',
-	'deleted' => 'Deleted'
+	'deleted' => 'Deleted',
+
+    'terms1' => 'I accept the',
+    'terms2' => 'terms and conditions',
+    'termsRequired' => 'You must accept the terms and conditions',
 ];

@@ -8,6 +8,7 @@ return [
 	'kitchen' => 'Keuken',
 	'updatedAt' => 'Bewerkt op',
 	'exportTitle' => 'Exporteer Keukens',
-    'createKitchen' => 'TBD'
+    'exportAllData' => 'Exporteer alle data',
+    'createKitchen' => 'Creëer keuken'
 
 ];

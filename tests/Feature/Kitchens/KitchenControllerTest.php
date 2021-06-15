@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Tests\Feature\Kitchens;
 
 use App\Models\Admin;
@@ -9,6 +10,7 @@ use App\Models\Photo;
 use App\Models\Product;
 use App\Models\Service;
 use App\Models\User;
+use App\Models\Pdf;
 use App\Notifications\Admin\ApplicationResubmittedNotification;
 use App\Notifications\Kitchen\ApplicationSubmittedNotification;
 use ElCoop\Valuestore\Valuestore;
@@ -23,6 +25,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class KitchenControllerTest extends TestCase {
 
     use RefreshDatabase;
+
     protected $settings;
     private $user;
     private $user1;
@@ -33,7 +36,7 @@ class KitchenControllerTest extends TestCase {
         Storage::fake('local');
         Storage::disk('local')->put('test.valuestore.json', '');
         $path = Storage::path('test.valuestore.json');
-        $this->app->singleton('settings', function ($app) use ($path) {
+        $this->app->singleton('settings', function($app) use ($path) {
             return new Valuestore($path);
         });
         $settings = app('settings');
@@ -451,7 +454,7 @@ class KitchenControllerTest extends TestCase {
             'width' => 1,
         ]);
         $kitchen = Kitchen::find($this->user->user->id);
-        $this->assertEquals(collect([ 1 => 'test',
+        $this->assertEquals(collect([1 => 'test',
             2 => 'test',
             3 => 'test',
             4 => 'test',
@@ -486,6 +489,63 @@ class KitchenControllerTest extends TestCase {
 
         Notification::assertSentTo([$application->kitchen->user], ApplicationSubmittedNotification::class);
         Notification::assertSentTo([$admin], \App\Notifications\Admin\ApplicationSubmittedNotification::class);
+    }
+
+    public function test_kitchen_must_accept_terms_to_submit_unsubmitted_application() {
+        $admin = factory(User::class)->make();
+        factory(Admin::class)->create()->user()->save($admin);
+        factory(Pdf::class)->create([
+            'name' => 'terms',
+            "terms_and_conditions_{$this->user->language}" => true
+        ]);
+
+        Notification::fake();
+
+
+        $services = factory(Service::class, 3)->create();
+
+        $socket = factory(Service::class, 3)->create([
+            'category' => 'socket'
+        ])->random();
+
+        $application = factory(Application::class)->make([
+            'year' => $this->settings->get('registration_year'),
+            'status' => 'new',
+        ]);
+        $this->user->user->applications()->save($application);
+
+        $application->products()->save(factory(Product::class)->make([
+            'category' => 'menu'
+        ]));
+
+        $this->actingAs($this->user)->patch(action('Kitchen\KitchenController@update', $this->user->user), [
+            'name' => 'test',
+            'email' => 'test@best.rest',
+            'language' => 'nl',
+            'kitchen' => [
+                1 => 'test',
+                2 => 'test',
+                3 => 'test',
+                4 => 'test',
+                5 => 'test',
+                7 => 'test',
+            ],
+            'application' => [
+                8 => 2000,
+                9 => 'these are like 10 chars'
+            ],
+            'services' => [
+                $services->get(0)->id => 1,
+                $services->get(1)->id => 0,
+                $services->get(2)->id => 5
+            ],
+            'socket' => $socket->id,
+            'length' => 1,
+            'width' => 1,
+            'review' => true
+        ])->assertSessionHasErrors('terms');
+
+        Notification::assertNotSentTo($application->kitchen->user, ApplicationSubmittedNotification::class);
     }
 
     public function test_kitchen_can_submit_reopened_application() {
@@ -557,7 +617,7 @@ class KitchenControllerTest extends TestCase {
             'width' => 1,
         ]);
         $kitchen = Kitchen::find($this->user->user->id);
-        $this->assertEquals(collect([ 1 => 'test',
+        $this->assertEquals(collect([1 => 'test',
             2 => 'test',
             3 => 'test',
             4 => 'test',
@@ -703,7 +763,7 @@ class KitchenControllerTest extends TestCase {
             'id' => $this->user->user->id,
         ]);
 
-		$this->assertDatabaseHas('applications', [
+        $this->assertDatabaseHas('applications', [
             'id' => $application->id,
             'length' => 1,
             'width' => 1,
@@ -713,29 +773,29 @@ class KitchenControllerTest extends TestCase {
         $updatedApplication = Application::find($application->id);
         $this->assertEquals(collect(['data' => 'test', 8 => 2000]), $updatedApplication->data);
 
-		$this->assertDatabaseHas('application_service', [
+        $this->assertDatabaseHas('application_service', [
             'application_id' => $application->id,
             'service_id' => $services->get(0)->id,
             'quantity' => 1
         ]);
 
-		$this->assertDatabaseHas('application_service', [
+        $this->assertDatabaseHas('application_service', [
                 'application_id' => $application->id,
                 'service_id' => $services->get(2)->id,
                 'quantity' => 5
             ]
         );
 
-		$this->assertDatabaseMissing('application_service', [
+        $this->assertDatabaseMissing('application_service', [
             'application_id' => $application->id,
             'service_id' => $services->get(1)->id,
         ]);
-		$this->assertDatabaseMissing('application_service', [
+        $this->assertDatabaseMissing('application_service', [
             'application_id' => $application->id,
             'service_id' => 0,
             'quantity' => 1
         ]);
-	}
+    }
 
     public function test_kitchen_uploaded_photo_gets_processed_by_width() {
         Storage::fake('local');
@@ -827,3 +887,4 @@ class KitchenControllerTest extends TestCase {
     }
 
 }
+
