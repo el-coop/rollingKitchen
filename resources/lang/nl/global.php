@@ -33,6 +33,6 @@ return [
 
     'terms1' => 'Ik accepteer de',
     'terms2' => 'algemene voorwaarden',
-    'termsRequired' => 'TBD',
+    'termsRequired' => 'Accepteer de algemene voorwaarden',
 
 ];

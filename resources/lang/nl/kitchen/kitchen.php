@@ -15,7 +15,7 @@ return [
 	'photoValidation' => 'Foto upload, of één van de volgende velden: website/facebook/instagram, vereist',
 	'pdfsTitle' => 'Belangrijke bestanden',
     'exportAllData' => 'Exporteer alle gegevens',
-    'usePastApplication' => "TBD",
-    'fill' => 'TBD'
+    'usePastApplication' => "Gebruik bestaande inschrijving",
+    'fill' => 'Vul inschrijfformulier in'
 
 ];

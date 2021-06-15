@@ -137,7 +137,7 @@ return [
     'kitchen_user_created_nl' => 'Uitnodiging tekst NL',
     'kitchen_user_created_en' => 'Uitnodiging tekst EN',
 
-    'terms_and_conditions_nl' => 'TBD',
-    'terms_and_conditions_en' => 'TBD',
+    'terms_and_conditions_nl' => 'Algemene voorwaarden NL',
+    'terms_and_conditions_en' => 'Algemene voorwaarden EN',
 
 ];
