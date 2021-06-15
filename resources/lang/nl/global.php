@@ -1,33 +1,38 @@
 <?php
 
 return [
-	'en' => 'English',
-	'nl' => 'Nederlands',
-	'title' => 'Rollende Keukens',
-	'welcome' => 'Home',
-	
-	'save' => 'Opslaan',
-	'yes' => 'Ja',
-	'no' => 'Nee',
+    'en' => 'English',
+    'nl' => 'Nederlands',
+    'title' => 'Rollende Keukens',
+    'welcome' => 'Home',
 
-	'decimalPoint' => '.',
-	'thousandSeparator' => ',',
+    'save' => 'Opslaan',
+    'yes' => 'Ja',
+    'no' => 'Nee',
 
-	'status' => 'Status',
-	'photos' => "Foto's",
+    'decimalPoint' => '.',
+    'thousandSeparator' => ',',
 
-	'name' => 'Naam',
-	'email' => 'Email',
-	'password' => 'Wachtwoord',
-	'password_confirm' => 'Wachtwoord bevestigen',
-	'login' => 'Inloggen',
-	'logout' => 'UItloggen',
-	'register' => 'Aanmelden',
-	'language' => 'Taal',
-	'year' => 'Jaar',
-	'pdfs' => "PDF's",
+    'status' => 'Status',
+    'photos' => "Foto's",
 
-	'delete' => 'Verwijderen',
-	'deleted' => 'Verwijderd'
+    'name' => 'Naam',
+    'email' => 'Email',
+    'password' => 'Wachtwoord',
+    'password_confirm' => 'Wachtwoord bevestigen',
+    'login' => 'Inloggen',
+    'logout' => 'UItloggen',
+    'register' => 'Aanmelden',
+    'language' => 'Taal',
+    'year' => 'Jaar',
+    'pdfs' => "PDF's",
+
+    'delete' => 'Verwijderen',
+    'deleted' => 'Verwijderd',
+
+
+    'terms1' => 'Ik accepteer de',
+    'terms2' => 'algemene voorwaarden',
+    'termsRequired' => 'TBD',
 
 ];

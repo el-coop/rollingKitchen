@@ -8,7 +8,9 @@ class Pdf extends Model {
 
 	protected $casts = [
 		'default_send_invoice' => 'boolean',
-		'default_resend_invoice' => 'boolean',
+        'default_resend_invoice' => 'boolean',
+        'terms_and_conditions_nl' => 'boolean',
+        'terms_and_conditions_en' => 'boolean',
 	];
 
 	public static function allForInvoice($exists) {

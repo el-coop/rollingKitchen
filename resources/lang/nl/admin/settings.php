@@ -135,6 +135,9 @@ return [
     'kitchen_user_created_subject_nl' => 'Uitnodiging onderwerp NL',
     'kitchen_user_created_subject_en' => 'Uitnodiging onderwerp EN',
     'kitchen_user_created_nl' => 'Uitnodiging tekst NL',
-    'kitchen_user_created_en' => 'Uitnodiging tekst EN'
+    'kitchen_user_created_en' => 'Uitnodiging tekst EN',
+
+    'terms_and_conditions_nl' => 'TBD',
+    'terms_and_conditions_en' => 'TBD',
 
 ];

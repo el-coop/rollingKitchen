@@ -36,7 +36,9 @@ class UploadPDFRequest extends FormRequest {
 		$pdf->name = $this->input('name');
 		$pdf->visibility = $this->input('visibility');
 		$pdf->default_send_invoice = $this->has('default_send_invoice');
-		$pdf->default_resend_invoice = $this->has('default_resend_invoice');
+        $pdf->default_resend_invoice = $this->has('default_resend_invoice');
+        $pdf->terms_and_conditions_nl = $this->has('terms_and_conditions_nl');
+        $pdf->terms_and_conditions_en = $this->has('terms_and_conditions_en');
 		$pdf->save();
 		return $pdf;
 	}

@@ -1,11 +1,8 @@
 <form method="post" action="{{action('Kitchen\KitchenController@usePastApplication', $application)}}">
     @csrf
     @method('patch')
-    <p class="title is-4">
-        @lang('kitchen/kitchen.usePastApplication')
-    </p>
     <div class="field">
-        <label class="label">@lang('kitchen\kitchen.usePastApplication')</label>
+        <label class="label">@lang('kitchen/kitchen.usePastApplication')</label>
         <div class="control">
             <div class="select is-fullwidth">
                 <select name="pastApplication">
