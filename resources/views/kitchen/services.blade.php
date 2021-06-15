@@ -23,7 +23,7 @@
         @include('kitchen.services.services')
     </div>
 </div>
-@if($termsFile ?? false)
+@if($application->isOpen() && $termsFile ?? false)
     <div class="field has-text-centered">
         <label class="checkbox">
             <input
