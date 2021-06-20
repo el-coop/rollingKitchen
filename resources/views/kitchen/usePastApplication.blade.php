@@ -16,7 +16,7 @@
     <div class="buttons">
         <button class="button is-fullwidth is-primary"
                 type="submit">
-            @lang('kitchen\kitchen.fill')
+            @lang('kitchen/kitchen.fill')
         </button>
     </div>
 </form>
