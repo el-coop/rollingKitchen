@@ -27,8 +27,14 @@ return [
 	'invoiceSent' => 'Factuur verstuurd',
 	'amountLeft' => 'Resterend bedrag',
 	'billingDetailsMissing' => 'Het creëren van een factuur is mislukt, vanwege het ontbreken van bedrijfsgegevens',
-    
+
     'paid' => 'Betaald',
     'notPaid' => 'Niet betaald',
     'partially Paid' => 'Niet volledig betaald',
+    '2575split' => 'Split to 25% and 75% TBD',
+    'terms' => 'Betalingstermijn',
+    'payNow' => '25% Aanbetaling ',
+    'payLater' => '75% Resterend'
+
+
 ];
