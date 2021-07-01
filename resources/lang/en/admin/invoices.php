@@ -30,4 +30,8 @@ return [
     'paid' => 'Paid',
     'notPaid' => 'Not Paid',
     'partiallyPaid' => 'Partially Paid',
+    '2575split' => 'Split to 25% and 75%',
+    'terms' => 'Terms of payment',
+    'payNow' => '25% Down payment',
+    'payLater' => '75% Remaining amount',
 ];
