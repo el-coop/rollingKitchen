@@ -39,6 +39,7 @@ class UploadPDFRequest extends FormRequest {
         $pdf->default_resend_invoice = $this->has('default_resend_invoice');
         $pdf->terms_and_conditions_nl = $this->has('terms_and_conditions_nl');
         $pdf->terms_and_conditions_en = $this->has('terms_and_conditions_en');
+        $pdf->order = Pdf::getMaxOrder() + 1;
 		$pdf->save();
 		return $pdf;
 	}

@@ -15,7 +15,7 @@ class PDFPOlicy {
 			return true;
 		}
 	}
-	
+
 	/**
 	 * Determine whether the user can view the pdf.
 	 *
@@ -26,7 +26,7 @@ class PDFPOlicy {
 	public function view(User $user, Pdf $pdf) {
 		//
 	}
-	
+
 	/**
 	 * Determine whether the user can create pdfs.
 	 *
@@ -36,7 +36,7 @@ class PDFPOlicy {
 	public function create(User $user) {
 		return $user->user_type == Admin::class;
 	}
-	
+
 	/**
 	 * Determine whether the user can update the pdf.
 	 *
@@ -46,9 +46,9 @@ class PDFPOlicy {
 	 */
 	public function update(User $user, Pdf $pdf) {
 		return $user->user_type == Admin::class;
-		
+
 	}
-	
+
 	/**
 	 * Determine whether the user can delete the pdf.
 	 *
@@ -59,7 +59,7 @@ class PDFPOlicy {
 	public function delete(User $user, Pdf $pdf) {
 		return $user->user_type == Admin::class;
 	}
-	
+
 	/**
 	 * Determine whether the user can restore the pdf.
 	 *
@@ -70,7 +70,7 @@ class PDFPOlicy {
 	public function restore(User $user, Pdf $pdf) {
 		//
 	}
-	
+
 	/**
 	 * Determine whether the user can permanently delete the pdf.
 	 *
@@ -81,4 +81,14 @@ class PDFPOlicy {
 	public function forceDelete(User $user, Pdf $pdf) {
 		//
 	}
+
+    /**
+     * Determine whether the user can order fields.
+     *
+     * @param  \App\Models\User $user
+     * @return mixed
+     */
+    public function order(User $user){
+        return $user->user_type == Admin::class;
+    }
 }

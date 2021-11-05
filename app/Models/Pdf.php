@@ -32,4 +32,8 @@ class Pdf extends Model {
 			\Storage::delete("public/pdf/{$pdf->file}");
 		});
 	}
+
+	static function getMaxOrder() {
+        return PDF::max('order');
+	}
 }

@@ -75,9 +75,9 @@ class KitchenController extends Controller {
         $pastApplications = $kitchen->applications->where('year', '!=', app('settings')->get('registration_year'));
 
         if ($application->status === 'accepted') {
-            $pdfs = Pdf::where('visibility', 1)->orWhere('visibility', 2)->get();
+            $pdfs = Pdf::where('visibility', 1)->orWhere('visibility', 2)->orderBy('order')->get();
         } else {
-            $pdfs = Pdf::where('visibility', 1)->get();
+            $pdfs = Pdf::where('visibility', 1)->orderBy('order')->get();
         }
 
         $services = Service::orderByRaw("LENGTH(name_{$locale}) desc")->get();
