@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Pdf extends Model {
 
@@ -31,5 +32,9 @@ class Pdf extends Model {
 		static::deleted(function ($pdf) {
 			\Storage::delete("public/pdf/{$pdf->file}");
 		});
+	}
+
+	static function getMaxOrder() {
+        return DB::table('pdfs')->max('order');
 	}
 }

@@ -55,6 +55,7 @@
             hideLabel: true,
             options: [{name: '@lang('admin/settings.terms_and_conditions_en')'}]
             }]"
+                       :sortable="true"
                        :init-fields="{{$pdfs}}" action="{{action('Admin\PDFController@upload')}}"
                        :headers="{'Content-Type': 'multipart/form-data'}">
         </dynamic-table>
