@@ -85,7 +85,7 @@ return [
 	'min' => [
 		'numeric' => ':attribute moet tenminste :min zijn.',
 		'file' => 'The :attribute must be at least :min kilobytes.',
-		'string' => 'De :attribute minimaal :min tekens lang zijn.',
+		'string' => 'De :attribute moet minimaal :min tekens lang zijn.',
 		'array' => 'The :attribute must have at least :min items.',
 	],
 	'not_in' => 'The selected :attribute is invalid.',
