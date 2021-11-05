@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Pdf extends Model {
 
@@ -35,6 +34,6 @@ class Pdf extends Model {
 	}
 
 	static function getMaxOrder() {
-        return DB::table('pdfs')->max('order');
+        return PDF::max('order');
 	}
 }
