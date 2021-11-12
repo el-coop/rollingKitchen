@@ -46,7 +46,6 @@
                 {!! $invoice->customer_details->count() == 0 ? '<i>No customer details</i><br />' : '' !!}
                 {{ $invoice->customer_details->get('name') }}<br/>
                 {{ $invoice->customer_details->get('contactPerson') }}<br/>
-                {{ $invoice->customer_details->get('phone') }}<br/>
                 {{ $invoice->customer_details->get('location') }}<br/>
                 {{ $invoice->customer_details->get('zip') }} {{ $invoice->customer_details->get('city') }}
                 {{ $invoice->customer_details->get('country') }}<br/>
@@ -54,7 +53,6 @@
         </div>
     </div>
 </div>
-<h4>@lang('admin/invoices.items',[],$invoice->language):</h4>
 <table class="table table-bordered">
     <thead>
     <tr>
@@ -86,7 +84,6 @@
 <div style="clear:both; position:relative;">
     @if($invoice->notes)
         <div style="position:absolute; left:0pt; width:250pt;">
-            <h4>Notes:</h4>
             <div class="panel panel-default">
                 <div class="panel-body">
                     {!!  $invoice->notes  !!}
