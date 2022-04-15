@@ -11,7 +11,7 @@
 				label: '@lang('admin/shifts.date')',
 				name: 'days',
 				options: [
-					@foreach($workplace->shifts->sortBy('date') as $shift)
+					@foreach($workplace->shifts()->whereYear('date', app('settings')->get('registration_year'))->get()->sortBy('date') as $shift)
 					{
 						name: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$shift->date)->format('d/m/Y')}}',
 					},

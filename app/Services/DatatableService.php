@@ -43,6 +43,7 @@ class DatatableService implements FromCollection, WithHeadings {
         
         
         $this->addWhere($query, $this->queryConfig);
+        $this->addWhereYear($query, $this->queryConfig);
         $this->addJoins($query, $this->queryConfig);
         $this->addJoinOn($query, $this->queryConfig);
         $this->addSelects($query, $this->queryConfig);
@@ -192,5 +193,12 @@ class DatatableService implements FromCollection, WithHeadings {
             }
         }
         return $formatted;
+    }
+
+    protected function addWhereYear($query, $queryConfig) {
+        if ($whereYear = $queryConfig['whereYear'] ?? false) {
+            $query->whereYear($whereYear['field'], $whereYear['year']);
+        }
+        return $query;
     }
 }

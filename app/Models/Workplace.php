@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use \Auth;
 
 class Workplace extends Model {
-	
+
 	protected static function boot() {
 		parent::boot();
 		static::deleted(function ($workplace) {
@@ -15,15 +15,15 @@ class Workplace extends Model {
 			$workplace->shifts->each->delete();
 		});
 	}
-	
+
 	public function workFunctions() {
 		return $this->hasMany(WorkFunction::class);
 	}
-	
+
 	public function shifts() {
 		return $this->hasMany(Shift::class);
 	}
-	
+
 	public function getFullDataAttribute() {
 		return collect([[
 			'name' => 'name',
@@ -35,11 +35,11 @@ class Workplace extends Model {
 			'value' => $this->workFunctions
 		]]);
 	}
-	
+
 	public function workers() {
 		return $this->belongsToMany(Worker::class)->withTimestamps();
 	}
-	
+
 	public function getWorkersForSupervisorAttribute() {
 		return [
 			'model' => Worker::class,
@@ -58,68 +58,26 @@ class Workplace extends Model {
 				'table' => 'users',
 				'title' => __('global.name'),
 				'sortField' => 'name',
-			], [
-				'name' => 'workplacesList',
-				'noTable' => true,
-				'title' => __('admin/workers.workplaces'),
-				'filter' => false
-			], [
-				'name' => 'completed',
-				'raw' => 'JSON_LENGTH(data) as completed',
-				'sortField' => 'completed',
-				'filter' => [
-					'yes' => __('global.yes'),
-					'no' => __('global.no')
-				],
-				'filterDefinitions' => [
-					'yes' => ['=', function () {
-						return Field::where('form', Worker::class)->count();
-					}],
-					'no' => ['<', function () {
-						return Field::where('form', Worker::class)->count();
-					}],
-				],
-				'title' => __('admin/workers.completed'),
-				'callback' => 'dataCompleted|' . Worker::class
-			], [
-				'name' => 'count(file)',
-				'sortField' => 'count(file)',
-				'title' => __('global.photos'),
-				'filter' => [
-					'yes' => __('global.yes'),
-					'no' => __('global.no')
-				],
-				'filterDefinitions' => [
-					'yes' => ['>', 0],
-					'no' => ['=', 0],
-				],
-				'callback' => 'numToBoolTag'
-			], [
-				'name' => 'approved',
-				'sortField' => 'approved',
-				'title' => __('admin/workers.approved'),
-				'callback' => 'boolean',
-				'filter' => [
-					'1' => __('global.yes'),
-					'0' => __('global.no')
-				]
-			], [
-				'name' => 'photoList',
-				'noTable' => true,
-				'visible' => false
-			]],
+			],[
+                'name' => 'email',
+                'table' => 'users',
+                'title' => __('global.email'),
+                'sortField' => 'email',
+            ]
+                ],
 		];
-		
+
 	}
-	
+
 	public function hasWorker(Worker $worker) {
 		return $this->workers->contains($worker);
 	}
-	
+
 	public function getShiftsForSupervisorAttribute() {
 		return [
 			'model' => Shift::class,
 			'where' => [['workplace_id', $this->id]],
+            'whereYear' => ['field' => 'date', 'year' => app('settings')->get('registration_year')],
 			'fields' => [[
 				'name' => 'id',
 				'title' => 'id',
@@ -139,7 +97,7 @@ class Workplace extends Model {
 				'name' => 'closed',
 				'visible' => false,
 			]],
-		
+
 		];
 	}
 }

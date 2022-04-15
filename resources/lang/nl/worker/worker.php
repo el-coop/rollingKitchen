@@ -10,7 +10,7 @@ return [
 	'taxReviews' => 'Belastingoverzicht',
 	'uploadId' => 'ID Foto',
 	'uploadInstructions' => 'Upload hier een foto van je paspoort of de voor- en achterkant van je ID kaart. Let op: een rijbewijs is niet geldig als ID.',
-    'liabilityLabel' => 'Algemene voorwaarden',
+    'liabilityLabel' => 'privacy policy and privacy beleid',
     'liabilityPopupLink' => 'algemene voorwaarden',
     'liabilityPopupLabel' => 'Ik accepteer'
 ];
