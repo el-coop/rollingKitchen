@@ -20,11 +20,7 @@ class SettingsServiceProvider extends ServiceProvider {
 		if (today() > Carbon::create(date('Y'), 11, 14) && $this->app->settings->get('registration_year') == date('Y')) {
 			$year = date('Y') + 1;
 			$this->app->settings->put('registration_year', $year);
-            $users = User::where('checked_info', true)->get();
-            foreach ($users as $user){
-                $user->checked_info = false;
-                $user->save();
-            }
+            User::where('checked_info', true)->update(['checked_info' =>  false]);
 		}
 	}
 	
