@@ -72,4 +72,6 @@ return [
     'ownNumbers' => 'Eigen nummers? ',
     'both' => 'Beide',
     'areTheyProtected' => 'Zijn ze beschermd?',
+    'checkInfo' => 'Needs Translation',
+    'infoChecked' => 'needs translation'
 ];

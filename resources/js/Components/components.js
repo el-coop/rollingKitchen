@@ -54,3 +54,4 @@ Vue.component('JsonField', require('./Form/JsonField').default);
 Vue.component('HelpField', require('./Form/HelpField').default);
 Vue.component('MultiselectField', require('./Form/MultiselectField').default);
 Vue.component('CheckboxPopupField', require('./Form/CheckboxPopupField').default);
+Vue.component('CheckedInfoForm', require('./Form/CheckedInfoForm').default);

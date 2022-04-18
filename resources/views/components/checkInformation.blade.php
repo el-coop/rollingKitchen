@@ -1,0 +1,1 @@
+<checked-info-form action="{{action('UserController@checkInfo')}}"></checked-info-form>
