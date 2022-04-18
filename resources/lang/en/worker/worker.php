@@ -10,7 +10,7 @@ return [
 	'taxReviews' => 'Tax Reviews',
 	'uploadId' => 'ID Photo',
 	'uploadInstructions' => 'Upload photo of passport or ID card (front and back). Note: A driver\'s license is not a valid ID.',
-    'liabilityLabel' => 'privacy policy',
+    'liabilityLabel' => 'Privacy policy',
     'liabilityPopupLink' => 'terms and conditions',
     'liabilityPopupLabel' => 'I agree to'
 ];
