@@ -1,8 +1,7 @@
 <template>
     <article class="message is-warning" :class="{'is-hidden' : checked}" >
         <div class="message-header">
-            <p v-text="$translations.checkInfo">
-            </p>
+            <p v-text="$translations.checkInfo"/>
             <button class="delete" @click="checkInfo" :class="{'is-loading' : loading}" aria-label="delete"></button>
         </div>
     </article>
