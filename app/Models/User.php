@@ -30,6 +30,7 @@ class User extends Authenticatable implements HasLocalePreference {
 	 */
 	protected $casts = [
 		'email_verified_at' => 'datetime',
+        'checked_info' => 'boolean'
 	];
 
 	public function user() {

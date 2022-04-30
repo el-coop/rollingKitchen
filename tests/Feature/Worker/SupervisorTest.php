@@ -45,7 +45,8 @@ class SupervisorTest extends TestCase {
         $this->supervisor->user->workplaces()->attach($this->workplace);
         $this->worker->user->workplaces()->attach($this->workplace);
         $this->shift = factory(Shift::class)->make([
-            'hours' => 5
+            'hours' => 5,
+            'date' =>  \Carbon\Carbon::create(app('settings')->get('registration_year'), 1, 1)->format('Y-m-d')
         ]);
         $this->workplace->shifts()->save($this->shift);
         $this->shiftWorker = factory(User::class)->make();

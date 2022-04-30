@@ -72,4 +72,6 @@ return [
     'ownNumbers' => 'Eigen nummers? ',
     'both' => 'Beide',
     'areTheyProtected' => 'Zijn ze beschermd?',
+    'checkInfo' => 'Dit is een nieuwe registratie, controleer alstublieft dat de informatie correct is.',
+    'infoChecked' => 'Data gecontroleerd'
 ];

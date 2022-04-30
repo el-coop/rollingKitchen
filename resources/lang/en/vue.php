@@ -72,4 +72,6 @@ return [
     'ownNumbers' => 'Own numbers?',
     'both' => 'Both',
     'areTheyProtected' => 'Are they protected?',
+    'checkInfo' => 'A new registration year has been opened, please check your data to make sure everything is correct',
+    'infoChecked' => 'Data checked'
 ];
