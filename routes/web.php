@@ -12,7 +12,7 @@
 */
 
 
-Route::get('/', 'HomeController@show');
+Route::get('/', 'HomeController@show')->middleware('guest');
 
 Route::get('/calendar', function () {
 	return view('calendar');
