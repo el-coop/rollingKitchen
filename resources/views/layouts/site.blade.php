@@ -30,7 +30,7 @@
             @endauth
         </navbar>
         <div class="container">
-            @if(Auth::check() && !Auth::user()->checked_info)
+            @if(Auth::check() && !Auth::user()->checked_info && Auth::user()->user_type !== Admin::class)
                 @component('components.checkInformation')
                 @endcomponent
             @endif
