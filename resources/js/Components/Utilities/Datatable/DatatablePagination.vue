@@ -52,7 +52,7 @@
 </template>
 
 <script>
-	import PaginationMixin from 'vuetable-2/src/components/VuetablePaginationMixin'
+	import PaginationMixin from 'vue3-vuetable/src/components/VuetablePaginationMixin'
 
 	export default {
 		name: 'DatatablePagination',

@@ -60,8 +60,8 @@
 </template>
 
 <script>
-	import Vuetable from 'vuetable-2/src/components/Vuetable.vue';
-	import VuetablePaginationInfo from 'vuetable-2/src/components/VuetablePaginationInfo.vue';
+	import Vuetable from 'vue3-vuetable/src/components/Vuetable.vue';
+	import VuetablePaginationInfo from 'vue3-vuetable/src/components/VuetablePaginationInfo.vue';
 	import VuetablePagination from './DatatablePagination';
 	import DatatableFilter from './DatatableFilter';
 	import DatatableFormatters from './DatatableFormatters';

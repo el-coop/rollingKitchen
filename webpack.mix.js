@@ -11,7 +11,27 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-	.sass('resources/sass/app.scss', 'public/css')
-	.version();
-;
+mix.js('resources/js/app.js', 'public/js').vue({
+    compilerOptions: {
+        whitespace: 'preserve',
+    },
+    options: {
+        compilerOptions: {
+            whitespace: 'preserve',
+            compatConfig: {
+                MODE: 2,
+            },
+        },
+    },
+}).sass('resources/sass/app.scss', 'public/css')
+    .version()
+    .webpackConfig(() => {
+        return {
+            resolve: {
+                alias: {
+                    vue: "@vue/compat",
+                    "@vue/composition-api": "@vue/compat",
+                }
+            }
+        }
+    });
