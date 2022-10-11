@@ -15,7 +15,7 @@
         </slot>
         <div class="buttons">
             <button v-if="!loading" class="button is-fullwidth" :class="[submitting ? 'is-loading' : '', buttonClass]"
-                    type="submit" v-text="buttonText">
+                    type="submit" v-text="buttonText || $translations.save">
             </button>
         </div>
     </ajax-form>
@@ -37,16 +37,10 @@ export default {
     props: {
         buttonText: {
             type: String,
-            default() {
-                return this.$translations.save;
-            }
 
         },
         successToast: {
             type: String,
-            default() {
-                return this.$translations.updateSuccess
-            }
 
         },
 
@@ -66,9 +60,6 @@ export default {
         },
         onDataUpdate: {
             type: Function,
-            default(data) {
-                this.$emit('object-update', data);
-            }
         },
 
         hide: {
@@ -140,8 +131,12 @@ export default {
                     this.download(response.data, filename, response.headers['content-type']);
                     return;
                 }
-                this.$toast.success(this.successToast);
-                this.onDataUpdate(response.data);
+                this.$toast.success(this.successToast || this.$translations.updateSuccess);
+                if (this.onDataUpdate) {
+                    this.onDataUpdate(response.data);
+                } else {
+                    this.$emit('object-update', response.data);
+                }
             }
         },
 
