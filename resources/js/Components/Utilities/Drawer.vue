@@ -1,7 +1,7 @@
 <template>
 	<div class="drawer" :class="{'drawer--open': open}">
 		<div class="is-hidden-tablet is-pulled-right">
-			<button class="delete is-medium" @click="open=false"></button>
+			<button class="delete is-medium" @click="$emit('close-drawer')"></button>
 		</div>
 		<slot></slot>
 	</div>
@@ -11,21 +11,12 @@
 	export default {
 		name: "Drawer",
 
-		data() {
-			return {
-				open: false
-			}
-		},
-
-		mounted() {
-			this.$bus.$on('open-drawer', () => {
-				this.open = true
-			});
-		},
-
-		beforeDestroy() {
-			this.$bus.$off('open-drawer');
-		}
+        props:{
+		  open: {
+		      required: true,
+              type: Boolean
+          }
+        },
 	}
 </script>
 

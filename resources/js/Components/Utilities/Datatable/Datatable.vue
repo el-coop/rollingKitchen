@@ -26,7 +26,7 @@
 							  @vuetable:loading='tableLoading'
 							  @vuetable:loaded='tableLoaded'>
 						<template :v-if="deleteSlot" #delete="props">
-							<datatable-delete-form :delete-btn="deleteBtn" :action="deleteAction + props.rowData.id"
+							<datatable-delete-form :delete-btn="deleteBtn || $translations.delete" :action="deleteAction + props.rowData.id"
 												   :key="`delete${props.rowData.id}`" @success="refresh">
 
 							</datatable-delete-form>
@@ -85,9 +85,6 @@
 		props: {
 			deleteBtn: {
 				type: String,
-				default() {
-					return this.$translations.delete
-				}
 			},
 			url: {
 				required: true,

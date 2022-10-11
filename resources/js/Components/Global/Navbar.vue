@@ -2,7 +2,7 @@
 	<nav class="navbar has-shadow">
 		<div class="container" :class="{'is-fluid': fluid}">
 			<div class="navbar-brand is-hidden-desktop">
-				<div class="navbar-item" v-if="menu" @click="openDrawer">
+				<div class="navbar-item" v-if="menu" @click="$emit('open-drawer')">
 					<button class="button is-inverted">
 						<font-awesome-icon icon="bars" class="icon" fixed-width></font-awesome-icon>
 					</button>
@@ -58,12 +58,6 @@
 
 		mounted() {
 			this.buttons = this.$refs.buttons.innerHTML;
-		},
-
-		methods: {
-			openDrawer() {
-				this.$bus.$emit('open-drawer');
-			}
 		},
 
 

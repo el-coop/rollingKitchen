@@ -4,11 +4,13 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+import {generalJsErrorReport, vueErrorReport} from "./ErrorHandler";
+
 require('./bootstrap');
-require('./ErrorHandler');
 
 import {createApp} from 'vue'
 import VueIziToast from './Classes/VueIzitoast';
+import { vfmPlugin } from 'vue-final-modal'
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {
     faLink,
@@ -31,33 +33,24 @@ library.add(faLink, faSignOutAlt, faBars, faFileUpload, faTimesCircle, faEuroSig
  */
 import componentInstaller from './Components/components';
 
+window.onerror = generalJsErrorReport;
 
-const app = createApp({})
-    .use(VueIziToast)
-    .provide('$translations', window.translations);
+const app = createApp({
+    data() {
+        return {
+            drawerOpen: false,
+        }
+    }
+}).use(VueIziToast)
+    .use(vfmPlugin({
+        key: '$modal'
+    }));
 
 app.config.compilerOptions.whitespace = 'preserve'
+app.config.globalProperties.$translations = window.translations;
 
 componentInstaller(app);
 
-app.config.errorHandler = function (err, vm, info) {
-    if (process.env.MIX_APP_ENV === 'local') {
-        console.log(err);
-        return;
-    }
-    axios.post('/developer/error/jsError', {
-        page: window.location.href,
-        userAgent: navigator.userAgent,
-        message: `Error in ${info}: "${err.toString()}" - ${formatComponentName(vm)}`,
-        source: err.fileName,
-        lineNo: err.lineNumber,
-        colNo: err.colNumber,
-        trace: err.stack,
-        vm: {
-            props: vm.$options.propsData,
-            data: vm._data
-        }
-    })
-};
+app.config.errorHandler = vueErrorReport;
 
 app.mount('#app');

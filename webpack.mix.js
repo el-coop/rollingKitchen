@@ -12,12 +12,8 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js').vue({
-    compilerOptions: {
-        whitespace: 'preserve',
-    },
     options: {
         compilerOptions: {
-            whitespace: 'preserve',
             compatConfig: {
                 MODE: 2,
             },

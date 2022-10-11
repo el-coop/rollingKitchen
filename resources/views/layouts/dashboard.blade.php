@@ -2,7 +2,7 @@
 
 @section('body')
 	<div class="dashboard" v-cloak>
-		<drawer>
+		<drawer :open="drawerOpen" @close-drawer="drawerOpen = false">
 			<div class="menu">
 				@foreach($dashboardItems as $label => $items)
 					@component('components.dashboardListItem', [
@@ -15,7 +15,7 @@
 			</div>
 		</drawer>
 		<main>
-			<navbar title="@yield('title')">
+			<navbar title="@yield('title')" @open-drawer="drawerOpen = true">
 				@component('components.logout')
 				@endcomponent
 				<div class="navbar-item">
