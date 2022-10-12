@@ -1,16 +1,19 @@
 <template>
-	<modal :name="`datatable-row${name}`" :adaptive="true" height="100%" :pivotY="0"
+	<VueFinalModal :name="`datatable-row${name}`" :adaptive="true" height="100%" :pivotY="0"
 		   :pivotX="1" :width="width">
 		<div class="modal-body box">
 			<button class="modal-close is-large" @click="hide"></button>
 			<slot></slot>
 		</div>
-	</modal>
+	</VueFinalModal>
 </template>
 
 <script>
+    import {VueFinalModal} from 'vue-final-modal';
+
 	export default {
 		name: "DatatableRowDisplay",
+        components: {VueFinalModal},
 		props: {
 			name: {
 				default: ''
