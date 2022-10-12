@@ -1,5 +1,5 @@
 <template>
-    <vue-final-modal :name="name" transition="slide-up-opacity"
+    <Modal :name="name" transition="slide-up-opacity"
                      :fit-parent="true"
                      classes="modal--container"
                      content-class="modal--content"
@@ -11,17 +11,13 @@
             <button class="modal-close is-large" type="button" @click="$modal.hide(name)"></button>
             <slot/>
         </div>
-    </vue-final-modal>
+    </Modal>
 </template>
 
 <script>
-import {VueFinalModal} from 'vue-final-modal'
 
 export default {
     name: "modal-component",
-    components: {
-        VueFinalModal
-    },
     props: {
         name: {
             type: String,
