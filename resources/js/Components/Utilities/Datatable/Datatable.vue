@@ -12,7 +12,7 @@
         <div class="table-wrapper">
             <div class="table-parent">
                 <div class="table-container">
-                    <vuetable ref="table"
+                    <Vuetable ref="table"
                               pagination-path=""
                               :api-url="`${url}/list`"
                               :fields="fields"
@@ -26,37 +26,36 @@
                               @vuetable:loading='tableLoading'
                               @vuetable:loaded='tableLoaded'>
                         <template :v-if="deleteSlot" #delete="props">
-                            <datatable-delete-form :delete-btn="deleteBtn || $translations.delete"
-                                                   :action="deleteAction + props.rowData.id"
-                                                   :key="`delete${props.rowData.id}`" @success="refresh">
+                            <DatatableDeleteForm :delete-btn="deleteBtn || $translations.delete"
+                                                 :action="deleteAction + props.rowData.id"
+                                                 :key="`delete${props.rowData.id}`" @success="refresh">
 
-                            </datatable-delete-form>
+                            </DatatableDeleteForm>
                         </template>
-                    </vuetable>
+                    </Vuetable>
                 </div>
                 <div class="level">
                     <div class="level-left">
-                        <vuetable-pagination-info class="level-item" ref="paginationInfo"
-                                                  :info-template="labels.pagination"
-                                                  :no-data-template="labels.noPagination">
-                        </vuetable-pagination-info>
+                        <VuetablePaginationInfo class="level-item" ref="paginationInfo"
+                                                :info-template="labels.pagination"
+                                                :no-data-template="labels.noPagination"/>
                     </div>
                     <div class="level-right">
-                        <vuetable-pagination ref="pagination" class="level-item" :prev-text="labels.prev"
-                                             :next-text="labels.next"
-                                             @vuetable-pagination:change-page="changePage"></vuetable-pagination>
+                        <VuetablePagination ref="pagination" class="level-item" :prev-text="labels.prev"
+                                            :next-text="labels.next"
+                                            @vuetable-pagination:change-page="changePage"/>
                     </div>
                 </div>
             </div>
             <div class="filter">
-                <datatable-filter :table-fields="fields" @filter="filter" :filter-text="labels.filter"
-                                  :filters-text="labels.filters" :clear-text="labels.clear"
-                                  :init-filters="initFilters"></datatable-filter>
+                <DatatableFilter :table-fields="fields" @filter="filter" :filter-text="labels.filter"
+                                 :filters-text="labels.filters" :clear-text="labels.clear"
+                                 :init-filters="initFilters"/>
             </div>
         </div>
-        <datatable-row-display :width="editWidth" :name="_uid">
+        <DatatableRowDisplay :width="editWidth" :open="rowDisplayOpen" @close="closeModal">
             <slot :object="object" :on-update="updateObject" :on-delete="deleteObject"></slot>
-        </datatable-row-display>
+        </DatatableRowDisplay>
     </div>
 </template>
 
@@ -158,6 +157,7 @@ export default {
                 newObjectForm: this.newObjectForm
             },
             deleteSubmitting: false,
+            rowDisplayOpen: false,
         }
     },
 
@@ -167,6 +167,10 @@ export default {
     },
 
     methods: {
+        closeModal() {
+            this.object = null;
+            this.rowDisplayOpen = false;
+        },
         calcFields(settings) {
             if (this.deleteSlot) {
                 settings.push({
@@ -180,8 +184,8 @@ export default {
         },
 
         newObjectForm() {
-            this.$modal.show(`datatable-row${this._uid}`);
             this.object = {};
+            this.rowDisplayOpen = true;
         },
 
         paginationData(paginationData) {
@@ -214,15 +218,15 @@ export default {
             this.$refs.table.refresh()
         },
         cellClicked(data, field, event) {
-            this.$modal.show(`datatable-row${this._uid}`);
+            this.rowDisplayOpen = true;
             this.object = data;
-            this.$bus.$emit('vuetable-cell-clicked', {
+            this.$emit('vuetable-cell-clicked', {
                 data, event
             });
 
         },
         rowClicked(data, event) {
-            this.$bus.$emit('vuetable-row-clicked', {
+            this.$emit('vuetable-row-clicked', {
                 data, event
             });
         },
@@ -236,12 +240,11 @@ export default {
                 currentData[elementIndex] = this.object;
             } else {
                 currentData.push(this.object);
-                this.$modal.hide(`datatable-row${this._uid}`);
+                this.closeModal();
             }
             this.$refs.table.setData(currentData);
         },
         deleteObject(data) {
-            this.$modal.hide(`datatable-row${this._uid}`);
             this.object = {...this.object, ...data};
             const currentData = this.$refs.table.tableData;
             let objectIndex = currentData.findIndex((item) => {
@@ -249,6 +252,7 @@ export default {
             });
             currentData.splice(objectIndex, 1);
             this.$refs.table.setData(currentData);
+            this.closeModal();
         },
         refresh() {
             this.$refs.table.refresh()
