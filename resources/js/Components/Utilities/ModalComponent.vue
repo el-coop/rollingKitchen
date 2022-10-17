@@ -1,27 +1,24 @@
 <template>
-    <Modal :name="name" transition="slide-up-opacity"
-                     :fit-parent="true"
-                     classes="modal--container"
-                     content-class="modal--content"
-                     :content-style="{height: 'auto',width}"
-                     :pivotY="pivotY"
-                     :pivotX="pivotX"
-                     ref="modal">
+    <Modal
+        :pivotY="pivotY"
+        :pivotX="pivotX"
+        v-model:active="open" @update:active="$emit('close')">
         <div class="box h-100 modal-body">
-            <button class="modal-close is-large" type="button" @click="$modal.hide(name)"></button>
+            <button class="modal-close is-large" type="button" @click="$emit('close')"></button>
             <slot/>
         </div>
     </Modal>
 </template>
 
 <script>
+import Modal from './Modal';
 
 export default {
     name: "modal-component",
+    components: {Modal},
     props: {
-        name: {
-            type: String,
-            required: true
+        open: {
+            default: ''
         },
         width: {
             default: 600

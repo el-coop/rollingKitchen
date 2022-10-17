@@ -8,9 +8,8 @@ import {generalJsErrorReport, vueErrorReport} from "./ErrorHandler";
 
 require('./bootstrap');
 
-import {createApp} from 'vue'
+import {createApp, configureCompat} from 'vue'
 import VueIziToast from './Classes/VueIzitoast';
-import { vfmPlugin } from 'vue-final-modal'
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {
     faLink,
@@ -31,7 +30,13 @@ library.add(faLink, faSignOutAlt, faBars, faFileUpload, faTimesCircle, faEuroSig
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+
 import componentInstaller from './Components/components';
+
+configureCompat({
+    RENDER_FUNCTION: false
+});
+
 
 window.onerror = generalJsErrorReport;
 
@@ -41,13 +46,10 @@ const app = createApp({
             drawerOpen: false,
         }
     }
-}).use(VueIziToast)
-    .use(vfmPlugin({
-        key: '$modal'
-    }));
+}).use(VueIziToast);
 
 app.config.compilerOptions.whitespace = 'preserve'
-app.config.globalProperties.$translations = window.translations;
+app.config.globalProperties.$translations = window.$translations;
 
 componentInstaller(app);
 

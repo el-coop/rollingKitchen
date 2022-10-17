@@ -14,24 +14,26 @@
                     <th v-if="action"></th>
                 </tr>
                 </thead>
-                <draggable tag="tbody" :list="fields" :disabled="!sortable">
-                    <tr v-for="(field, index) in fields" :key="`${index}${field.id}`">
-                        <template v-for="(column,colIndex) in columns">
-                            <td v-if="!column.invisible" :key="`${index}_${colIndex}`"
-                                v-html="valueDisplay(column,field[column.name])" @click="editObject(field)"
-                                :class="{'is-hidden-phone': column.responsiveHidden}"/>
-                        </template>
-                        <td v-if="hasActions">
-                            <slot name="actions" :field="field" :on-update="replaceObject"></slot>
-                        </td>
-                        <td v-if="action && deleteAllowed">
-                            <button class="button is-danger" type="button"
-                                    :class="{'is-loading' : deleteing === field.id}"
-                                    :disabled="field.status === 'protected'"
-                                    @click="destroy(field)" v-text="$translations.delete">
-                            </button>
-                        </td>
-                    </tr>
+                <draggable tag="tbody" :list="fields" :disabled="!sortable" itemKey="id">
+                    <template #item="{element}">
+                        <tr>
+                            <template v-for="(column,colIndex) in columns">
+                                <td v-if="!column.invisible" :key="`${element.id}_${colIndex}`"
+                                    v-html="valueDisplay(column,element[column.name])" @click="editObject(element)"
+                                    :class="{'is-hidden-phone': column.responsiveHidden}"/>
+                            </template>
+                            <td v-if="hasActions">
+                                <slot name="actions" :field="element" :on-update="replaceObject"></slot>
+                            </td>
+                            <td v-if="action && deleteAllowed">
+                                <button class="button is-danger" type="button"
+                                        :class="{'is-loading' : deleteing === element.id}"
+                                        :disabled="element.status === 'protected'"
+                                        @click="destroy(element)" v-text="$translations.delete">
+                                </button>
+                            </td>
+                        </tr>
+                    </template>
                 </draggable>
             </table>
         </div>
@@ -40,13 +42,14 @@
             <div v-if="sortable" class="button is-primary" :class="{'is-loading': savingOrder}" @click="saveOrder"
                  v-text="$translations.saveOrder"></div>
         </div>
-        <modal-component :name="`${_uid}modal`" v-if="action" :width="modal.width" :height="modal.height"
+        <ModalComponent v-if="action" :width="modal.width" :height="modal.height"
+                        :open="modalOpen"
+                        @close="closeModal"
                          :pivotX="modal.pivotX" :pivotY="modal.pivotY">
-            <dynamic-form :headers="headers" :init-fields="!formFromUrl ? formFields : null" :method="method" :url="url"
+            <DynamicForm v-if="object" :headers="headers" :init-fields="!formFromUrl ? formFields : null" :method="method" :url="url"
                           @object-update="updateObject" :extra-data="extraData" :button-text="formButtonText">
-
-            </dynamic-form>
-        </modal-component>
+            </DynamicForm>
+        </ModalComponent>
     </div>
 </template>
 
@@ -65,7 +68,7 @@ export default {
         formButtonText: {
             type: String,
             default() {
-                return this.$translations.save;
+                return $translations.save;
             }
 
         },
@@ -138,10 +141,11 @@ export default {
     data() {
         return {
             fields: this.initFields,
-            object: {},
+            object: null,
             deleteing: null,
             order: [],
-            savingOrder: false
+            savingOrder: false,
+            modalOpen: false
         }
     },
 
@@ -150,6 +154,10 @@ export default {
     },
 
     methods: {
+        closeModal(){
+           this.object = null;
+           this.modalOpen = false;
+        },
         sort() {
             if (this.sortBy) {
                 this.fields.sort((a, b) => {
@@ -179,7 +187,7 @@ export default {
                 return;
             }
             this.object = field;
-            this.$modal.show(`${this._uid}modal`);
+            this.modalOpen = true;
         },
 
         valueDisplay(column, value) {
@@ -217,7 +225,7 @@ export default {
             if (this.sortBy) {
                 this.sort();
             }
-            this.$modal.hide(`${this._uid}modal`);
+            this.closeModal();
         },
         async destroy(field) {
             this.deleteing = field.id;
@@ -289,7 +297,7 @@ export default {
         },
 
         hasActions() {
-            return !!this.$scopedSlots.actions;
+            return !!this.$slots.actions;
         }
 
     },

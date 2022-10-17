@@ -25,7 +25,7 @@
     @endif
 </div>
 <script>
-    var translations = @json(__('vue'))
+    var $translations = @json(__('vue'))
 </script>
 <script src="{{ mix('/js/app.js') }}"></script>
 @yield('scripts')
