@@ -3,13 +3,15 @@
         <div class="modal-background" @click="$emit('update:active',false)"></div>
         <div class="modal-content" :style="{top, left}" ref="content">
             <div class="card" :class="bodyClass" :style="{height: this.modalHeight, width: this.modalWidth}">
-                <slot></slot>
+                <slot/>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import {nextTick} from "vue";
+
 export default {
     name: "Modal",
 
@@ -40,6 +42,14 @@ export default {
         }
     },
 
+
+    data(){
+        return {
+            contentHeight: this.height,
+            contentWidth: this.width,
+        }
+    },
+
     computed: {
         modalWidth() {
             if (isNaN(this.width)) {
@@ -57,23 +67,30 @@ export default {
         },
         top() {
             const percent = this.pivotY * 100;
-            let height = this.height;
-            if(height === 'auto'){
-                height = this.$refs.content.offsetHeight;
-            }
-            height = parseFloat(height);
+
+            let height = parseFloat(this.contentHeight);
 
             return  `calc(${percent}vh - ${this.pivotY * height}px)`;
         },
         left() {
             const percent = this.pivotX * 100;
-            let width = this.width;
-            if(width === 'auto'){
-                width = this.$refs.content.offsetWidth;
-            }
-            width = parseFloat(width);
+            let width = parseFloat(this.contentWidth);
 
             return `calc(${percent}vw - ${this.pivotX * width}px)`;
+        }
+    },
+
+    watch: {
+        async active() {
+            if(this.contentHeight === 'auto'){
+                await nextTick();
+                this.contentHeight = this.$refs.content.offsetHeight;
+            }
+
+            if(this.contentWidth === 'auto'){
+                await nextTick();
+                this.contentWidth = this.$refs.content.offsetWidth;
+            }
         }
     }
 }

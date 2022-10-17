@@ -163,7 +163,7 @@ export default {
 
     created() {
         this.fields = this.calcFields(this.fieldSettings);
-        this.params.filter = this.initFilters;
+        this.params.filter = JSON.stringify(this.initFilters);
     },
 
     methods: {
@@ -213,7 +213,7 @@ export default {
             this.$refs.table.changePage(page);
         },
         async filter(filters) {
-            this.params.filter = filters;
+            this.params.filter = JSON.stringify(filters);
             await nextTick();
             this.$refs.table.refresh()
         },
