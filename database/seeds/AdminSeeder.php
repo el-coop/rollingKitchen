@@ -12,7 +12,7 @@ class AdminSeeder extends Seeder
      * @return void
      */
     public function run() {
-        factory(Admin::class)->create()->each(function ($admin){
+        Admin::factory()->create()->each(function ($admin){
             $user = factory(User::class)->make([
                 'email' => 'admin@kitchen.com',
                 'password' => bcrypt(123456)

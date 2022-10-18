@@ -3,24 +3,27 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Shift extends Model {
-	protected $casts = [
+    use HasFactory;
+
+    protected $casts = [
 		'closed' => 'boolean',
 	];
-	
+
 	protected static function boot() {
 		parent::boot();
 		static::deleted(function ($shift) {
 			$shift->workers()->detach();
 		});
 	}
-	
+
 	public function workplace() {
 		return $this->belongsTo(Workplace::class);
 	}
-	
+
 	public function getFullDataAttribute() {
 		return collect([[
 			'name' => 'date',
@@ -49,15 +52,15 @@ class Shift extends Model {
 			]]
 		]]);
 	}
-	
+
 	public function workers() {
 		return $this->belongsToMany(Worker::class)->using(ShiftWorker::class)->withPivot('start_time', 'end_time', 'work_function_id');
 	}
-	
+
 	public function shiftWorkers() {
 		return $this->hasMany(ShiftWorker::class);
 	}
-	
+
 	public function getTotalHoursAttribute() {
 		$totalHours = new Carbon('today');
 		$startOfDay = $totalHours->clone();

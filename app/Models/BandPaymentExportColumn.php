@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class BandPaymentExportColumn extends Model {
-	static public function options() {
+    use HasFactory;
+
+    static public function options() {
 		$options = collect([
 			'user.name' => __('global.name'),
 			'user.email' => __('global.email'),

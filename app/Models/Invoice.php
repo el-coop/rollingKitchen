@@ -4,11 +4,13 @@ namespace App\Models;
 
 use App\Services\InvoiceService;
 use DB;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Auth;
 use Illuminate\Support\Facades\App;
 
 class Invoice extends Model {
+    use HasFactory;
 
 	protected $appends = [
 		'total',

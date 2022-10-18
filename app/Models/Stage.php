@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Stage extends Model {
-	
-	public function getFullDataAttribute() {
+    use HasFactory;
+
+    public function getFullDataAttribute() {
 		return [[
 			'name' => 'name',
 			'label' => __('global.name'),
@@ -14,5 +16,5 @@ class Stage extends Model {
 			'value' => $this->name
 		]];
 	}
-	
+
 }
