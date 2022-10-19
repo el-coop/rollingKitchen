@@ -20,7 +20,7 @@
                     });
                     this.fields.splice(editedId, 1, object);
                 }
-                this.$modal.hide(`${this._uid}modal`);
+                this.closeModal();
                 this.$emit('updated-total', this.calculateTotal());
             },
             async destroy(field) {
@@ -38,3 +38,8 @@
         }
     }
 </script>
+<style scoped>
+.table thead tr:last-child th {
+    border-bottom-width: 2px !important;
+}
+</style>

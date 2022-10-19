@@ -2,7 +2,7 @@
     <div class="modal" :class="{'is-active': active}">
         <div class="modal-background" @click="$emit('update:active',false)"></div>
         <div class="modal-content" :style="{top, left,height: this.modalHeight, width: this.modalWidth}" ref="content">
-            <div class="card" :class="bodyClass">
+            <div class="card h-100" :class="bodyClass">
                 <slot/>
             </div>
         </div>

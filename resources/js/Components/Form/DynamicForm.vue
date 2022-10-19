@@ -1,5 +1,5 @@
 <template>
-    <ajax-form :headers="headers" @errors="handleErrors" :method="method" :action="url" @submitting="submitting = true"
+    <AjaxForm :headers="headers" @errors="handleErrors" :method="method" :action="url" @submitting="submitting = true"
                @submitted="submitted" :extraData="extraData" @alternative-submitting="alternativeSubmitting=true">
         <div v-if="loading" class="has-text-centered">
             <a class="button is-loading"></a>
@@ -18,7 +18,7 @@
                     type="submit" v-text="buttonText">
             </button>
         </div>
-    </ajax-form>
+    </AjaxForm>
 </template>
 
 <script>
@@ -88,7 +88,7 @@ export default {
             type: Object,
             default() {
                 return {
-                    'Content-type': 'application/json'
+                    'Content-Type': 'application/json'
                 };
             }
         }

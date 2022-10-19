@@ -45,9 +45,10 @@
         <ModalComponent v-if="action" :width="modal.width" :height="modal.height"
                         :open="modalOpen"
                         @close="closeModal"
-                         :pivotX="modal.pivotX" :pivotY="modal.pivotY">
-            <DynamicForm v-if="object" :headers="headers" :init-fields="!formFromUrl ? formFields : null" :method="method" :url="url"
-                          @object-update="updateObject" :extra-data="extraData" :button-text="formButtonText">
+                        :pivotX="modal.pivotX" :pivotY="modal.pivotY">
+            <DynamicForm v-if="object" :headers="headers" :init-fields="!formFromUrl ? formFields : null"
+                         :method="method" :url="url"
+                         @object-update="updateObject" :extra-data="extraData" :button-text="formButtonText">
             </DynamicForm>
         </ModalComponent>
     </div>
@@ -119,7 +120,7 @@ export default {
             type: Object,
             default() {
                 return {
-                    'Content-type': 'application/json'
+                    'Content-Type': 'application/json'
                 };
             }
         },
@@ -154,9 +155,9 @@ export default {
     },
 
     methods: {
-        closeModal(){
-           this.object = null;
-           this.modalOpen = false;
+        closeModal() {
+            this.object = null;
+            this.modalOpen = false;
         },
         sort() {
             if (this.sortBy) {
@@ -303,3 +304,4 @@ export default {
     },
 }
 </script>
+
