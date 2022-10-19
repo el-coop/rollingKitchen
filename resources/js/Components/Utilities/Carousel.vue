@@ -25,7 +25,7 @@
 			</div>
 			<div class="arrow next" @click="changePhoto(+1)">
 				<div v-if="Object.keys(photos).length > 1">
-                    &rt;
+                    >
 				</div>
 			</div>
 		</div>

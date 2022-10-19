@@ -1,8 +1,8 @@
 <template>
     <div class="modal" :class="{'is-active': active}">
         <div class="modal-background" @click="$emit('update:active',false)"></div>
-        <div class="modal-content" :style="{top, left}" ref="content">
-            <div class="card" :class="bodyClass" :style="{height: this.modalHeight, width: this.modalWidth}">
+        <div class="modal-content" :style="{top, left,height: this.modalHeight, width: this.modalWidth}" ref="content">
+            <div class="card" :class="bodyClass">
                 <slot/>
             </div>
         </div>
@@ -25,11 +25,9 @@ export default {
             default: ''
         },
         height: {
-            type: String,
             default: 'auto'
         },
         width: {
-            type: String,
             default: '600'
         },
         pivotY: {
@@ -43,7 +41,7 @@ export default {
     },
 
 
-    data(){
+    data() {
         return {
             contentHeight: this.height,
             contentWidth: this.width,
@@ -70,7 +68,7 @@ export default {
 
             let height = parseFloat(this.contentHeight);
 
-            return  `calc(${percent}vh - ${this.pivotY * height}px)`;
+            return `calc(${percent}vh - ${this.pivotY * height}px)`;
         },
         left() {
             const percent = this.pivotX * 100;
@@ -82,12 +80,12 @@ export default {
 
     watch: {
         async active() {
-            if(this.contentHeight === 'auto'){
+            if (this.contentHeight === 'auto') {
                 await nextTick();
                 this.contentHeight = this.$refs.content.offsetHeight;
             }
 
-            if(this.contentWidth === 'auto'){
+            if (this.contentWidth === 'auto') {
                 await nextTick();
                 this.contentWidth = this.$refs.content.offsetWidth;
             }

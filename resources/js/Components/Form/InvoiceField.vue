@@ -9,14 +9,14 @@
 				</div>
 				<div class="column is-2"></div>
 			</div>
-			<invoice-line v-for="(entry, index) in values" :key="`{entry.uniqe_id}_${index}`" :index="index"
+			<InvoiceLine v-for="(entry, index) in values" :key="`{entry.uniqe_id}_${index}`" :index="index"
 						  :name="field.name"
 						  v-model="values[index]"
 						  :individual-tax="field.individualTax || false"
 						  :tax-options="field.taxOptions"
 						  :options="field.options"
 						  @total="updateTotal(index,$event)"
-						  @remove="remove(index)"></invoice-line>
+						  @remove="remove(index)"/>
 			<div class="columns is-mobile" v-if="!(field.individualTax || false)">
 				<div class="column" :class="{'is-2' : header !== 'item'}" v-for="header in headers">
 					<span v-if="header === 'unitPrice'"

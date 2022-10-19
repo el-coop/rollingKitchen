@@ -53,6 +53,6 @@ app.config.globalProperties.$translations = window.$translations;
 
 componentInstaller(app);
 
-app.config.errorHandler = vueErrorReport;
+// app.config.errorHandler = vueErrorReport;
 
 app.mount('#app');

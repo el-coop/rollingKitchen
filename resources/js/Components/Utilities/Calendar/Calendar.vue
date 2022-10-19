@@ -159,7 +159,7 @@
             }
         },
 
-        beforeDestroy: function () {
+        beforeUnmount: function () {
             if (this.resizeable) {
                 window.removeEventListener('resize', this.setWidth)
             }

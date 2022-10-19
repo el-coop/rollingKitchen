@@ -1,14 +1,14 @@
 <template>
-	<modal-component name="payment" height="100%" :width="800" :pivotY="0"
+	<ModalComponent name="payment" height="100%" :width="800" :pivotY="0"
 					 :pivotX="1">
-		<invoice-payments-table v-if="invoice.payments" @updated-total="updateInvoice" :columns="columns"
+		<InvoicePaymentsTable v-if="invoice.payments" @updated-total="updateInvoice" :columns="columns"
 								:init-fields="invoice.payments"
 								:action="action">
-		</invoice-payments-table>
+		</InvoicePaymentsTable>
 		<div v-else class="has-text-centered">
 			<a class="button is-loading"></a>
 		</div>
-	</modal-component>
+	</ModalComponent>
 </template>
 
 <script>
@@ -28,12 +28,6 @@
 				type: Boolean,
 				default: false
 			}
-		},
-		mounted() {
-			this.$bus.$on('open-payment-modal', this.setUp);
-		},
-		beforeDestroy() {
-			this.$bus.$off('open-payment-modal', this.setUp);
 		},
 		data() {
 			return {

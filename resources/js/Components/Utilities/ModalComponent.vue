@@ -2,6 +2,8 @@
     <Modal
         :pivotY="pivotY"
         :pivotX="pivotX"
+        :width="width"
+        :height="height"
         v-model:active="open" @update:active="$emit('close')">
         <div class="box h-100 modal-body">
             <button class="modal-close is-large" type="button" @click="$emit('close')"></button>
@@ -18,7 +20,7 @@ export default {
     components: {Modal},
     props: {
         open: {
-            default: ''
+            default: false
         },
         width: {
             default: 600
