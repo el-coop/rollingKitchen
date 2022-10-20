@@ -2,9 +2,9 @@
 	<div>
 		<div class="file has-name is-medium is-light is-boxed is-fullwidth">
 			<label class="file-label">
-				<upload-component name="photo" :multiple="true" :drop="true" v-model="files"
+				<UploadComponent name="photo" :multiple="true" :drop="true" v-model="files"
 								  ref="upload" :post-action="url" :accept="accept" :data="data"
-								  @input-file="updateFiles"></upload-component>
+								  @input-file="updateFiles"/>
 				<span class="file-cta">
 					<span class="file-icon">
 						<font-awesome-icon icon="file-upload"></font-awesome-icon>

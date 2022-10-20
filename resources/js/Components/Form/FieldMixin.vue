@@ -1,5 +1,6 @@
 <script>
 export default {
+    emits: ['update:modelValue'],
     props: {
         field: {
             required: true,
@@ -28,7 +29,7 @@ export default {
     watch: {
         value: {
             handler(value) {
-                this.$emit('modelValue', value);
+                this.$emit('update:modelValue', value);
             },
             deep: true
         }

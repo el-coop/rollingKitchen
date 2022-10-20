@@ -34,7 +34,8 @@ library.add(faLink, faSignOutAlt, faBars, faFileUpload, faTimesCircle, faEuroSig
 import componentInstaller from './Components/components';
 
 configureCompat({
-    RENDER_FUNCTION: false
+    RENDER_FUNCTION: false,
+    COMPONENT_V_MODEL: false
 });
 
 

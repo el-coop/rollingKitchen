@@ -22,17 +22,17 @@
 					<dynamic-form
 							:url="`{{Request::url() }}/${object.owner_type.substring(11).toLowerCase()}/${object.owner_id}/${object.id}`"
 							:on-data-update="onUpdate" button-text="@lang('admin/invoices.send')"></dynamic-form>
-					<div class="mt-1">
-						<button class="button is-fullwidth is-success"
-								@click="$bus.$emit('open-payment-modal', object, onUpdate)">
-							@lang('admin/invoices.managePayments')
-						</button>
+					<div class="mt-4">
+                        <invoice-payments-modal #default="{open}" :from-url="true" :on-update="onUpdate" :field="object">
+			    			<button class="button is-fullwidth is-success"
+		    						@click="open">
+	    						@lang('admin/invoices.managePayments')
+    						</button>
+                        </invoice-payments-modal>
 					</div>
 				</template>
 			</template>
 		@endcomponent
 	</div>
-	<invoice-payments-modal :from-url="true">
 
-	</invoice-payments-modal>
 @endsection
