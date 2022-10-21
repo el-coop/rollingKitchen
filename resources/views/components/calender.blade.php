@@ -15,8 +15,8 @@
 							:class="{'is-loading' : submitting}">@lang('global.save')</button>
 				</div>
 			</template>
-			<template #modal="{input, output}">
-				<calendar-modal :input="input" :output="output" :stages="{{ $stages }}"
+			<template #modal="{input, output, closeModal}">
+				<calendar-modal :input="input" :output="output" :stages="{{ $stages }}" @submit="closeModal"
 								:bands="{{$bands}}"></calendar-modal>
 			</template>
 		</calendar>
