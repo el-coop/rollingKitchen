@@ -48,8 +48,9 @@ class UpdateBandRequest extends FormRequest {
 		return [
 			'id' => $this->band->id,
 			'name' => $this->input('name'),
-			'email' => $this->input('email')
-		];
+			'email' => $this->input('email'),
+            'completed' => count($this->band->data),
+        ];
 	}
 
 	protected function addAdmin() {
