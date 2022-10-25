@@ -17,7 +17,7 @@
 			headers: {
 				default() {
 					return {
-						'Content-type': 'application/json'
+						'Content-Type': 'application/json'
 					};
 				},
 				type: Object
@@ -48,7 +48,7 @@
 						data.append(prop, this.extraData[prop])
 					}
 				}
-				if (this.headers['Content-type'] === 'application/json') {
+				if (this.headers['Content-Type'] === 'application/json') {
 					return this.jsonify(data);
 				} else if (this.method !== 'post' && this.method !== 'get') {
 					data.append('_method', this.method);
@@ -75,7 +75,6 @@
 					});
 					lastUpdated[lastKey] = value;
 				}
-
 				return data;
 			},
 

@@ -12,6 +12,17 @@
 		* {
 			font-size: 12px;
 		}
+
+        .table, thead, tbody,tr {
+            background-color: transparent;
+        }
+
+        th, td {
+            border-color: #dbdbdb;
+            background-color: transparent;
+        }
+
+
 	</style>
 </head>
 <body>

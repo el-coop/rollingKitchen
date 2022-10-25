@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('title',__('auth.resetPassword'));
+@section('title',__('auth.resetPassword'))
 
 @section('content')
 	<div class="section">

@@ -36,15 +36,15 @@
                             :key="`${n}_${i}`"
                             v-show="calcDate(realStartDate,i - 1) >= currentStart && calcDate(realStartDate,i - 1) < lastDate"
                             :style="{ 'min-width': `${columnWidth}px`}">
-                            <calendar-entry :label="formatTime(startHour + (n-1) * interval)" @drop="drop">
+                            <CalendarEntry :label="formatTime(startHour + (n-1) * interval)" @drop="drop">
                                 <template #default="{rawData, processedData, edit}">
                                     <slot name="entry" :rawData="rawData" :processedData="processedData"
                                           :edit="edit"
                                           :filter="filter"
                                           :dateTime="`${date(calcDate(realStartDate,i - 1))} ${formatTime(startHour + (n-1) * interval)}`"
-                                          :init="initData[`${date(calcDate(realStartDate,i - 1))} ${formatTime(startHour + (n-1) * interval)}`] || []"></slot>
+                                          :init="initData[`${date(calcDate(realStartDate,i - 1))} ${formatTime(startHour + (n-1) * interval)}`] || []"/>
                                 </template>
-                            </calendar-entry>
+                            </CalendarEntry>
                         </td>
                     </tr>
                     </tbody>
@@ -56,8 +56,9 @@
                     <h6 class="title is-6" v-text="optionsTitle"></h6>
                     <ul>
                         <li v-for="(option,index) in options" :key="index" class="mt-1">
-                            <drag drop-effect="move" :transfer-data="{id: index, name: option}" v-text="option"
-                                  class="tag is-dark is-medium"></drag>
+                            <Drag v-text="option"
+                                  :data-transfer="{id: index, name: option}"
+                                  draggable="true" class="tag is-dark is-medium"/>
                         </li>
                     </ul>
                     <template v-if="currentlyDisplaying-1 < Math.max(this.numberOfDays)">
@@ -78,202 +79,207 @@
                 </div>
             </div>
         </div>
-        <modal name="calendar-modal" :adaptive="true" height="auto">
-            <div class="modal-body box" v-if="raw">
-                <slot name="modal" :input="raw" :output="output"></slot>
-            </div>
-        </modal>
+        <ModalComponent :open="modalOpen" @close="closeModal">
+            <slot v-if="raw" name="modal" :input="raw" :output="output" :closeModal="closeModal"/>
+        </ModalComponent>
     </div>
 </template>
 
 <script>
-    import DatatableFormatters from "../Datatable/DatatableFormatters";
-    import VueDragDrop from 'vue-drag-drop';
-    import CalendarEntry from './CalendarEntry';
+import DatatableFormatters from "../Datatable/DatatableFormatters";
+import CalendarEntry from './CalendarEntry';
+import Drag from '../DragDrop/Drag'
+import ModalComponent from "../ModalComponent";
 
-    export default {
-        name: "Calendar",
+export default {
+    name: "Calendar",
 
-        components: {
-            VueDragDrop,
-            CalendarEntry
-        },
+    components: {
+        ModalComponent,
+        CalendarEntry, Drag
+    },
 
-        mixins: [DatatableFormatters],
+    mixins: [DatatableFormatters],
 
-        props: {
-            initData: {
-                type: Object,
-                default() {
-                    return {};
-                }
-            },
-            startDate: {
-                type: String,
-                required: true
-            },
-            numberOfDays: {
-                type: Number,
-                default: 5
-            },
-            startHour: {
-                type: Number,
-                default: 0
-            },
-            endHour: {
-                type: Number,
-                default: 24
-            },
-            interval: {
-                type: Number,
-                default: 0.5
-            },
-            columnWidth: {
-                type: Number,
-                default: 300
-            },
-            maxParallel: {
-                type: Number,
-                default: 7
-            },
-            options: {
-                type: Object,
-                default() {
-                    return [];
-                }
-            },
-            optionsTitle: {
-                type: String,
-                default: ''
-            },
-            resizeable: {
-                type: Boolean,
-                default: false,
+    props: {
+        initData: {
+            type: Object,
+            default() {
+                return {};
             }
         },
-
-        mounted() {
-            this.setWidth();
-            if (this.resizeable) {
-                window.addEventListener('resize', this.setWidth)
+        startDate: {
+            type: String,
+            required: true
+        },
+        numberOfDays: {
+            type: Number,
+            default: 5
+        },
+        startHour: {
+            type: Number,
+            default: 0
+        },
+        endHour: {
+            type: Number,
+            default: 24
+        },
+        interval: {
+            type: Number,
+            default: 0.5
+        },
+        columnWidth: {
+            type: Number,
+            default: 300
+        },
+        maxParallel: {
+            type: Number,
+            default: 7
+        },
+        options: {
+            type: Object,
+            default() {
+                return [];
             }
         },
+        optionsTitle: {
+            type: String,
+            default: ''
+        },
+        resizeable: {
+            type: Boolean,
+            default: false,
+        },
+    },
 
-        beforeDestroy: function () {
-            if (this.resizeable) {
-                window.removeEventListener('resize', this.setWidth)
+    mounted() {
+        this.setWidth();
+        if (this.resizeable) {
+            window.addEventListener('resize', this.setWidth)
+        }
+    },
+
+    beforeUnmount: function () {
+        if (this.resizeable) {
+            window.removeEventListener('resize', this.setWidth)
+        }
+    },
+
+    data() {
+        return {
+            realStartDate: new Date(this.startDate),
+            daysOffset: 0,
+            currentlyDisplaying: Math.min(this.maxParallel, this.numberOfDays),
+            raw: null,
+            output: null,
+            loaded: false,
+            filter: 0,
+            modalOpen: false
+        };
+    },
+
+    methods: {
+        calcDate(date, days) {
+            const newDate = new Date(date);
+            newDate.setDate(date.getDate() + days);
+            return newDate;
+        },
+
+        setWidth() {
+            const totalWidth = this.$el.parentElement.getBoundingClientRect().width;
+            if (totalWidth === 0) {
+                window.setTimeout(() => {
+                    this.setWidth();
+                }, 500);
+                return;
             }
-        },
-
-        data() {
-            return {
-                realStartDate: new Date(this.startDate),
-                daysOffset: 0,
-                currentlyDisplaying: Math.min(this.maxParallel, this.numberOfDays),
-                raw: null,
-                output: null,
-                loaded: false,
-                filter: 0
-            };
-        },
-
-        methods: {
-            calcDate(date, days) {
-                const newDate = new Date(date);
-                newDate.setDate(date.getDate() + days);
-                return newDate;
-            },
-
-            setWidth() {
-                const totalWidth = this.$el.parentElement.getBoundingClientRect().width;
-                if (totalWidth === 0) {
-                    window.setTimeout(() => {
-                        this.setWidth();
-                    }, 500);
-                    return;
-                }
-                const optionsWidth = this.$refs.options.getBoundingClientRect().width / this.columnWidth;
-                let maxDisplay = Math.min(this.maxParallel, this.numberOfDays) + optionsWidth;
-                while ((totalWidth / (this.columnWidth * maxDisplay)) < 1) {
-                    maxDisplay--;
-                }
-                if (maxDisplay < 1) {
-                    maxDisplay = 1;
-                }
-                this.currentlyDisplaying = Math.ceil(maxDisplay);
-                this.loaded = true;
-            },
-
-            changeStartDate(days) {
-                this.daysOffset += days;
-            },
-
-            drop(payload) {
-                this.raw = payload.raw;
-                this.output = payload.output;
-                this.$modal.show('calendar-modal');
-            },
-            formatTime(time) {
-                let hours = Math.floor(time);
-                let minutes = time - hours;
-                while (hours > 24) {
-                    hours -= 24;
-                }
-                minutes = Math.floor(minutes * 60);
-                if (hours < 10) {
-                    hours = '0' + hours;
-                }
-
-                if (minutes < 10) {
-                    minutes = '0' + minutes;
-                }
-                return `${hours}:${minutes}`;
+            const optionsWidth = this.$refs.options.getBoundingClientRect().width / this.columnWidth;
+            let maxDisplay = Math.min(this.maxParallel, this.numberOfDays) + optionsWidth;
+            while ((totalWidth / (this.columnWidth * maxDisplay)) < 1) {
+                maxDisplay--;
             }
-        },
-
-        computed: {
-            lastDate() {
-                let currentlyDisplaying = this.currentlyDisplaying;
-                if (currentlyDisplaying > 1) {
-                    currentlyDisplaying -= 1;
-                }
-                return this.calcDate(this.currentStart, currentlyDisplaying);
-            },
-
-            currentStart() {
-                return this.calcDate(this.realStartDate, this.daysOffset);
+            if (maxDisplay < 1) {
+                maxDisplay = 1;
             }
+            this.currentlyDisplaying = Math.ceil(maxDisplay);
+            this.loaded = true;
         },
-    }
+
+        changeStartDate(days) {
+            this.daysOffset += days;
+        },
+
+        drop(payload) {
+            this.raw = payload.raw;
+            this.output = payload.output;
+            this.modalOpen = true;
+        },
+        formatTime(time) {
+            let hours = Math.floor(time);
+            let minutes = time - hours;
+            while (hours > 24) {
+                hours -= 24;
+            }
+            minutes = Math.floor(minutes * 60);
+            if (hours < 10) {
+                hours = '0' + hours;
+            }
+
+            if (minutes < 10) {
+                minutes = '0' + minutes;
+            }
+            return `${hours}:${minutes}`;
+        },
+        closeModal(){
+            this.raw = null;
+            this.output = null;
+            this.modalOpen = false;
+        }
+    },
+
+    computed: {
+        lastDate() {
+            let currentlyDisplaying = this.currentlyDisplaying;
+            if (currentlyDisplaying > 1) {
+                currentlyDisplaying -= 1;
+            }
+            return this.calcDate(this.currentStart, currentlyDisplaying);
+        },
+
+        currentStart() {
+            return this.calcDate(this.realStartDate, this.daysOffset);
+        }
+    },
+}
 </script>
 
 <style lang="scss" scoped>
-    @import "../../../../sass/variables";
+@import "../../../../sass/variables";
 
-    .modal-body {
+.modal-body {
 
-        .modal-close {
-            position: relative;
-            float: right;
-            top: 0;
-            right: 0;
+    .modal-close {
+        position: relative;
+        float: right;
+        top: 0;
+        right: 0;
 
-            &:after, &:before {
-                background: $contrast-bg;
-            }
+        &:after, &:before {
+            background: $contrast-bg;
         }
     }
+}
 
-    .tag {
-        cursor: pointer;
-    }
+.tag {
+    cursor: pointer;
+}
 
-    .options {
-        position: sticky;
-        top: 0;
-    }
+.options {
+    position: sticky;
+    top: 0;
+}
 
-    .calendar-container {
-        padding: 0 1.5rem;
-    }
+.calendar-container {
+    padding: 0 1.5rem;
+}
 </style>

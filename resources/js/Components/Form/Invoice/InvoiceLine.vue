@@ -44,13 +44,15 @@
 
 	export default {
 		name: "InvoiceLine",
+        compatConfig: { COMPONENT_V_MODEL: false },
 		mixins: [DatatableFormatters],
+        emits: ['update:modelValue','total','remove'],
 		props: {
 			name: {
 				type: String,
 				required: true
 			},
-			value: {
+			modelValue: {
 				default() {
 					return null;
 				}
@@ -77,15 +79,15 @@
 
 		data() {
 			return {
-				quantity: this.value.quantity,
-				unitPrice: this.value.unitPrice,
-				item: this.value.item,
+				quantity: this.modelValue.quantity,
+				unitPrice: this.modelValue.unitPrice,
+				item: this.modelValue.item,
 				totalVal: 0,
-				tax: this.value.tax || 0
+				tax: this.modelValue.tax || 0
 			}
 		},
 
-		beforeDestroy() {
+        beforeUnmount() {
 			this.$emit('total', 0);
 		},
 
@@ -103,8 +105,8 @@
 		computed: {
 			total() {
 				let val = 0;
-				if (this.value.quantity && this.value.unitPrice) {
-					val = (this.value.quantity * this.value.unitPrice) * (1 + this.tax / 100);
+				if (this.modelValue.quantity && this.modelValue.unitPrice) {
+					val = (this.modelValue.quantity * this.modelValue.unitPrice) * (1 + this.tax / 100);
 					val = val.toFixed(2);
 				}
 				if (val != this.totalVal) {
@@ -118,7 +120,7 @@
 
 		watch: {
 			quantity(value) {
-				this.$emit('input', {
+				this.$emit('update:modelValue', {
 					quantity: this.quantity,
 					unitPrice: this.unitPrice,
 					tax: this.tax,
@@ -126,7 +128,7 @@
 				});
 			},
 			item() {
-				this.$emit('input', {
+				this.$emit('update:modelValue', {
 					quantity: this.quantity,
 					unitPrice: this.unitPrice,
 					tax: this.tax,
@@ -137,7 +139,7 @@
 				if (value < 0) {
 					this.unitPrice = 0;
 				}
-				this.$emit('input', {
+				this.$emit('update:modelValue', {
 					quantity: this.quantity,
 					unitPrice: this.unitPrice,
 					tax: this.tax,

@@ -1,26 +1,31 @@
 <template>
-	<modal-component name="fireworks">
-		<div class="has-text-centered is-size-4" v-html="text">
-		</div>
-		<figure class="image is-4by3">
-			<img src="/images/proost.gif">
-		</figure>
-	</modal-component>
+    <ModalComponent name="fireworks" :open="open" @close="open=false">
+        <div class="has-text-centered is-size-4" v-html="text">
+        </div>
+        <figure class="image is-4by3">
+            <img src="/images/proost.gif">
+        </figure>
+    </ModalComponent>
 </template>
 
 <script>
-	export default {
-		name: "fireworks-modal",
+import ModalComponent from "../Utilities/ModalComponent";
 
-		props: {
-			text: {
-				type: String,
-				default: ''
-			}
-		},
+export default {
+    name: "fireworks-modal",
+    components: {ModalComponent},
+    props: {
+        text: {
+            type: String,
+            default: ''
+        }
+    },
 
-		mounted() {
-			this.$modal.show('fireworks');
-		}
-	}
+    data(){
+        return {
+            open: true
+        }
+    }
+
+}
 </script>

@@ -19,23 +19,23 @@ function generalJsErrorReport(message, source, lineNo, colno, trace) {
 }
 
 function vueErrorReport(err, vm, info) {
-	if (process.env.MIX_APP_ENV === 'local') {
-		console.log(err);
-		return;
-	}
-	axios.post('/developer/error/jsError', {
-		page: window.location.href,
-		userAgent: navigator.userAgent,
-		message: `Error in ${info}: "${err.toString()}" - ${formatComponentName(vm)}`,
-		source: err.fileName,
-		lineNo: err.lineNumber,
-		colNo: err.colNumber,
-		trace: err.stack,
-		vm: {
-			props: vm.$options.propsData,
-			data: vm._data
-		}
-	})
+    if (process.env.MIX_APP_ENV === 'local') {
+        console.log(err);
+        return;
+    }
+    axios.post('/developer/error/jsError', {
+        page: window.location.href,
+        userAgent: navigator.userAgent,
+        message: `Error in ${info}: "${err.toString()}" - ${formatComponentName(vm)}`,
+        source: err.fileName,
+        lineNo: err.lineNumber,
+        colNo: err.colNumber,
+        trace: err.stack,
+        vm: {
+            props: vm.$options.propsData,
+            data: vm._data
+        }
+    })
 }
 
 function formatComponentName(vm, includeFile) {
@@ -73,6 +73,4 @@ function classify(str) {
 		.replace(/[-_]/g, '');
 }
 
-Vue.config.errorHandler = vueErrorReport;
-
-window.onerror = generalJsErrorReport;
+export {vueErrorReport, generalJsErrorReport};

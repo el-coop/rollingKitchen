@@ -4,41 +4,56 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+import {generalJsErrorReport, vueErrorReport} from "./ErrorHandler";
+
 require('./bootstrap');
 
-window.Vue = require('vue');
-import VModal from 'vue-js-modal';
-import 'izitoast/dist/css/iziToast.css';
-import VueIziToast from 'vue-izitoast';
-import { library } from '@fortawesome/fontawesome-svg-core'
+import {createApp, configureCompat} from 'vue'
+import VueIziToast from './Classes/VueIzitoast';
+import {library} from '@fortawesome/fontawesome-svg-core'
 import {
-	faLink,
-	faSignOutAlt,
-	faBars,
-	faFileUpload,
-	faTimesCircle,
-	faEuroSign,
-	faExternalLinkSquareAlt
+    faLink,
+    faSignOutAlt,
+    faBars,
+    faFileUpload,
+    faTimesCircle,
+    faEuroSign,
+    faExternalLinkSquareAlt
 } from '@fortawesome/free-solid-svg-icons'
 
-require('./ErrorHandler');
 
 library.add(faLink, faSignOutAlt, faBars, faFileUpload, faTimesCircle, faEuroSign, faExternalLinkSquareAlt);
 
-Vue.use(VModal);
-Vue.use(VueIziToast);
-Vue.prototype.$translations = window.translations;
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-require('./Components/components');
 
-Vue.prototype.$bus = new Vue();
+import componentInstaller from './Components/components';
 
-
-const app = new Vue({
-	el: '#app'
+configureCompat({
+    RENDER_FUNCTION: false,
+    COMPONENT_V_MODEL: false
 });
+
+
+window.onerror = generalJsErrorReport;
+
+const app = createApp({
+    data() {
+        return {
+            drawerOpen: false,
+        }
+    }
+}).use(VueIziToast);
+
+app.config.compilerOptions.whitespace = 'preserve'
+app.config.globalProperties.$translations = window.$translations;
+
+componentInstaller(app);
+
+app.config.errorHandler = vueErrorReport;
+
+app.mount('#app');
