@@ -82,6 +82,8 @@
 				const data = this.getData();
 				let response;
 
+				this.clearErrors();
+
 				const options = {
 					headers: this.headers,
 				};
@@ -120,7 +122,7 @@
 			},
 
 
-			clearErrors(errors) {
+			clearErrors() {
 				this.errors = {};
 				this.$emit('errors', this.errors);
 			},

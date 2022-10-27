@@ -17,12 +17,12 @@ use DB;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class DatatableService implements FromCollection, WithHeadings {
-    
+
     use Exportable;
-    
+
     private $queryConfig;
     private $request;
-    
+
     public function __construct(Request $request, ?array $queryConfig = null) {
         $this->request = $request;
         if (!$queryConfig) {
@@ -31,7 +31,7 @@ class DatatableService implements FromCollection, WithHeadings {
             $this->queryConfig = $queryConfig;
         }
     }
-    
+
     public function query() {
         if ($this->queryConfig['table'] ?? false) {
             $tableName = $this->queryConfig['table'];
@@ -40,35 +40,35 @@ class DatatableService implements FromCollection, WithHeadings {
             $query = $this->queryConfig['model']::query();
             $tableName = (new $this->queryConfig['model'])->getTable();
         }
-        
-        
+
+
         $this->addWhere($query, $this->queryConfig);
         $this->addWhereYear($query, $this->queryConfig);
         $this->addJoins($query, $this->queryConfig);
         $this->addJoinOn($query, $this->queryConfig);
         $this->addSelects($query, $this->queryConfig);
         $query->groupBy("{$tableName}.id");
-        
+
         if ($this->request->filled('sort')) {
             $sort = explode('|', $this->request->input('sort'));
             $query->orderBy($sort[0], $sort[1]);
         } else {
             if (isset($this->queryConfig['orderBy'])) {
                 $query->orderBy("{$tableName}.{$this->queryConfig['orderBy']}");
-                
+
             } else {
                 $query->orderBy("{$tableName}.created_at", 'desc');
-                
+
             }
         }
-        
+
         if ($this->request->filled('filter')) {
             $this->addFilter($query, $this->request, $this->queryConfig['fields']);
         }
         return $query;
     }
-    
-    
+
+
     protected function addSelects($query, $queryConfig) {
         $selects = [];
         if ($cases = $queryConfig['cases'] ?? false) {
@@ -76,7 +76,7 @@ class DatatableService implements FromCollection, WithHeadings {
                 $selects[] = DB::raw("CASE {$case}");
             }
         }
-        
+
         $selectFields = collect($queryConfig['fields'])->reject(function ($item) {
             return $item['noTable'] ?? false;
         });
@@ -96,22 +96,22 @@ class DatatableService implements FromCollection, WithHeadings {
                 }
             }
         }
-        
-        
+
+
         $query->select(...$selects);
         return $query;
     }
-    
+
     protected function addJoins($query, $queryConfig) {
         if ($joins = $queryConfig['joins'] ?? false) {
             foreach ($joins as $join) {
                 $query->leftJoin(...$join);
             }
-            
+
         }
         return $query;
     }
-    
+
     protected function addJoinOn($query, $queryConfig) {
         if ($joinsOn = $queryConfig['joinsOn'] ?? false) {
             foreach ($joinsOn as $joinOn) {
@@ -123,16 +123,16 @@ class DatatableService implements FromCollection, WithHeadings {
         }
         return $query;
     }
-    
-    
+
+
     protected function addWhere($query, $queryConfig) {
         if ($where = $queryConfig['where'] ?? false) {
             $query->where($where);
         }
-        
+
         return $query;
     }
-    
+
     protected function addFilter($query, $request, $queryConfig) {
         $filters = json_decode($request->input('filter'));
         foreach ($filters as $field => $filter) {
@@ -161,7 +161,7 @@ class DatatableService implements FromCollection, WithHeadings {
             }
         }
     }
-    
+
     public function headings(): array {
         return collect($this->queryConfig['fields'])->filter(function ($item) {
             return $item['visible'] ?? true;
@@ -169,7 +169,7 @@ class DatatableService implements FromCollection, WithHeadings {
             return __($item['title'] ?? $item['name']);
         })->toArray();
     }
-    
+
     /**
      * @return Collection
      */
@@ -178,7 +178,7 @@ class DatatableService implements FromCollection, WithHeadings {
             return $this->formatField($item);
         });
     }
-    
+
     protected function formatField($field) {
         $formatted = collect();
         $config = collect($this->queryConfig['fields']);
@@ -200,5 +200,9 @@ class DatatableService implements FromCollection, WithHeadings {
             $query->whereYear($whereYear['field'], $whereYear['year']);
         }
         return $query;
+    }
+
+    public function setTable($table) {
+        $this->queryConfig = config($table);
     }
 }
