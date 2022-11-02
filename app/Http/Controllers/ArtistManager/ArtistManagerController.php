@@ -12,7 +12,9 @@ use App\Models\Band;
 use App\Models\BandPdf;
 use App\Models\BandSchedule;
 use App\Models\Stage;
+use App\Services\DatatableService;
 use Auth;
+use Maatwebsite\Excel\Excel;
 use Storage;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Password;
@@ -21,15 +23,15 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class ArtistManagerController extends Controller {
-	
+
 	use ResetsPasswords;
-	
+
 	public function showResetForm(Request $request, $token = null) {
 		return view('worker.setPassword')->with(
 			['token' => $token, 'email' => $request->email]
 		);
 	}
-	
+
 	public function index() {
 		$schedules = BandSchedule::select('date_time', 'end_time', 'stage_id as stage', 'band_id as band', 'payment', 'approved')->get()->groupBy('date_time');
 		$bands = Band::select('id')->with('user')->get()->pluck('user.name', 'id');
@@ -68,65 +70,70 @@ class ArtistManagerController extends Controller {
 		]);
 		return view('artistManager.index', compact('bands', 'stages', 'schedules', 'budget', 'initBudget', 'startDay', 'days', 'startHour', 'endHour', 'confirmationEmailFields'));
 	}
-	
+
 	public function storeSchedule(StoreBandScheduleRequest $request) {
 		$request->commit();
 		return [
 			'success' => true
 		];
 	}
-	
+
 	public function create() {
 		return (new Band)->fullData;
 	}
-	
+
 	public function store(CreateBandRequest $request) {
 		return $request->commit();
 	}
-	
+
 	public function edit(Band $band) {
 		return $band->fullData;
 	}
-	
+
 	public function update(UpdateBandRequest $request, Band $band) {
 		return $request->commit();
 	}
-	
+
 	public function destroy(DestroyBandRequest $request, Band $band) {
 		$request->commit();
-		
+
 		return [
 			'success' => true
 		];
 	}
-	
+
 	public function sendConfirmation(SendConfirmationRequest $request) {
 		$request->commit();
 		return [
 			'success' => true
 		];
 	}
-	
+
 	public function updateConfirmationEmail(UpdateConfrimationEmailRequest $request) {
 		$request->commit();
 		return [
 			'success' => true
 		];
 	}
-	
+
 	public function broker() {
 		return Password::broker('workers');
 	}
-	
-	
+
+
 	public function redirectTo() {
 		return Auth::user()->user->homePage();
 	}
-	
+
 	public function showPdf(BandPdf $bandPdf) {
-		
+
 		$filename = str_replace(' ', '_', $bandPdf->band->user->name . '_' . __('band/band.technicalRequirements'));
 		$extension = pathinfo($bandPdf->file, PATHINFO_EXTENSION);
 		return Storage::download("public/pdf/band/{$bandPdf->file}", "{$filename}.{$extension}");
 	}
+
+    public function exportBands(Excel $excel, Request $request, DatatableService $datatableService) {
+	    $datatableService->setTable('artistManager.bandsTable');
+        return $excel->download($datatableService, 'bands.xls');
+    }
 }

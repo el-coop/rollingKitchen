@@ -5,9 +5,10 @@ Route::group(['prefix' => 'artistManager', 'namespace' => 'ArtistManager'], func
 		Route::get('/{token}', 'ArtistManagerController@showResetForm');
 		Route::post('', 'ArtistManagerController@reset');
 	});
-	
+
 	Route::group(['prefix' => 'bands', 'middleware' => ['auth', 'userType:' . \App\Models\ArtistManager::class]], function () {
-		Route::get('/', 'ArtistManagerController@index');
+        Route::get('/', 'ArtistManagerController@index');
+        Route::get('/export', 'ArtistManagerController@exportBands');
 		Route::post('/sendConfirmation', 'ArtistManagerController@sendConfirmation');
 		Route::patch('/confirmationEmail', 'ArtistManagerController@updateConfirmationEmail');
 		Route::post('/', 'ArtistManagerController@storeSchedule');
