@@ -1,11 +1,23 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-$factory->define(\App\Models\WorkFunction::class, function (Faker $faker) {
-    return [
-        'name' => $faker->jobTitle,
-		'payment_per_hour_before_tax' => $faker->randomNumber(2),
-		'payment_per_hour_after_tax' => $faker->randomNumber(2)
-    ];
-});
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\WorkFunction>
+ */
+class WorkFunctionFactory extends Factory {
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition() {
+        return [
+            'name' => $this->faker->jobTitle,
+            'payment_per_hour_before_tax' => $this->faker->randomNumber(2),
+            'payment_per_hour_after_tax' => $this->faker->randomNumber(2)
+        ];
+    }
+}

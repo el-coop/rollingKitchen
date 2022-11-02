@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Models\Traits\HasFields;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class BandAdmin extends Model {
 	use HasFields;
+    use HasFactory;
 
 	public function band() {
 		return $this->belongsTo(Band::class);

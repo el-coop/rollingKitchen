@@ -27,22 +27,22 @@ class UpdateTest extends TestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->admin = factory(User::class)->make();
-		factory(Admin::class)->create()->user()->save($this->admin);
-		$this->kitchen = factory(User::class)->make();
-		factory(Kitchen::class)->create()->user()->save($this->kitchen);
-		$this->worker = factory(User::class)->make();
-		factory(Worker::class)->create()->user()->save($this->worker);
-		$this->artistManager = factory(User::class)->make();
-		factory(ArtistManager::class)->create()->user()->save($this->artistManager);
-		$this->accountant = factory(User::class)->make();
-		factory(Accountant::class)->create()->user()->save($this->accountant);
-		$this->band = factory(User::class)->make();
-		factory(Band::class)->create()->user()->save($this->band);
-		$this->secondBand = factory(User::class)->make();
-		factory(Band::class)->create()->user()->save($this->secondBand);
-		$this->bandMember = factory(User::class)->make();
-		factory(BandMember::class)->create([
+		$this->admin = User::factory()->make();
+		Admin::factory()->create()->user()->save($this->admin);
+		$this->kitchen = User::factory()->make();
+		Kitchen::factory()->create()->user()->save($this->kitchen);
+		$this->worker = User::factory()->make();
+		Worker::factory()->create()->user()->save($this->worker);
+		$this->artistManager = User::factory()->make();
+		ArtistManager::factory()->create()->user()->save($this->artistManager);
+		$this->accountant = User::factory()->make();
+		Accountant::factory()->create()->user()->save($this->accountant);
+		$this->band = User::factory()->make();
+		Band::factory()->create()->user()->save($this->band);
+		$this->secondBand = User::factory()->make();
+		Band::factory()->create()->user()->save($this->secondBand);
+		$this->bandMember = User::factory()->make();
+		BandMember::factory()->create([
 			'band_id' => $this->band->user->id
 		])->user()->save($this->bandMember);
 	}

@@ -3,42 +3,44 @@
 namespace App\Models;
 
 use App\Models\Traits\HasFields;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class BandMember extends Model {
 	use HasFields;
-	
-	protected static function boot() {
+    use HasFactory;
+
+    protected static function boot() {
 		parent::boot();
 		static::deleted(function ($bandMember) {
 			$bandMember->user->delete();
 		});
 	}
-	
+
 	protected $casts = [
 		'data' => 'array',
 	];
-	
+
 	protected $appends = [
 		'photoList'
 	];
-	
+
 	static function indexPage() {
 		return action('Admin\BandController@index', [], false);
 	}
-	
+
 	public function homePage() {
 		return action('BandMember\BandMemberController@show', $this);
 	}
-	
+
 	public function user() {
 		return $this->morphOne(User::class, 'user');
 	}
-	
+
 	public function band() {
 		return $this->belongsTo(Band::class);
 	}
-	
+
 	public function getFullDataAttribute() {
 		$fullData = collect([
 			[
@@ -66,7 +68,7 @@ class BandMember extends Model {
 				'type' => 'text',
 				'subType' => 'number',
 				'value' => $this->payment ?? 0,
-			
+
 			]
 		]);
 		if ($this->exists) {
@@ -74,11 +76,11 @@ class BandMember extends Model {
 		}
 		return $fullData;
 	}
-	
+
 	public function photos() {
 		return $this->hasMany(BandMemberPhoto::class);
 	}
-	
+
 	public function getPhotoListAttribute() {
 		return $this->photos;
 	}

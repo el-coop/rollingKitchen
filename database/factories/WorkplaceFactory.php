@@ -1,9 +1,22 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-$factory->define(\App\Models\Workplace::class, function (Faker $faker) {
-	return [
-		'name' => $faker->unique()->company
-	];
-});
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Workplace>
+ */
+class WorkplaceFactory extends Factory {
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition() {
+        return [
+            'name' => $this->faker->unique()->company
+
+        ];
+    }
+}

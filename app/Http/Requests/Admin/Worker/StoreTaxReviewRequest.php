@@ -9,7 +9,7 @@ use Storage;
 
 class StoreTaxReviewRequest extends FormRequest {
 	private $worker;
-	
+
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
@@ -19,7 +19,7 @@ class StoreTaxReviewRequest extends FormRequest {
 		$this->worker = $this->route('worker');
 		return $this->user()->can('update', $this->worker);
 	}
-	
+
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -31,20 +31,20 @@ class StoreTaxReviewRequest extends FormRequest {
 			'name' => 'required'
 		];
 	}
-	
+
 	public function commit() {
 		$file = $this->file('file');
 		$path = "public/taxReviews/{$file->hashName()}";
 		Storage::put($path, encrypt(file_get_contents($file->getRealPath())));
-		
+
 		$taxReview = new TaxReview();
 		$taxReview->file = basename($path);
 		$taxReview->name = $this->input('name');
 		$this->worker->taxReviews()->save($taxReview);
-		
+
 		event(new TaxReviewUploaded($this->worker));
-		
+
 		return $taxReview;
 	}
-	
+
 }

@@ -27,22 +27,22 @@ class TableTest extends TestCase {
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->admin = factory(Admin::class)->create();
-		$this->admin->user()->save(factory(User::class)->make());
+		$this->admin = Admin::factory()->create();
+		$this->admin->user()->save(User::factory()->make());
 
-		$this->kitchen = factory(Kitchen::class)->create();
-		$this->kitchen->user()->save(factory(User::class)->make());
+		$this->kitchen = Kitchen::factory()->create();
+		$this->kitchen->user()->save(User::factory()->make());
 
-		$this->accountant = factory(User::class)->make();
-		factory(Accountant::class)->create()->user()->save($this->accountant);
+		$this->accountant = User::factory()->make();
+		Accountant::factory()->create()->user()->save($this->accountant);
 
-		$this->worker = factory(User::class)->make();
-		factory(Worker::class)->create()->user()->save($this->worker);
+		$this->worker = User::factory()->make();
+		Worker::factory()->create()->user()->save($this->worker);
 
-		$this->services = factory(Service::class, 5)->create();
+		$this->services = Service::factory(5)->create();
 
-		$this->developer = factory(Developer::class)->create();
-		$this->developer->user()->save(factory(User::class)->make());
+		$this->developer = Developer::factory()->create();
+		$this->developer->user()->save(User::factory()->make());
 	}
 
 	public function test_guest_cant_see_page() {
@@ -64,13 +64,13 @@ class TableTest extends TestCase {
 	public function test_page_loads_with_datatable() {
 		$this->actingAs($this->admin->user)->get(action('Admin\ServiceController@index'))
 			->assertStatus(200)
-			->assertSee('</datatable>');
+			->assertSee('</datatable>', false);
 	}
 
 	public function test_page_loads_with_datatable_developer() {
 		$this->actingAs($this->developer->user)->get(action('Admin\ServiceController@index'))
 			->assertStatus(200)
-			->assertSee('</datatable>');
+			->assertSee('</datatable>', false);
 	}
 
 	public function test_datatable_get_table_data_sorted() {
@@ -91,7 +91,7 @@ class TableTest extends TestCase {
 	}
 
 	public function test_datatable_get_table_data_filtered() {
-		$this->services->push(factory(Service::class)->create([
+		$this->services->push(Service::factory()->create([
 			'category' => 'safety',
 		]));
 		$response = $this->actingAs($this->admin->user)

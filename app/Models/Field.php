@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Field extends Model {
-	
-	protected $casts = [
+    use HasFactory;
+
+    protected $casts = [
 		'options' => 'array'
 	];
-	
+
 	static function getRequiredFields(...$models) {
 		$requiredFields = Field::where('status', 'required')->whereIn('form', $models)->get();
 		return $requiredFields->mapWithKeys(function ($field) use (&$rules) {
@@ -17,7 +19,7 @@ class Field extends Model {
 			return ["{$dataName}.{$field->id}" => 'required'];
 		});
 	}
-	
+
 	static function getProtectedFields(...$models) {
 		$requiredFields = Field::where('status', 'protected')->whereIn('form', $models)->get();
 		return $requiredFields->mapWithKeys(function ($field) use (&$rules) {
@@ -25,6 +27,6 @@ class Field extends Model {
 			return ["{$dataName}.{$field->id}" => 'required'];
 		});
 	}
-	
+
 }
-	
+

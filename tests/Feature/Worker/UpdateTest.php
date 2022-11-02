@@ -28,14 +28,14 @@ class UpdateTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->admin = factory(User::class)->make();
-		factory(Admin::class)->create()->user()->save($this->admin);
-		$this->kitchen = factory(User::class)->make();
-		factory(Kitchen::class)->create()->user()->save($this->kitchen);
-		$this->accountant = factory(User::class)->make();
-		factory(Accountant::class)->create()->user()->save($this->accountant);
-		$this->worker = factory(User::class)->make();
-		factory(Worker::class)->create()->user()->save($this->worker);
+		$this->admin = User::factory()->make();
+		Admin::factory()->create()->user()->save($this->admin);
+		$this->kitchen = User::factory()->make();
+		Kitchen::factory()->create()->user()->save($this->kitchen);
+		$this->accountant = User::factory()->make();
+		Accountant::factory()->create()->user()->save($this->accountant);
+		$this->worker = User::factory()->make();
+		Worker::factory()->create()->user()->save($this->worker);
 	}
 
 	public function test_guest_cant_see_worker_page() {
@@ -47,8 +47,8 @@ class UpdateTest extends TestCase {
 	}
 
 	public function test_other_worker_cant_see_worker_page() {
-		$worker = factory(User::class)->make();
-		factory(Worker::class)->create()->user()->save($worker);
+		$worker = User::factory()->make();
+		Worker::factory()->create()->user()->save($worker);
 		$this->actingAs($worker)->get(action('Worker\WorkerController@index', $this->worker->user))->assertForbidden();
 	}
 
@@ -77,8 +77,8 @@ class UpdateTest extends TestCase {
 	}
 
 	public function test_other_worker_cant_update_worker() {
-		$worker = factory(User::class)->make();
-		factory(Worker::class)->create()->user()->save($worker);
+		$worker = User::factory()->make();
+		Worker::factory()->create()->user()->save($worker);
 		$this->actingAs($worker)->patch(action('Worker\WorkerController@update', $this->worker->user))->assertForbidden();
 	}
 
@@ -115,7 +115,7 @@ class UpdateTest extends TestCase {
 	}
 
 	public function test_worker_can_submit_self_when_has_photo_and_accepted_terms() {
-		factory(WorkerPhoto::class)->create([
+		WorkerPhoto::factory()->create([
 			'worker_id' => $this->worker->user->id
 		]);
 
@@ -188,7 +188,7 @@ class UpdateTest extends TestCase {
 
 	public function test_worker_filled_notification_only_sent_once() {
 
-		factory(WorkerPhoto::class)->create([
+		WorkerPhoto::factory()->create([
 			'worker_id' => $this->worker->user->id
 		]);
 

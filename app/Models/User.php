@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Notifications\Worker\UserCreated;
 use Illuminate\Contracts\Translation\HasLocalePreference;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,6 +14,7 @@ use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 class User extends Authenticatable implements HasLocalePreference {
 	use Notifiable;
 
+    use HasFactory;
 
 	/**
 	 * The attributes that should be hidden for arrays.
@@ -22,7 +24,7 @@ class User extends Authenticatable implements HasLocalePreference {
 	protected $hidden = [
 		'password', 'remember_token',
 	];
-	
+
 	/**
 	 * The attributes that should be cast to native types.
 	 *

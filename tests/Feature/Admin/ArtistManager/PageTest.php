@@ -22,16 +22,16 @@ class PageTest extends TestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->admin = factory(User::class)->make();
-		factory(Admin::class)->create()->user()->save($this->admin);
-		$this->kitchen = factory(User::class)->make();
-		factory(Kitchen::class)->create()->user()->save($this->kitchen);
-		$this->worker = factory(User::class)->make();
-		factory(Worker::class)->create()->user()->save($this->worker);
-		$this->artistManager = factory(User::class)->make();
-		factory(ArtistManager::class)->create()->user()->save($this->artistManager);
-		$this->accountant = factory(User::class)->make();
-		factory(Accountant::class)->create()->user()->save($this->accountant);
+		$this->admin = User::factory()->make();
+		Admin::factory()->create()->user()->save($this->admin);
+		$this->kitchen = User::factory()->make();
+		Kitchen::factory()->create()->user()->save($this->kitchen);
+		$this->worker = User::factory()->make();
+		Worker::factory()->create()->user()->save($this->worker);
+		$this->artistManager = User::factory()->make();
+		ArtistManager::factory()->create()->user()->save($this->artistManager);
+		$this->accountant = User::factory()->make();
+		Accountant::factory()->create()->user()->save($this->accountant);
 	}
 
 	public function test_guest_cant_see_page() {
@@ -57,7 +57,7 @@ class PageTest extends TestCase {
 	public function test_admin_can_see_page() {
 		$this->actingAs($this->admin)->get(action('Admin\ArtistManagerController@index'))
 			->assertSuccessful()
-			->assertSee('</datatable>');
+			->assertSee('</datatable>', false);
 	}
 
 	public function test_datatable_gets_data(){

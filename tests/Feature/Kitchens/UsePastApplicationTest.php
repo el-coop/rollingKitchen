@@ -44,33 +44,33 @@ class UsePastApplicationTest extends TestCase {
         $settings->put('general_registration_status', true);
         $settings->put('registration_year', 2020);
 
-        $this->admin = factory(User::class)->make();
-        factory(Admin::class)->create()->user()->save($this->admin);
+        $this->admin = User::factory()->make();
+        Admin::factory()->create()->user()->save($this->admin);
 
-        $this->worker = factory(User::class)->make();
-        factory(Worker::class)->create()->user()->save($this->worker);
+        $this->worker = User::factory()->make();
+        Worker::factory()->create()->user()->save($this->worker);
 
-        $this->kitchen2 = factory(User::class)->make();
-        $this->kitchen2->user()->save(factory(Kitchen::class)->create());
+        $this->kitchen2 = User::factory()->make();
+        $this->kitchen2->user()->save(Kitchen::factory()->create());
 
-        $this->accountant = factory(User::class)->make();
-        factory(Accountant::class)->create()->user()->save($this->accountant);
+        $this->accountant = User::factory()->make();
+        Accountant::factory()->create()->user()->save($this->accountant);
 
-        $this->kitchen = factory(User::class)->make();
-        $kitchen = factory(Kitchen::class)->create();
+        $this->kitchen = User::factory()->make();
+        $kitchen = Kitchen::factory()->create();
         $kitchen->user()->save($this->kitchen);
 
-        $this->pastApplication = factory(Application::class)->make(['year' => 2018]);
+        $this->pastApplication = Application::factory()->make(['year' => 2018]);
         $kitchen->applications()->save($this->pastApplication);
 
-        $this->product = factory(Product::class)->make();
+        $this->product = Product::factory()->make();
         $this->pastApplication->products()->save($this->product);
-        $this->device = factory(ElectricDevice::class)->make();
+        $this->device = ElectricDevice::factory()->make();
 
         $this->pastApplication->electricDevices()->save($this->device);
-        $this->service = factory(Service::class)->create();
+        $this->service = Service::factory()->create();
         $this->pastApplication->services()->attach($this->service, ['quantity' => 2]);
-        $this->application = factory(Application::class)->make(['year' => $settings->get('registration_year'), 'status' => 'new']);
+        $this->application = Application::factory()->make(['year' => $settings->get('registration_year'), 'status' => 'new']);
         $this->kitchen->user->applications()->save($this->application);
     }
 

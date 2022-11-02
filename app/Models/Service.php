@@ -2,17 +2,19 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Service extends Model {
-	
-	protected static function boot() {
+    use HasFactory;
+
+    protected static function boot() {
 		parent::boot();
 		static::deleted(function ($service) {
 			$service->applications()->detach();
 		});
 	}
-	
+
 	public function getFullDataAttribute() {
 		$fullData = collect([[
 			'name' => 'name_nl',
@@ -53,9 +55,9 @@ class Service extends Model {
 		]]);
 		return $fullData;
 	}
-	
+
 	public function applications() {
 		return $this->belongsToMany(Application::class)->withPivot('quantity')->withTimestamps();
 	}
-	
+
 }

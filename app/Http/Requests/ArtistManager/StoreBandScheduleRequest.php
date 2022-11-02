@@ -19,7 +19,7 @@ class StoreBandScheduleRequest extends FormRequest {
 	public function authorize() {
 		return $this->user()->can('schedule', Band::class);
 	}
-	
+
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -36,7 +36,7 @@ class StoreBandScheduleRequest extends FormRequest {
 			'calendar.*.*.endTime' => 'required|date_format:H:i',
 		];
 	}
-	
+
 	public function withValidator($validator) {
 		$validator->after(function ($validator) {
 			$budget = app('settings')->get('schedule_budget');
@@ -51,9 +51,9 @@ class StoreBandScheduleRequest extends FormRequest {
 			}
 		});
 	}
-	
+
 	public function commit() {
-		
+
 		$existingSchedules = BandSchedule::all();
 		$newSchedules = collect([]);
 		foreach ($this->input('calendar', []) as $dateTime => $shows) {
@@ -69,12 +69,12 @@ class StoreBandScheduleRequest extends FormRequest {
 				$newSchedules->push($schedule);
 			}
 		}
-		
-		BandSchedule::query()->truncate();
+
+		BandSchedule::query()->delete();
 		$this->deleteOldSchedules($existingSchedules, $newSchedules);
 		$this->persistNewSchedules($existingSchedules, $newSchedules);
 	}
-	
+
 	public function deleteOldSchedules($existingSchedules, $newSchedules) {
 		$existingSchedules->each(function ($schedule) use ($newSchedules) {
 			if (!$newSchedules->where('band_id', $schedule->band_id)->where('date_time', $schedule->date_time)->first()) {
@@ -82,8 +82,8 @@ class StoreBandScheduleRequest extends FormRequest {
 			}
 		});
 	}
-	
-	
+
+
 	public function persistNewSchedules($existingSchedules, $newSchedules) {
 		$newSchedules->each(function ($schedule) use ($existingSchedules) {
 			$timeSchedules = $existingSchedules->where('date_time', $schedule->date_time);
@@ -91,7 +91,7 @@ class StoreBandScheduleRequest extends FormRequest {
 				if ($existingSchedule->payment != $schedule->payment || $existingSchedule->stage_id != $schedule->stage_id) {
 					event(new ShowUpdated($schedule, $existingSchedule));
 				}
-				
+
 				if ($existingSchedule->payment == $schedule->payment) {
 					$schedule->approved = $existingSchedule->approved;
 				}

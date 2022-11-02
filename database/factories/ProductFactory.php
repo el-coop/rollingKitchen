@@ -1,11 +1,23 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-$factory->define(App\Models\Product::class, function (Faker $faker) {
-	return [
-		'name' => $faker->name,
-		'price' => $faker->randomFloat(2, 0, 100),
-		'category' => $faker->randomElement(['food','drink','other'])
-	];
-});
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
+ */
+class ProductFactory extends Factory {
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition() {
+        return [
+            'name' => $this->faker->name,
+            'price' => $this->faker->randomFloat(2, 0, 100),
+            'category' => $this->faker->randomElement(['food', 'drink', 'other'])
+        ];
+    }
+}

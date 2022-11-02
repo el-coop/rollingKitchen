@@ -39,26 +39,26 @@ class ApplicationProductTest extends TestCase {
 		$settings->put('general_registration_status', true);
 		$settings->put('registration_year', 2018);
 
-		$this->admin = factory(User::class)->make();
-		factory(Admin::class)->create()->user()->save($this->admin);
+		$this->admin = User::factory()->make();
+		Admin::factory()->create()->user()->save($this->admin);
 
-		$this->worker = factory(User::class)->make();
-		factory(Worker::class)->create()->user()->save($this->worker);
+		$this->worker = User::factory()->make();
+		Worker::factory()->create()->user()->save($this->worker);
 
-		$this->kitchen2 = factory(User::class)->make();
-		$this->kitchen2->user()->save(factory(Kitchen::class)->create());
+		$this->kitchen2 = User::factory()->make();
+		$this->kitchen2->user()->save(Kitchen::factory()->create());
 
-		$this->accountant = factory(User::class)->make();
-		factory(Accountant::class)->create()->user()->save($this->accountant);
+		$this->accountant = User::factory()->make();
+		Accountant::factory()->create()->user()->save($this->accountant);
 
-		$this->kitchen = factory(User::class)->make();
-		$kitchen = factory(Kitchen::class)->create();
+		$this->kitchen = User::factory()->make();
+		$kitchen = Kitchen::factory()->create();
 		$kitchen->user()->save($this->kitchen);
 
-		$this->application = factory(Application::class)->make(['year' => app('settings')->get('registration_year')]);
+		$this->application = Application::factory()->make(['year' => app('settings')->get('registration_year')]);
 		$kitchen->applications()->save($this->application);
 
-		$this->product = factory(Product::class)->make();
+		$this->product = Product::factory()->make();
 		$this->application->products()->save($this->product);
 
 	}

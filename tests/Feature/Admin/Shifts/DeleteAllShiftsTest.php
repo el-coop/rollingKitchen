@@ -23,14 +23,14 @@ class DeleteAllShiftsTest extends TestCase
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->admin = factory(User::class)->make();
-		factory(Admin::class)->create()->user()->save($this->admin);
-		$this->kitchen = factory(User::class)->make();
-		factory(Kitchen::class)->create()->user()->save($this->kitchen);
-		$this->worker = factory(User::class)->make();
-		factory(Worker::class)->create()->user()->save($this->worker);
-		$this->accountant = factory(User::class)->make();
-		factory(Accountant::class)->create()->user()->save($this->accountant);
+		$this->admin = User::factory()->make();
+		Admin::factory()->create()->user()->save($this->admin);
+		$this->kitchen = User::factory()->make();
+		Kitchen::factory()->create()->user()->save($this->kitchen);
+		$this->worker = User::factory()->make();
+		Worker::factory()->create()->user()->save($this->worker);
+		$this->accountant = User::factory()->make();
+		Accountant::factory()->create()->user()->save($this->accountant);
 	}
 
 	public function test_guest_cant_delete_all_shifts() {
@@ -50,8 +50,8 @@ class DeleteAllShiftsTest extends TestCase
 	}
 
 	public function test_admin_can_delete_worker() {
-		$workplace = factory(Workplace::class)->create();
-		factory(Shift::class, 10)->create([
+		$workplace = Workplace::factory()->create();
+        Shift::factory(10)->create([
 			'workplace_id' => $workplace->id
 		]);
 

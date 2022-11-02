@@ -23,16 +23,16 @@ class FieldTest extends TestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->admin = factory(User::class)->make();
-		factory(Admin::class)->create()->user()->save($this->admin);
-		$this->kitchen = factory(User::class)->make();
-		factory(Kitchen::class)->create()->user()->save($this->kitchen);
-		$this->accountant = factory(User::class)->make();
-		factory(Accountant::class)->create()->user()->save($this->accountant);
-		factory(Field::class, 5)->create();
+		$this->admin = User::factory()->make();
+		Admin::factory()->create()->user()->save($this->admin);
+		$this->kitchen = User::factory()->make();
+		Kitchen::factory()->create()->user()->save($this->kitchen);
+		$this->accountant = User::factory()->make();
+		Accountant::factory()->create()->user()->save($this->accountant);
+		Field::factory(5)->create();
 		$this->fields = Field::all();
-		$this->worker = factory(User::class)->make();
-		factory(Worker::class)->create()->user()->save($this->worker);
+		$this->worker = User::factory()->make();
+		Worker::factory()->create()->user()->save($this->worker);
 
 	}
 
@@ -219,9 +219,9 @@ class FieldTest extends TestCase {
 		$this->actingAs($this->admin)->patch(action('Admin\FieldController@saveOrder', [
 			'order' => $newOrder->toArray(),
 		]));
-		
+
 		$ordered = Field::where('form',Kitchen::class)->select('id')->orderBy('order')->get()->pluck('id');
-		
+
 		$this->assertEquals($newOrder, $ordered);
 	}
 

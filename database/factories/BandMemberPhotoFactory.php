@@ -1,9 +1,23 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-$factory->define(App\Models\BandMemberPhoto::class, function (Faker $faker) {
-	return [
-		'file' => 'demo.jpg'
-	];
-});
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\BandMemberPhoto>
+ */
+class BandMemberPhotoFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition()
+    {
+        return [
+            'file' => 'demo.jpg'
+        ];
+    }
+}

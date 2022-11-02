@@ -1,12 +1,26 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-$factory->define(\App\Models\JsError::class, function (Faker $faker) {
-    return [
-        'vm' => json_encode(['vm']),
-		'message' => $faker->text,
-		'exception' => json_encode([$faker->text => $faker->title, $faker->text => $faker->title]),
-		'user_agent' => $faker->userAgent
-	];
-});
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\JsError>
+ */
+class JsErrorFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition()
+    {
+        return [
+            'vm' => json_encode(['vm']),
+            'message' => $this->faker->text,
+            'exception' => json_encode([$this->faker->text => $this->faker->title, $this->faker->text => $this->faker->title]),
+            'user_agent' => $this->faker->userAgent
+        ];
+    }
+}

@@ -1,10 +1,22 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-$factory->define(App\Models\TaxReview::class, function (Faker $faker) {
-	return [
-		'name' => 'tax review 2019',
-		'file' => 'demo.pdf'
-	];
-});
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TaxReview>
+ */
+class TaxReviewFactory extends Factory {
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition() {
+        return [
+            'name' => 'tax review 2019',
+            'file' => 'demo.pdf'
+        ];
+    }
+}

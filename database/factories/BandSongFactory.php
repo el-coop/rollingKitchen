@@ -1,12 +1,26 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-$factory->define(App\Models\BandSong::class, function (Faker $faker) {
-	return [
-		'title' => $faker->name(),
-		'composer' => $faker->name(),
-		'owned' => $faker->boolean(),
-		'protected' => $faker->boolean(),
-	];
-});
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\BandSong>
+ */
+class BandSongFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition()
+    {
+        return [
+            'title' => $this->faker->name(),
+            'composer' => $this->faker->name(),
+            'owned' => $this->faker->boolean(),
+            'protected' => $this->faker->boolean(),
+        ];
+    }
+}

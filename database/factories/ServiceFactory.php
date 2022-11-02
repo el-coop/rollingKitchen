@@ -1,13 +1,25 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-$factory->define(App\Models\Service::class, function (Faker $faker) {
-    return [
-		'name_nl' => $faker->unique()->name,
-		'name_en' => $faker->unique()->name,
-		'category' => $faker->randomElement(['misc','electrical','safety']),
-		'type' => $faker->randomElement([0, 1]),
-		'price' => $faker->randomNumber(3)
-    ];
-});
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Service>
+ */
+class ServiceFactory extends Factory {
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition() {
+        return [
+            'name_nl' => $this->faker->unique()->name,
+            'name_en' => $this->faker->unique()->name,
+            'category' => $this->faker->randomElement(['misc', 'electrical', 'safety']),
+            'type' => $this->faker->randomElement([0, 1]),
+            'price' => $this->faker->randomNumber(3)
+        ];
+    }
+}

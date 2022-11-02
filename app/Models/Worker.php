@@ -4,12 +4,14 @@ namespace App\Models;
 
 use App\Models\Traits\HasFields;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 
 
 class Worker extends Model {
     use HasFields;
+    use HasFactory;
 
     protected static function boot() {
         parent::boot();

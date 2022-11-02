@@ -3,13 +3,15 @@
 namespace App\Models;
 
 use App\Models\Traits\HasFields;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Kitchen extends Model {
-	
-	use HasFields;
+    use HasFactory;
+
+    use HasFields;
 	protected $deletedOwner;
-	
+
 	protected static function boot() {
 		parent::boot();
 		static::deleting(function ($kitchen) {
@@ -40,40 +42,40 @@ class Kitchen extends Model {
 			$kitchen->applications->each->delete();
 		});
 	}
-	
-	
+
+
 	protected $casts = [
 		'data' => 'array'
 	];
-	
+
 	static function indexPage() {
 		return action('Admin\KitchenController@index', [], false);
 	}
-	
+
 	public function invoices() {
 		return $this->hasManyThrough(Invoice::class, Application::class);
 	}
-	
+
 	public function showPage() {
 		return action('Admin\KitchenController@view', $this);
 	}
-	
+
 	public function homePage() {
 		return action('Kitchen\KitchenController@edit', $this);
 	}
-	
+
 	public function user() {
 		return $this->morphOne(User::class, 'user');
 	}
-	
+
 	public function photos() {
 		return $this->hasMany(Photo::class);
 	}
-	
+
 	public function applications() {
 		return $this->hasMany(Application::class);
 	}
-	
+
 	public function getFullDataAttribute() {
 		$fullData = collect([
 			[
@@ -106,10 +108,10 @@ class Kitchen extends Model {
 				'value' => $this->status
 			]
 		]);
-		
+
 		return $fullData->concat($this->getFieldsData());
 	}
-	
+
 	public function getCurrentApplication() {
 		$applicationYear = app('settings')->get('registration_year');
 		$application = $this->applications->firstWhere('year', $applicationYear);

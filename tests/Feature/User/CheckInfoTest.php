@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\User;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Artisan;
@@ -11,7 +12,7 @@ class CheckInfoTest extends TestCase {
     protected $user;
     protected function setUp(): void {
         parent::setUp();
-        $this->user = factory(\App\Models\User::class)->create();
+        $this->user = User::factory()->create();
     }
 
     public function test_guest_cant_check_info() {

@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use App\Models\Error;
 use App\Models\PhpError;
-use Exception;
+Use Throwable;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler {
@@ -16,7 +16,7 @@ class Handler extends ExceptionHandler {
 	protected $dontReport = [
 		//
 	];
-	
+
 	/**
 	 * A list of the inputs that are never flashed for validation exceptions.
 	 *
@@ -26,21 +26,20 @@ class Handler extends ExceptionHandler {
 		'password',
 		'password_confirmation',
 	];
-	
+
 	/**
 	 * Report or log an exception.
 	 *
-	 * @param  \Exception $exception
+	 * @param  \Throwable $exception
 	 * @return void
-	 * @throws Exception
 	 */
-	public function report(Exception $exception) {
+	public function report(Throwable $exception) {
 		if ($this->shouldReport($exception)) {
 			$this->logException($exception);
 		}
 		parent::report($exception);
 	}
-	
+
 	/**
 	 * Render an exception into an HTTP response.
 	 *
@@ -48,38 +47,38 @@ class Handler extends ExceptionHandler {
 	 * @param  \Exception $exception
 	 * @return \Illuminate\Http\Response
 	 */
-	public function render($request, Exception $exception) {
+	public function render($request, Throwable $exception) {
 		return parent::render($request, $exception);
 	}
-	
-	protected function logException(Exception $exception) {
-		$request = request();
-		$error = new Error;
-		$phpError = new PhpError;
-		if ($request->user()) {
-			$error->user_id = $request->user()->id;
-		}
-		$error->page = $request->fullUrl();
-		$phpError->message = $exception->getMessage();
-		$phpError->exception = [
-			'class' => get_class($exception),
-			'message' => $exception->getMessage(),
-			'code' => $exception->getCode(),
-			'file' => $exception->getFile(),
-			'line' => $exception->getLine(),
-			'trace' => $exception->getTrace(),
-		];
-		
-		$phpError->request = [
-			'method' => $request->method(),
-			'input' => $request->all(),
-			'server' => $request->server(),
-			'headers' => $request->header(),
-			'cookies' => $request->cookie(),
-			'session' => $request->hasSession() ? $request->session()->all() : '',
-			'locale' => $request->getLocale(),
-		];
-		$phpError->save();
-		$phpError->error()->save($error);
+
+	protected function logException(Throwable $exception) {
+//		$request = request();
+//		$error = new Error;
+//		$phpError = new PhpError;
+//		if ($request->user()) {
+//			$error->user_id = $request->user()->id;
+//		}
+//		$error->page = $request->fullUrl();
+//		$phpError->message = $exception->getMessage();
+//		$phpError->exception = [
+//			'class' => get_class($exception),
+//			'message' => $exception->getMessage(),
+//			'code' => $exception->getCode(),
+//			'file' => $exception->getFile(),
+//			'line' => $exception->getLine(),
+//			'trace' => $exception->getTrace(),
+//		];
+//
+//		$phpError->request = [
+//			'method' => $request->method(),
+//			'input' => $request->all(),
+//			'server' => $request->server(),
+//			'headers' => $request->header(),
+//			'cookies' => $request->cookie(),
+//			'session' => $request->hasSession() ? $request->session()->all() : '',
+//			'locale' => $request->getLocale(),
+//		];
+//		$phpError->save();
+//		$phpError->error()->save($error);
 	}
 }
