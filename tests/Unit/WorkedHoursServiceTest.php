@@ -24,25 +24,25 @@ class WorkedHoursServiceTest extends TestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->workplaces = factory(Workplace::class, 10)->create()->each(function ($workplace) {
-			$workfunction = factory(WorkFunction::class)->make();
+		$this->workplaces = Workplace::factory(10)->create()->each(function ($workplace) {
+			$workfunction = WorkFunction::factory()->make();
 			$workplace->workFunctions()->save($workfunction);
 		});
-		$this->shifts = factory(Shift::class, 6)->make([
+		$this->shifts = Shift::factory(6)->make([
 			'date' => $this->faker->dateTimeBetween(Carbon::parse('first day of January'), Carbon::parse('last day of december'))
 		])->each(function ($shift) {
 			$shift->workplace_id = $this->workplaces->random()->id;
 			$shift->closed = true;
 			$shift->save();
-			factory(User::class, 3)->make()->each(function ($user) use ($shift) {
-				$worker = factory(Worker::class)->create()->user()->save($user);
+			User::factory(3)->make()->each(function ($user) use ($shift) {
+				$worker = Worker::factory()->create()->user()->save($user);
 				$worker->user->workplaces()->attach($shift->workplace);
 				$shift->workers()->attach($worker, ['start_time' => '10:00', 'end_time' => '20:00', 'work_function_id' => $shift->workplace->workFunctions->first()->id]);
 			});
 		});
 		$columns = ['user.name', 'shift.workplace', 'worker.type', 'shift_worker.start_time', 'shift_worker.end_time', 'shift_worker.work_function_id'];
 		$i = -1;
-		$this->workedHoursColumns = factory(WorkedHoursExportColumn::class, 6)->make()->each(function ($workedHoursColumn) use ($i, $columns) {
+		$this->workedHoursColumns = WorkedHoursExportColumn::factory(6)->make()->each(function ($workedHoursColumn) use ($i, $columns) {
 			$i = $i + 1;
 			$workedHoursColumn->column = $columns[$i];
 			$workedHoursColumn->orded = $i;

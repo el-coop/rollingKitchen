@@ -23,15 +23,15 @@ class UpdateTest extends TestCase {
 
     public function setUp(): void {
         parent::setUp();
-        $this->admin = factory(Admin::class)->create();
-        $this->admin->user()->save(factory(User::class)->make());
-        $this->kitchen = factory(Kitchen::class)->create();
-        $this->kitchen->user()->save(factory(User::class)->make());
-        $this->accountant = factory(User::class)->make();
-        factory(Accountant::class)->create()->user()->save($this->accountant);
-        $this->worker = factory(Worker::class)->create();
-        $this->worker->user()->save(factory(User::class)->make());
-        $this->workplaces = factory(Workplace::class, 10)->create();
+        $this->admin = Admin::factory()->create();
+        $this->admin->user()->save(User::factory()->make());
+        $this->kitchen = Kitchen::factory()->create();
+        $this->kitchen->user()->save(User::factory()->make());
+        $this->accountant = User::factory()->make();
+        Accountant::factory()->create()->user()->save($this->accountant);
+        $this->worker = Worker::factory()->create();
+        $this->worker->user()->save(User::factory()->make());
+        $this->workplaces = Workplace::factory(10)->create();
 
 
     }

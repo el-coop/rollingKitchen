@@ -24,32 +24,32 @@ class SupervisorExportShiftsTest extends TestCase {
 	protected $supervisor;
 	protected $shift;
 	protected $shiftWorker;
-	
+
 	protected function setUp(): void {
 		parent::setUp();
-		$this->admin = factory(User::class)->make();
-		factory(Admin::class)->create()->user()->save($this->admin);
-		$this->kitchen = factory(User::class)->make();
-		factory(Kitchen::class)->create()->user()->save($this->kitchen);
-		$this->accountant = factory(User::class)->make();
-		factory(Accountant::class)->create()->user()->save($this->accountant);
-		$this->worker = factory(User::class)->make();
-		factory(Worker::class)->create()->user()->save($this->worker);
-		$this->workplace = factory(Workplace::class)->create();
-		factory(WorkFunction::class, 3)->make()->each(function ($workFunction) {
+		$this->admin = User::factory()->make();
+		Admin::factory()->create()->user()->save($this->admin);
+		$this->kitchen = User::factory()->make();
+		Kitchen::factory()->create()->user()->save($this->kitchen);
+		$this->accountant = User::factory()->make();
+		Accountant::factory()->create()->user()->save($this->accountant);
+		$this->worker = User::factory()->make();
+		Worker::factory()->create()->user()->save($this->worker);
+		$this->workplace = Workplace::factory()->create();
+		WorkFunction::factory(3)->make()->each(function ($workFunction) {
 			$workplace = Workplace::first();
 			$workplace->workFunctions()->save($workFunction);
 		});
-		$this->supervisor = factory(User::class)->make();
-		factory(Worker::class)->create(['supervisor' => true])->user()->save($this->supervisor);
+		$this->supervisor = User::factory()->make();
+		Worker::factory()->create(['supervisor' => true])->user()->save($this->supervisor);
 		$this->supervisor->user->workplaces()->attach($this->workplace);
 		$this->worker->user->workplaces()->attach($this->workplace);
-		$this->shift = factory(Shift::class)->make([
+		$this->shift = Shift::factory()->make([
 			'hours' => 5
 		]);
 		$this->workplace->shifts()->save($this->shift);
-		$this->shiftWorker = factory(User::class)->make();
-		factory(Worker::class)->create()->user()->save($this->shiftWorker);
+		$this->shiftWorker = User::factory()->make();
+		Worker::factory()->create()->user()->save($this->shiftWorker);
 		$this->shiftWorker->user->workplaces()->attach($this->workplace);
 		$this->shift->workers()->attach($this->shiftWorker->user, [
 			'start_time' => '20:00',
@@ -57,34 +57,34 @@ class SupervisorExportShiftsTest extends TestCase {
 			'work_function_id' => $this->workplace->workFunctions->first()->id
 		]);
 	}
-	
+
 	public function test_guest_cant_export_shifts() {
 		$this->post(action('Worker\SupervisorController@exportShifts', $this->workplace))->assertRedirect(action('Auth\LoginController@login'));
 	}
-	
+
 	public function test_kitchen_cant_export_shifts() {
 		$this->actingAs($this->kitchen)->post(action('Worker\SupervisorController@exportShifts', $this->workplace))->assertForbidden();
 	}
-	
+
 	public function test_admin_cant_export_shifts() {
 		$this->actingAs($this->admin)->post(action('Worker\SupervisorController@exportShifts', $this->workplace))->assertForbidden();
 	}
-	
+
 	public function test_accountant_cant_export_shifts() {
 		$this->actingAs($this->accountant)->post(action('Worker\SupervisorController@exportShifts', $this->workplace))->assertForbidden();
 	}
-	
+
 	public function test_worker_cant_export_shifts() {
 		$this->actingAs($this->worker)->post(action('Worker\SupervisorController@exportShifts', $this->workplace))->assertForbidden();
 	}
-	
+
 	public function test_other_supervisor_cant_export_shifts() {
-		$supervisor = factory(User::class)->make();
-		factory(Worker::class)->create(['supervisor' => true])->user()->save($supervisor);
-		$supervisor->user->workplaces()->attach(factory(Workplace::class)->create());
+		$supervisor = User::factory()->make();
+		Worker::factory()->create(['supervisor' => true])->user()->save($supervisor);
+		$supervisor->user->workplaces()->attach(Workplace::factory()->create());
 		$this->actingAs($supervisor)->post(action('Worker\SupervisorController@exportShifts', $this->workplace))->assertForbidden();
 	}
-	
+
 	public function test_supervisor_can_export_shifts() {
 		$this->actingAs($this->supervisor)->post(action('Worker\SupervisorController@exportShifts', $this->workplace), [
 			'days' => [

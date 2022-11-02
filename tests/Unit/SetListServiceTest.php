@@ -11,16 +11,16 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SetListServiceTest extends TestCase {
-	
+
 	use RefreshDatabase;
-	
+
 	public function setUp(): void {
 		parent::setUp();
 		$this->songs = collect();
-		
+
 		$this->service = new SetListService();
 	}
-	
+
 	public function test_sets_heading() {
 		$headings = $this->service->headings();
 		$this->assertEquals([
@@ -31,17 +31,17 @@ class SetListServiceTest extends TestCase {
 			__('band/band.protected'),
 		], $headings);
 	}
-	
+
 	public function test_collection() {
-		factory(Band::class, 4)->create()->each(function ($band) {
-			$band->user()->save(factory(User::class)->make());
-			factory(BandSong::class, 4)->create([
+		Band::factory(4)->create()->each(function ($band) {
+			$band->user()->save(User::factory()->make());
+			BandSong::factory(4)->create([
 				'band_id' => $band->id
 			]);
 		});
-		
+
 		$collection = $this->service->collection();
-		
+
 		$songs = BandSong::select('users.name', 'band_songs.title', 'band_songs.composer', 'band_songs.owned', 'band_songs.protected')
 			->join('bands', 'band_id', '=', 'bands.id')
 			->join('users', 'bands.id', '=', 'users.user_id')
@@ -55,7 +55,7 @@ class SetListServiceTest extends TestCase {
 					$bandSong->protected ? __('global.yes') : __('global.no'),
 				];
 			});
-		
+
 		$this->assertEquals($songs, $collection);
 	}
 }

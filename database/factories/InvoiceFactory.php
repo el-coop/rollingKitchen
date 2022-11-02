@@ -1,11 +1,25 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-$factory->define(App\Models\Invoice::class, function (Faker $faker) {
-    return [
-        'prefix' => app('settings')->get('registration_year'),
-		'number' => \App\Models\Invoice::count(),
-		'tax' => 21
-    ];
-});
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Invoice>
+ */
+class InvoiceFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition()
+    {
+        return [
+            'prefix' => app('settings')->get('registration_year'),
+            'number' => \App\Models\Invoice::count(),
+            'tax' => 21
+        ];
+    }
+}

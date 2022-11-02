@@ -1,10 +1,22 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-$factory->define(\App\Models\BandMember::class, function (Faker $faker) {
-	return [
-		'data' => [],
-		'payment' => 0
-	];
-});
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\BandMember>
+ */
+class BandMemberFactory extends Factory {
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition() {
+        return [
+            'data' => [],
+            'payment' => 0
+        ];
+    }
+}

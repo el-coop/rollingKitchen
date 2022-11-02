@@ -28,72 +28,72 @@ class UpdateTest extends TestCase {
 	protected $accountant;
 	protected $band;
 	protected $bandMember;
-	
+
 	protected function setUp(): void {
 		parent::setUp();
-		$this->admin = factory(User::class)->make();
-		factory(Admin::class)->create()->user()->save($this->admin);
-		$this->kitchen = factory(User::class)->make();
-		factory(Kitchen::class)->create()->user()->save($this->kitchen);
-		$this->worker = factory(User::class)->make();
-		factory(Worker::class)->create()->user()->save($this->worker);
-		$this->artistManager = factory(User::class)->make();
-		factory(ArtistManager::class)->create()->user()->save($this->artistManager);
-		$this->accountant = factory(User::class)->make();
-		factory(Accountant::class)->create()->user()->save($this->accountant);
-		$this->band = factory(User::class)->make();
-		factory(Band::class)->create([
+		$this->admin = User::factory()->make();
+		Admin::factory()->create()->user()->save($this->admin);
+		$this->kitchen = User::factory()->make();
+		Kitchen::factory()->create()->user()->save($this->kitchen);
+		$this->worker = User::factory()->make();
+		Worker::factory()->create()->user()->save($this->worker);
+		$this->artistManager = User::factory()->make();
+		ArtistManager::factory()->create()->user()->save($this->artistManager);
+		$this->accountant = User::factory()->make();
+		Accountant::factory()->create()->user()->save($this->accountant);
+		$this->band = User::factory()->make();
+		Band::factory()->create([
 			'payment_method' => 'band'
 		])->user()->save($this->band);
-		$this->bandMember = factory(User::class)->make();
-		factory(BandMember::class)->create([
+		$this->bandMember = User::factory()->make();
+		BandMember::factory()->create([
 			'band_id' => $this->band->user->id
 		])->user()->save($this->bandMember);
 	}
-	
+
 	public function test_guest_cant_update_band_member() {
 		$this->patch(action('BandMember\BandMemberController@update', $this->bandMember->user))->assertRedirect(action('Auth\LoginController@login'));
 	}
-	
+
 	public function test_kitchen_cant_update_band_member() {
 		$this->actingAs($this->kitchen)->patch(action('BandMember\BandMemberController@update', $this->bandMember->user))->assertForbidden();
 	}
-	
+
 	public function test_worker_cant_update_band_member() {
 		$this->actingAs($this->worker)->patch(action('BandMember\BandMemberController@update', $this->bandMember->user))->assertForbidden();
 	}
-	
+
 	public function test_accountant_cant_update_band_member() {
 		$this->actingAs($this->accountant)->patch(action('BandMember\BandMemberController@update', $this->bandMember->user))->assertForbidden();
 	}
-	
+
 	public function test_band_cant_update_band_member() {
 		$this->actingAs($this->band)->patch(action('BandMember\BandMemberController@update', $this->bandMember->user))->assertForbidden();
 	}
-	
+
 	public function test_band_admin_cant_update_band_member() {
 		$this->actingAs($this->admin)->patch(action('BandMember\BandMemberController@update', $this->bandMember->user))->assertForbidden();
 	}
-	
+
 	public function test_artist_manager_cant_update_band_member() {
 		$this->actingAs($this->artistManager)->patch(action('BandMember\BandMemberController@update', $this->bandMember->user))->assertForbidden();
 	}
-	
+
 	public function test_other_band_member_cant_update_band_member() {
-		$bandMember = factory(User::class)->make();
-		factory(BandMember::class)->create([
+		$bandMember = User::factory()->make();
+		BandMember::factory()->create([
 			'band_id' => $this->band->user->id
 		])->user()->save($bandMember);
-		
+
 		$this->actingAs($bandMember)->patch(action('BandMember\BandMemberController@update', $this->bandMember->user), [
 			'name' => 'name',
 			'email' => 'a@a.com',
 			'language' => 'en',
 			'bandmember' => ['test' => 'test'],
 		])->assertForbidden();
-		
+
 	}
-	
+
 	public function test_band_member_cant_review_without_photo() {
 		$this->actingAs($this->bandMember)->patch(action('BandMember\BandMemberController@update', $this->bandMember->user), [
 			'name' => 'name',
@@ -102,13 +102,13 @@ class UpdateTest extends TestCase {
 			'bandmember' => ['test' => 'test'],
 			'review' => true
 		])->assertRedirect()->assertSessionHasErrors('photos');
-		
+
 	}
-	
+
 	public function test_band_member_can_update_band_member_wihtout_revuew() {
 		Event::fake();
-		
-		
+
+
 		$this->actingAs($this->bandMember)->patch(action('BandMember\BandMemberController@update', $this->bandMember->user), [
 			'name' => 'name',
 			'email' => 'a@a.com',
@@ -130,12 +130,12 @@ class UpdateTest extends TestCase {
         $this->assertEquals(collect(['test' => 'test']), $bandMember->data);
 		Event::assertNotDispatched(BandMemberProfileFilled::class);
 	}
-	
+
 	public function test_band_member_can_review_band_member() {
 		Event::fake();
-		
-		$this->bandMember->user->photos()->save(factory(BandMemberPhoto::class)->make());
-		
+
+		$this->bandMember->user->photos()->save(BandMemberPhoto::factory()->make());
+
 		$this->actingAs($this->bandMember)->patch(action('BandMember\BandMemberController@update', $this->bandMember->user), [
 			'name' => 'name',
 			'email' => 'a@a.com',
@@ -156,17 +156,17 @@ class UpdateTest extends TestCase {
 		]);
         $bandMember = BandMember::find($this->bandMember->user->id);
         $this->assertEquals(collect(['test' => 'test']), $bandMember->data);
-		
+
 		Event::assertDispatched(BandMemberProfileFilled::class, function ($event) {
 			return $event->bandMember->id === $this->bandMember->user->id;
 		});
 	}
-	
+
 	public function test_notifies_band_member_when_profile_is_filled() {
 		Notification::fake();
-		
+
 		event(new BandMemberProfileFilled($this->bandMember->user));
-		
+
 		Notification::assertSentTo($this->bandMember, ProfileFilledNotification::class);
 	}
 }

@@ -45,10 +45,10 @@ class KitchenControllerTest extends TestCase {
         $settings->put('application_text_en', 'test');
         $settings->put('application_success_text_en', 'test');
 
-        $this->user = factory(User::class)->make();
-        factory(Kitchen::class)->create()->user()->save($this->user);
-        $this->user1 = factory(User::class)->make();
-        factory(Kitchen::class)->create()->user()->save($this->user1);
+        $this->user = User::factory()->make();
+        Kitchen::factory()->create()->user()->save($this->user);
+        $this->user1 = User::factory()->make();
+        Kitchen::factory()->create()->user()->save($this->user1);
         $this->settings = $this->app->settings;
 
     }
@@ -139,7 +139,7 @@ class KitchenControllerTest extends TestCase {
         Storage::fake('local');
         $file = UploadedFile::fake()->image('photo.jpg');
         $file->store('public/photos');
-        $photo = factory(Photo::class)->create([
+        $photo = Photo::factory()->create([
             'kitchen_id' => $this->user->user->id,
             'file' => $file->hashName(),
         ]);
@@ -168,7 +168,7 @@ class KitchenControllerTest extends TestCase {
     public function test_guest_cant_delete_photo() {
         $file = UploadedFile::fake()->image('photo.jpg');
         $file->store('public/photos');
-        $photo = factory(Photo::class)->create([
+        $photo = Photo::factory()->create([
             'kitchen_id' => $this->user->user->id,
             'file' => $file->hashName(),
         ]);
@@ -196,7 +196,7 @@ class KitchenControllerTest extends TestCase {
     public function test_other_kitchen_cant_delete_photo() {
         $file = UploadedFile::fake()->image('photo.jpg');
         $file->store('public/photos');
-        $photo = factory(Photo::class)->create([
+        $photo = Photo::factory()->create([
             'kitchen_id' => $this->user->user->id,
             'file' => $file->hashName(),
         ]);
@@ -237,11 +237,11 @@ class KitchenControllerTest extends TestCase {
             ->assertSuccessful()
             ->assertViewIs('kitchen.edit')
             ->assertViewHas('kitchen', $this->user->user)
-            ->assertSee('id="reviewButton"');
+            ->assertSee('id="reviewButton"', false);
     }
 
     public function test_kitchen_can_see_its_own_edit_page_with_unsubmitted_application() {
-        $application = factory(Application::class)->make([
+        $application = Application::factory()->make([
             'year' => intval($this->settings->get('registration_year')),
             'status' => 'new',
         ]);
@@ -251,12 +251,12 @@ class KitchenControllerTest extends TestCase {
             ->assertViewIs('kitchen.edit')
             ->assertViewHas('kitchen', $this->user->user)
             ->assertViewHas('application', $application)
-            ->assertSee("value: '{$application->length}'")
-            ->assertSee('id="reviewButton"');
+            ->assertSee("value: '{$application->length}'", false)
+            ->assertSee('id="reviewButton"', false);
     }
 
     public function test_kitchen_can_see_its_own_edit_page_with_reopened_application() {
-        $application = factory(Application::class)->make([
+        $application = Application::factory()->make([
             'year' => $this->settings->get('registration_year'),
             'status' => 'reopened',
         ]);
@@ -266,13 +266,13 @@ class KitchenControllerTest extends TestCase {
             ->assertViewIs('kitchen.edit')
             ->assertViewHas('kitchen', $this->user->user)
             ->assertViewHas('application', $application)
-            ->assertSee("value: '{$application->length}'")
-            ->assertSee('id="reviewButton"');
+            ->assertSee("value: '{$application->length}'", false)
+            ->assertSee('id="reviewButton"', false);
     }
 
     public function test_kitchen_can_see_but_not_update_submitted_application() {
         $appliedText = $this->settings->get("application_success_text_{$this->user->language}");
-        $application = factory(Application::class)->make([
+        $application = Application::factory()->make([
             'year' => $this->settings->get('registration_year'),
             'status' => 'pending',
         ]);
@@ -282,8 +282,8 @@ class KitchenControllerTest extends TestCase {
             ->assertViewIs('kitchen.edit')
             ->assertViewHas('kitchen', $this->user->user)
             ->assertViewHas('application', $application)
-            ->assertSee("value: '{$application->length}'")
-            ->assertSee(str_replace(PHP_EOL, '<br>', $appliedText))
+            ->assertSee("value: '{$application->length}'", false)
+            ->assertSee(str_replace(PHP_EOL, '<br>', $appliedText), false)
             ->assertDontSee('id="reviewButton"');
     }
 
@@ -296,11 +296,11 @@ class KitchenControllerTest extends TestCase {
     }
 
     public function test_kitchen_can_update_kitchen_data_and_unsubmitted_application() {
-        $services = factory(Service::class, 3)->create();
-        $socket = factory(Service::class, 3)->create([
+        $services = Service::factory(3)->create();
+        $socket = Service::factory(3)->create([
             'category' => 'socket'
         ])->random();
-        $application = factory(Application::class)->make([
+        $application = Application::factory()->make([
             'year' => $this->settings->get('registration_year'),
             'status' => 'new',
         ]);
@@ -386,24 +386,24 @@ class KitchenControllerTest extends TestCase {
     }
 
     public function test_kitchen_can_submit_unsubmitted_application() {
-        $admin = factory(User::class)->make();
-        factory(Admin::class)->create()->user()->save($admin);
+        $admin = User::factory()->make();
+        Admin::factory()->create()->user()->save($admin);
 
         \Notification::fake();
 
-        $services = factory(Service::class, 3)->create();
+        $services = Service::factory(3)->create();
 
-        $socket = factory(Service::class, 3)->create([
+        $socket = Service::factory(3)->create([
             'category' => 'socket'
         ])->random();
 
-        $application = factory(Application::class)->make([
+        $application = Application::factory()->make([
             'year' => $this->settings->get('registration_year'),
             'status' => 'new',
         ]);
         $this->user->user->applications()->save($application);
 
-        $application->products()->save(factory(Product::class)->make([
+        $application->products()->save(Product::factory()->make([
             'category' => 'menu'
         ]));
 
@@ -492,9 +492,9 @@ class KitchenControllerTest extends TestCase {
     }
 
     public function test_kitchen_must_accept_terms_to_submit_unsubmitted_application() {
-        $admin = factory(User::class)->make();
-        factory(Admin::class)->create()->user()->save($admin);
-        factory(Pdf::class)->create([
+        $admin = User::factory()->make();
+        Admin::factory()->create()->user()->save($admin);
+        Pdf::factory()->create([
             'name' => 'terms',
             "terms_and_conditions_{$this->user->language}" => true
         ]);
@@ -502,19 +502,19 @@ class KitchenControllerTest extends TestCase {
         Notification::fake();
 
 
-        $services = factory(Service::class, 3)->create();
+        $services = Service::factory(3)->create();
 
-        $socket = factory(Service::class, 3)->create([
+        $socket = Service::factory(3)->create([
             'category' => 'socket'
         ])->random();
 
-        $application = factory(Application::class)->make([
+        $application = Application::factory()->make([
             'year' => $this->settings->get('registration_year'),
             'status' => 'new',
         ]);
         $this->user->user->applications()->save($application);
 
-        $application->products()->save(factory(Product::class)->make([
+        $application->products()->save(Product::factory()->make([
             'category' => 'menu'
         ]));
 
@@ -550,23 +550,23 @@ class KitchenControllerTest extends TestCase {
 
     public function test_kitchen_can_submit_reopened_application() {
 
-        $admin = factory(User::class)->make();
-        factory(Admin::class)->create()->user()->save($admin);
+        $admin = User::factory()->make();
+        Admin::factory()->create()->user()->save($admin);
 
         Notification::fake();
 
-        $services = factory(Service::class, 3)->create();
-        $socket = factory(Service::class, 3)->create([
+        $services = Service::factory(3)->create();
+        $socket = Service::factory(3)->create([
             'category' => 'socket'
         ])->random();
-        $application = factory(Application::class)->make([
+        $application = Application::factory()->make([
             'year' => $this->settings->get('registration_year'),
             'status' => 'reopened',
         ]);
 
         $this->user->user->applications()->save($application);
 
-        $application->products()->save(factory(Product::class)->make([
+        $application->products()->save(Product::factory()->make([
             'category' => 'menu'
         ]));
 
@@ -658,8 +658,8 @@ class KitchenControllerTest extends TestCase {
 
 
     public function test_kitchen_can_update_kitchen_data_but_not_submitted_application_data() {
-        $services = factory(Service::class, 3)->create();
-        $application = factory(Application::class)->make([
+        $services = Service::factory(3)->create();
+        $application = Application::factory()->make([
             'year' => $this->settings->get('registration_year'),
             'status' => 'pending',
         ]);
@@ -720,11 +720,11 @@ class KitchenControllerTest extends TestCase {
     }
 
     public function test_kitchen_can_update_kitchen_data_and_reopened_application_data() {
-        $services = factory(Service::class, 3)->create();
-        $socket = factory(Service::class, 3)->create([
+        $services = Service::factory(3)->create();
+        $socket = Service::factory(3)->create([
             'category' => 'socket'
         ])->random();
-        $application = factory(Application::class)->make([
+        $application = Application::factory()->make([
             'year' => $this->settings->get('registration_year'),
             'status' => 'reopened',
         ]);
@@ -826,7 +826,7 @@ class KitchenControllerTest extends TestCase {
     }
 
     public function test_kitchen_can_see_applications_if_exists() {
-        $pastApplication = factory(Application::class)->make(['year' => '2012']);
+        $pastApplication = Application::factory()->make(['year' => '2012']);
         $this->user->user->applications()->save($pastApplication);
         $this->actingAs($this->user)->get(action('Kitchen\KitchenController@edit', $this->user->user))
             ->assertSee(__('kitchen/kitchen.pastApplications'))
@@ -839,7 +839,7 @@ class KitchenControllerTest extends TestCase {
     }
 
     public function test_kitchen_can_delete_self_and_all_applications() {
-        $pastApplication = factory(Application::class)->make(['year' => '2012']);
+        $pastApplication = Application::factory()->make(['year' => '2012']);
         $this->user->user->applications()->save($pastApplication);
         $this->actingAs($this->user)->delete(action('Kitchen\KitchenController@destroy', $this->user->user))
             ->assertRedirect(action('HomeController@show'));

@@ -1,10 +1,22 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-$factory->define(App\Models\Shift::class, function (Faker $faker) {
-	return [
-		'date' => $faker->date(),
-		'hours' => $faker->numberBetween(0, 50)
-	];
-});
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Shift>
+ */
+class ShiftFactory extends Factory {
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition() {
+        return [
+            'date' => $this->faker->date(),
+            'hours' => $this->faker->numberBetween(0, 50)
+        ];
+    }
+}

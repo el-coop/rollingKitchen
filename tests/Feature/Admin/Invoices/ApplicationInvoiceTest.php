@@ -37,14 +37,14 @@ class ApplicationInvoiceTest extends TestCase {
 
     public function setUp(): void {
         parent::setUp();
-        $this->user = factory(User::class)->make();
-        factory(Admin::class)->create()->user()->save($this->user);
-        $this->worker = factory(User::class)->make();
-        factory(Worker::class)->create()->user()->save($this->worker);
-        $this->accountant = factory(User::class)->make();
-        factory(Accountant::class)->create()->user()->save($this->accountant);
-        $this->kitchen = factory(User::class)->make();
-        factory(Kitchen::class)->create([
+        $this->user = User::factory()->make();
+        Admin::factory()->create()->user()->save($this->user);
+        $this->worker = User::factory()->make();
+        Worker::factory()->create()->user()->save($this->worker);
+        $this->accountant = User::factory()->make();
+        Accountant::factory()->create()->user()->save($this->accountant);
+        $this->kitchen = User::factory()->make();
+        Kitchen::factory()->create([
             'data' => [
                 2 => 'test',
                 3 => 'test',
@@ -52,20 +52,20 @@ class ApplicationInvoiceTest extends TestCase {
                 5 => 'test',
             ],
         ])->user()->save($this->kitchen);
-        $this->application = factory(Application::class)->make([
+        $this->application = Application::factory()->make([
             'data' => [
                 8 => '1000',
             ],
         ]);
         $this->kitchen->user->applications()->save($this->application);
 
-        $this->invoices = factory(Invoice::class, 4)->make();
+        $this->invoices = Invoice::factory(4)->make();
         $this->invoices->each(function ($invoice) {
             $this->application->invoices()->save($invoice);
             $invoiceItems = rand(1, 4);
             $total = 0;
             for ($j = 0; $j < $invoiceItems; $j++) {
-                $invoiceItem = factory(\App\Models\InvoiceItem::class)->make();
+                $invoiceItem = InvoiceItem::factory()->make();
                 $invoice->items()->save($invoiceItem);
                 $total = $invoiceItem->unit_price * $invoiceItem->quantity;
             }
@@ -73,7 +73,7 @@ class ApplicationInvoiceTest extends TestCase {
             $invoice->amount = $total;
             $invoice->save();
         });
-        $this->payment = factory(InvoicePayment::class)->make();
+        $this->payment = InvoicePayment::factory()->make();
         $this->invoices->first()->payments()->save($this->payment);
 
     }
@@ -100,7 +100,7 @@ class ApplicationInvoiceTest extends TestCase {
 
     public function test_admin_can_see_invoice_index_page() {
         $this->actingAs($this->user)->get(action('Admin\ApplicationInvoiceController@index'))
-            ->assertSuccessful()->assertSee('</datatable>');
+            ->assertSuccessful()->assertSee('</datatable>', false);
     }
 
     public function test_guest_cant_see_new_invoice_form() {
@@ -124,13 +124,13 @@ class ApplicationInvoiceTest extends TestCase {
     }
 
     public function test_admin_loads_new_invoice_form() {
-        $defaultPdf = factory(Pdf::class)->create([
+        $defaultPdf = Pdf::factory()->create([
             'name' => 'test',
             'visibility' => 0,
             'file' => 'test',
             'default_send_invoice' => true,
         ]);
-        $pdf = factory(Pdf::class)->create([
+        $pdf = Pdf::factory()->create([
             'name' => 'test2',
             'visibility' => 0,
             'file' => 'test2',
@@ -186,7 +186,7 @@ class ApplicationInvoiceTest extends TestCase {
         $settings = app('settings');
         $language = $this->kitchen->language;
         $this->invoices->each->delete();
-        factory(Service::class, 2)->create()->each(function ($service) {
+        Service::factory(2)->create()->each(function ($service) {
             $this->application->services()->attach($service, ['quantity' => rand(1, 3)]);
         });
 
@@ -383,7 +383,7 @@ class ApplicationInvoiceTest extends TestCase {
     public function test_updates_services_count_with_new_invoice() {
 
         Queue::fake();
-        $services = factory(Service::class, 2)->create()->each(function ($service) {
+        $services = Service::factory(2)->create()->each(function ($service) {
             $this->application->services()->attach($service, ['quantity' => 2]);
         });
 
@@ -438,7 +438,7 @@ class ApplicationInvoiceTest extends TestCase {
     public function test_new_service_relationship_new_invoice() {
 
         Queue::fake();
-        $service = factory(Service::class)->create();
+        $service = Service::factory()->create();
 
         $prefix = app('settings')->get('registration_year');
         $number = Invoice::getNumber();
@@ -551,13 +551,13 @@ class ApplicationInvoiceTest extends TestCase {
     }
 
     public function test_admin_loads_existing_invoice_form() {
-        $defaultPdf = factory(Pdf::class)->create([
+        $defaultPdf = Pdf::factory()->create([
             'name' => 'test',
             'visibility' => 0,
             'file' => 'test',
             'default_resend_invoice' => true,
         ]);
-        $pdf = factory(Pdf::class)->create([
+        $pdf = Pdf::factory()->create([
             'name' => 'test2',
             'visibility' => 0,
             'file' => 'test2',
@@ -795,7 +795,7 @@ class ApplicationInvoiceTest extends TestCase {
     public function test_updates_services_count_with_edited_invoice() {
 
         Queue::fake();
-        $services = factory(Service::class, 2)->create()->each(function ($service) {
+        $services = Service::factory(2)->create()->each(function ($service) {
             $this->application->services()->attach($service, ['quantity' => 1]);
         });
 
@@ -860,7 +860,7 @@ class ApplicationInvoiceTest extends TestCase {
     public function test_new_service_relationship_on_updated_invoice() {
 
         Queue::fake();
-        $service = factory(Service::class)->create();
+        $service = Service::factory()->create();
 
         $invoice = $this->invoices->first();
 
@@ -1076,17 +1076,17 @@ class ApplicationInvoiceTest extends TestCase {
     public function test_service_relationship_removed_when_invoice_brings_it_to_0() {
 
         Queue::fake();
-        $services = factory(Service::class, 2)->create()->each(function ($service) {
+        $services = Service::factory(2)->create()->each(function ($service) {
             $this->application->services()->attach($service, ['quantity' => 2]);
         });
         $service = $services->first();
 
-        $firstInvoice = factory(Invoice::class)->create([
+        $firstInvoice = Invoice::factory()->create([
             'owner_id' => $this->application->id,
             'owner_type' => Application::class
         ]);
 
-        $firstInvoice->items()->save(factory(InvoiceItem::class)->make([
+        $firstInvoice->items()->save(InvoiceItem::factory()->make([
             'service_id' => $service->id,
             'quantity' => 2
         ]));
@@ -1137,17 +1137,17 @@ class ApplicationInvoiceTest extends TestCase {
     public function test_service_relationship_reduced_when_invoice_brings_it_to_smaller_amount() {
 
         Queue::fake();
-        $services = factory(Service::class, 2)->create()->each(function ($service) {
+        $services = Service::factory(2)->create()->each(function ($service) {
             $this->application->services()->attach($service, ['quantity' => 2]);
         });
         $service = $services->first();
 
-        $firstInvoice = factory(Invoice::class)->create([
+        $firstInvoice = Invoice::factory()->create([
             'owner_id' => $this->application->id,
             'owner_type' => Application::class
         ]);
 
-        $firstInvoice->items()->save(factory(InvoiceItem::class)->make([
+        $firstInvoice->items()->save(InvoiceItem::factory()->make([
             'service_id' => $service->id,
             'quantity' => 2
         ]));

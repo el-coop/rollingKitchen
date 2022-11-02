@@ -24,10 +24,10 @@ class KitchenServiceTest extends TestCase {
 		parent::setUp();
 		$applicationYear = app('settings')->get('registration_year');
 
-		$this->services = factory(Service::class, 10)->create();
-		$this->kitchens = factory(Kitchen::class, 5)->create()->each(function ($kitchen) use ($applicationYear) {
-			$kitchen->user()->save(factory(User::class)->make());
-			$application = factory(Application::class)->make(['year' => $applicationYear]);
+		$this->services = Service::factory(10)->create();
+		$this->kitchens = Kitchen::factory(5)->create()->each(function ($kitchen) use ($applicationYear) {
+			$kitchen->user()->save(User::factory()->make());
+			$application = Application::factory()->make(['year' => $applicationYear]);
 			$kitchen->applications()->save($application);
 			Service::inRandomOrder()->limit(3)->get()->each(function ($service) use ($application) {
 				$application->services()->save($service, ['quantity' => random_int(1, 5)]);
@@ -35,7 +35,7 @@ class KitchenServiceTest extends TestCase {
 		});
 		$columns = ['user.name', 'user.email', 'application.year', 'service.' . $this->services->random()->id];
 		$i = -1;
-		$this->kitchenColumns = factory(KitchenExportColumn::class, 4)->make()->each(function ($column) use ($columns,$i){
+		$this->kitchenColumns = KitchenExportColumn::factory(4)->make()->each(function ($column) use ($columns,$i){
 			$i = $i + 1;
 			$column->column = $columns[$i];
 			$column->orded = $i;

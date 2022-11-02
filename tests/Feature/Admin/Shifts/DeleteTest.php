@@ -21,54 +21,54 @@ class DeleteTest extends TestCase {
 	protected $worker;
 	private $shift;
 	private $accountant;
-	
+
 	protected function setUp(): void {
 		parent::setUp();
-		$this->admin = factory(User::class)->make();
-		factory(Admin::class)->create()->user()->save($this->admin);
-		$this->kitchen = factory(User::class)->make();
-		factory(Kitchen::class)->create()->user()->save($this->kitchen);
-		$this->worker = factory(User::class)->make();
-		factory(Worker::class)->create()->user()->save($this->worker);
-		$this->accountant = factory(User::class)->make();
-		factory(Accountant::class)->create()->user()->save($this->accountant);
-		$this->shift = factory(Shift::class)->create([
-			'workplace_id' => factory(Workplace::class)->create()->id
+		$this->admin = User::factory()->make();
+		Admin::factory()->create()->user()->save($this->admin);
+		$this->kitchen = User::factory()->make();
+		Kitchen::factory()->create()->user()->save($this->kitchen);
+		$this->worker = User::factory()->make();
+		Worker::factory()->create()->user()->save($this->worker);
+		$this->accountant = User::factory()->make();
+		Accountant::factory()->create()->user()->save($this->accountant);
+		$this->shift = Shift::factory()->create([
+			'workplace_id' => Workplace::factory()->create()->id
 		]);
 	}
-	
+
 	public function test_guest_cant_delete_shift() {
 		$this->delete(action('Admin\ShiftController@destroy', $this->shift))->assertRedirect(action('Auth\LoginController@login'));
 	}
-	
+
 	public function test_kitchen_cant_delete_shift() {
 		$this->actingAs($this->kitchen)->delete(action('Admin\ShiftController@destroy', $this->shift))->assertForbidden();
 	}
-	
+
 	public function test_worker_cant_delete_shift() {
 		$this->actingAs($this->worker)->delete(action('Admin\ShiftController@destroy', $this->shift))->assertForbidden();
 	}
-	
+
 	public function test_accountant_cant_delete_shift() {
 		$this->actingAs($this->accountant)->delete(action('Admin\ShiftController@destroy', $this->shift))->assertForbidden();
 	}
-	
+
 	public function test_admin_can_delete_shift() {
-		
+
 		$this->shift->workers()->attach($this->worker->user,[
 			'start_time' => '00:00',
 			'end_time' => '10:00',
-			'work_function_id' => factory(WorkFunction::class)->create([
+			'work_function_id' => WorkFunction::factory()->create([
 				'workplace_id' => $this->shift->workplace_id
 			])->id
 		]);
-		
+
 		$this->actingAs($this->admin)->delete(action('Admin\ShiftController@destroy', $this->shift))->assertSuccessful();
-		
+
 		$this->assertDatabaseMissing('shifts', [
 			'id' => $this->shift->id
 		]);
-		
+
 		$this->assertDatabaseMissing('shift_worker', [
 			'shift_id' => $this->shift->id,
 			'worker_id' => $this->worker->user->id

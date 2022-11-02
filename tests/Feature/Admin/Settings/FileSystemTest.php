@@ -26,18 +26,18 @@ class FileSystemTest extends TestCase {
 
     public function setUp(): void {
         parent::setUp();
-        $this->admin = factory(Admin::class)->create();
-        $this->admin->user()->save(factory(User::class)->make());
-        $this->worker = factory(User::class)->make();
-        factory(Worker::class)->create()->user()->save($this->worker);
-        $this->accountant = factory(User::class)->make();
-        factory(Accountant::class)->create()->user()->save($this->accountant);
-        $this->kitchen = factory(Kitchen::class)->create();
-        $this->kitchen->user()->save(factory(User::class)->make());
+        $this->admin = Admin::factory()->create();
+        $this->admin->user()->save(User::factory()->make());
+        $this->worker = User::factory()->make();
+        Worker::factory()->create()->user()->save($this->worker);
+        $this->accountant = User::factory()->make();
+        Accountant::factory()->create()->user()->save($this->accountant);
+        $this->kitchen = Kitchen::factory()->create();
+        $this->kitchen->user()->save(User::factory()->make());
         Storage::fake('local');
         $pdf = UploadedFile::fake()->create('first.pdf');
         $path = $pdf->store('public/pdf');
-        $this->pdf = factory(Pdf::class)->create([
+        $this->pdf = Pdf::factory()->create([
             'name' => 'first',
             'visibility' => 1,
             'file' => basename($path),

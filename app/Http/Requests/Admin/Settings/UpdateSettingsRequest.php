@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Gate;
 class UpdateSettingsRequest extends FormRequest {
 	private $fields;
 	private $settings;
-	
+
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
@@ -21,7 +21,7 @@ class UpdateSettingsRequest extends FormRequest {
 	public function authorize() {
 		return Gate::allows('update-settings');
 	}
-	
+
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -30,19 +30,19 @@ class UpdateSettingsRequest extends FormRequest {
 	public function rules() {
 		$this->settings = app('settings');
 		$this->fields = array_keys($this->settings->all());
-		
+
 		$rules = [];
 		foreach ($this->fields as $field) {
 			$rules[$field] = 'required|string';
 		};
-		
+
 		$rules['accountant_email'] = 'required|email';
 		$rules['schedule_budget'] = 'required|numeric|min:0';
 		unset($rules['general_registration_status']);
 		unset($rules['accountant_password']);
 		return $rules;
 	}
-	
+
 	public function commit() {
 		$this->updateAccountant();
 		$this->fields = array_diff($this->fields, ['accountant_password']);
@@ -55,7 +55,7 @@ class UpdateSettingsRequest extends FormRequest {
 			$this->settings->put($field, $value);
 		}
 	}
-	
+
 	private function updateAccountant(): void {
 		$accountant = User::where(['user_type' => Accountant::class])->first();
 		if (!$accountant) {

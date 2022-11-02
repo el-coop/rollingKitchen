@@ -31,17 +31,17 @@ class DeletedInvoiceOwnerTest extends TestCase {
 	private $debtorInvoice;
 	private $deletedeOwner;
 	private $deletedOwnerInvoice;
-	
+
 	protected function setUp(): void {
 		parent::setUp();
-		$this->user = factory(User::class)->make();
-		factory(Admin::class)->create()->user()->save($this->user);
-		$this->worker = factory(User::class)->make();
-		factory(Worker::class)->create()->user()->save($this->worker);
-		$this->accountant = factory(User::class)->make();
-		factory(Accountant::class)->create()->user()->save($this->accountant);
-		$this->kitchen = factory(User::class)->make();
-		factory(Kitchen::class)->create([
+		$this->user = User::factory()->make();
+		Admin::factory()->create()->user()->save($this->user);
+		$this->worker = User::factory()->make();
+		Worker::factory()->create()->user()->save($this->worker);
+		$this->accountant = User::factory()->make();
+		Accountant::factory()->create()->user()->save($this->accountant);
+		$this->kitchen = User::factory()->make();
+		Kitchen::factory()->create([
 			'data' => [
 				2 => 'test',
 				3 => 'test',
@@ -49,23 +49,23 @@ class DeletedInvoiceOwnerTest extends TestCase {
 				5 => 'test',
 			]
 		])->user()->save($this->kitchen);
-		$this->application = factory(Application::class)->make([
+		$this->application = Application::factory()->make([
 			'data' => [
 				8 => '1000'
 			]
 		]);
 		$this->kitchen->user->applications()->save($this->application);
-		$this->debtor = factory(Debtor::class)->create();
-		$this->applicationInvoice = factory(Invoice::class)->make();
+		$this->debtor = Debtor::factory()->create();
+		$this->applicationInvoice = Invoice::factory()->make();
 		$this->application->invoices()->save($this->applicationInvoice);
 		$this->applicationInvoice->save();
-		$this->debtorInvoice = factory(Invoice::class)->make();
+		$this->debtorInvoice = Invoice::factory()->make();
 		$this->debtor->invoices()->save($this->debtorInvoice);
-		$this->deletedeOwner = factory(DeletedInvoiceOwner::class)->create();
-		$this->deletedOwnerInvoice = factory(Invoice::class)->make();
+		$this->deletedeOwner = DeletedInvoiceOwner::factory()->create();
+		$this->deletedOwnerInvoice = Invoice::factory()->make();
 		$this->deletedeOwner->invoices()->save($this->deletedOwnerInvoice);
 	}
-	
+
 	public function test_deleted_owner_created_on_kitchen_delete() {
 		$this->actingAs($this->user)->delete(action('Admin\KitchenController@destroy', $this->kitchen->user));
 		$this->assertDatabaseHas('invoices', [
@@ -79,7 +79,7 @@ class DeletedInvoiceOwnerTest extends TestCase {
 		$deletedInvoiceOwner = DeletedInvoiceOwner::where('name', $this->kitchen->name)->first();
 		$this->assertEquals($this->kitchen->user->data->toArray(), $deletedInvoiceOwner->data);
 	}
-	
+
 	public function test_deleted_owner_created_on_debtor_delete() {
 		$this->actingAs($this->user)->delete(action('Admin\DebtorController@destroy', $this->debtor));
 		$this->assertDatabaseHas('invoices', [
@@ -93,7 +93,7 @@ class DeletedInvoiceOwnerTest extends TestCase {
         $deletedInvoiceOwner = DeletedInvoiceOwner::where('name', $this->debtor->name)->first();
         $this->assertEquals($this->debtor->data->toArray(), $deletedInvoiceOwner->data);
 	}
-	
+
 	public function test_guest_cant_get_deleted_invoice_owner() {
 		$this->get(action('Admin\DeletedInvoiceOwnerController@edit',
 			[$this->deletedeOwner,
@@ -121,7 +121,7 @@ class DeletedInvoiceOwnerTest extends TestCase {
 				$this->deletedOwnerInvoice]))
 			->assertForbidden();
 	}
-	
+
 	public function test_admin_can_get_deleted_invoice_owner() {
 		$this->actingAs($this->user)->get(action('Admin\DeletedInvoiceOwnerController@edit', [
 				$this->deletedeOwner,
@@ -146,7 +146,7 @@ class DeletedInvoiceOwnerTest extends TestCase {
 				'value' => '',
 			]);
 	}
-	
+
 	public function test_guest_cant_update_deleted_owner_invoice() {
 		Queue::fake();
 		$this->patch(action('Admin\DeletedInvoiceOwnerController@update', [
@@ -169,7 +169,7 @@ class DeletedInvoiceOwnerTest extends TestCase {
 			]]
 		])->assertRedirect(action('Auth\LoginController@login'));
 		Queue::assertNotPushed(SendDebtorInvoice::class);
-		
+
 	}
 
 	public function test_worker_cant_update_deleted_owner_invoice() {
@@ -221,7 +221,7 @@ class DeletedInvoiceOwnerTest extends TestCase {
 		Queue::assertNotPushed(SendDebtorInvoice::class);
 
 	}
-	
+
 	public function test_kitchen_cant_update_deleted_owner_invoice() {
 		Queue::fake();
 		$this->actingAs($this->kitchen)->patch(action('Admin\DeletedInvoiceOwnerController@update', [
@@ -244,14 +244,14 @@ class DeletedInvoiceOwnerTest extends TestCase {
 			]]
 		])->assertForbidden();
 		Queue::assertNotPushed(SendDebtorInvoice::class);
-		
+
 	}
-	
+
 	public function test_admin_can_update_deleted_owner_invoice() {
 		Queue::fake();
-		
+
 		$prefix = app('settings')->get('registration_year');
-		
+
 		$this->actingAs($this->user)->patch(action('Admin\DeletedInvoiceOwnerController@update', [
 			$this->deletedeOwner,
 			$this->deletedOwnerInvoice
@@ -281,7 +281,7 @@ class DeletedInvoiceOwnerTest extends TestCase {
 			'total' => 5.84,
 			'taxAmount' => 0,
 		]);
-		
+
 		$this->assertDatabaseHas('invoice_items', [
 			'quantity' => 1,
 			'unit_price' => 1,
@@ -289,7 +289,7 @@ class DeletedInvoiceOwnerTest extends TestCase {
 			'name' => 'test',
 			'invoice_id' => $this->deletedOwnerInvoice->id
 		]);
-		
+
 		$this->assertDatabaseHas('invoice_items', [
 			'quantity' => 2,
 			'unit_price' => 2,
@@ -297,7 +297,7 @@ class DeletedInvoiceOwnerTest extends TestCase {
 			'name' => 'test2',
 			'invoice_id' => $this->deletedOwnerInvoice->id
 		]);
-		
+
 		$this->assertDatabaseHas('invoices', [
 			'id' => $this->deletedOwnerInvoice->id,
 			'number' => $this->deletedOwnerInvoice->number,
@@ -307,15 +307,15 @@ class DeletedInvoiceOwnerTest extends TestCase {
 		$this->assertCount(2, $this->deletedOwnerInvoice->items);
 		Queue::assertPushed(SendDebtorInvoice::class);
 	}
-	
+
 	public function test_update_invoice_business_details_validation() {
-		
+
 		Queue::fake();
-		
+
 		$this->deletedeOwner->data = [];
 		$this->deletedeOwner->save();
-		
-		
+
+
 		$this->actingAs($this->user)->patch(action('Admin\DeletedInvoiceOwnerController@update', [
 			$this->deletedeOwner,
 			$this->deletedOwnerInvoice
@@ -327,15 +327,15 @@ class DeletedInvoiceOwnerTest extends TestCase {
 			'subject' => '',
 			'items' => 'test'
 		])->assertRedirect()->assertSessionHasErrors(['help']);
-		
+
 		Queue::assertNotPushed(SendDebtorInvoice::class);
-		
+
 	}
-	
+
 	public function test_edit_invoice_validation() {
-		
+
 		Queue::fake();
-		
+
 		$this->actingAs($this->user)->patch(action('Admin\DeletedInvoiceOwnerController@update', [
 			$this->deletedeOwner,
 			$this->deletedOwnerInvoice
@@ -347,7 +347,7 @@ class DeletedInvoiceOwnerTest extends TestCase {
 			'subject' => '',
 			'items' => 'test'
 		])->assertRedirect()->assertSessionHasErrors(['recipient', 'bcc', 'message', 'subject', 'items']);
-		
+
 		Queue::assertNotPushed(SendDebtorInvoice::class);
 	}
 }

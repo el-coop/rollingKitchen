@@ -25,29 +25,29 @@ class UpdateTest extends TestCase {
 	protected $band;
 	protected $bandMember;
 	protected $secondBand;
-	
+
 	protected function setUp(): void {
 		parent::setUp();
-		$this->admin = factory(User::class)->make();
-		factory(Admin::class)->create()->user()->save($this->admin);
-		$this->kitchen = factory(User::class)->make();
-		factory(Kitchen::class)->create()->user()->save($this->kitchen);
-		$this->worker = factory(User::class)->make();
-		factory(Worker::class)->create()->user()->save($this->worker);
-		$this->artistManager = factory(User::class)->make();
-		factory(ArtistManager::class)->create()->user()->save($this->artistManager);
-		$this->accountant = factory(User::class)->make();
-		factory(Accountant::class)->create()->user()->save($this->accountant);
-		$this->band = factory(User::class)->make();
-		factory(Band::class)->create()->user()->save($this->band);
-		$this->bandMember = factory(User::class)->make();
-		factory(BandMember::class)->create([
+		$this->admin = User::factory()->make();
+		Admin::factory()->create()->user()->save($this->admin);
+		$this->kitchen = User::factory()->make();
+		Kitchen::factory()->create()->user()->save($this->kitchen);
+		$this->worker = User::factory()->make();
+		Worker::factory()->create()->user()->save($this->worker);
+		$this->artistManager = User::factory()->make();
+		ArtistManager::factory()->create()->user()->save($this->artistManager);
+		$this->accountant = User::factory()->make();
+		Accountant::factory()->create()->user()->save($this->accountant);
+		$this->band = User::factory()->make();
+		Band::factory()->create()->user()->save($this->band);
+		$this->bandMember = User::factory()->make();
+		BandMember::factory()->create([
 			'band_id' => $this->band->user->id
 		])->user()->save($this->bandMember);
-		$this->secondBand = factory(User::class)->make();
-		factory(Band::class)->create()->user()->save($this->secondBand);
+		$this->secondBand = User::factory()->make();
+		Band::factory()->create()->user()->save($this->secondBand);
 	}
-	
+
 	public function test_guest_cant_update_band() {
 		$this->patch(action('Band\BandController@update', $this->band->user), [
 			'name' => 'name',
@@ -57,7 +57,7 @@ class UpdateTest extends TestCase {
 			'language' => 'en'
 		])->assertRedirect(action('Auth\LoginController@login'));
 	}
-	
+
 	public function test_kitchen_cant_update_band() {
 		$this->actingAs($this->kitchen)->patch(action('Band\BandController@update', $this->band->user), [
 			'name' => 'name',
@@ -67,7 +67,7 @@ class UpdateTest extends TestCase {
 			'language' => 'en'
 		])->assertForbidden();
 	}
-	
+
 	public function test_admin_cant_update_band() {
 		$this->actingAs($this->admin)->patch(action('Band\BandController@update', $this->band->user), [
 			'name' => 'name',
@@ -77,7 +77,7 @@ class UpdateTest extends TestCase {
 			'language' => 'en'
 		])->assertForbidden();
 	}
-	
+
 	public function test_worker_cant_update_band() {
 		$this->actingAs($this->worker)->patch(action('Band\BandController@update', $this->band->user), [
 			'name' => 'name',
@@ -87,7 +87,7 @@ class UpdateTest extends TestCase {
 			'language' => 'en'
 		])->assertForbidden();
 	}
-	
+
 	public function test_band_member_cant_update_band() {
 		$this->actingAs($this->bandMember)->patch(action('Band\BandController@update', $this->band->user), [
 			'name' => 'name',
@@ -97,7 +97,7 @@ class UpdateTest extends TestCase {
 			'language' => 'en'
 		])->assertForbidden();
 	}
-	
+
 	public function test_accountant_cant_update_band() {
 		$this->actingAs($this->accountant)->patch(action('Band\BandController@update', $this->band->user), [
 			'name' => 'name',
@@ -107,7 +107,7 @@ class UpdateTest extends TestCase {
 			'language' => 'en'
 		])->assertForbidden();
 	}
-	
+
 	public function test_artist_manager_cant_update_band() {
 		$this->actingAs($this->artistManager)->patch(action('Band\BandController@update', $this->band->user), [
 			'name' => 'name',
@@ -117,7 +117,7 @@ class UpdateTest extends TestCase {
 			'language' => 'en'
 		])->assertForbidden();
 	}
-	
+
 	public function test_second_band_cant_update_band() {
 		$this->actingAs($this->secondBand)->patch(action('Band\BandController@update', $this->band->user), [
 			'name' => 'name',
@@ -127,7 +127,7 @@ class UpdateTest extends TestCase {
 			'language' => 'en'
 		])->assertForbidden();
 	}
-	
+
 	public function test_band_can_update_self() {
 		$this->actingAs($this->band)->patch(action('Band\BandController@update', $this->band->user), [
 			'name' => 'name',
@@ -148,7 +148,7 @@ class UpdateTest extends TestCase {
         $band = Band::find($this->band->user->id);
         $this->assertEquals(collect(['test'=>'test']), $band->data);
 	}
-	
+
 	public function test_band_cant_submit_review_without_tracks() {
 		$this->actingAs($this->band)->patch(action('Band\BandController@update', $this->band->user), [
 			'name' => 'name',
@@ -159,9 +159,9 @@ class UpdateTest extends TestCase {
 			'review' => true
 		])->assertRedirect()->assertSessionHasErrors('tracks');
 	}
-	
+
 	public function test_band_can_submit_review_with_tracks() {
-		$this->band->user->bandSongs()->save(factory(BandSong::class)->make());
+		$this->band->user->bandSongs()->save(BandSong::factory()->make());
 		$this->actingAs($this->band)->patch(action('Band\BandController@update', $this->band->user), [
 			'name' => 'name',
 			'email' => 'email@mail.com',
@@ -170,7 +170,7 @@ class UpdateTest extends TestCase {
 			'language' => 'en',
 			'review' => true
 		])->assertRedirect();
-		
+
 		$this->assertDatabaseHas('users', [
 			'name' => 'name',
 			'email' => 'email@mail.com',
@@ -184,7 +184,7 @@ class UpdateTest extends TestCase {
 		$band = Band::find($this->band->user->id);
 		$this->assertEquals(collect(['test'=>'test']), $band->data);
 	}
-	
+
 	public function test_band_update_validation() {
 		$this->actingAs($this->band)->patch(action('Band\BandController@update', $this->band->user), [
 			'email' => 'bla',
@@ -195,7 +195,7 @@ class UpdateTest extends TestCase {
 		])->assertSessionHasErrors([
 			'email', 'name', 'language', 'band', 'paymentMethod'
 		]);
-		
+
 	}
-	
+
 }

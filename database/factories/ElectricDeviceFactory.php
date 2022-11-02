@@ -1,10 +1,24 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-$factory->define(App\Models\ElectricDevice::class, function (Faker $faker) {
-	return [
-		'name' => $faker->name,
-		'watts' => $faker->randomNumber()
-	];
-});
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ElectricDevice>
+ */
+class ElectricDeviceFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition()
+    {
+        return [
+            'name' => $this->faker->name,
+            'watts' => $this->faker->randomNumber()
+        ];
+    }
+}

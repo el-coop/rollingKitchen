@@ -8,6 +8,7 @@ use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\Debtor;
 use App\Models\Invoice;
+use App\Models\InvoiceItem;
 use App\Models\Kitchen;
 use App\Models\User;
 use App\Models\Worker;
@@ -27,17 +28,17 @@ class InvoicingTest extends TestCase {
 	private $invoice;
 	private $invoices;
 	private $debtor;
-	
+
 	protected function setUp(): void {
 		parent::setUp();
-		$this->user = factory(User::class)->make();
-		factory(Admin::class)->create()->user()->save($this->user);
-		$this->worker = factory(User::class)->make();
-		factory(Worker::class)->create()->user()->save($this->worker);
-		$this->accountant = factory(User::class)->make();
-		factory(Accountant::class)->create()->user()->save($this->accountant);
-		$this->kitchen = factory(User::class)->make();
-		factory(Kitchen::class)->create([
+		$this->user = User::factory()->make();
+		Admin::factory()->create()->user()->save($this->user);
+		$this->worker = User::factory()->make();
+		Worker::factory()->create()->user()->save($this->worker);
+		$this->accountant = User::factory()->make();
+		Accountant::factory()->create()->user()->save($this->accountant);
+		$this->kitchen = User::factory()->make();
+		Kitchen::factory()->create([
 			'data' => [
 				2 => 'test',
 				3 => 'test',
@@ -45,28 +46,28 @@ class InvoicingTest extends TestCase {
 				5 => 'test',
 			]
 		])->user()->save($this->kitchen);
-		$this->debtor = factory(Debtor::class)->create();
-		
-		$this->invoices = factory(Invoice::class, 4)->make();
+		$this->debtor = Debtor::factory()->create();
+
+		$this->invoices = Invoice::factory(4)->make();
 		$this->invoices->each(function ($invoice) {
 			$this->debtor->invoices()->save($invoice);
 			$invoiceItems = rand(1, 4);
 			$total = 0;
 			for ($j = 0; $j < $invoiceItems; $j++) {
-				$invoiceItem = factory(\App\Models\InvoiceItem::class)->make([
+				$invoiceItem = InvoiceItem::factory()->make([
 					'tax' => $this->faker->randomElement([0, 6, 21])
 				]);
 				$invoice->items()->save($invoiceItem);
 				$total = $invoiceItem->unit_price * $invoiceItem->quantity * (1 + $invoiceItem->tax / 100);
 			}
-			
-			
+
+
 			$invoice->amount = $total;
 			$invoice->save();
-			
+
 		});
 	}
-	
+
 	public function test_guest_cant_see_new_invoice_form() {
 		$this->get(action('Admin\DebtorInvoiceController@create', $this->debtor))
 			->assertRedirect(action('Auth\LoginController@login'));
@@ -81,14 +82,14 @@ class InvoicingTest extends TestCase {
 		$this->actingAs($this->accountant)->get(action('Admin\DebtorInvoiceController@create', $this->debtor))
 			->assertForbidden();
 	}
-	
+
 	public function test_kitchen_cant_see_new_invoice_form() {
 		$this->actingAs($this->kitchen)->get(action('Admin\DebtorInvoiceController@create', $this->debtor))
 			->assertForbidden();
 	}
-	
+
 	public function test_admin_loads_new_invoice_form() {
-		
+
 		$this->actingAs($this->user)->get(action('Admin\DebtorInvoiceController@create', $this->debtor))
 			->assertSuccessful()->assertJsonFragment([
 				'name' => 'recipient',
@@ -118,12 +119,12 @@ class InvoicingTest extends TestCase {
 					'6' => '6%',
 					'0' => '0',
 				]]);
-		
+
 	}
-	
+
 	public function test_guest_cant_create_new_invoice() {
 		Queue::fake();
-		
+
 		$this->post(action('Admin\DebtorController@store', $this->debtor), [
 			'tax' => 21,
 			'recipient' => $this->debtor->email,
@@ -140,7 +141,7 @@ class InvoicingTest extends TestCase {
 				'item' => 'test2'
 			]]
 		])->assertRedirect(action('Auth\LoginController@login'));
-		
+
 		Queue::assertNotPushed(SendDebtorInvoice::class);
 	}
 
@@ -169,7 +170,7 @@ class InvoicingTest extends TestCase {
 
 	public function test_kitchen_cant_create_new_invoice() {
 		Queue::fake();
-		
+
 		$this->actingAs($this->kitchen)->post(action('Admin\DebtorController@store', $this->debtor), [
 			'tax' => 21,
 			'recipient' => $this->debtor->email,
@@ -186,7 +187,7 @@ class InvoicingTest extends TestCase {
 				'item' => 'test2'
 			]]
 		])->assertForbidden();
-		
+
 		Queue::assertNotPushed(SendDebtorInvoice::class);
 	}
 
@@ -212,14 +213,14 @@ class InvoicingTest extends TestCase {
 
 		Queue::assertNotPushed(SendDebtorInvoice::class);
 	}
-	
+
 	public function test_admin_can_create_new_invoice() {
-		
+
 		Queue::fake();
-		
+
 		$prefix = app('settings')->get('registration_year');
 		$number = Invoice::getNumber();
-		
+
 		$this->actingAs($this->user)->post(action('Admin\DebtorInvoiceController@store', $this->debtor), [
 			'recipient' => $this->debtor->email,
 			'bcc' => $this->debtor->email,
@@ -245,7 +246,7 @@ class InvoicingTest extends TestCase {
 			'amount' => 5.9,
 			'total' => 5.9,
 		]);
-		
+
 		$this->assertDatabaseHas('invoices', [
 			'prefix' => $prefix,
 			'number' => $number,
@@ -254,29 +255,29 @@ class InvoicingTest extends TestCase {
 			'owner_type' => Debtor::class,
 			'amount' => 5.9,
 		]);
-		
-		
+
+
 		$this->assertDatabaseHas('invoice_items', [
 			'quantity' => 1,
 			'unit_price' => 1,
 			'tax' => 6,
 			'name' => 'test'
 		]);
-		
+
 		$this->assertDatabaseHas('invoice_items', [
 			'quantity' => 2,
 			'unit_price' => 2,
 			'tax' => 21,
 			'name' => 'test2'
 		]);
-		
+
 		Queue::assertPushed(SendDebtorInvoice::class);
 	}
-	
+
 	public function test_new_invoice_validation() {
-		
+
 		Queue::fake();
-		
+
 		$this->actingAs($this->user)->post(action('Admin\DebtorInvoiceController@store', $this->debtor), [
 			'recipient' => 'test',
 			'bcc' => 'test',
@@ -284,17 +285,17 @@ class InvoicingTest extends TestCase {
 			'subject' => '',
 			'items' => 'test'
 		])->assertRedirect()->assertSessionHasErrors(['recipient', 'bcc', 'message', 'subject', 'items']);
-		
+
 		Queue::assertNotPushed(SendDebtorInvoice::class);
 	}
-	
+
 	public function test_new_invoice_business_details_validation() {
-		
+
 		Queue::fake();
-		
+
 		$this->debtor->data = [];
 		$this->debtor->save();
-		
+
 		$this->actingAs($this->user)->post(action('Admin\DebtorInvoiceController@store', $this->debtor), [
 			'recipient' => 'test',
 			'bcc' => 'test',
@@ -302,10 +303,10 @@ class InvoicingTest extends TestCase {
 			'subject' => '',
 			'items' => 'test'
 		])->assertRedirect()->assertSessionHasErrors(['help']);
-		
+
 		Queue::assertNotPushed(SendDebtorInvoice::class);
 	}
-	
+
 	public function test_guest_cant_see_existing_invoice_form() {
 		$this->get(action('Admin\DebtorInvoiceController@edit', [
 			'debtor' => $this->debtor,
@@ -333,10 +334,10 @@ class InvoicingTest extends TestCase {
 			'invoice' => $this->invoices->first()
 		]))->assertForbidden();
 	}
-	
+
 	public function test_admin_loads_existing_invoice_form() {
 		$invoice = $this->invoices->random();
-		
+
 		$items = $invoice->items->map(function ($item) {
 			return [
 				'item' => $item->name,
@@ -345,7 +346,7 @@ class InvoicingTest extends TestCase {
 				'tax' => $item->tax,
 			];
 		});
-		
+
 		$response = $this->actingAs($this->user)->get(action('Admin\DebtorInvoiceController@edit', [
 			'debtor' => $this->debtor,
 			'invoice' => $invoice
@@ -375,17 +376,17 @@ class InvoicingTest extends TestCase {
 				'6' => '6%',
 				'0' => '0',
 			]]);
-		
-		
+
+
 		foreach ($items as $item) {
 			$response->assertJsonFragment($item);
 		}
 	}
-	
+
 	public function test_guest_cant_edit_invoice() {
 		Queue::fake();
 		$invoice = $this->invoices->first();
-		
+
 		$this->patch(action('Admin\DebtorInvoiceController@update', [
 			'debtor' => $this->debtor,
 			'invoice' => $invoice
@@ -405,7 +406,7 @@ class InvoicingTest extends TestCase {
 				'item' => 'test2'
 			]]
 		])->assertRedirect(action('Auth\LoginController@login'));
-		
+
 		Queue::assertNotPushed(SendDebtorInvoice::class);
 	}
 
@@ -467,7 +468,7 @@ class InvoicingTest extends TestCase {
 	public function test_kitchen_cant_edit_invoice() {
 		Queue::fake();
 		$invoice = $this->invoices->first();
-		
+
 		$this->actingAs($this->kitchen)->patch(action('Admin\DebtorInvoiceController@update', [
 			'debtor' => $this->debtor,
 			'invoice' => $invoice
@@ -487,18 +488,18 @@ class InvoicingTest extends TestCase {
 				'item' => 'test2'
 			]]
 		])->assertForbidden();
-		
+
 		Queue::assertNotPushed(SendDebtorInvoice::class);
 	}
-	
-	
+
+
 	public function test_admin_can_edit_invoice() {
-		
+
 		Queue::fake();
 		$invoice = $this->invoices->random();
-		
+
 		$prefix = app('settings')->get('registration_year');
-		
+
 		$this->actingAs($this->user)->patch(action('Admin\DebtorInvoiceController@update', [
 			'debtor' => $this->debtor,
 			'invoice' => $invoice
@@ -528,7 +529,7 @@ class InvoicingTest extends TestCase {
 			'total' => 5.84,
 			'taxAmount' => 0,
 		]);
-		
+
 		$this->assertDatabaseHas('invoice_items', [
 			'quantity' => 1,
 			'unit_price' => 1,
@@ -536,7 +537,7 @@ class InvoicingTest extends TestCase {
 			'name' => 'test',
 			'invoice_id' => $invoice->id
 		]);
-		
+
 		$this->assertDatabaseHas('invoice_items', [
 			'quantity' => 2,
 			'unit_price' => 2,
@@ -544,7 +545,7 @@ class InvoicingTest extends TestCase {
 			'name' => 'test2',
 			'invoice_id' => $invoice->id
 		]);
-		
+
 		$this->assertDatabaseHas('invoices', [
 			'id' => $invoice->id,
 			'number' => $invoice->number,
@@ -554,12 +555,12 @@ class InvoicingTest extends TestCase {
 		$this->assertCount(2, $invoice->items);
 		Queue::assertPushed(SendDebtorInvoice::class);
 	}
-	
+
 	public function test_edit_invoice_validation() {
-		
+
 		Queue::fake();
 		$invoice = $this->invoices->first();
-		
+
 		$this->actingAs($this->user)->patch(action('Admin\DebtorInvoiceController@update', [
 			'debtor' => $this->debtor,
 			'invoice' => $invoice
@@ -570,18 +571,18 @@ class InvoicingTest extends TestCase {
 			'subject' => '',
 			'items' => 'test'
 		])->assertRedirect()->assertSessionHasErrors(['recipient', 'bcc', 'message', 'subject', 'items']);
-		
+
 		Queue::assertNotPushed(SendDebtorInvoice::class);
-		
+
 	}
-	
+
 	public function test_edit_invoice_business_details_validation() {
-		
+
 		Queue::fake();
 		$invoice = $this->invoices->first();
 		$this->debtor->data = [];
 		$this->debtor->save();
-		
+
 		$this->actingAs($this->user)->patch(action('Admin\DebtorInvoiceController@update', [
 			'debtor' => $this->debtor,
 			'invoice' => $invoice
@@ -592,10 +593,10 @@ class InvoicingTest extends TestCase {
 			'subject' => '',
 			'items' => 'test'
 		])->assertRedirect()->assertSessionHasErrors(['help']);
-		
+
 		Queue::assertNotPushed(SendDebtorInvoice::class);
-		
+
 	}
-	
-	
+
+
 }

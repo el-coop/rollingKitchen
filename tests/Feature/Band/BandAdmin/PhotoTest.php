@@ -35,28 +35,28 @@ class PhotoTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->admin = factory(User::class)->make();
-		factory(Admin::class)->create()->user()->save($this->admin);
-		$this->kitchen = factory(User::class)->make();
-		factory(Kitchen::class)->create()->user()->save($this->kitchen);
-		$this->worker = factory(User::class)->make();
-		factory(Worker::class)->create()->user()->save($this->worker);
-		$this->accountant = factory(User::class)->make();
-		factory(Accountant::class)->create()->user()->save($this->accountant);
-		$this->artistManager = factory(User::class)->make();
-		factory(ArtistManager::class)->create()->user()->save($this->artistManager);
-		$this->band = factory(User::class)->make();
-		factory(Band::class)->create([
+		$this->admin = User::factory()->make();
+		Admin::factory()->create()->user()->save($this->admin);
+		$this->kitchen = User::factory()->make();
+		Kitchen::factory()->create()->user()->save($this->kitchen);
+		$this->worker = User::factory()->make();
+		Worker::factory()->create()->user()->save($this->worker);
+		$this->accountant = User::factory()->make();
+		Accountant::factory()->create()->user()->save($this->accountant);
+		$this->artistManager = User::factory()->make();
+		ArtistManager::factory()->create()->user()->save($this->artistManager);
+		$this->band = User::factory()->make();
+		Band::factory()->create([
 			'payment_method' => 'band'
 		])->user()->save($this->band);
-		$this->bandMember = factory(User::class)->make();
-		factory(BandMember::class)->create([
+		$this->bandMember = User::factory()->make();
+		BandMember::factory()->create([
 			'band_id' => $this->band->user->id
 		])->user()->save($this->bandMember);
-		$this->bandAdmin = factory(BandAdmin::class)->make();
+		$this->bandAdmin = BandAdmin::factory()->make();
 		$this->band->user->admin()->save($this->bandAdmin);
 		$this->file = UploadedFile::fake()->image('photo.jpg');
-		$this->bandAdminPhoto = factory(BandAdminPhoto::class)->create([
+		$this->bandAdminPhoto = BandAdminPhoto::factory()->create([
 			'band_admin_id' => $this->bandAdmin->id,
 			'file' => 'test.jpg'
 		]);
@@ -80,8 +80,8 @@ class PhotoTest extends TestCase {
 	}
 
 	public function test_other_band_cant_upload_band_admin_photo() {
-		$band = factory(User::class)->make();
-		factory(Band::class)->create([
+		$band = User::factory()->make();
+		Band::factory()->create([
 			'payment_method' => 'band',
 		])->user()->save($band);
 		$this->actingAs($band)->post(action('Band\BandAdminController@storePhoto', [$this->band->user, $this->bandAdmin]))->assertForbidden();
@@ -102,7 +102,8 @@ class PhotoTest extends TestCase {
 	}
 
 	public function test_band_can_upload_photo() {
-		Crypt::shouldReceive('encrypt')->twice();
+        Crypt::shouldReceive('getKey')->twice();
+        Crypt::shouldReceive('encrypt')->times(3)->andReturn('');
 		$this->actingAs($this->band)->post(action('Band\BandAdminController@storePhoto', [$this->band->user, $this->bandAdmin]), [
 			'photo' => $this->file
 		])->assertSuccessful()->assertJson([
@@ -200,8 +201,8 @@ class PhotoTest extends TestCase {
 	}
 
 	public function test_other_band_cant_destroy_band_admin_photo() {
-		$band = factory(User::class)->make();
-		factory(Band::class)->create([
+		$band = User::factory()->make();
+		Band::factory()->create([
 			'payment_method' => 'band'
 		])->user()->save($band);
 		$this->actingAs($band)->delete(action('Band\BandAdminController@destroyPhoto', [
