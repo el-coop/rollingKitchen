@@ -36,7 +36,7 @@
                             :key="`${n}_${i}`"
                             v-show="calcDate(realStartDate,i - 1) >= currentStart && calcDate(realStartDate,i - 1) < lastDate"
                             :style="{ 'min-width': `${columnWidth}px`}">
-                            <CalendarEntry :label="formatTime(startHour + (n-1) * interval)" @drop="drop">
+                            <CalendarEntry :label="formatTime(startHour + (n-1) * interval)" @drop.="drop">
                                 <template #default="{rawData, processedData, edit}">
                                     <slot name="entry" :rawData="rawData" :processedData="processedData"
                                           :edit="edit"
@@ -210,6 +210,9 @@ export default {
         },
 
         drop(payload) {
+            if(typeof payload.raw === 'undefined' || typeof payload.output === 'undefined'){
+                return;
+            }
             this.raw = payload.raw;
             this.output = payload.output;
             this.modalOpen = true;
