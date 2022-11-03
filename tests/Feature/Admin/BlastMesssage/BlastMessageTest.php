@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\BlastMesssage;
+namespace Admin\Kitchens\BlastMesssage;
 
 use App\Models\Accountant;
 use App\Models\Admin;

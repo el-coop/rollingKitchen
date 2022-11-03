@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\BandPaymentExportColumn;
+namespace Admin\Kitchens\BandPaymentExportColumn;
 
 use App\Models\Accountant;
 use App\Models\Admin;

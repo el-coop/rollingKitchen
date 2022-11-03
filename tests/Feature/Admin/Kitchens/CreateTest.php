@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Kitchen;
+namespace Admin\Kitchens;
 
 use App\Models\Accountant;
 use App\Models\Admin;
@@ -16,6 +16,7 @@ use Tests\TestCase;
 
 class CreateTest extends TestCase {
     use RefreshDatabase;
+
     protected $admin;
     protected $kitchen;
     protected $worker;
@@ -36,27 +37,27 @@ class CreateTest extends TestCase {
         Accountant::factory()->create()->user()->save($this->accountant);
     }
 
-    public function test_guest_cant_create_kitchen(){
+    public function test_guest_cant_create_kitchen() {
         $this->get(action('Admin\KitchenController@create'))->assertRedirect(action('Auth\LoginController@login'));
     }
 
-    public function test_kitchen_cant_create_artist_manager(){
+    public function test_kitchen_cant_create_artist_manager() {
         $this->actingAs($this->kitchen)->get(action('Admin\KitchenController@create'))->assertForbidden();
     }
 
-    public function test_worker_cant_create_artist_manager(){
+    public function test_worker_cant_create_artist_manager() {
         $this->actingAs($this->worker)->get(action('Admin\KitchenController@create'))->assertForbidden();
     }
 
-    public function test_artist_manager_cant_create_artist_manager(){
+    public function test_artist_manager_cant_create_artist_manager() {
         $this->actingAs($this->artistManager)->get(action('Admin\KitchenController@create'))->assertForbidden();
     }
 
-    public function test_accountant_cant_create_artist_manager(){
+    public function test_accountant_cant_create_artist_manager() {
         $this->actingAs($this->accountant)->get(action('Admin\KitchenController@create'))->assertForbidden();
     }
 
-    public function test_admin_can_create_artist_manager(){
+    public function test_admin_can_create_artist_manager() {
         $this->actingAs($this->admin)->get(action('Admin\KitchenController@create'))
             ->assertSuccessful()
             ->assertJsonFragment([
@@ -72,11 +73,11 @@ class CreateTest extends TestCase {
             ]);
     }
 
-    public function test_guest_cant_store_artist_manager(){
+    public function test_guest_cant_store_artist_manager() {
         $this->post(action('Admin\KitchenController@store'))->assertRedirect(action('Auth\LoginController@login'));
     }
 
-    public function test_kitchen_cant_store_artist_manager(){
+    public function test_kitchen_cant_store_artist_manager() {
         $this->actingAs($this->kitchen)->post(action('Admin\KitchenController@store'), [
             'name' => 'name',
             'email' => 'a@a.com',
@@ -84,7 +85,7 @@ class CreateTest extends TestCase {
         ])->assertForbidden();
     }
 
-    public function test_worker_cant_store_artist_manager(){
+    public function test_worker_cant_store_artist_manager() {
         $this->actingAs($this->worker)->post(action('Admin\KitchenController@store'), [
             'name' => 'name',
             'email' => 'a@a.com',
@@ -92,7 +93,7 @@ class CreateTest extends TestCase {
         ])->assertForbidden();
     }
 
-    public function test_artist_manager_cant_store_artist_manager(){
+    public function test_artist_manager_cant_store_artist_manager() {
         $this->actingAs($this->artistManager)->post(action('Admin\KitchenController@store'), [
             'name' => 'name',
             'email' => 'a@a.com',
@@ -100,7 +101,7 @@ class CreateTest extends TestCase {
         ])->assertForbidden();
     }
 
-    public function test_accountant_cant_store_artist_manager(){
+    public function test_accountant_cant_store_artist_manager() {
         $this->actingAs($this->accountant)->post(action('Admin\KitchenController@store'), [
             'name' => 'name',
             'email' => 'a@a.com',
@@ -108,7 +109,7 @@ class CreateTest extends TestCase {
         ])->assertForbidden();
     }
 
-    public function test_admin_can_store_artist_manager(){
+    public function test_admin_can_store_artist_manager() {
         Notification::fake();
         $this->actingAs($this->admin)->post(action('Admin\KitchenController@store'), [
             'name' => 'name',

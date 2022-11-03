@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Debtors;
+namespace Admin\Kitchens\Debtors;
 
 use App\Models\Accountant;
 use App\Models\Admin;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Shifts;
+namespace Admin\Kitchens\Shifts;
 
 use App\Models\Accountant;
 use App\Models\Admin;

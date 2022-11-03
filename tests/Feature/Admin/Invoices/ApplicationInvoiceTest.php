@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Invoices;
+namespace Admin\Kitchens\Invoices;
 
 use App\Jobs\SendApplicationInvoice;
 use App\Models\Accountant;

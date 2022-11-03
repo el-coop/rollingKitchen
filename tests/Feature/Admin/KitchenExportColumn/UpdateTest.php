@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\KitchenExportColumn;
+namespace Admin\Kitchens\KitchenExportColumn;
 
 use App\Models\Accountant;
 use App\Models\Admin;

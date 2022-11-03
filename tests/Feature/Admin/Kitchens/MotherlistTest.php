@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Kitchens;
+namespace Admin\Kitchens\Kitchens;
 
 use App\Models\Accountant;
 use App\Models\Admin;

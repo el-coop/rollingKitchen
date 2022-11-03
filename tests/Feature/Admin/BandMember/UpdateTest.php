@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\BandMember;
+namespace Admin\Kitchens\BandMember;
 use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\ArtistManager;

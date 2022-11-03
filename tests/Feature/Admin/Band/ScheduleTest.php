@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Band;
+namespace Admin\Kitchens\Band;
 
 use App\Events\Band\ShowCreated;
 use App\Events\Band\ShowDeleted;

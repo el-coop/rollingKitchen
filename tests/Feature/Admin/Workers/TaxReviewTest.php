@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Workers;
+namespace Admin\Kitchens\Workers;
 
 use App\Events\Worker\TaxReviewUploaded;
 use App\Models\Accountant;

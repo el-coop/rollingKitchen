@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\ArtistManager;
+namespace Admin\Kitchens\ArtistManager;
 
 use App\Models\Accountant;
 use App\Models\Admin;
