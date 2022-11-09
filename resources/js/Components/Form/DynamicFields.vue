@@ -1,11 +1,13 @@
 <template>
-    <template v-for="(field,key) in renderFields">
-        <component v-if="hide.indexOf(field.name) === -1"
-                   :error="field.error || null"
-                   :is="`${field.type}-field`"
-                   :field="field" :key="key">
-        </component>
-    </template>
+    <div>
+        <template v-for="(field,key) in renderFields">
+            <component v-if="hide.indexOf(field.name) === -1"
+                       :error="field.error || null"
+                       :is="`${field.type}-field`"
+                       :field="field" :key="key">
+            </component>
+        </template>
+    </div>
 </template>
 
 <script>

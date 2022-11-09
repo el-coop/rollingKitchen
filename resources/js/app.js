@@ -8,7 +8,7 @@ import {generalJsErrorReport, vueErrorReport} from "./ErrorHandler";
 
 require('./bootstrap');
 
-import {createApp, configureCompat} from 'vue'
+import {createApp} from 'vue'
 import VueIziToast from './Classes/VueIzitoast';
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {
@@ -33,13 +33,7 @@ library.add(faLink, faSignOutAlt, faBars, faFileUpload, faTimesCircle, faEuroSig
 
 import componentInstaller from './Components/components';
 
-configureCompat({
-    RENDER_FUNCTION: false,
-    COMPONENT_V_MODEL: false
-});
-
-
-window.onerror = generalJsErrorReport;
+// window.onerror = generalJsErrorReport;
 
 const app = createApp({
     data() {

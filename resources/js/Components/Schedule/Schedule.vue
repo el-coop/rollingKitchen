@@ -1,18 +1,20 @@
 <template>
-	<ajax-form :action="action" @submitting="submitting = true" @errors="handleErrors" @submitted="handleSubmitted">
+	<AjaxForm :action="action" @submitting="submitting = true" @errors="handleErrors" @submitted="handleSubmitted">
 		<div class="box">
 			<p v-text="`${$translations.budget}: ${budget}`"></p>
 			<p v-text="`${$translations.budgetUsed}: ${budgetUsed}`"></p>
 			<p v-if="budget < budgetUsed" class="help is-danger" v-text="$translations.budgetOverflow"></p>
 		</div>
 		<slot :submitting="submitting" :updateBudget="updateBudget"></slot>
-	</ajax-form>
+	</AjaxForm>
 </template>
 
 <script>
-	export default {
+	import AjaxForm from "../Form/AjaxForm";
+    export default {
 		name: "Schedule",
-		props: {
+        components: {AjaxForm},
+        props: {
 			action: {
 				type: String,
 				default: window.location.href
