@@ -13,7 +13,7 @@
 		</div>
 		<div class="box">
 			<slot></slot>
-			<div class="buttons mt-1 has-content-justified-center" v-if="paginationButtons">
+			<div class="buttons mt-3 has-content-justified-center" v-if="paginationButtons">
 				<button class="button is-dark" @click="showPrev()" v-if="selected > 0"
 						type="button" v-html="$translations.previous">
 				</button>

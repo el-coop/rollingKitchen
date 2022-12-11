@@ -1,5 +1,5 @@
 <template>
-    <Modal height="100%" :pivotY="0" :pivotX="1" :width="width" v-model:active="open" @update:active="$emit('close')">
+    <Modal height="100%" :pivotY="0" :pivotX="1" :width="width" :active="open" @update:active="$emit('close')">
         <div class="modal-body box">
             <button class="modal-close is-large" @click="$emit('close')"/>
             <slot/>
