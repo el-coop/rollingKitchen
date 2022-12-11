@@ -4,7 +4,7 @@
         :pivotX="pivotX"
         :width="width"
         :height="height"
-        v-model:active="open" @update:active="$emit('close')">
+        :active="open" @update:active="$emit('close')">
         <div class="box h-100 modal-body">
             <button class="modal-close is-large" type="button" @click="$emit('close')"></button>
             <slot/>
@@ -37,11 +37,6 @@ export default {
             default: 0.5
         }
     },
-    data() {
-        return {
-            isOpen: false
-        };
-    }
 }
 </script>
 

@@ -28,11 +28,11 @@
             </template>
         </tabs>
     </form>
-    @if($pastApplications->count())
-        <div class="box mb-1">
-            @include('kitchen.usePastApplication')
-        </div>
-    @endif
+{{--    @if($pastApplications->count())--}}
+{{--        <div class="box mb-1">--}}
+{{--            @include('kitchen.usePastApplication')--}}
+{{--        </div>--}}
+{{--    @endif--}}
     @if(session()->has('fireworks'))
         <fireworks-modal
             text="{{ str_replace(PHP_EOL,'<br>',app('settings')->get('application_success_modal_' . App::getLocale())) }}"></fireworks-modal>
