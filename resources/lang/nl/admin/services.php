@@ -10,5 +10,6 @@ return [
 	'download_application_services' => 'Download Services Totalen',
 	'kitchenServices' => 'keukenServices',
 	'createService' => 'Service toevoegen',
+    'mandatory' => 'TBT'
 
 ];

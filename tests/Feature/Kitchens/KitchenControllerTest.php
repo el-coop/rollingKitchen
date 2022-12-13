@@ -886,5 +886,53 @@ class KitchenControllerTest extends TestCase {
         ]);
     }
 
+    public function test_kitchen_cant_submit_application_without_mandatory_service() {
+        $admin = User::factory()->make();
+        Admin::factory()->create()->user()->save($admin);
+        $services = Service::factory(3)->create();
+        $mandatoryService = Service::factory()->create([
+           'mandatory' => 1
+        ]);
+        $socket = Service::factory(3)->create([
+            'category' => 'socket'
+        ])->random();
+
+        $application = Application::factory()->make([
+            'year' => $this->settings->get('registration_year'),
+            'status' => 'new',
+        ]);
+        $this->user->user->applications()->save($application);
+
+        $application->products()->save(Product::factory()->make([
+            'category' => 'menu'
+        ]));
+
+        $this->actingAs($this->user)->patch(action('Kitchen\KitchenController@update', $this->user->user), [
+            'name' => 'test',
+            'email' => 'test@best.rest',
+            'language' => 'nl',
+            'kitchen' => [
+                1 => 'test',
+                2 => 'test',
+                3 => 'test',
+                4 => 'test',
+                5 => 'test',
+                7 => 'test',
+            ],
+            'application' => [
+                8 => 2000,
+                9 => 'these are like 10 chars'
+            ],
+            'services' => [
+                $services->get(0)->id => 1,
+                $services->get(1)->id => 0,
+                $services->get(2)->id => 5
+            ],
+            'socket' => $socket->id,
+            'length' => 1,
+            'width' => 1,
+            'review' => true
+        ])->assertSessionHasErrors(['services' => 'validation.required_array_keys']);
+    }
 }
 

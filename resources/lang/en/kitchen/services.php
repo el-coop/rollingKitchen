@@ -7,5 +7,5 @@ return [
 	'watts' => 'Watts',
 	'none' => 'None',
 	'sockets' => 'Sockets',
-	'trash' => 'Waste processing contribution'
+	'trash' => 'Waste processing contribution',
 ];

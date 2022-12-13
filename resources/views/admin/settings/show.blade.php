@@ -17,6 +17,8 @@
 										@endif
 										@component('admin.settings.components.setting', ['name' => $key])
 											@switch($key)
+                                                @case('logo')
+
 												@case('registration_year')
 												<input class="input" type="text" name="{{$key}}" readonly
 													   value="{{$setting}}">
@@ -39,7 +41,6 @@
 												@break
 												@case('schedule_start_hour')
                                                 @case('schedule_end_hour')
-                                                @case('application_waste_processing_fee')
 												<input type="number" name="{{$key}}" class="input"
 													   value="{{$setting}}" step="0.5" required>
 												@break
@@ -79,3 +80,9 @@
 	</div>
 	@include('components.errors')
 @endsection
+<script>
+    import ImageManager from "../../../js/Components/Utilities/ImageManager/ImageManager";
+    export default {
+        components: {ImageManager}
+    }
+</script>

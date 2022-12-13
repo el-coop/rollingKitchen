@@ -4,6 +4,9 @@
 
 @section('content')
     <div class="box">
+        <logo-form action="{{action('Admin\LogoController@store')}}"></logo-form>
+    </div>
+    <div class="box">
         <dynamic-table :columns="[{
             name: 'name',
             label: '@lang('global.name')'
@@ -61,3 +64,9 @@
         </dynamic-table>
     </div>
 @endsection
+<script>
+    import LogoForm from "../../../js/Components/Utilities/LogoForm";
+    export default {
+        components: {LogoForm}
+    }
+</script>

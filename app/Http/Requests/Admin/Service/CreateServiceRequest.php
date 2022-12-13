@@ -38,8 +38,7 @@ class CreateServiceRequest extends FormRequest {
 		$service->category = $this->input('category');
 		$service->type = $this->input('type');
 		$service->price = $this->input('price');
-
-
+        $service->mandatory = $this->has('mandatory');
 		$service->save();
 
 
@@ -48,7 +47,8 @@ class CreateServiceRequest extends FormRequest {
 			'name_nl' => $this->input('name_nl'),
 			'name_en' => $this->input('name_en'),
 			'category' => $this->input('category'),
-			'price' => $this->input('price')
+			'price' => $this->input('price'),
+            'mandatory' => $this->has('mandatory')
 		];
 	}
 }

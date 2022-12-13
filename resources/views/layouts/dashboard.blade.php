@@ -19,7 +19,7 @@
 				@component('components.logout')
 				@endcomponent
 				<div class="navbar-item">
-					<img src="{{ asset('images/logo.png') }}">
+					<img src="{{ asset('storage/images/logo.png') }}">
 				</div>
 			</navbar>
 			<div class="container is-fluid">

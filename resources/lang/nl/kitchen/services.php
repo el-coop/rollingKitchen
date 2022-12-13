@@ -7,5 +7,5 @@ return [
 	'watts' => 'Watt',
 	'none' => 'Geen',
 	'sockets' => 'Stroomaansluiting',
-	'trash' => 'Bijdrage afvalverwerking'
+	'trash' => 'Bijdrage afvalverwerking',
 ];

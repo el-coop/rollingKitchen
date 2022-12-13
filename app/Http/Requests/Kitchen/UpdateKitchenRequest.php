@@ -8,6 +8,7 @@ use App\Models\Application;
 use App\Models\Field;
 use App\Models\Kitchen;
 use App\Models\Pdf;
+use App\Models\Service;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateKitchenRequest extends FormRequest {
@@ -42,6 +43,11 @@ class UpdateKitchenRequest extends FormRequest {
         ]);
 
         if ($this->user()->can('update', $this->application) && $this->input('review')) {
+            $mandatoryServices = "required_array_keys:";
+            $services = Service::where('mandatory', 1)->get()->pluck('id');
+            foreach ($services as $service){
+                $mandatoryServices .= "$service,";
+            }
             $rules = $rules->merge([
                 'kitchen.1' => 'required|min:2',
                 'kitchen.2' => 'required|min:2',
@@ -51,14 +57,13 @@ class UpdateKitchenRequest extends FormRequest {
                 'application' => 'required|array',
                 'application.8' => 'required|numeric|min:1250',
                 'application.9' => 'required|min:10',
-                'services' => 'array',
+                'services' => "array" . ($mandatoryServices != "required_array_keys:" ? "|$mandatoryServices" : ''),
                 'socket' => 'required|numeric',
                 'length' => 'required|numeric|min:1',
                 'width' => 'required|numeric|min:1',
                 'terrace_length' => 'numeric|nullable|min:0',
                 'terrace_width' => 'numeric|nullable|min:0',
             ]);
-
             if (!$this->kitchen->photos()->count()) {
                 $rules = $rules->merge([
                     'kitchen.6' => 'required_without_all:kitchen.7,kitchen.11',

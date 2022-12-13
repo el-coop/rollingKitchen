@@ -194,10 +194,6 @@ class ApplicationInvoiceTest extends TestCase {
             'quantity' => 1,
             'item' => __('admin/invoices.fee', [], $language),
             'unitPrice' => $this->application->data[8],
-        ], [
-            'quantity' => 1,
-            'item' => __('kitchen/services.trash', [], $language),
-            'unitPrice' => $settings->get('application_waste_processing_fee'),
         ]];
         foreach ($this->application->services as $service) {
             $outstandingItems[] = [
