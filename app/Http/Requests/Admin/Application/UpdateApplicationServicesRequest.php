@@ -9,7 +9,7 @@ class UpdateApplicationServicesRequest extends FormRequest {
 	 * @var \Illuminate\Routing\Route|object|string
 	 */
 	private $application;
-	
+
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
@@ -19,7 +19,7 @@ class UpdateApplicationServicesRequest extends FormRequest {
 		$this->application = $this->route('application');
 		return $this->user()->can('update', $this->application);
 	}
-	
+
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -30,7 +30,7 @@ class UpdateApplicationServicesRequest extends FormRequest {
 			'services' => 'array',
 		];
 	}
-	
+
 	public function commit() {
 		$services = collect($this->input('services'));
 		$services = $services->mapWithKeys(function ($quantity, $service) {
@@ -40,8 +40,8 @@ class UpdateApplicationServicesRequest extends FormRequest {
 		})->filter(function ($item) {
 			return $item['quantity'] > 0;
 		});
-		
+
 		$this->application->services()->sync($services);
-		
+
 	}
 }

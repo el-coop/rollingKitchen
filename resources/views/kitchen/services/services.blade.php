@@ -2,9 +2,10 @@
 @foreach($countableServices as $service)
 	<div class="field has-addons are-labels">
 		<div class="control">
-			<input type="number" class="input is-short-numeric" min="0"
+			<input type="number" class="input is-short-numeric"
 				   @if(! $application->isOpen()) readonly @endif
 				   name="services[{{$service->id}}]"
+                   min="{{$service->mandatory ? '1' : '0'}}"
 				   value="{{ $application->hasService($service) ? $application->serviceQuantity($service) : '0' }}">
 		</div>
 		<div class="control">
@@ -19,9 +20,11 @@
 	<div class="field has-addons are-labels">
 		<div class="control">
 			<label class="button">
-				<input type="checkbox" value="1" id="services_{{$service->id}}"
+				<input  type="checkbox" value="1" id="services_{{$service->id}}"
 					   @if(! $application->isOpen())  onclick="return false;" @endif
-					   name="services[{{$service->id}}]" {{ $application->hasService($service) ? 'checked' : '' }}>
+					   name="services[{{$service->id}}]" {{ $application->hasService($service) || $service->mandatory == 1 ? 'checked' : '' }}
+                        {{$service->mandatory ? 'required' : ''}}
+                >
 			</label>
 		</div>
 		<div class="control">
@@ -32,17 +35,3 @@
 		</div>
 	</div>
 @endforeach
-
-<div class="field has-addons are-labels">
-	<div class="control">
-		<label class="button">
-			<input type="checkbox" value="1" checked onclick="return false;">
-		</label>
-	</div>
-	<div class="control">
-		<button class="button is-static">
-			<b>@lang('kitchen/services.trash')
-				€ {{ number_format(app('settings')->get('application_waste_processing_fee'),2,$decimalPoint,$thousandSeparator) }}</b>
-		</button>
-	</div>
-</div>

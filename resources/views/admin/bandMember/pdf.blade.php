@@ -19,7 +19,7 @@
     <div class="container">
         <div class="is-pulled-left">
             <figure class="image is-32x32" style="margin-left: 35px">
-                <img src="{{ asset('/images/logo.png')}}">
+                <img src="{{ asset('/storage/images/logo.png')}}">
             </figure>
             <div class="has-text-4">{{ config('app.name') }}</div>
         </div>

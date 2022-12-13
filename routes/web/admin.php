@@ -84,7 +84,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		Route::patch('/{pdf}', 'PDFController@update');
 		Route::delete('/{pdf}', 'PDFController@destroy');
     });
-
+    Route::group(['prefix' => 'logo'], function () {
+        Route::post('/', 'LogoController@store');
+    });
 	Route::group(['prefix' => 'debtors'], function () {
 		Route::get('/', 'DebtorController@index');
 

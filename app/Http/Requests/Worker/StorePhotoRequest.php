@@ -12,7 +12,7 @@ class StorePhotoRequest extends FormRequest {
 	 * @var \Illuminate\Routing\Route|object|string
 	 */
 	private $worker;
-	
+
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
@@ -22,7 +22,7 @@ class StorePhotoRequest extends FormRequest {
 		$this->worker = $this->route('worker');
 		return $this->user()->can('update', $this->worker);
 	}
-	
+
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -30,24 +30,24 @@ class StorePhotoRequest extends FormRequest {
 	 */
 	public function rules() {
 		return [
-			'photo' => 'required|mimes:jpeg,bmp,png,gif,svg,pdf'
+			'photo' => 'required|mimes:jpeg,bmp,png,gif,svg,pdf|clamav'
 		];
 	}
-	
+
 	public function commit() {
 		$path = $this->processPhoto();
 		$photo = new WorkerPhoto();
 		$photo->file = basename($path);
 		$this->worker->photos()->save($photo);
-		
+
 		return $photo;
 	}
-	
+
 	protected function processPhoto() {
 		$photo = $this->file('photo');
 		$hash = $photo->hashName();
 		$path = 'public/photos/' . $hash;
-		
+
 		if ($photo->extension() !== 'pdf') {
 			$image = Image::make($photo);
 			$width = $image->width();
@@ -71,5 +71,5 @@ class StorePhotoRequest extends FormRequest {
 		}
 		return $path;
 	}
-	
+
 }

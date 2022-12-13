@@ -42,7 +42,7 @@ class InvoiceService {
         $invoice = InvoiceFile::make()
             ->date($date ?? Carbon::now())
             ->language($this->language)
-            ->logo(asset('/images/logo.png'))
+            ->logo(asset('/storage/images/logo.png'))
             ->number($number)
             ->taxType($tax !== null ? 'percentage' : 'individual')
             ->tax($tax)
@@ -109,10 +109,6 @@ class InvoiceService {
             'quantity' => 1,
             'item' => __('admin/invoices.fee', [], $this->language),
             'unitPrice' => $this->application->data[8]
-        ], [
-            'quantity' => 1,
-            'item' => __('kitchen/services.trash', [], $this->language),
-            'unitPrice' => app('settings')->get('application_waste_processing_fee')
         ]];
     }
 }

@@ -38,7 +38,7 @@ export default function(app){
     app.component('CalendarEntry', require('./Utilities/Calendar/CalendarEntry').default);
     app.component('CalendarModal', require('./Utilities/Calendar/CalendarModal').default);
     app.component('CalendarScheduleDisplay', require('./Utilities/Calendar/CalendarScheduleDisplay').default);
-
+    app.component('LogoForm', require('./Utilities/LogoForm').default)
 
 // form
     app.component('AjaxForm', require('./Form/AjaxForm').default);
