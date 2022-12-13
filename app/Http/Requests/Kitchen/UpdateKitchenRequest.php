@@ -57,14 +57,13 @@ class UpdateKitchenRequest extends FormRequest {
                 'application' => 'required|array',
                 'application.8' => 'required|numeric|min:1250',
                 'application.9' => 'required|min:10',
-                'services' => "array|$mandatoryServices",
+                'services' => "array" . ($mandatoryServices != "required_array_keys:" ? "|$mandatoryServices" : ''),
                 'socket' => 'required|numeric',
                 'length' => 'required|numeric|min:1',
                 'width' => 'required|numeric|min:1',
                 'terrace_length' => 'numeric|nullable|min:0',
                 'terrace_width' => 'numeric|nullable|min:0',
             ]);
-
             if (!$this->kitchen->photos()->count()) {
                 $rules = $rules->merge([
                     'kitchen.6' => 'required_without_all:kitchen.7,kitchen.11',
