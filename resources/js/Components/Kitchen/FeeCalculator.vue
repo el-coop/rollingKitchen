@@ -37,8 +37,10 @@
             </div>
         </div>
         <div class="is-flex is-justify-content-end">
-            <div class="is-size-4" v-text="$translations.total + ': ' + formatEstimation(total)"></div>
-            <div class="is-size-4" v-text="$translations.total + ': ' + formatEstimation(revenueTotal / estimate)"></div>
+            <div>
+                <div class="is-size-4" v-text="$translations.total + ': ' + formatEstimation(total)"></div>
+                <div class="is-size-4" v-text="$translations.percentOfRevenue + ': ' + percentageOfRevenue"></div>
+            </div>
         </div>
     </div>
 </template>
@@ -86,6 +88,12 @@ export default {
         },
         total() {
             return  this.revenueTotal + this.serviceTotal;
+        },
+        percentageOfRevenue(){
+            if (this.estimate === 0){
+                return 0
+            }
+            return  (this.revenueTotal / this.estimate) * 100;
         }
     },
     methods: {
