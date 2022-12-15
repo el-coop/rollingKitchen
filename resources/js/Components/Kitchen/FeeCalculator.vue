@@ -38,6 +38,7 @@
         </div>
         <div class="is-flex is-justify-content-end">
             <div class="is-size-4" v-text="$translations.total + ': ' + formatEstimation(total)"></div>
+            <div class="is-size-4" v-text="$translations.total + ': ' + formatEstimation(revenueTotal / estimate)"></div>
         </div>
     </div>
 </template>

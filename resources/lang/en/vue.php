@@ -79,5 +79,6 @@ return [
     'tenToTwenty' => '20% from between 10k and 20k',
     'overTwenty' => '25% from over 20k',
     'level' => 'Level',
-    'revenueExcluding' => 'Revenue excluding btw: '
+    'revenueExcluding' => 'Revenue excluding btw: ',
+    'percentOfRevenue' => '% Of Revenue'
 ];
