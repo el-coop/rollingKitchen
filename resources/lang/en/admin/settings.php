@@ -137,4 +137,8 @@ return [
     'terms_and_conditions_nl' => 'Terms and conditions NL',
     'terms_and_conditions_en' => 'Terms and conditions EN',
 
+    'application_calculator_model_text_en' => 'Calculator Model Text EN',
+    'application_calculator_model_text_nl' => 'Calculator Model Text NL'
+
+
 ];

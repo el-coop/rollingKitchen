@@ -127,6 +127,9 @@ class SettingsSeeder extends Seeder {
         $this->settingsFakeNoOverwrite('kitchen_user_created_nl', $faker->paragraph);
         $this->settingsFakeNoOverwrite('kitchen_user_created_en', $faker->paragraph);
 
+        $this->settingsFakeNoOverwrite('application_calculator_model_text_nl', $faker->paragraph);
+        $this->settingsFakeNoOverwrite('application_calculator_model_text_en', $faker->paragraph);
+
     }
 
     protected function settingsFakeNoOverwrite($key, $value) {

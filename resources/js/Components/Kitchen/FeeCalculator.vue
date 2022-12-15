@@ -5,6 +5,7 @@
         <div class="box">
             <label class="label" v-text="$translations.feeCalculator"></label>
             <input type="number" min="0" class="input" v-model="estimate">
+            <div v-text="$translations.revenueExcluding  + formatEstimation(estimate * 0.91)"> </div>
             <div class="table-container">
                 <table class="table is-fullwidth">
                     <thead>
@@ -35,8 +36,8 @@
                 <label class="label" v-text="$translations.total + ': ' + formatEstimation(revenueTotal)"></label>
             </div>
         </div>
-        <div class="is-flex is-justify-content-center">
-            <h3 v-text="$translations.total + ': ' + formatEstimation(total)"></h3>
+        <div class="is-flex is-justify-content-end">
+            <div class="is-size-4" v-text="$translations.total + ': ' + formatEstimation(total)"></div>
         </div>
     </div>
 </template>

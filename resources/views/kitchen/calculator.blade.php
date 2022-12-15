@@ -1,4 +1,8 @@
-
+<div class="hero">
+    <div class="hero-body">
+        {{app('settings')->get('application_calculator_model_text_' . App::getLocale())}}
+    </div>
+</div>
 <fee-calculator :service-total="{{$kitchen->servicesTotal}}">
     <template #services>
         <div class="box">

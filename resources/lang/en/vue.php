@@ -78,5 +78,6 @@ return [
     'firstTen' => '15% of the first 10k',
     'tenToTwenty' => '20% from between 10k and 20k',
     'overTwenty' => '25% from over 20k',
-    'level' => 'Level'
+    'level' => 'Level',
+    'revenueExcluding' => 'Revenue excluding btw: '
 ];

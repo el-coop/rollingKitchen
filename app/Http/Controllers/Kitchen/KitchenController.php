@@ -79,7 +79,6 @@ class KitchenController extends Controller {
         } else {
             $pdfs = Pdf::where('visibility', 1)->orderBy('order')->get();
         }
-
         $services = Service::orderByRaw("LENGTH(name_{$locale}) desc")->get();
         $countableServices = $services->where('category', '!=', 'socket')->where('type', 0);
         $checkableServices = $services->where('category', '!=', 'socket')->where('type', 1);
@@ -92,6 +91,7 @@ class KitchenController extends Controller {
         if (!$application->isOpen()) {
             $message = app('settings')->get("application_success_text_{$locale}");
         }
+
         return view('kitchen.edit', compact('termsFile', 'kitchen', 'application', 'application', 'message', 'pastApplications', 'sockets', 'countableServices', 'checkableServices', 'pdfs'));
     }
 

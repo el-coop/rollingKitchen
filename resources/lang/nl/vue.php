@@ -78,5 +78,6 @@ return [
     'firstTen' => 'TBT',
     'tenToTwenty' => 'TBT',
     'overTwenty' => 'TBT',
-    'level' => 'TBT'
+    'level' => 'TBT',
+    'revenueExcluding' => 'TBT'
 ];
