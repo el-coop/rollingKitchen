@@ -73,5 +73,10 @@ return [
     'both' => 'Beide',
     'areTheyProtected' => 'Zijn ze beschermd?',
     'checkInfo' => 'Dit is een nieuwe registratie, controleer alstublieft dat de informatie correct is.',
-    'infoChecked' => 'Data gecontroleerd'
+    'infoChecked' => 'Data gecontroleerd',
+    'feeCalculator' => 'TBT',
+    'firstTen' => 'TBT',
+    'tenToTwenty' => 'TBT',
+    'overTwenty' => 'TBT',
+    'level' => 'TBT'
 ];

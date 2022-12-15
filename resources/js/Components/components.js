@@ -19,6 +19,8 @@ export default function(app){
     app.component('BandSetlistForm', require('./Band/BandSetlistForm').default);
     app.component('ServicesForm', require('./Admin/ServicesForm').default);
     app.component('LinkDateSelector', require('./Global/LinkDateSelector').default);
+    app.component('FeeCalculator', require('./Kitchen/FeeCalculator').default);
+
 
 // utilities
     app.component('Drawer', require('./Utilities/Drawer').default);

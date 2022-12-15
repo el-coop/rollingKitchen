@@ -16,6 +16,8 @@ return [
 	'pdfsTitle' => 'Belangrijke bestanden',
     'exportAllData' => 'Exporteer alle gegevens',
     'usePastApplication' => "Gebruik bestaande inschrijving",
-    'fill' => 'Vul inschrijfformulier in'
+    'fill' => 'Vul inschrijfformulier in',
+    'calculator' => 'Rekenmodule'
+
 
 ];

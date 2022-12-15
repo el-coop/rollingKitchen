@@ -16,6 +16,7 @@
                 <tab
                     label="@lang('kitchen/kitchen.pastApplications')">@include('kitchen.application.pastApplications')</tab>
             @endif
+            <tab label="@lang('kitchen/kitchen.calculator')">@include('kitchen.calculator')</tab>
             <template #buttons>
                 <button class="button is-link">
                     @lang('global.save')
