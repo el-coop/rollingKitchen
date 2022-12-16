@@ -73,5 +73,12 @@ return [
     'both' => 'Both',
     'areTheyProtected' => 'Are they protected?',
     'checkInfo' => 'A new registration year has been opened, please check your data to make sure everything is correct',
-    'infoChecked' => 'Data checked'
+    'infoChecked' => 'Data checked',
+    'feeCalculator' => 'Estimated Revenue',
+    'firstTen' => '15% of the first 10k',
+    'tenToTwenty' => '20% from between 10k and 20k',
+    'overTwenty' => '25% from over 20k',
+    'level' => 'Level',
+    'revenueExcluding' => 'Revenue excluding btw: ',
+    'percentOfRevenue' => '% Of Revenue'
 ];

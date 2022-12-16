@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\HasFields;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
 
 class Kitchen extends Model {
     use HasFactory;
@@ -151,4 +152,25 @@ class Kitchen extends Model {
             ],
         ]);
 	}
+
+    public function getServicesCalculationTableAttribute() {
+        $decimalPoint = App::getLocale() == 'nl' ? ',' : '.';
+        $thousandSeparator = App::getLocale() == 'nl' ? '.' : ',';
+        return $this->getCurrentApplication()->services->map(function ($service) use ($decimalPoint, $thousandSeparator){
+            return [
+                'service' => $service->{ 'name_' . App::getLocale()},
+                'price' => "€ " . number_format($service->price,2,$decimalPoint,$thousandSeparator),
+                'amount' =>  $service->pivot->quantity,
+                'total' => "€ " . number_format($service->price * $service->pivot->quantity,2,$decimalPoint,$thousandSeparator)
+            ];
+        });
+    }
+
+    public function getServicesTotalAttribute() {
+        $total = 0;
+        foreach ($this->getCurrentApplication()->services as $service){
+            $total += $service->price * $service->pivot->quantity;
+        }
+        return $total;
+    }
 }

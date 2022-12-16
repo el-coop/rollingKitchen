@@ -140,4 +140,7 @@ return [
     'terms_and_conditions_nl' => 'Algemene voorwaarden NL',
     'terms_and_conditions_en' => 'Algemene voorwaarden EN',
 
+    'application_calculator_model_text_en' => 'TBT',
+    'application_calculator_model_text_nl' => 'TBT'
+
 ];
