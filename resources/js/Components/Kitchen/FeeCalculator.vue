@@ -39,7 +39,7 @@
         <div class="is-flex is-justify-content-end">
             <div>
                 <div class="is-size-4" v-text="$translations.total + ': ' + formatEstimation(total)"></div>
-                <div class="is-size-4" v-text="$translations.percentOfRevenue + ': ' + percentageOfRevenue"></div>
+                <div  v-text="$translations.percentOfRevenue + ': ' + percentageOfRevenue"></div>
             </div>
         </div>
     </div>
