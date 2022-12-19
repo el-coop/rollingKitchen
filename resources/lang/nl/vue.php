@@ -74,12 +74,12 @@ return [
     'areTheyProtected' => 'Zijn ze beschermd?',
     'checkInfo' => 'Dit is een nieuwe registratie, controleer alstublieft dat de informatie correct is.',
     'infoChecked' => 'Data gecontroleerd',
-    'feeCalculator' => 'TBT',
-    'firstTen' => 'TBT',
-    'tenToTwenty' => 'TBT',
-    'overTwenty' => 'TBT',
-    'level' => 'TBT',
-    'revenueExcluding' => 'TBT',
-    'percentOfRevenue' => 'TBT'
+    'feeCalculator' => 'Kostencalculatie',
+    'firstTen' => '15% over de 1e € 10.000',
+    'tenToTwenty' => '20% over de tweede € 10.000',
+    'overTwenty' => '25 % over omzet > € 20.000',
+    'level' => 'Staffel',
+    'revenueExcluding' => 'Omzet ex. BTW',
+    'percentOfRevenue' => '% van omzet'
 
 ];

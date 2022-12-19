@@ -75,10 +75,10 @@ return [
     'checkInfo' => 'A new registration year has been opened, please check your data to make sure everything is correct',
     'infoChecked' => 'Data checked',
     'feeCalculator' => 'Estimated Revenue',
-    'firstTen' => '15% of the first 10k',
-    'tenToTwenty' => '20% from between 10k and 20k',
-    'overTwenty' => '25% from over 20k',
-    'level' => 'Level',
-    'revenueExcluding' => 'Revenue excluding btw: ',
+    'firstTen' => '15% over the 1st € 10.000',
+    'tenToTwenty' => '20 % over the 2nd € 10.000',
+    'overTwenty' => '25% over revenue > € 20.000',
+    'level' => 'Scale',
+    'revenueExcluding' => 'Revenue ex. VAT',
     'percentOfRevenue' => '% Of Revenue'
 ];
