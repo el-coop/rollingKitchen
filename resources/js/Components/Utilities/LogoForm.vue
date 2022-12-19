@@ -1,7 +1,7 @@
 <template>
     <div>
         <div  class="is-flex column is-justify-content-center">
-            <figure class="image is-2">
+            <figure class="image logo-preview">
                 <img :src="logo">
             </figure>
         </div>
@@ -37,5 +37,7 @@ export default {
 </script>
 
 <style scoped>
-
+.logo-preview {
+    max-height: 200px;
+}
 </style>
