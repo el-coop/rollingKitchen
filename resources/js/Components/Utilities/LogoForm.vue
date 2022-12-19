@@ -1,8 +1,8 @@
 <template>
     <div>
         <div  class="is-flex column is-justify-content-center">
-            <figure class="image logo-preview">
-                <img :src="logo">
+            <figure class="image">
+                <img :src="logo" class="logo-preview">
             </figure>
         </div>
         <dynamic-form @submitted="updateLogo" :headers="{'Content-Type': 'multipart/form-data'}" :url="action" headers="" method="post"  :init-fields="[{
