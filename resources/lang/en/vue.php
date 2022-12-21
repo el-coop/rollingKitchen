@@ -74,11 +74,11 @@ return [
     'areTheyProtected' => 'Are they protected?',
     'checkInfo' => 'A new registration year has been opened, please check your data to make sure everything is correct',
     'infoChecked' => 'Data checked',
-    'feeCalculator' => 'Estimated Revenue',
-    'firstTen' => '15% over the 1st € 10.000',
-    'tenToTwenty' => '20 % over the 2nd € 10.000',
+    'revenueIncluding' => 'Revenue incl. VAT',
+    'firstTen' => '15% over the first € 10.000',
+    'tenToTwenty' => '20 % over the second € 10.000',
     'overTwenty' => '25% over revenue > € 20.000',
-    'level' => 'Scale',
+    'level' => 'Level',
     'revenueExcluding' => 'Revenue ex. VAT',
     'percentOfRevenue' => '% Of Revenue'
 ];

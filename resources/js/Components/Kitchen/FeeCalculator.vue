@@ -3,14 +3,14 @@
         <slot name="services">
         </slot>
         <div class="box">
-            <label class="label" v-text="$translations.feeCalculator"></label>
+            <label class="label" v-text="$translations.revenueIncluding"></label>
             <input type="number" min="0" class="input" v-model="estimate">
-            <div v-text="$translations.revenueExcluding  + formatEstimation(estimate * 0.91)"> </div>
+            <div v-text="$translations.revenueExcluding  + ' €' + formatEstimation(estimateExcluding)"> </div>
             <div class="table-container">
                 <table class="table is-fullwidth">
                     <thead>
                     <tr>
-                        <th v-text="$translations.level">
+                        <th v-text="`${$translations.level} ${$translations.revenueExcluding}`">
                         </th>
                         <th v-text="$translations.amount">
                         </th>
@@ -19,27 +19,27 @@
                     <tbody>
                     <tr>
                         <td v-text="$translations.firstTen"></td>
-                        <td v-text="formatEstimation(toTen)"></td>
+                        <td v-text="'€' + formatEstimation(toTen)"></td>
                     </tr>
                     <tr>
                         <td v-text="$translations.tenToTwenty"></td>
-                        <td v-text="formatEstimation(tenToTwenty)"></td>
+                        <td v-text="'€' + formatEstimation(tenToTwenty)"></td>
                     </tr>
                     <tr>
                         <td v-text="$translations.overTwenty"></td>
-                        <td v-text="formatEstimation(overTwenty)"></td>
+                        <td v-text="'€' + formatEstimation(overTwenty)"></td>
                     </tr>
                     </tbody>
                 </table>
             </div>
             <div class="is-flex is-justify-content-end">
-                <label class="label" v-text="$translations.total + ': ' + formatEstimation(revenueTotal)"></label>
+                <label class="label" v-text="$translations.total + ': €' + formatEstimation(revenueTotal)"></label>
             </div>
         </div>
         <div class="is-flex is-justify-content-end">
             <div>
-                <div class="is-size-4" v-text="$translations.total + ': ' + formatEstimation(total)"></div>
-                <div  v-text="$translations.percentOfRevenue + ': ' + percentageOfRevenue"></div>
+                <div class="is-size-4" v-text="$translations.total + ': €' + formatEstimation(total)"></div>
+                <div  v-text="$translations.percentOfRevenue + ': ' + formatEstimation(percentageOfRevenue)"></div>
             </div>
         </div>
     </div>
@@ -60,27 +60,30 @@ export default {
         }
     },
     computed: {
+        estimateExcluding(){
+          return this.estimate / 1.09;
+        },
         toTen() {
-            if (this.estimate < 10000) {
-                return this.estimate * 0.1;
+            if (this.estimateExcluding < 10000) {
+                return this.estimateExcluding * 0.1;
             } else {
                 return 1000;
             }
         },
         tenToTwenty() {
-            if (this.estimate <= 10000) {
+            if (this.estimateExcluding <= 10000) {
                 return 0;
-            } else if (this.estimate < 20000) {
-                return (this.estimate - 10000) * 0.2;
+            } else if (this.estimateExcluding < 20000) {
+                return (this.estimateExcluding - 10000) * 0.2;
             } else {
                 return 2000;
             }
         },
         overTwenty() {
-            if (this.estimate <= 20000) {
+            if (this.estimateExcluding <= 20000) {
                 return 0;
             } else {
-                return (this.estimate - 20000) * 0.25;
+                return (this.estimateExcluding - 20000) * 0.25;
             }
         },
         revenueTotal(){
@@ -99,9 +102,10 @@ export default {
     methods: {
         formatEstimation(value) {
             let num = new Intl.NumberFormat(document.documentElement.lang, {
-                minimumFractionDigits: 2
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
             }).format(value);
-            return "€ " + num;
+            return num;
         }
     }
 }
