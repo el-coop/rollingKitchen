@@ -65,9 +65,9 @@ export default {
         },
         toTen() {
             if (this.estimateExcluding < 10000) {
-                return this.estimateExcluding * 0.1;
+                return this.estimateExcluding * 0.15;
             } else {
-                return 1000;
+                return 1500;
             }
         },
         tenToTwenty() {
