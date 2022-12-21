@@ -78,7 +78,7 @@ return [
     'firstTen' => '15% over the first € 10.000',
     'tenToTwenty' => '20 % over the second € 10.000',
     'overTwenty' => '25% over revenue > € 20.000',
-    'level' => 'Level',
+    'level' => 'Scale',
     'revenueExcluding' => 'Revenue ex. VAT',
     'percentOfRevenue' => '% Of Revenue'
 ];
