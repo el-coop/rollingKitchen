@@ -52,33 +52,33 @@ class Handler extends ExceptionHandler {
 	}
 
 	protected function logException(Throwable $exception) {
-//		$request = request();
-//		$error = new Error;
-//		$phpError = new PhpError;
-//		if ($request->user()) {
-//			$error->user_id = $request->user()->id;
-//		}
-//		$error->page = $request->fullUrl();
-//		$phpError->message = $exception->getMessage();
-//		$phpError->exception = [
-//			'class' => get_class($exception),
-//			'message' => $exception->getMessage(),
-//			'code' => $exception->getCode(),
-//			'file' => $exception->getFile(),
-//			'line' => $exception->getLine(),
-//			'trace' => $exception->getTrace(),
-//		];
-//
-//		$phpError->request = [
-//			'method' => $request->method(),
-//			'input' => $request->all(),
-//			'server' => $request->server(),
-//			'headers' => $request->header(),
-//			'cookies' => $request->cookie(),
-//			'session' => $request->hasSession() ? $request->session()->all() : '',
-//			'locale' => $request->getLocale(),
-//		];
-//		$phpError->save();
-//		$phpError->error()->save($error);
+		$request = request();
+		$error = new Error;
+		$phpError = new PhpError;
+		if ($request->user()) {
+			$error->user_id = $request->user()->id;
+		}
+		$error->page = $request->fullUrl();
+		$phpError->message = $exception->getMessage();
+		$phpError->exception = [
+			'class' => get_class($exception),
+			'message' => $exception->getMessage(),
+			'code' => $exception->getCode(),
+			'file' => $exception->getFile(),
+			'line' => $exception->getLine(),
+			'trace' => $exception->getTrace(),
+		];
+
+		$phpError->request = [
+			'method' => $request->method(),
+			'input' => $request->all(),
+			'server' => $request->server(),
+			'headers' => $request->header(),
+			'cookies' => $request->cookie(),
+			'session' => $request->hasSession() ? $request->session()->all() : '',
+			'locale' => $request->getLocale(),
+		];
+		$phpError->save();
+		$phpError->error()->save($error);
 	}
 }

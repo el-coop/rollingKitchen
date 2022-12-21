@@ -33,7 +33,7 @@ library.add(faLink, faSignOutAlt, faBars, faFileUpload, faTimesCircle, faEuroSig
 
 import componentInstaller from './Components/components';
 
-// window.onerror = generalJsErrorReport;
+window.onerror = generalJsErrorReport;
 
 const app = createApp({
     data() {
@@ -48,6 +48,6 @@ app.config.globalProperties.$translations = window.$translations;
 
 componentInstaller(app);
 
-// app.config.errorHandler = vueErrorReport;
+app.config.errorHandler = vueErrorReport;
 
 app.mount('#app');
