@@ -96,7 +96,7 @@ export default {
             if (this.estimate === 0){
                 return 0
             }
-            return  (this.revenueTotal / this.estimate) * 100;
+            return  (this.total / this.estimate) * 100;
         }
     },
     methods: {
