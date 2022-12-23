@@ -33,12 +33,12 @@
                 </table>
             </div>
             <div class="is-flex is-justify-content-end">
-                <label class="label" v-text="$translations.total + ': €' + formatEstimation(revenueTotal)"/>
+                <label class="label" v-text="$translations.total + ': €' + formatEstimation(revenueTotal) + ' ' +$translations.excludingVAT"/>
             </div>
         </div>
         <div class="is-flex is-justify-content-end">
             <div>
-                <div class="is-size-4" v-text="$translations.total + ': €' + formatEstimation(total)"/>
+                <div class="is-size-4" v-text="$translations.total + ': €' + formatEstimation(total) + ' ' +$translations.excludingVAT"/>
                 <div  v-text="$translations.percentOfRevenue + ': ' + formatEstimation(percentageOfRevenue)"/>
             </div>
         </div>

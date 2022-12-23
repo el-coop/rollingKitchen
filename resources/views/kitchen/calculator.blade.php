@@ -27,7 +27,7 @@
             </dynamic-table>
             <div class="is-flex is-justify-content-end">
                 <label class="label">@lang('vue.total'):
-                    € {{number_format($kitchen->servicesTotal,2,$decimalPoint,$thousandSeparator)}}</label>
+                    € {{number_format($kitchen->servicesTotal,2,$decimalPoint,$thousandSeparator)}} @lang('vue.excludingVAT'):</label>
             </div>
         </div>
     </template>
