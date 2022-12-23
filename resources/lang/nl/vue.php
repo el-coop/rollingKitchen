@@ -81,6 +81,6 @@ return [
     'level' => 'Staffel',
     'revenueExcluding' => 'Omzet ex. BTW',
     'percentOfRevenue' => '% van omzet',
-    'stagingFee' => 'Slageld',
+    'stagingFee' => 'Stageld',
 
 ];
