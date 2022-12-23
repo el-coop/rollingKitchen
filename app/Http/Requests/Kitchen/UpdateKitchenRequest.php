@@ -48,6 +48,8 @@ class UpdateKitchenRequest extends FormRequest {
             foreach ($services as $service){
                 $mandatoryServices .= "$service,";
             }
+
+            $mandatoryServices = trim($mandatoryServices,',');
             $rules = $rules->merge([
                 'kitchen.1' => 'required|min:2',
                 'kitchen.2' => 'required|min:2',
