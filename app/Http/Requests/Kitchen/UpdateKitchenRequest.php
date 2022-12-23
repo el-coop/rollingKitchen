@@ -43,7 +43,6 @@ class UpdateKitchenRequest extends FormRequest {
         ]);
 
         if ($this->user()->can('update', $this->application) && $this->input('review')) {
-            $mandatoryServices = "required_array_keys:";
             $services = Service::where('mandatory', 1)->get()->pluck('id');
             foreach ($services as $service){
                 $mandatoryServices .= "$service,";
@@ -55,9 +54,7 @@ class UpdateKitchenRequest extends FormRequest {
                 'kitchen.4' => 'required|min:2',
                 'kitchen.5' => 'required|min:2',
                 'application' => 'required|array',
-                'application.8' => 'required|numeric|min:1250',
-                'application.9' => 'required|min:10',
-                'services' => "array" . ($mandatoryServices != "required_array_keys:" ? "|$mandatoryServices" : ''),
+                'services' => "array" . ($services->count() ? "|required_array_keys:$mandatoryServices" : ''),
                 'socket' => 'required|numeric',
                 'length' => 'required|numeric|min:1',
                 'width' => 'required|numeric|min:1',
