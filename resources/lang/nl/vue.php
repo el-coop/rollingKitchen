@@ -80,6 +80,7 @@ return [
     'overTwenty' => '25 % over omzet > € 20.000',
     'level' => 'Staffel',
     'revenueExcluding' => 'Omzet ex. BTW',
-    'percentOfRevenue' => '% van omzet'
+    'percentOfRevenue' => '% van omzet',
+    'stagingFee' => 'Slageld',
 
 ];

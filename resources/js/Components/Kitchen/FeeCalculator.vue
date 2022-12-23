@@ -3,43 +3,43 @@
         <slot name="services">
         </slot>
         <div class="box">
-            <label class="label" v-text="$translations.revenueIncluding"></label>
+            <h5 class="is-size-5 has-text-weight-bold" v-text="$translations.stagingFee"/>
+
+            <label class="label" v-text="$translations.revenueIncluding"/>
             <input type="number" min="0" class="input" v-model="estimate">
-            <div v-text="$translations.revenueExcluding  + ' €' + formatEstimation(estimateExcluding)"> </div>
+            <div v-text="$translations.revenueExcluding  + ' €' + formatEstimation(estimateExcluding)"/>
             <div class="table-container">
                 <table class="table is-fullwidth">
                     <thead>
                     <tr>
-                        <th v-text="`${$translations.level} ${$translations.revenueExcluding}`">
-                        </th>
-                        <th v-text="$translations.amount">
-                        </th>
+                        <th v-text="`${$translations.level} ${$translations.revenueExcluding}`" />
+                        <th v-text="$translations.amount" />
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <td v-text="$translations.firstTen"></td>
-                        <td v-text="'€' + formatEstimation(toTen)"></td>
+                        <td v-text="$translations.firstTen"/>
+                        <td v-text="'€' + formatEstimation(toTen)"/>
                     </tr>
                     <tr>
-                        <td v-text="$translations.tenToTwenty"></td>
-                        <td v-text="'€' + formatEstimation(tenToTwenty)"></td>
+                        <td v-text="$translations.tenToTwenty"/>
+                        <td v-text="'€' + formatEstimation(tenToTwenty)"/>
                     </tr>
                     <tr>
-                        <td v-text="$translations.overTwenty"></td>
-                        <td v-text="'€' + formatEstimation(overTwenty)"></td>
+                        <td v-text="$translations.overTwenty"/>
+                        <td v-text="'€' + formatEstimation(overTwenty)"/>
                     </tr>
                     </tbody>
                 </table>
             </div>
             <div class="is-flex is-justify-content-end">
-                <label class="label" v-text="$translations.total + ': €' + formatEstimation(revenueTotal)"></label>
+                <label class="label" v-text="$translations.total + ': €' + formatEstimation(revenueTotal)"/>
             </div>
         </div>
         <div class="is-flex is-justify-content-end">
             <div>
-                <div class="is-size-4" v-text="$translations.total + ': €' + formatEstimation(total)"></div>
-                <div  v-text="$translations.percentOfRevenue + ': ' + formatEstimation(percentageOfRevenue)"></div>
+                <div class="is-size-4" v-text="$translations.total + ': €' + formatEstimation(total)"/>
+                <div  v-text="$translations.percentOfRevenue + ': ' + formatEstimation(percentageOfRevenue)"/>
             </div>
         </div>
     </div>
