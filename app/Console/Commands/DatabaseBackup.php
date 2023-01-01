@@ -16,14 +16,14 @@ class DatabaseBackup extends Command {
 	 * @var string
 	 */
 	protected $signature = 'db:backup';
-	
+
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
 	protected $description = 'Backs up the database and mails it to Developers';
-	
+
 	/**
 	 * Create a new command instance.
 	 *
@@ -32,7 +32,7 @@ class DatabaseBackup extends Command {
 	public function __construct() {
 		parent::__construct();
 	}
-	
+
 	/**
 	 * Execute the console command.
 	 *
@@ -49,12 +49,12 @@ class DatabaseBackup extends Command {
             ->excludeTables('migrations')
             ->addExtraOption('--complete-insert')
 			->dumpToFile(storage_path('app/backups/backup.sql'));
-		
+
 		$this->sendBackup();
 	}
-	
+
 	private function sendBackup() {
-		Mail::to(Developer::first()->user)->cc(env('BACKUP_MAIL_DESTINATION'))->send(new BackupEmail);
+		Mail::mailer('backup_smtp')->to(Developer::first()->user)->cc(env('BACKUP_MAIL_DESTINATION'))->send(new BackupEmail);
 	}
-	
+
 }

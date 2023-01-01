@@ -26,7 +26,7 @@ class BackupEmail extends Mailable {
 	 * @return $this
 	 */
 	public function build() {
-		return $this->mailer('backup_smtp')->from(env('BACKUP_MAIL_FROM'))->subject(env('APP_NAME') . ' backup for ' . Carbon::now()->toDateString())->view('mail.raw')->with('body', 'Backup for ' . Carbon::now()->toDateString() . ' is attached')
+		return $this->from(env('BACKUP_MAIL_FROM'))->subject(env('APP_NAME') . ' backup for ' . Carbon::now()->toDateString())->view('mail.raw')->with('body', 'Backup for ' . Carbon::now()->toDateString() . ' is attached')
 			->attach(storage_path('app/backups/backup.sql'));
 	}
 
