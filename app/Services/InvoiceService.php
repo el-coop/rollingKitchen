@@ -78,16 +78,16 @@ class InvoiceService {
             ];
         });
 
-        $result = $result->concat($this->getApplicationData());
+//        $result = $result->concat($this->getApplicationData());
         return $result;
     }
 
     public function getOutstandingItems() {
         $result = [];
-        if (!$this->application->invoices()->count()) {
-            $result = $this->getApplicationData();
-
-        }
+//        if (!$this->application->invoices()->count()) {
+//            $result = $this->getApplicationData();
+//
+//        }
         $invoicedServices = $this->application->invoicedItems()->select('service_id', DB::raw('SUM(quantity) as quantity'))->where('service_id', '!=', null)->groupBy('service_id')->get();
         foreach ($this->application->services as $service) {
             $quanity = $service->pivot->quantity;
