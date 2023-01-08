@@ -190,11 +190,6 @@ class ApplicationInvoiceTest extends TestCase {
             $this->application->services()->attach($service, ['quantity' => rand(1, 3)]);
         });
 
-        $outstandingItems = [[
-            'quantity' => 1,
-            'item' => __('admin/invoices.fee', [], $language),
-            'unitPrice' => $this->application->data[8],
-        ]];
         foreach ($this->application->services as $service) {
             $outstandingItems[] = [
                 'quantity' => intval($service->pivot->quantity),
