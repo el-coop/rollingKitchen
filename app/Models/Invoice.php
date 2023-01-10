@@ -131,12 +131,14 @@ class Invoice extends Model {
             'label' => __('admin/invoices.message'),
             'type' => 'textarea',
             'value' => $message,
-        ], [
-            'name' => '2575split',
-            'label' => '',
-            'type' => 'checkbox',
-            'options' => ['2575split' => ['name' =>  __('admin/invoices.2575split'), 'checked' => true]],
-        ], [
+        ],
+//            [
+//            'name' => '2575split',
+//            'label' => '',
+//            'type' => 'checkbox',
+//            'options' => ['2575split' => ['name' =>  __('admin/invoices.2575split'), 'checked' => true]],
+//        ],
+            [
 			'name' => 'attachments',
 			'label' => __('admin/invoices.attachments'),
 			'type' => 'checkbox',
