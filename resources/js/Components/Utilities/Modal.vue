@@ -71,10 +71,14 @@ export default {
             return `calc(${percent}vh - ${this.pivotY * height}px)`;
         },
         left() {
-            const percent = this.pivotX * 100;
-            let width = parseFloat(this.contentWidth);
+            if(window.innerWidth > 800){
+                const percent = this.pivotX * 100;
+                let width = parseFloat(this.contentWidth);
 
-            return `calc(${percent}vw - ${this.pivotX * width}px)`;
+                return `calc(${percent}vw - ${this.pivotX * width}px)`;
+            }
+
+            return '-20px';
         }
     },
 
@@ -98,6 +102,7 @@ export default {
 .modal-content {
     max-height: unset;
     position: absolute;
+    max-width: 100vw;
 }
 
 .modal-background {
