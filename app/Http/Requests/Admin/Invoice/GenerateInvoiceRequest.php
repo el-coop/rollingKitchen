@@ -54,7 +54,11 @@ class GenerateInvoiceRequest extends FormRequest {
 
 
     public function commit() {
-        $number = Invoice::getNumber();
+        if ($this->has('send')){
+            $number = Invoice::getNumber();
+        } else {
+            $number = '';
+        }
         $prefix = app('settings')->get('registration_year');
 
         if ($this->input('file_download', false)) {
@@ -91,11 +95,12 @@ class GenerateInvoiceRequest extends FormRequest {
         if (!$this->application->number) {
             $this->application->setNumber();
         }
-        SendApplicationInvoice::dispatch($invoice, $this->input('recipient'), $this->input('subject'), $this->input('message'), $this->input('attachments', []), collect([
-            $this->input('bcc', false),
-            $this->filled('accountant') ? app('settings')->get('accountant_email') : false
-        ])->filter(), $this->has('2575split'));
-
+        if ($this->has('send')){
+            SendApplicationInvoice::dispatch($invoice, $this->input('recipient'), $this->input('subject'), $this->input('message'), $this->input('attachments', []), collect([
+                $this->input('bcc', false),
+                $this->filled('accountant') ? app('settings')->get('accountant_email') : false
+            ])->filter(), $this->has('2575split'));
+        }
         return $invoice->load('payments');
     }
 }

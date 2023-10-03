@@ -21,7 +21,7 @@
 					</div>
 					<dynamic-form
 							:url="`{{Request::url() }}/${object.owner_type.substring(11).toLowerCase()}/${object.owner_id}/${object.id}`"
-							:on-data-update="onUpdate" button-text="@lang('admin/invoices.send')"></dynamic-form>
+							:on-data-update="onUpdate"></dynamic-form>
 					<div class="mt-4">
                         <invoice-payments-modal #default="{open}" :from-url="true" :on-update="onUpdate" :field="object">
 			    			<button class="button is-fullwidth is-success"
