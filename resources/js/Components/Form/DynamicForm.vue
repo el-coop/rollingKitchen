@@ -167,7 +167,7 @@ export default {
             document.body.removeChild(tempLink);
             window.URL.revokeObjectURL(blobURL);
 
-        }
+        },
 
     },
 }

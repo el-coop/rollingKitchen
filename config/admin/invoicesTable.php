@@ -14,7 +14,7 @@ return [
     'cases' => [
         'WHEN debtors.name IS NULL AND users.name IS NULL THEN deleted_invoice_owners.name WHEN debtors.name IS NULL THEN users.name ELSE debtors.name END as name'
     ],
-    
+
     'fields' => [[
         'name' => 'id',
         'table' => 'invoices',
@@ -39,12 +39,12 @@ return [
         'visible' => false
     ], [
         'name' => 'formattedNumber',
-        'raw' => "CONCAT(prefix,'-',RIGHT(1000 + invoices.number,3)) as formattedNumber",
+        'raw' => "CASE WHEN invoices.number = 0 THEN NULL ELSE CONCAT(prefix,'-',RIGHT(1000 + invoices.number,3)) END as formattedNumber",
         'table' => 'invoices',
         'title' => 'admin/invoices.number',
         'filter' => false,
         'sortField' => 'number',
-    
+
     ], [
         'name' => 'nameOnInVoice',
         'raw' => 'IFNULL(users.name,IFNULL(debtors.name,deleted_invoice_owners.name)) as nameOnInVoice',
