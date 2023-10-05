@@ -85,8 +85,12 @@ class UpdateInvoiceRequest extends FormRequest {
         }
 
         $this->invoice->amount = $total;
+        $this->invoice->extra_amount = $this->extra_amount;
+        $this->invoice->extra_name = $this->extra_name;
+        $this->invoice->note = $this->note;
+
         $this->invoice->save();
-        if ($this->has('send')){
+        if ($this->has('send') || $this->invoice->number != 0){
             SendApplicationInvoice::dispatch($this->invoice, $this->input('recipient'), $this->input('subject'), $this->input('message'), $this->input('attachments', []), collect([
                 $this->input('bcc', false),
                 $this->filled('accountant') ? app('settings')->get('accountant_email') : false

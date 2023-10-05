@@ -109,6 +109,14 @@
                 </td>
                 <td>{{ $invoice->formatCurrency()->symbol }} {{ $invoice->taxPriceFormatted() }}</td>
             </tr>
+            @if($invoice->extraAmount != 0)
+                <tr>
+                    <td>
+                        <b>{{$invoice->extraName}}</b>
+                    </td>
+                    <td><b>{{ $invoice->formatCurrency()->symbol }} {{ $invoice->extraAmountFormatted() }}</b></td>
+                </tr>
+            @endif
             <tr>
                 <td>
                     <b>@lang('vue.total',[],$invoice->language)</b>

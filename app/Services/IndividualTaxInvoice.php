@@ -21,6 +21,8 @@ class IndividualTaxInvoice extends InvoiceFile {
     public $tax_type;
     public $split;
     public $tax;
+    public $extraAmount;
+    public $extraName;
 
     public static function make($name = 'Invoice') {
         return new self($name);
@@ -107,5 +109,15 @@ class IndividualTaxInvoice extends InvoiceFile {
     public function split($split) {
         $this->split = $split;
         return $this;
+    }
+
+    public function extra($extraAmount, $extraName){
+        $this->extraAmount = $extraAmount;
+        $this->extraName = $extraName;
+        return $this;
+    }
+
+    public function extraAmountFormatted() {
+        return $this->formatNumber($this->extraAmount);
     }
 }

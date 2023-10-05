@@ -36,7 +36,7 @@ class InvoiceService {
     }
 
 
-    public function generate($number, $items, $tax = null, $date = null) {
+    public function generate($number, $items, $extra, $tax = null, $date = null, ) {
         $settings = app('settings');
 
         $invoice = InvoiceFile::make()
@@ -46,6 +46,7 @@ class InvoiceService {
             ->number($number)
             ->taxType($tax !== null ? 'percentage' : 'individual')
             ->tax($tax)
+            ->extra($extra['amount'], $extra['name'])
             ->split($this->split)
             ->notes($settings->get("invoices_notes_{$this->language}"))
             ->business(str_replace(PHP_EOL, '<br>', $settings->get("invoices_business_details")))
