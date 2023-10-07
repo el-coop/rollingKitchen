@@ -80,7 +80,8 @@ class SendApplicationInvoice implements ShouldQueue {
 
         $invoiceService = new InvoiceService($application, $this->split);
         $number = $this->invoice->formattedNumber;
-        $invoiceService->generate($number, $this->invoice->items, $this->invoice->tax)
+        $extra = ['amount' => $this->invoice->extra_amount, 'name' => $this->invoice->extra_name];
+        $invoiceService->generate($number, $this->invoice->items,$extra, $this->invoice->tax )
             ->save("invoices/{$number}.pdf");
 
         $files = collect($this->attachments)->map(function($file) {

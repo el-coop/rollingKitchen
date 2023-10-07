@@ -88,7 +88,9 @@ class GenerateInvoiceRequest extends FormRequest {
             }
             $total += $item['quantity'] * $item['unitPrice'];
         }
-
+        $invoice->extra_name = $this->extra_name;
+        $invoice->extra_amount = $this->extra_amount;
+        $invoice->note = $this->note;
         $invoice->amount = $total;
         $invoice->save();
 

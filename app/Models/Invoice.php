@@ -58,7 +58,7 @@ class Invoice extends Model {
     }
 
     public function getTotalAttribute() {
-        return $this->amount + $this->taxAmount;
+        return $this->amount  + $this->taxAmount + $this->extra_amount;
 
     }
 
@@ -104,6 +104,12 @@ class Invoice extends Model {
         }
 
         $fullData = [[
+            'name' => 'note',
+            'label' => __('global.note'),
+            'type' => 'textarea',
+            'value' => $this->note
+        ],
+            [
             'name' => 'recipient',
             'label' => __('admin/invoices.recipient'),
             'type' => 'text',
@@ -151,14 +157,16 @@ class Invoice extends Model {
                 'value' => $items,
                 'individualTax' => $individualTax,
                 'options' => $options,
-                'taxOptions' => $taxOptions
+                'taxOptions' => $taxOptions,
+                'extra_name' => $this->extra_name,
+                'extra_amount' => $this->extra_amount
             ], [
                 'name' => 'help',
                 'label' => '',
                 'type' => 'help',
             ],
         ];
-        if ($this->number === 0) {
+        if ($this->number === 0 || $this->number === null) {
             $fullData[] = [
                 'name' => 'send',
                 'label' => false,

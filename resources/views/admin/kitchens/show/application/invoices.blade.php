@@ -24,7 +24,7 @@
 			   		height: '100%',
 			   		pivotY: 0,
 			   		pivotX: 1
-			   }" :form-from-url="true" form-button-text="@lang('admin/invoices.send')" :delete-allowed="false">
+			   }" :form-from-url="true" :delete-allowed="false">
     <template #actions="{field, onUpdate}">
         <invoice-payments-modal #default="{open}" :field="field" :on-update="onUpdate">
             <button @click="open" class="button is-success">@lang('admin/invoices.managePayments')</button>

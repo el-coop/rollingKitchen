@@ -33,9 +33,23 @@
                 <div class="column is-2"></div>
             </div>
             <div class="columns is-mobile">
+                <div class="column" :class="{'is-2' : header !== 'item'}" v-for="header in headers">
+                    <div v-if="header === 'unitPrice'">
+                        <input v-model="extra_amount" type="number" step="0.01" @keypress.enter.prevent
+                               name="extra_amount" class="input">
+                    </div>
+                    <div v-if="header === 'item'" class="is-fullwidth">
+                        <input v-model="extra_name" @keypress.enter.prevent
+                               name="extra_name" class="input">
+                    </div>
+                    <span v-if="header === 'total'" v-text="localNumber(extra_amount)"></span>
+                </div>
+                <div class="column is-2"></div>
+            </div>
+            <div class="columns is-mobile">
                 <div class="column" :class="headerClass(header)" v-for="header in headers">
                     <span v-if="header === 'item'" v-text="$translations.total"></span>
-                    <span v-if="header === 'total'" v-text="localNumber(totalSum * (1 + tax/100))"></span>
+                    <span v-if="header === 'total'" v-text="localNumber(totalSum * (1 + tax/100) + extra_amount)"></span>
                 </div>
                 <div class="column is-2"></div>
             </div>
@@ -75,12 +89,13 @@ export default {
             headers.splice(-2, 0, 'vat');
             tax = 0;
         }
-
         return {
             values,
             headers: headers,
             sum: [0],
-            tax
+            tax,
+            extra_name: this.field.extra_name,
+            extra_amount: this.field.extra_amount === null ? 0 : parseFloat(this.field.extra_amount)
         }
     },
 
@@ -111,7 +126,7 @@ export default {
             }
 
             return 'is-1';
-        }
+        },
     },
 
     computed: {

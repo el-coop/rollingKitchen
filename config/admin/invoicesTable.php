@@ -42,7 +42,7 @@ return [
         'raw' => "CASE WHEN invoices.number = 0 THEN NULL ELSE CONCAT(prefix,'-',RIGHT(1000 + invoices.number,3)) END as formattedNumber",
         'table' => 'invoices',
         'title' => 'admin/invoices.number',
-        'filter' => false,
+        'filterFields' => ['invoices.number'],
         'sortField' => 'number',
 
     ], [
@@ -57,7 +57,7 @@ return [
         'sortField' => 'prefix'
     ], [
         'name' => 'total',
-        'raw' => '(invoices.amount + (invoices.amount * invoices.tax/100)) as total',
+        'raw' => '(invoices.amount + (invoices.amount * invoices.tax/100) + invoices.extra_amount) as total',
         'title' => 'admin/invoices.amount',
         'sortField' => 'amount',
         'callback' => 'localNumber',
@@ -83,7 +83,7 @@ return [
         ],
     ], [
         'name' => 'amountLeft',
-        'raw' => '(invoices.amount + (invoices.amount * invoices.tax/100)) - COALESCE(SUM(invoice_payments.amount),0) as amountLeft',
+        'raw' => '(invoices.amount + (invoices.amount * invoices.tax/100) + invoices.extra_amount) - COALESCE(SUM(invoice_payments.amount),0) as amountLeft',
         'title' => 'admin/invoices.amountLeft',
         'callback' => 'localNumber',
         'filter' => false
