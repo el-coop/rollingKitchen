@@ -86,6 +86,11 @@ class Kitchen extends Model {
                 'type' => 'text',
                 'value' => $this->user->name
             ], [
+                'name' => 'note',
+                'label' => __('global.note'),
+                'type' => 'textarea',
+                'value' => $this->note
+            ],[
                 'name' => 'email',
                 'label' => __('global.email'),
                 'type' => 'text',

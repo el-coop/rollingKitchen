@@ -6,18 +6,18 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateKitchenRequest extends FormRequest {
 	private $kitchen;
-	
+
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
 	 * @return bool
 	 */
 	public function authorize() {
-		
+
 		$this->kitchen = $this->route('kitchen');
 		return $this->user()->can('update', $this->kitchen);
 	}
-	
+
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -32,18 +32,19 @@ class UpdateKitchenRequest extends FormRequest {
 			'kitchen' => 'required|array'
 		];
 	}
-	
+
 	public function commit() {
 		$this->kitchen->user->name = $this->input('name');
 		$this->kitchen->user->email = $this->input('email');
 		$this->kitchen->user->language = $this->input('language');
 		$this->kitchen->status = $this->input('status');
-		
-		$this->kitchen->data = $this->input('kitchen');
-		
+        $this->kitchen->note = $this->note;
+
+        $this->kitchen->data = $this->input('kitchen');
+
 		$this->kitchen->user->save();
 		$this->kitchen->save();
-		
+
 		return [
 			'id' => $this->kitchen->id,
 			'name' => $this->input('name'),
