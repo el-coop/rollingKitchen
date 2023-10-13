@@ -38,6 +38,7 @@ class CreateKitchenRequest extends FormRequest
         $user->name = $this->input('name');
         $user->language = $this->input('language');
         $user->password = '';
+        $kitchen->note = $this->note;
         $kitchen->save();
         $kitchen->user()->save($user);
         Password::broker()->sendResetLink(
