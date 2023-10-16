@@ -57,7 +57,7 @@ class GenerateInvoiceRequest extends FormRequest {
         if ($this->has('send')){
             $number = Invoice::getNumber();
         } else {
-            $number = '';
+            $number = 0;
         }
         $prefix = app('settings')->get('registration_year');
 

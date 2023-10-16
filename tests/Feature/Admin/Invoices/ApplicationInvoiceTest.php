@@ -34,6 +34,7 @@ class ApplicationInvoiceTest extends TestCase {
     private $invoices;
     private $payment;
     private $worker;
+    private $draftInvoice;
 
     public function setUp(): void {
         parent::setUp();
@@ -73,6 +74,19 @@ class ApplicationInvoiceTest extends TestCase {
             $invoice->amount = $total;
             $invoice->save();
         });
+        $this->draftInvoice = Invoice::factory()->make(['number' => 0]);
+        $this->application->invoices()->save($this->draftInvoice);
+        $invoiceItems = rand(1, 4);
+        $total = 0;
+        for ($j = 0; $j < $invoiceItems; $j++) {
+            $invoiceItem = InvoiceItem::factory()->make();
+            $this->draftInvoice->items()->save($invoiceItem);
+            $total = $invoiceItem->unit_price * $invoiceItem->quantity;
+        }
+
+        $this->draftInvoice->amount = $total;
+        $this->draftInvoice->save();
+
         $this->payment = InvoicePayment::factory()->make();
         $this->invoices->first()->payments()->save($this->payment);
 
@@ -342,6 +356,10 @@ class ApplicationInvoiceTest extends TestCase {
                 'unitPrice' => 2,
                 'item' => 'test2',
             ]],
+            'note' => 'test',
+            'send' => true,
+            'extra_amount' => 5,
+            'extra_name' => 'test'
         ])->assertSuccessful()->assertJson([
             'prefix' => $prefix,
             'number' => $number,
@@ -349,8 +367,11 @@ class ApplicationInvoiceTest extends TestCase {
             'owner_id' => $this->application->id,
             'owner_type' => Application::class,
             'amount' => 5,
-            'total' => 6.05,
+            'total' => 11.05,
             'taxAmount' => 1.05,
+            'note' => 'test',
+            'extra_amount' => 5,
+            'extra_name' => 'test'
         ]);
 
         $this->assertDatabaseHas('invoices', [
@@ -398,6 +419,10 @@ class ApplicationInvoiceTest extends TestCase {
                 'unitPrice' => 2,
                 'item' => 'test2',
             ]],
+            'note' => 'test',
+            'send' => true,
+            'extra_amount' => 5,
+            'extra_name' => 'test'
         ])->assertSuccessful()->assertJson([
             'prefix' => $prefix,
             'number' => $number,
@@ -405,8 +430,11 @@ class ApplicationInvoiceTest extends TestCase {
             'owner_id' => $this->application->id,
             'owner_type' => Application::class,
             'amount' => 7,
-            'total' => 8.47,
+            'total' => 13.47,
             'taxAmount' => 1.47,
+            'extra_amount' => 5,
+            'extra_name' => 'test',
+            'note' => 'test'
         ]);
 
         $this->assertDatabaseHas('invoices', [
@@ -449,6 +477,10 @@ class ApplicationInvoiceTest extends TestCase {
                 'unitPrice' => 2,
                 'item' => 'test2',
             ]],
+            'note' => 'test',
+            'send' => true,
+            'extra_amount' => 5,
+            'extra_name' => 'test'
         ])->assertSuccessful()->assertJson([
             'prefix' => $prefix,
             'number' => $number,
@@ -456,6 +488,9 @@ class ApplicationInvoiceTest extends TestCase {
             'owner_id' => $this->application->id,
             'owner_type' => Application::class,
             'amount' => 6,
+            'extra_amount' => 5,
+            'extra_name' => 'test',
+            'note' => 'test'
         ]);
 
         $this->assertDatabaseHas('invoices', [
@@ -757,7 +792,6 @@ class ApplicationInvoiceTest extends TestCase {
             'total' => 6.05,
             'taxAmount' => 1.05,
         ]);
-
         $this->assertDatabaseHas('invoice_items', [
             'quantity' => 1,
             'unit_price' => 1,
@@ -1097,6 +1131,10 @@ class ApplicationInvoiceTest extends TestCase {
                 'unitPrice' => 1,
                 'item' => $service->name_en,
             ]],
+            'note' => 'test',
+            'send' => true,
+            'extra_amount' => 5,
+            'extra_name' => 'test'
         ])->assertSuccessful()->assertJson([
             'prefix' => $prefix,
             'number' => $number,
@@ -1104,8 +1142,11 @@ class ApplicationInvoiceTest extends TestCase {
             'owner_id' => $this->application->id,
             'owner_type' => Application::class,
             'amount' => -2,
-            'total' => -2.42,
+            'total' => 2.58,
             'taxAmount' => -0.42,
+            'extra_amount' => 5,
+            'extra_name' => 'test',
+            'note' => 'test'
         ]);
 
         $this->assertDatabaseHas('invoices', [
@@ -1158,6 +1199,10 @@ class ApplicationInvoiceTest extends TestCase {
                 'unitPrice' => 1,
                 'item' => $service->name_en,
             ]],
+            'note' => 'test',
+            'send' => true,
+            'extra_amount' => 5,
+            'extra_name' => 'test'
         ])->assertSuccessful()->assertJson([
             'prefix' => $prefix,
             'number' => $number,
@@ -1165,8 +1210,12 @@ class ApplicationInvoiceTest extends TestCase {
             'owner_id' => $this->application->id,
             'owner_type' => Application::class,
             'amount' => -1,
-            'total' => -1.21,
+            'total' => 3.79,
             'taxAmount' => -0.21,
+            'extra_amount' => 5,
+            'extra_name' => 'test',
+            'note' => 'test'
+
         ]);
 
         $this->assertDatabaseHas('invoices', [
@@ -1186,4 +1235,118 @@ class ApplicationInvoiceTest extends TestCase {
 
         $this->assertEquals(1, $this->application->serviceQuantity($service));
     }
+
+    public function test_admin_can_save_invoice_as_draft() {
+        Queue::fake();
+
+        $prefix = app('settings')->get('registration_year');
+
+        $this->actingAs($this->user)->post(action('Admin\ApplicationInvoiceController@store', $this->application), [
+            'tax' => 21,
+            'recipient' => $this->kitchen->email,
+            'bcc' => $this->user->email,
+            'message' => 'test',
+            'subject' => 'test subject',
+            'items' => [[
+                'quantity' => 1,
+                'unitPrice' => 1,
+                'item' => 'test',
+            ], [
+                'quantity' => 2,
+                'unitPrice' => 2,
+                'item' => 'test2',
+            ]],
+            'note' => 'test',
+            'extra_amount' => 5,
+            'extra_name' => 'test'
+        ])->assertSuccessful()->assertJson([
+            'prefix' => $prefix,
+            'number' => 0,
+            'tax' => 21,
+            'owner_id' => $this->application->id,
+            'owner_type' => Application::class,
+            'amount' => 5,
+            'total' => 11.05,
+            'taxAmount' => 1.05,
+            'note' => 'test',
+            'extra_amount' => 5,
+            'extra_name' => 'test'
+        ]);
+
+        $this->assertDatabaseHas('invoices', [
+            'prefix' => $prefix,
+            'number' => 0,
+            'tax' => 21,
+            'owner_id' => $this->application->id,
+            'owner_type' => Application::class,
+            'amount' => 5,
+        ]);
+
+        $this->assertDatabaseHas('applications', [
+            'id' => $this->application->id,
+            'number' => 1,
+        ]);
+
+        Queue::assertNothingPushed();
+    }
+
+    public function test_admin_can_edit_draft_invoice() {
+
+        Queue::fake();
+
+        $prefix = app('settings')->get('registration_year');
+
+        $this->actingAs($this->user)->patch(action('Admin\ApplicationInvoiceController@update', [
+            'application' => $this->application,
+            'invoice' => $this->draftInvoice,
+        ]), [
+            'tax' => 21,
+            'recipient' => $this->kitchen->email,
+            'bcc' => $this->user->email,
+            'message' => 'test',
+            'subject' => 'test subject',
+            'items' => [[
+                'quantity' => 1,
+                'unitPrice' => 1,
+                'item' => 'test',
+            ], [
+                'quantity' => 2,
+                'unitPrice' => 2,
+                'item' => 'test2',
+            ]],
+        ])->assertSuccessful()->assertJson([
+            'prefix' => $prefix,
+            'number' => 0,
+            'tax' => 21,
+            'owner_id' => $this->application->id,
+            'owner_type' => Application::class,
+            'amount' => 5,
+            'total' => 6.05,
+            'taxAmount' => 1.05,
+        ]);
+        $this->assertDatabaseHas('invoice_items', [
+            'quantity' => 1,
+            'unit_price' => 1,
+            'name' => 'test',
+            'invoice_id' => $this->draftInvoice->id,
+        ]);
+
+        $this->assertDatabaseHas('invoice_items', [
+            'quantity' => 2,
+            'unit_price' => 2,
+            'name' => 'test2',
+            'invoice_id' => $this->draftInvoice->id,
+        ]);
+
+        $this->assertDatabaseHas('invoices', [
+            'id' => $this->draftInvoice->id,
+            'number' => 0,
+            'tax' => 21,
+            'amount' => 5,
+        ]);
+        $this->assertCount(2, $this->draftInvoice->items);
+        Queue::assertNothingPushed();
+    }
+
+
 }
