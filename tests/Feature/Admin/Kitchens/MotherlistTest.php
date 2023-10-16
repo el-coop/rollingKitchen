@@ -215,6 +215,7 @@ class MotherlistTest extends TestCase {
 					'test' => 'best',
 					'jest' => 'rest',
 				],
+                'note' => 'test'
 			])->assertSuccessful();
 
 		$this->assertDatabaseHas('users', [
@@ -229,7 +230,8 @@ class MotherlistTest extends TestCase {
 		$this->assertDatabaseHas('kitchens', [
 			'id' => $kitchen->id,
 			'status' => 'motherlist',
-		]);
+            'note' => 'test'
+        ]);
 
 		$updatedKitchen = Kitchen::find($kitchen->id);
 		$this->assertEquals(collect([

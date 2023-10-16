@@ -18,7 +18,7 @@ class InvoiceFactory extends Factory
     {
         return [
             'prefix' => app('settings')->get('registration_year'),
-            'number' => \App\Models\Invoice::count(),
+            'number' => \App\Models\Invoice::count() + 1,
             'tax' => 21
         ];
     }
