@@ -6,6 +6,7 @@ use App\Models\Traits\HasFields;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 
 class Kitchen extends Model {
     use HasFactory;
@@ -115,7 +116,11 @@ class Kitchen extends Model {
                 'value' => $this->status
             ]
         ]);
-
+        if (Auth::user()->user_type == Kitchen::class){
+            $fullData = $fullData->filter(function ($item){
+               $item['name'] != 'note';
+            });
+        }
         return $fullData->concat($this->getFieldsData());
     }
 

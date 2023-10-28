@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('extra_name')->nullable();
             $table->decimal('extra_amount', 10, 2)->default(0);
             $table->text('note')->nullable();
+            $table->string('number_datatable')->nullable();
         });
     }
 
