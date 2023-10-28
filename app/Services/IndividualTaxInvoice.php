@@ -74,7 +74,7 @@ class IndividualTaxInvoice extends InvoiceFile {
 
 
     public function totalPriceFormatted($partial = 1, $roundDown = false) {
-        return $this->formatNumber(($this->taxPrice() + $this->subTotalPrice()) * $partial - ($roundDown ? 0.005 : 0));
+        return $this->formatNumber(($this->taxPrice() + $this->subTotalPrice() + $this->extraAmount) * $partial - ($roundDown ? 0.005 : 0));
     }
 
 

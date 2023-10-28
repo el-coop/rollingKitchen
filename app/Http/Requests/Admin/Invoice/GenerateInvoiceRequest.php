@@ -54,7 +54,8 @@ class GenerateInvoiceRequest extends FormRequest {
 
 
     public function commit() {
-        if ($this->has('send')){
+        $toSend = $this->has('send');
+        if ($toSend){
             $number = Invoice::getNumber();
         } else {
             $number = 0;
@@ -70,6 +71,15 @@ class GenerateInvoiceRequest extends FormRequest {
         $invoice->prefix = $prefix;
         $invoice->number = $number;
         $invoice->tax = $this->input('tax');
+        if ($toSend){
+            if (strlen($number) == 1){
+                $invoice->number_datatable = "$prefix-00$number";
+            } elseif (strlen($number) == 2){
+                $invoice->number_datatable = "$prefix-0$number";
+            } else {
+                $invoice->number_datatable = "$prefix-$number";
+            }
+        }
         $this->application->invoices()->save($invoice);
         $total = 0;
         foreach ($this->input('items') as $item) {
@@ -97,7 +107,7 @@ class GenerateInvoiceRequest extends FormRequest {
         if (!$this->application->number) {
             $this->application->setNumber();
         }
-        if ($this->has('send')){
+        if ($toSend){
             SendApplicationInvoice::dispatch($invoice, $this->input('recipient'), $this->input('subject'), $this->input('message'), $this->input('attachments', []), collect([
                 $this->input('bcc', false),
                 $this->filled('accountant') ? app('settings')->get('accountant_email') : false

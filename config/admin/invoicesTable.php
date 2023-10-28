@@ -38,11 +38,10 @@ return [
         'table' => 'invoices',
         'visible' => false
     ], [
-        'name' => 'formattedNumber',
-        'raw' => "CASE WHEN invoices.number = 0 THEN NULL ELSE CONCAT(prefix,'-',RIGHT(1000 + invoices.number,3)) END as formattedNumber",
+        'name' => 'number_datatable',
         'table' => 'invoices',
         'title' => 'admin/invoices.number',
-        'filterFields' => ['invoices.number'],
+        'filterFields' => ['invoices.number_datatable'],
         'sortField' => 'number',
 
     ], [
