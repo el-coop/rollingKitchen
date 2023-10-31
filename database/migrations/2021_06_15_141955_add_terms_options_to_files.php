@@ -24,7 +24,9 @@ class AddTermsOptionsToFiles extends Migration {
      */
     public function down() {
         Schema::table('pdfs', function(Blueprint $table) {
-            //
+            $table->dropColumn('terms_and_conditions_nl');
+            $table->dropColumn('terms_and_conditions_en');
+
         });
     }
 }

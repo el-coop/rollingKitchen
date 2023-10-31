@@ -26,7 +26,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('services', function (Blueprint $table) {
-            //
+            $table->dropColumn('mandatory');
+
         });
     }
 };
