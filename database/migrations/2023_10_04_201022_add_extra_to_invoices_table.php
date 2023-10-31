@@ -29,7 +29,11 @@ return new class extends Migration
     public function down()
     {
         Schema::table('invoices', function (Blueprint $table) {
-            //
+            $table->dropColumn('extra_name');
+            $table->dropColumn('extra_amount');
+            $table->dropColumn('note');
+            $table->dropColumn('number_datatable');
+
         });
     }
 };
