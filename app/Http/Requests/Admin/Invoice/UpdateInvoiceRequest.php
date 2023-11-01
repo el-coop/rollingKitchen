@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin\Invoice;
 
 use App\Jobs\SendApplicationInvoice;
+use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\Service;
 use App\Services\InvoiceService;
@@ -56,6 +57,18 @@ class UpdateInvoiceRequest extends FormRequest {
     }
 
     public function commit() {
+        if ($this->has('send') && $this->invoice->number == 0){
+            $number = Invoice::getNumber();
+            $prefix = $this->invoice->prefix;
+            if (strlen($number) == 1){
+                $this->invoice->number_datatable = "$prefix-00$number";
+            } elseif (strlen($number) == 2){
+                $this->invoice->number_datatable = "$prefix-0$number";
+            } else {
+                $this->invoice->number_datatable = "$prefix-$number";
+            }
+            $this->invoice->number = $number;
+        }
         $this->invoice = $this->route('invoice');
         $application = $this->invoice->owner;
         $number = $this->invoice->formattedNumber;
