@@ -26,7 +26,8 @@ class AddOrderToPdfsTable extends Migration
     public function down()
     {
         Schema::table('pdfs', function (Blueprint $table) {
-            //
+            $table->dropColumn('order');
+
         });
     }
 }
