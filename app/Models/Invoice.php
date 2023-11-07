@@ -31,7 +31,7 @@ class Invoice extends Model {
     static function getNumber() {
 
         $year = app('settings')->get('registration_year');
-        $number = static::where('prefix', $year)->count() + 1;
+        $number = static::where('prefix', $year)->where('number', '!=', 0)->count() + 1;
         $padding = '';
         if ($number < 100) {
             $padding .= 0;
