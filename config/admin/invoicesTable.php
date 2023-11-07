@@ -36,7 +36,7 @@ return [
             'yes' => ['!=', 0],
             'no' => ['==', 0],
         ],
-        'title' => 'admin.invoice.sent',
+        'title' => 'admin/invoices.sent',
         'callback' => 'numToBoolTag'
     ], [
         'name' => 'amount',
