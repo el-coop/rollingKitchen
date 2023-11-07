@@ -36,7 +36,7 @@ class SendDebtorInvoice implements ShouldQueue {
 	 * @var Collection
 	 */
 	private $bcc;
-	
+
 	/**
 	 * Create a new job instance.
 	 *
@@ -54,7 +54,7 @@ class SendDebtorInvoice implements ShouldQueue {
 		$this->message = $message;
 		$this->bcc = $bcc;
 	}
-	
+
 	/**
 	 * Execute the job.
 	 *
@@ -63,20 +63,22 @@ class SendDebtorInvoice implements ShouldQueue {
 	public function handle() {
 		$owner = $this->invoice->owner;
 		$language = $owner->language;
-		
-		
+
+
 		$invoiceService = new InvoiceService($owner);
 		$number = $this->invoice->formattedNumber;
-		$invoiceService->generate($number, $this->invoice->items)
+        $extra = ['amount' => $this->invoice->extra_amount, 'name' => $this->invoice->extra_name];
+
+        $invoiceService->generate($number, $this->invoice->items, $extra)
 			->save("invoices/{$number}.pdf");
-		
-		
+
+
 		Notification::route('mail', $this->recipient)
 			->notify((new InvoiceSent($this->subject, $owner->name, $this->message, $language, [[
 				'file' => storage_path("app/invoices/{$number}.pdf"),
 				'name' => "{$number}.pdf"
 			]], $this->bcc->toArray()))->locale($language));
-		
+
 		Storage::delete("invoices/{$number}.pdf");
 	}
 }
