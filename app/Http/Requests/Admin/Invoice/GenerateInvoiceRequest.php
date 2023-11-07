@@ -30,7 +30,7 @@ class GenerateInvoiceRequest extends FormRequest {
             'items.*.*' => 'required',
             'tax' => 'required|in:0,21'
         ]);
-        if (!$this->input('file_download', false)) {
+        if (!$this->input('file_download', false) && $this->has('send')) {
             $rules = $rules->merge([
                 'recipient' => 'required|email',
                 'bcc' => 'nullable|email',

@@ -34,7 +34,8 @@ return [
     '2575split' => 'Split to 25% and 75% TBD',
     'terms' => 'Betalingen',
     'payNow' => '25% Aanbetaling ',
-    'payLater' => '75% Restantbetaling'
+    'payLater' => '75% Restantbetaling',
+    'sent' => 'TBD'
 
 
 ];

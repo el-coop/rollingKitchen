@@ -345,8 +345,9 @@ class DeletedInvoiceOwnerTest extends TestCase {
 			'bcc' => 'test',
 			'message' => '',
 			'subject' => '',
-			'items' => 'test'
-		])->assertRedirect()->assertSessionHasErrors(['recipient', 'bcc', 'message', 'subject', 'items']);
+			'items' => 'test',
+            'send' => true
+        ])->assertRedirect()->assertSessionHasErrors(['recipient', 'bcc', 'message', 'subject', 'items']);
 
 		Queue::assertNotPushed(SendDebtorInvoice::class);
 	}

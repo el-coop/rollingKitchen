@@ -521,6 +521,7 @@ class ApplicationInvoiceTest extends TestCase {
             'message' => '',
             'subject' => '',
             'items' => 'test',
+            'send' => true
         ])->assertRedirect()->assertSessionHasErrors(['tax', 'recipient', 'bcc', 'message', 'subject', 'items']);
 
         Queue::assertNotPushed(SendApplicationInvoice::class);
@@ -983,6 +984,7 @@ class ApplicationInvoiceTest extends TestCase {
             'message' => '',
             'subject' => '',
             'items' => 'test',
+            'send' => true
         ])->assertRedirect()->assertSessionHasErrors(['tax', 'recipient', 'bcc', 'message', 'subject', 'items']);
 
         Queue::assertNotPushed(SendApplicationInvoice::class);

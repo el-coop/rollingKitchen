@@ -28,7 +28,16 @@ return [
     ], [
         'name' => 'number',
         'table' => 'invoices',
-        'visible' => false
+        'filter' => [
+            'yes' => 'global.yes',
+            'no' => 'global.no'
+        ],
+        'filterDefinitions' => [
+            'yes' => ['!=', 0],
+            'no' => ['==', 0],
+        ],
+        'title' => 'admin.invoice.sent',
+        'callback' => 'numToBoolTag'
     ], [
         'name' => 'amount',
         'table' => 'invoices',

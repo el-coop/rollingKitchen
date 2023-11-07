@@ -34,4 +34,5 @@ return [
     'terms' => 'Terms of payment',
     'payNow' => '25% Down payment',
     'payLater' => '75% Remaining amount',
+    'sent' => 'Sent'
 ];
