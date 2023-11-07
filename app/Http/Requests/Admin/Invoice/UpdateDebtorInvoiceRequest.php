@@ -31,7 +31,7 @@ class UpdateDebtorInvoiceRequest extends FormRequest {
             'items' => 'required|array|min:1',
             'items.*.*' => 'required',
         ]);
-        if (!$this->input('file_download', false)) {
+        if (!$this->input('file_download', false) && $this->has('send')) {
             $rules = $rules->merge([
                 'recipient' => 'required|email',
                 'bcc' => 'nullable|email',

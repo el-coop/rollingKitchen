@@ -40,7 +40,6 @@
 				this.submitting = false;
 				this.alternativeSubmitting = false;
 				if (response.status === 200 || response.status === 201) {
-					console.log('here');
 					this.$toast.success(this.$translations.updateSuccess);
 				}
 			},

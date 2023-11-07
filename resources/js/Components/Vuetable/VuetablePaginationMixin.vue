@@ -72,7 +72,6 @@ export default {
       this.$emit(this.eventPrefix+'change-page', page)
     },
     isCurrentPage (page) {
-        console.log(page, this.tablePagination.current_page);
       return page === this.tablePagination.current_page
     },
     setPaginationData (tablePagination) {
