@@ -24,6 +24,7 @@
 					   @if(! $application->isOpen())  onclick="return false;" @endif
 					   name="services[{{$service->id}}]" {{ $application->hasService($service) || $service->mandatory == 1 ? 'checked' : '' }}
                         {{$service->mandatory ? 'required' : ''}}
+                    @change="(e) => this.$refs.calculator.log(e, {{json_encode($service)}})"
                 >
 			</label>
 		</div>

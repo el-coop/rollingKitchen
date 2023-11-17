@@ -3,7 +3,7 @@
         {{app('settings')->get('application_calculator_model_text_' . App::getLocale())}}
     </div>
 </div>
-<fee-calculator :service-total="{{$kitchen->servicesTotal}}">
+<fee-calculator init ref="calculator" :init-services="{{json_encode($kitchen->servicesCalculationTable)}}"  :init-service-total="{{$kitchen->servicesTotal}}">
     <template #services>
         <div class="box">
             <label class="label">@lang('admin/services.services')</label>

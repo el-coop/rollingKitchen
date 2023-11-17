@@ -1,7 +1,31 @@
 <template>
     <div>
-        <slot name="services">
-        </slot>
+        <div class="box">
+            <label class="label" v-text="this.$translations.services"></label>
+            <div class="table-container">
+                <table class="table is-fullwidth">
+                    <thead>
+                    <tr>
+                        <th v-text="this.$translations.name"></th>
+                        <th v-text="this.$translations.amount"></th>
+                        <th v-text="this.$translations.number" class="is-hidden-phone"></th>
+                        <th v-text="this.$translations.total"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="service in this.services" :key="service.id">
+                        <td v-text="service.service"></td>
+                        <td v-text="service.price"></td>
+                        <td v-text="service.amount" class="is-hidden-phone"></td>
+                        <td v-text="service.total"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="is-flex is-justify-content-end">
+                <label class="label">{{this.$translations.total}} @lang('vue.excludingVAT'):</label>
+            </div>
+        </div>
         <div class="box">
             <h5 class="is-size-5 has-text-weight-bold" v-text="$translations.stagingFee"/>
 
@@ -12,8 +36,8 @@
                 <table class="table is-fullwidth">
                     <thead>
                     <tr>
-                        <th v-text="`${$translations.level} ${$translations.revenueExcluding}`" />
-                        <th v-text="$translations.amount" />
+                        <th v-text="`${$translations.level} ${$translations.revenueExcluding}`"/>
+                        <th v-text="$translations.amount"/>
                     </tr>
                     </thead>
                     <tbody>
@@ -33,13 +57,15 @@
                 </table>
             </div>
             <div class="is-flex is-justify-content-end">
-                <label class="label" v-text="$translations.total + ': €' + formatEstimation(revenueTotal) + ' ' +$translations.excludingVAT"/>
+                <label class="label"
+                       v-text="$translations.total + ': €' + formatEstimation(revenueTotal) + ' ' +$translations.excludingVAT"/>
             </div>
         </div>
         <div class="is-flex is-justify-content-end">
             <div>
-                <div class="is-size-4" v-text="$translations.total + ': €' + formatEstimation(total) + ' ' +$translations.excludingVAT"/>
-                <div  v-text="$translations.percentOfRevenue + ': ' + formatEstimation(percentageOfRevenue)"/>
+                <div class="is-size-4"
+                     v-text="$translations.total + ': €' + formatEstimation(total) + ' ' +$translations.excludingVAT"/>
+                <div v-text="$translations.percentOfRevenue + ': ' + formatEstimation(percentageOfRevenue)"/>
             </div>
         </div>
     </div>
@@ -49,19 +75,24 @@
 export default {
     name: "FeeCalculator",
     props: {
-        serviceTotal: {
+        initServiceTotal: {
             required: true,
             type: Number
+        },
+        initServices: {
+            type:  Array,
+            required: true
         }
     },
     data() {
         return {
-            estimate: 0
+            estimate: 0,
+            services: this.initServices,
         }
     },
     computed: {
-        estimateExcluding(){
-          return this.estimate / 1.09;
+        estimateExcluding() {
+            return this.estimate / 1.09;
         },
         toTen() {
             if (this.estimateExcluding < 10000) {
@@ -86,17 +117,24 @@ export default {
                 return (this.estimateExcluding - 20000) * 0.25;
             }
         },
-        revenueTotal(){
+        revenueTotal() {
             return this.overTwenty + this.tenToTwenty + this.toTen;
         },
         total() {
-            return  this.revenueTotal + this.serviceTotal;
+            return this.revenueTotal + this.serviceTotal;
         },
-        percentageOfRevenue(){
-            if (this.estimate === 0){
+        percentageOfRevenue() {
+            if (this.estimate === 0) {
                 return 0
             }
-            return  (this.total / this.estimate) * 100;
+            return (this.total / this.estimate) * 100;
+        },
+        serviceTotal(){
+            let total = 0;
+            this.services.forEach(function(service){
+                total = total + service.priceUnparsed * service.amount;
+            })
+            return total;
         }
     },
     methods: {

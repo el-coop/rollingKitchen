@@ -82,5 +82,8 @@ return [
     'revenueExcluding' => 'Omzet ex. BTW',
     'percentOfRevenue' => '% van omzet',
     'stagingFee' => 'Stageld',
-    'excludingVAT' => 'ex BTW'
+    'excludingVAT' => 'ex BTW',
+    'number' => 'Nummer',
+    'services' => 'Services',
+
 ];

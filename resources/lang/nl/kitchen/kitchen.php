@@ -5,7 +5,7 @@ return [
 	'application' => 'Seizoensgegevens',
 	'submitConfirmSubtitle' => 'Je kunt de gegevens niet meer aanpassen.',
 	'submitConfirmTitle' => 'Indienen voor beoordeling?',
-	'deleteConfirmSubtitle' => 'Dit verwijderd alle informatie en is onomkeerbaar',
+	'deleteConfirmSubtitle' => 'Hiermee verwijder je je hele account en is onomkeerbaar',
 	'deleteConfirmTitle' => 'Alles verwijderen?',
 	'submitReview' => 'Indienen voor beoordeling',
 	'businessInformation' => 'Bedrijfsgegevens',
