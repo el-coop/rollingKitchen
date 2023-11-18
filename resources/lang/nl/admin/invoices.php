@@ -31,11 +31,11 @@ return [
     'paid' => 'Betaald',
     'notPaid' => 'Niet betaald',
     'partially Paid' => 'Niet volledig betaald',
-    '2575split' => 'Split to 25% and 75% TBD',
+    '2575split' => 'Split to 25% and 75%',
     'terms' => 'Betalingen',
     'payNow' => '25% Aanbetaling ',
     'payLater' => '75% Restantbetaling',
-    'sent' => 'TBD'
+    'sent' => 'Verzonden'
 
 
 ];
