@@ -33,5 +33,6 @@ return [
     'terms1' => 'I accept the',
     'terms2' => 'terms and conditions',
     'termsRequired' => 'You must accept the terms and conditions',
-    'note' => 'Note'
+    'note' => 'Note',
+    'account' => 'Account'
 ];

@@ -135,6 +135,9 @@ class Kitchen extends Model {
             $application->length = 0;
             $application->width = 0;
             $this->applications()->save($application);
+            foreach (Service::where('mandatory', true)->get() as $service){
+                $application->services()->save($service);
+            }
             $this->refresh();
         }
         return $application;
@@ -171,9 +174,10 @@ class Kitchen extends Model {
         return $this->getCurrentApplication()->services->map(function($service) use ($decimalPoint, $thousandSeparator) {
             return [
                 'service' => $service->{'name_' . App::getLocale()},
-                'price' => "€ " . number_format($service->price, 2, $decimalPoint, $thousandSeparator),
+                'price' => $service->price,
                 'amount' => $service->pivot->quantity,
-                'total' => "€ " . number_format($service->price * $service->pivot->quantity, 2, $decimalPoint, $thousandSeparator)
+                'total' => $service->price * $service->pivot->quantity,
+                'id' => $service->id,
             ];
         });
     }

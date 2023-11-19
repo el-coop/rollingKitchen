@@ -82,5 +82,7 @@ return [
     'revenueExcluding' => 'Revenue ex. VAT',
     'percentOfRevenue' => '% Of Revenue',
     'stagingFee' => 'Staging fee',
-    'excludingVAT' => 'ex VAT'
+    'excludingVAT' => 'ex VAT',
+    'number' => 'Number',
+    'services' => 'Services',
 ];
