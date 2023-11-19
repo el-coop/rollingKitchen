@@ -136,7 +136,7 @@ class Kitchen extends Model {
             $application->width = 0;
             $this->applications()->save($application);
             foreach (Service::where('mandatory', true)->get() as $service){
-                $application->services()->save($service);
+                $application->services()->save($service, ['quantity' => 1]);
             }
             $this->refresh();
         }
