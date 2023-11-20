@@ -117,8 +117,8 @@ class Kitchen extends Model {
             ]
         ]);
         if (Auth::user()->user_type == Kitchen::class){
-            $fullData = $fullData->filter(function ($item){
-               $item['name'] != 'note';
+            $fullData = $fullData->reject(function ($item){
+                return $item['name'] === 'note';
             });
         }
         return $fullData->concat($this->getFieldsData());
