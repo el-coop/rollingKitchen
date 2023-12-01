@@ -67,7 +67,11 @@
                     return item.id == image.id;
                 });
                 if (this.active == index){
-                    this.active = 0;
+                    if (index != 0){
+                        this.active = 0;
+                    } else {
+                        this.active = 1;
+                    }
                 }
                 this.dataPhotos.splice(index, 1);
             }
