@@ -1,6 +1,6 @@
 <template>
 	<div class="card">
-		<div v-for="(photo, index) in photos" :key="index" v-show="active == index" class="card-image">
+		<div v-for="(photo, index) in dataPhotos" :key="index" v-show="active == index" class="card-image">
 			<figure class="image is-5by3">
 				<a v-if="photo.file.indexOf('.pdf') > 1"
 				   :href="photo.url" target="_blank"
@@ -17,14 +17,14 @@
 				</a>
 			</figure>
 		</div>
-		<div v-if="Object.keys(photos).length > 0">
+		<div v-if="Object.keys(dataPhotos).length > 0">
 			<div class="arrow previous" @click="changePhoto(-1)">
-				<div v-if="Object.keys(photos).length > 1">
+				<div v-if="Object.keys(dataPhotos).length > 1">
                     &lt;
 				</div>
 			</div>
 			<div class="arrow next" @click="changePhoto(+1)">
-				<div v-if="Object.keys(photos).length > 1">
+				<div v-if="Object.keys(dataPhotos).length > 1">
                     >
 				</div>
 			</div>
@@ -44,7 +44,8 @@
 
 		data() {
 			return {
-				active: 0
+				active: 0,
+                dataPhotos: this.photos
 			}
 		},
 
@@ -52,12 +53,28 @@
 			changePhoto(direction) {
 				this.active += direction;
 				if (this.active < 0) {
-					this.active = this.photos.length - 1;
+					this.active = this.dataPhotos.length - 1;
 				}
-				if (this.active > this.photos.length - 1) {
+				if (this.active > this.dataPhotos.length - 1) {
 					this.active = 0;
 				}
-			}
+			},
+            addImage(image){
+                this.dataPhotos.push(image);
+            },
+            removeImage(image){
+                const index = this.dataPhotos.findIndex((item) => {
+                    return item.id == image.id;
+                });
+                if (this.active == index){
+                    if (index != 0){
+                        this.active = 0;
+                    } else {
+                        this.active = 1;
+                    }
+                }
+                this.dataPhotos.splice(index, 1);
+            }
 		}
 	}
 </script>
