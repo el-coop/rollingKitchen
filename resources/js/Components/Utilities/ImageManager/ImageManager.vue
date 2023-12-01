@@ -50,12 +50,14 @@ export default {
     methods: {
         uploaded(imageData) {
             this.images.push(imageData);
+            this.$emit('image-uploaded', imageData);
         },
 
         removeImage(image) {
             const index = this.images.findIndex((item) => {
                 return item.id == image.id;
             });
+            this.$emit('image-deleted', image);
             this.images.splice(index, 1);
         }
     }
