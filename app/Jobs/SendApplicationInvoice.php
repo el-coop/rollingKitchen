@@ -61,7 +61,7 @@ class SendApplicationInvoice implements ShouldQueue {
         //
         $this->invoice = $invoice;
         $this->recipient = $recipient;
-        $this->message = $message;
+        $this->message = html_entity_decode($message);
         $this->bcc = $bcc;
         $this->subject = $subject;
         $this->attachments = $attachments;

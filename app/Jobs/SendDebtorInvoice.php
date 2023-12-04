@@ -51,7 +51,7 @@ class SendDebtorInvoice implements ShouldQueue {
 		$this->invoice = $invoice;
 		$this->recipient = $recipient;
 		$this->subject = $subject;
-		$this->message = $message;
+		$this->message = html_entity_decode($message);
 		$this->bcc = $bcc;
 	}
 
