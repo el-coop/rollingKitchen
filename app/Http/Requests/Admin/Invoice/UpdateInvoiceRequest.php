@@ -75,7 +75,7 @@ class UpdateInvoiceRequest extends FormRequest {
 
         if ($this->input('file_download', false)) {
             $invoiceService = new InvoiceService($application, $this->has('2575split'));
-            $invoice = $invoiceService->generate($number, $this->input('items'), $this->input('tax'), $this->invoice->created_at);
+            $invoice = $invoiceService->generate($number, $this->input('items'),['name' => $this->extra_name, 'amount' => $this->extra_amount], $this->input('tax'), $this->invoice->created_at);
             return $invoice->download($number);
         }
         $this->invoice->items()->delete();
