@@ -64,7 +64,7 @@ class GenerateInvoiceRequest extends FormRequest {
 
         if ($this->input('file_download', false)) {
             $invoiceService = new InvoiceService($this->application, $this->has('2575split'));
-            $invoice = $invoiceService->generate("{$prefix}-{$number}", $this->input('items'), $this->input('tax'));
+            $invoice = $invoiceService->generate("{$prefix}-{$number}", $this->input('items'),['name' => $this->extra_name, 'amount' => $this->extra_amount], $this->input('tax'));
             return $invoice->download("{$prefix}-{$number}");
         }
         $invoice = new Invoice;

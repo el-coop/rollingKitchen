@@ -72,7 +72,7 @@ class UpdateDebtorInvoiceRequest extends FormRequest {
 
         if ($this->input('file_download', false)) {
             $invoiceService = new InvoiceService($debtor);
-            $invoice = $invoiceService->generate($number, $this->input('items'), null, $this->invoice->created_at);
+            $invoice = $invoiceService->generate($number, $this->input('items'),['name' => $this->extra_name, 'amount' => $this->extra_amount], null, $this->invoice->created_at);
             return $invoice->download($number);
         }
         $this->invoice->items()->delete();

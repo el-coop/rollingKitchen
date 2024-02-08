@@ -60,7 +60,7 @@ class GenerateDebtorInvoiceRequest extends FormRequest {
 
         if ($this->input('file_download', false)) {
             $invoiceService = new InvoiceService($this->debtor);
-            $invoice = $invoiceService->generate("{$prefix}-{$number}", $this->input('items'));
+            $invoice = $invoiceService->generate("{$prefix}-{$number}", $this->input('items'), ['name' => $this->extra_name, 'amount' => $this->extra_amount]);
             return $invoice->download("{$prefix}-{$number}");
         }
         $invoice = new Invoice;
