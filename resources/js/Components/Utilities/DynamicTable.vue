@@ -1,3 +1,4 @@
+
 <template>
     <div>
         <slot :data="fields"></slot>
@@ -265,7 +266,7 @@ export default {
             for (const prop in this.columns) {
                 const column = this.columns[prop];
                 if (!Object.keys(this.object).length || column.edit !== false) {
-                    fields.push({
+                    let field = {
                         name: column.name,
                         label: column.label,
                         value: typeof this.object[column.name] === 'undefined' ? '' : this.object[column.name],
@@ -274,7 +275,11 @@ export default {
                         options: column.options || {},
                         icon: column.icon || false,
                         hideLabel: column.hideLabel || false
-                    });
+                    };
+                    if (field.type === 'conditional'){
+                        field.condition = typeof this.object.condition === 'undefined' ? '' : this.object.condition
+                    }
+                    fields.push(field);
                 }
             }
 

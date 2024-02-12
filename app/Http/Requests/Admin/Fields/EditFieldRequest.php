@@ -32,7 +32,11 @@ class EditFieldRequest extends FormRequest {
 			'status' => 'required|string|in:protected,required,encrypted,none',
 			'options' => 'required_if:type,checkbox|array',
 			'placeholder_nl' => 'nullable|string',
-			'placeholder_en' => 'nullable|string'
+			'placeholder_en' => 'nullable|string',
+            'tooltip_en' => 'required_with:has_tooltip',
+            'tooltip_nl' => 'required_with:has_tooltip',
+            'conditional' => 'nullable|string',
+            'condition' => "required_unless:conditional,null"
 		];
 	}
 
@@ -43,6 +47,11 @@ class EditFieldRequest extends FormRequest {
 		$this->field->status = $this->input('status');
 		$this->field->placeholder_nl = $this->input('placeholder_nl');
 		$this->field->placeholder_en = $this->input('placeholder_en');
+        $this->field->has_tooltip = $this->has('has_tooltip');
+        $this->field->tooltip_nl = $this->input('tooltip_nl');
+        $this->field->tooltip_en = $this->input('tooltip_en');
+        $this->field->conditional = $this->input('conditional');
+        $this->field->condition = $this->input('condition');
 		if ($this->field->type == 'checkbox') {
 			$this->field->options = $this->input('options');
 		}

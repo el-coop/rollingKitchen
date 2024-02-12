@@ -18,11 +18,12 @@ import {
     faFileUpload,
     faTimesCircle,
     faEuroSign,
-    faExternalLinkSquareAlt
+    faExternalLinkSquareAlt,
+    faInfoCircle
 } from '@fortawesome/free-solid-svg-icons'
 
 
-library.add(faLink, faSignOutAlt, faBars, faFileUpload, faTimesCircle, faEuroSign, faExternalLinkSquareAlt);
+library.add(faLink, faSignOutAlt, faBars, faFileUpload, faTimesCircle, faEuroSign, faExternalLinkSquareAlt, faInfoCircle);
 
 
 /**

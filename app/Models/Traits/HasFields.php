@@ -77,8 +77,20 @@ trait HasFields {
             if ($item->type == 'date') {
                 $result['subType'] = 'date';
             }
-
+            $conditional = $item->conditional;
+            if($conditional !== null && $this->$conditional == $item->condition){
+                $result['readonly'] = true;
+            }
+            if ($item->has_tooltip == true){
+                $result['tooltip'] = $item->{'tooltip_' . App::getLocale()};
+            }
             return $result;
+        });
+    }
+
+    static function getConditionalOptions() {
+        return collect((new self())->fullData)->filter(function ($option) {
+            return $option['type'] == 'select';
         });
     }
 }

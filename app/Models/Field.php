@@ -27,6 +27,5 @@ class Field extends Model {
 			return ["{$dataName}.{$field->id}" => 'required'];
 		});
 	}
-
 }
 
