@@ -81,7 +81,7 @@
 					invisible: true,
 					responsiveHidden: true
 				},{
-				    name: 'conditional',
+				    name: 'condition_field',
 				    type: 'conditional',
 				    invisible: true,
 				    responsiveHidden: true,

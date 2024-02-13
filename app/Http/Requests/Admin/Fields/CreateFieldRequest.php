@@ -38,8 +38,8 @@ class CreateFieldRequest extends FormRequest {
 			'placeholder_en' => 'nullable|string',
             'tooltip_en' => 'required_with:has_tooltip',
             'tooltip_nl' => 'required_with:has_tooltip',
-            'conditional' => 'nullable|string',
-            'condition' => "required_unless:conditional,null"
+            'condition_field' => 'nullable|string',
+            'condition_value' => "required_unless:condition_field,null"
 		];
 	}
 
@@ -57,8 +57,8 @@ class CreateFieldRequest extends FormRequest {
         $field->has_tooltip = $this->has('has_tooltip');
         $field->tooltip_nl = $this->input('tooltip_nl');
         $field->tooltip_en = $this->input('tooltip_en');
-        $field->conditional = $this->input('conditional');
-        $field->condition = $this->input('condition');
+        $field->condition_field = $this->input('condition_field');
+        $field->condition_value = $this->input('condition_value');
 		switch ($this->input('form')) {
 			case Kitchen::class:
 				$field->order = Kitchen::getLastFieldOrder() + 1;

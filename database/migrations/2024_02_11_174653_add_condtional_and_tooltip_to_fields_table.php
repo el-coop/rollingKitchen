@@ -15,8 +15,8 @@ return new class extends Migration {
             $table->boolean('has_tooltip')->default(false);
             $table->string('tooltip_en')->nullable();
             $table->string('tooltip_nl')->nullable();
-            $table->string('conditional')->nullable();
-            $table->string('condition')->nullable();
+            $table->string('condition_field')->nullable();
+            $table->string('condition_value')->nullable();
 
         });
     }

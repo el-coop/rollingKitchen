@@ -15,7 +15,7 @@
     <div class="field">
         <div class="control">
             <div class="select is-fullwidth" :class="{'is-danger': error}">
-                <select v-model="condition" name="condition">
+                <select v-model="condition" name="condition_value">
                     <option v-for="(condition, key) in conditions[value]" :key="key" :value="key"
                             v-text="condition"></option>
                 </select>
