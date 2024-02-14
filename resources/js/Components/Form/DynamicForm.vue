@@ -25,6 +25,7 @@
 import TextField from './TextField';
 import SelectField from './SelectField';
 import TextareaField from './TextareatField';
+import {provide, ref} from 'vue';
 
 export default {
     name: "DynamicForm",
@@ -108,7 +109,7 @@ export default {
     async created() {
         if (this.initFields) {
             this.fields = this.initFields;
-            for (let field of this.fields){
+            for (let field of this.fields) {
                 this.data[field.name] = field.value;
             }
             return;
@@ -118,7 +119,7 @@ export default {
             this.loading = true;
             const response = await axios.get(this.url);
             this.fields = response.data;
-            for (let field of this.fields){
+            for (let field of this.fields) {
                 this.data[field.name] = field.value;
             }
         } catch (error) {
@@ -177,5 +178,10 @@ export default {
         },
 
     },
+    provide() {
+        return {
+            formValues: this.data
+        }
+    }
 }
 </script>

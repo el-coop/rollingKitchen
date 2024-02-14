@@ -11,6 +11,7 @@ require('./bootstrap');
 import {createApp} from 'vue'
 import VueIziToast from './Classes/VueIzitoast';
 import {library} from '@fortawesome/fontawesome-svg-core'
+
 import {
     faLink,
     faSignOutAlt,

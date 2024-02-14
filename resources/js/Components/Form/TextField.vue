@@ -1,10 +1,10 @@
 <template>
     <div class="field">
-        <label class="label">{{field.label}}
+        <label class="label">{{ field.label }}
             <tooltip v-if="field.hasOwnProperty('tooltip')" :text="field.tooltip"></tooltip>
         </label>
         <div class="control" :class="{'has-icons-left': field.icon || false}">
-            <input  class="input" :class="{'is-danger': error}" :type="field.subType || 'text'" v-model="value"
+            <input class="input" :class="{'is-danger': error}" :type="field.subType || 'text'" v-model="value"
                    @keypress.enter.prevent
                    :required="field.required || false"
                    :name="field.name" :step="field.step || 'any'" :disabled="field.readonly || conditioned"
@@ -19,14 +19,23 @@
 
 <script>
 import FieldMixin from './FieldMixin';
+import {inject} from 'vue';
 
 export default {
     name: "TextField",
+    setup(){
+    },
+    data(){
+        return {
+            conditionValue: ''
+        }
+    },
     mixins: [FieldMixin],
     computed: {
-        conditioned(){
-            return this.field.hasOwnProperty('condition_field') && this.$parent.$parent.data[this.field.condition_field] == this.field.condition_value;
+        conditioned() {
+            return this.field.hasOwnProperty('condition_field') && this.formValues[this.field.condition_field] == this.field.condition_value;
         }
-    }
+    },
+    inject: ['formValues']
 }
 </script>
