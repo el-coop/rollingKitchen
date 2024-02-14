@@ -19,7 +19,6 @@
 
 <script>
 import FieldMixin from './FieldMixin';
-import {inject} from 'vue';
 
 export default {
     name: "TextField",

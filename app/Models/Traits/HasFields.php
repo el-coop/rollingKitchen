@@ -11,6 +11,7 @@ namespace App\Models\Traits;
 
 use App;
 use App\Models\Field;
+use App\Models\Kitchen;
 
 trait HasFields {
 
@@ -93,6 +94,11 @@ trait HasFields {
     }
 
     static function getConditionalOptions() {
+        if (self::class === Kitchen::class){
+            return collect((new self())->adminCreatedData)->filter(function ($option) {
+                return $option['type'] == 'select';
+            });
+        }
         return collect((new self())->fullData)->filter(function ($option) {
             return $option['type'] == 'select';
         });

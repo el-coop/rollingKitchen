@@ -326,17 +326,15 @@ class SupervisorTest extends TestCase {
     }
 
     public function test_supervisor_can_get_shift() {
-        $this->actingAs($this->supervisor)->get(action('Worker\SupervisorController@editShift', $this->shift))
-            ->assertSuccessful()->assertJsonFragment([
-                'workers' => $this->workplace->workers()->where('approved', true)->with('user')->get()->pluck('name', 'id')->put(0, '')
-            ]);
+        $response = $this->actingAs($this->supervisor)->get(action('Worker\SupervisorController@editShift', $this->shift))
+            ->assertSuccessful();
+        $this->assertEquals(collect($response->json()['workers']), $this->workplace->workers()->with('user')->get()->pluck('user.name', 'id')->put(0, ''));
     }
 
     public function test_admin_can_get_shift() {
-        $this->actingAs($this->admin)->get(action('Worker\SupervisorController@editShift', $this->shift))->assertSuccessful()
-            ->assertSuccessful()->assertJsonFragment([
-                'workers' => $this->workplace->workers()->where('approved', true)->with('user')->get()->pluck('name', 'id')->put(0, '')
-            ]);
+        $response = $this->actingAs($this->admin)->get(action('Worker\SupervisorController@editShift', $this->shift))->assertSuccessful()
+            ->assertSuccessful();
+        $this->assertEquals(collect($response->json()['workers']), $this->workplace->workers()->with('user')->get()->pluck('user.name', 'id')->put(0, ''));
     }
 
     public function test_guest_cant_close_shift() {
