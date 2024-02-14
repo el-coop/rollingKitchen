@@ -4,7 +4,7 @@
 		<div class="control">
 			<div class="select is-fullwidth" :class="{'is-danger': error}">
 				<select v-model="value" :name="field.name" :disabled="field.readonly">
-					<option v-for="(option, val) in field.options" :value="val" v-text="option"></option>
+					<option :class="field.hasOwnProperty('class') ? field.class[field.optionClass[val]] : ''" v-for="(option, val) in field.options" :value="val" v-text="option"></option>
 				</select>
 			</div>
 			<p v-if="error" class="help is-danger" v-text="errorText"></p>
@@ -17,6 +17,6 @@
 
 	export default {
 		name: "SelectField",
-		mixins: [FieldMixin]
+		mixins: [FieldMixin],
 	}
 </script>

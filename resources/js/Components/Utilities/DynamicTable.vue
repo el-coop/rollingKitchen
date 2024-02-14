@@ -279,6 +279,10 @@ export default {
                     if (field.type === 'conditional'){
                         field.condition = typeof this.object.condition === 'undefined' ? '' : this.object.condition
                     }
+                    if (column.hasOwnProperty('class')){
+                        field.class = column.class;
+                        field.optionClass = column.optionClass;
+                    }
                     fields.push(field);
                 }
             }
