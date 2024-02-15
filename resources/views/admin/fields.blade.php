@@ -86,7 +86,7 @@
 				    invisible: true,
 				    responsiveHidden: true,
 				    options: {{json_encode($conditionalOptions)}},
-				    label: '@lang('admin/fields.conditional')'
+				    label: ['@lang('admin/fields.condition_field')', '@lang('admin/fields.condition_value')']
 				},
 				]
 	            " action="{{ action('Admin\FieldController@create') }}" :extra-data="{

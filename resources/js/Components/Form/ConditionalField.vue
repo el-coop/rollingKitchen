@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div class="mb-3">
         <div class="field">
-            <label class="label" v-text="field.label"></label>
+            <label class="label" v-text="field.label[0]"></label>
             <div class="control">
                 <div class="select is-fullwidth" :class="{'is-danger': error}">
                     <select v-model="value" :name="field.name" :disabled="field.readonly">
@@ -14,6 +14,7 @@
             </div>
         </div>
         <div class="field">
+            <label class="label" v-text="field.label[1]"></label>
             <div class="control">
                 <div class="select is-fullwidth" :class="{'is-danger': error}">
                     <select v-model="condition" name="condition_value">

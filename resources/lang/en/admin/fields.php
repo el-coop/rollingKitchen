@@ -18,5 +18,10 @@ return [
 	'placeholder_nl' => 'Dutch Placeholder',
 	'placeholder_en' => 'English Placeholder',
 	'Band' => 'Band',
-	'BandMember' => 'Band Member'
+	'BandMember' => 'Band Member',
+    'has_tooltip' => 'Has Tooltip',
+    'tooltip_en' => 'Tooltip EN',
+    'tooltip_nl' => 'Tooltip NL',
+    'condition_field' => 'Conditional Field',
+    'condition_value' => 'Conditional Value',
 ];
