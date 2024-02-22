@@ -5,7 +5,10 @@
             label: this.$translations.name,
             type: 'select',
             options: this.workers,
-            callback: 'numerateOptions'
+            callback: 'numerateOptions',
+            class: {1: 'has-background-success', 0: 'has-background-danger'},
+            optionClass: this.workersApproved
+
         },
         {
             name: 'workFunction',
@@ -62,7 +65,8 @@
 				loading: true,
 				workers: [],
 				shiftWorkers: [],
-				workFunctions: []
+				workFunctions: [],
+                workersApproved: []
 			}
 		},
 		async created() {
@@ -71,7 +75,7 @@
 				this.shiftWorkers = response.data.shiftWorkers;
 				this.workFunctions = response.data.workFunctions;
 				this.workers = response.data.workers;
-
+                this.workersApproved = response.data.workersApproved;
 			} catch (error) {
 				if (response.status === 419) {
 					this.$toast.error(this.$translations.sessionExpired);

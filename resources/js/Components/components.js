@@ -41,6 +41,7 @@ export default function(app){
     app.component('CalendarModal', require('./Utilities/Calendar/CalendarModal').default);
     app.component('CalendarScheduleDisplay', require('./Utilities/Calendar/CalendarScheduleDisplay').default);
     app.component('LogoForm', require('./Utilities/LogoForm').default)
+    app.component('Tooltip', require('./Utilities/Tooltip').default)
 
 // form
     app.component('AjaxForm', require('./Form/AjaxForm').default);
@@ -58,5 +59,7 @@ export default function(app){
     app.component('MultiselectField', require('./Form/MultiselectField').default);
     app.component('CheckboxPopupField', require('./Form/CheckboxPopupField').default);
     app.component('CheckedInfoForm', require('./Form/CheckedInfoForm').default);
+    app.component('ConditionalField', require('./Form/ConditionalField').default);
+
 }
 

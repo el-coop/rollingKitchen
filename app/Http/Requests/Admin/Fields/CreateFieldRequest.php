@@ -35,11 +35,16 @@ class CreateFieldRequest extends FormRequest {
 			'status' => 'required|string|in:protected,required,encrypted,none',
 			'name_nl' => 'required|string|' . Rule::unique('fields')->where('form', $this->input('form')),
 			'placeholder_nl' => 'nullable|string',
-			'placeholder_en' => 'nullable|string'
+			'placeholder_en' => 'nullable|string',
+            'tooltip_en' => 'required_with:has_tooltip',
+            'tooltip_nl' => 'required_with:has_tooltip',
+            'condition_field' => 'nullable|string',
+            'condition_value' => "required_unless:condition_field,null"
 		];
 	}
 
 	public function commit() {
+
 
 		$field = new Field;
 		$field->form = $this->input('form');
@@ -49,6 +54,11 @@ class CreateFieldRequest extends FormRequest {
 		$field->status = $this->input('status');
 		$field->placeholder_nl = $this->input('placeholder_nl');
 		$field->placeholder_en = $this->input('placeholder_en');
+        $field->has_tooltip = $this->has('has_tooltip');
+        $field->tooltip_nl = $this->input('tooltip_nl');
+        $field->tooltip_en = $this->input('tooltip_en');
+        $field->condition_field = $this->input('condition_field');
+        $field->condition_value = $this->input('condition_value');
 		switch ($this->input('form')) {
 			case Kitchen::class:
 				$field->order = Kitchen::getLastFieldOrder() + 1;

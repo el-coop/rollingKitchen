@@ -11,6 +11,7 @@ namespace App\Models\Traits;
 
 use App;
 use App\Models\Field;
+use App\Models\Kitchen;
 
 trait HasFields {
 
@@ -77,8 +78,29 @@ trait HasFields {
             if ($item->type == 'date') {
                 $result['subType'] = 'date';
             }
-
+            $condition_field = $item->condition_field;
+            if ($condition_field !== null) {
+                $result['condition_field'] = $condition_field;
+                $result['condition_value'] = $item->condition_value;
+//                if ($this->$condition_field == $item->condition_value) {
+//                    $result['readonly'] = true;
+//                }
+            }
+            if ($item->has_tooltip == true) {
+                $result['tooltip'] = $item->{'tooltip_' . App::getLocale()};
+            }
             return $result;
+        });
+    }
+
+    static function getConditionalOptions() {
+        if (self::class === Kitchen::class){
+            return collect((new self())->adminCreatedData)->filter(function ($option) {
+                return $option['type'] == 'select';
+            });
+        }
+        return collect((new self())->fullData)->filter(function ($option) {
+            return $option['type'] == 'select';
         });
     }
 }

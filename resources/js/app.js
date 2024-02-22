@@ -11,6 +11,7 @@ require('./bootstrap');
 import {createApp} from 'vue'
 import VueIziToast from './Classes/VueIzitoast';
 import {library} from '@fortawesome/fontawesome-svg-core'
+
 import {
     faLink,
     faSignOutAlt,
@@ -18,11 +19,12 @@ import {
     faFileUpload,
     faTimesCircle,
     faEuroSign,
-    faExternalLinkSquareAlt
+    faExternalLinkSquareAlt,
+    faInfoCircle
 } from '@fortawesome/free-solid-svg-icons'
 
 
-library.add(faLink, faSignOutAlt, faBars, faFileUpload, faTimesCircle, faEuroSign, faExternalLinkSquareAlt);
+library.add(faLink, faSignOutAlt, faBars, faFileUpload, faTimesCircle, faEuroSign, faExternalLinkSquareAlt, faInfoCircle);
 
 
 /**

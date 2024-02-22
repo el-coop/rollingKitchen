@@ -6,7 +6,7 @@ return [
 	'makeSupervisor' => 'Is supervisor',
 	'type' => 'Type',
 	'payroll' => 'Loonlijst',
-	'freelance' => 'Freelancer',
+	'freelance' => 'zzp',
 	'volunteer' => 'Vrijwilliger',
 	'completed' => 'Voltooid',
 	'workplaces' => 'Werkplekken',

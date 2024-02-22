@@ -37,6 +37,7 @@ class FieldTest extends TestCase {
 	}
 
 	public function test_can_see_Kitchen_field_list() {
+        $this->withoutExceptionHandling();
 		$this->actingAs($this->admin)->get(action('Admin\FieldController@index', 'Kitchen'))->assertSuccessful()->assertViewIs('admin.fields');
 	}
 

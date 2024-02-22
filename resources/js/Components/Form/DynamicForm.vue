@@ -1,11 +1,11 @@
 <template>
     <AjaxForm :headers="headers" @errors="handleErrors" :method="method" :action="url" @submitting="submitting = true"
-               @submitted="submitted" :extraData="extraData" @alternative-submitting="alternativeSubmitting=true">
+              @submitted="submitted" :extraData="extraData" @alternative-submitting="alternativeSubmitting=true">
         <div v-if="loading" class="has-text-centered">
             <a class="button is-loading"></a>
         </div>
         <template v-for="(field,key) in fields">
-            <component v-if="(hide.indexOf(field.name) === -1)"
+            <component v-model="data[field.name]" v-if="(hide.indexOf(field.name) === -1)"
                        :error="errors[field.name.replace('[','.').replace(']','')] || null"
                        :is="`${field.type}-field`"
                        :field="field" :loading="alternativeSubmitting" :key="key">
@@ -37,14 +37,14 @@ export default {
     props: {
         buttonText: {
             type: String,
-            default(){
+            default() {
                 return $translations.save;
             }
 
         },
         successToast: {
             type: String,
-            default(){
+            default() {
                 return $translations.updateSuccess;
             }
 
@@ -100,20 +100,27 @@ export default {
             loading: false,
             submitting: false,
             alternativeSubmitting: false,
-            errors: {}
+            errors: {},
+            data: {},
         };
     },
 
     async created() {
         if (this.initFields) {
-            return this.fields = this.initFields;
+            this.fields = this.initFields;
+            for (let field of this.fields) {
+                this.data[field.name] = field.value;
+            }
+            return;
         }
 
         try {
             this.loading = true;
             const response = await axios.get(this.url);
-
             this.fields = response.data;
+            for (let field of this.fields) {
+                this.data[field.name] = field.value;
+            }
         } catch (error) {
             this.$toast.error(this.$translations.tryLater, this.$translations.operationFiled);
         }
@@ -170,5 +177,10 @@ export default {
         },
 
     },
+    provide() {
+        return {
+            formValues: this.data
+        }
+    }
 }
 </script>
