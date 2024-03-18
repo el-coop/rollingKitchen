@@ -44,6 +44,7 @@ export default {
 @import "../../../sass/variables";
 
 .modal {
+    overflow-y: auto;
     &--content {
         // default settings of vue-js-modal
         position: relative;
