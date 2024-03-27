@@ -32,7 +32,7 @@ export default {
     mixins: [FieldMixin],
     computed: {
         conditioned() {
-            return this.field.hasOwnProperty('condition_field') && this.formValues[this.field.condition_field] == this.field.condition_value;
+            return this.field.hasOwnProperty('condition_field') && this.field.condition_value.includes(this.formValues[this.field.condition_field]);
         }
     },
     inject: ['formValues']

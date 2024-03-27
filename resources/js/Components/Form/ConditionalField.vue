@@ -17,10 +17,9 @@
             <label class="label" v-text="field.label[1]"></label>
             <div class="control">
                 <div class="select is-fullwidth" :class="{'is-danger': error}">
-                    <select v-model="condition" name="condition_value">
-                        <option v-for="(condition, key) in conditions[value]" :key="key" :value="key"
-                                v-text="condition"></option>
-                    </select>
+                    <input type="hidden" v-for="(option, index) in condition" :name="`condition_value[${index}]`" :value="index">
+                    <vue-multiselect :hide-selected="true" :options="conditions[value]" :multiple="true" v-model="condition">
+                    </vue-multiselect>
                 </div>
                 <p v-if="error" class="help is-danger" v-text="errorText"></p>
             </div>
@@ -30,9 +29,13 @@
 
 <script>
 import FieldMixin from './FieldMixin';
+import VueMultiselect from 'vue-multiselect'
 
 export default {
     name: "ConditionalField",
+    components: {
+        VueMultiselect
+    },
     mixins: [FieldMixin],
     data() {
         let conditionalFields = [''];

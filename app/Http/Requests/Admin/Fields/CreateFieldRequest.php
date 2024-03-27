@@ -44,8 +44,6 @@ class CreateFieldRequest extends FormRequest {
 	}
 
 	public function commit() {
-
-
 		$field = new Field;
 		$field->form = $this->input('form');
 		$field->name_en = $this->input('name_en');
@@ -58,7 +56,7 @@ class CreateFieldRequest extends FormRequest {
         $field->tooltip_nl = $this->input('tooltip_nl');
         $field->tooltip_en = $this->input('tooltip_en');
         $field->condition_field = $this->input('condition_field');
-        $field->condition_value = $this->input('condition_value');
+        $field->condition_value = json_encode($this->input('condition_value'));
 		switch ($this->input('form')) {
 			case Kitchen::class:
 				$field->order = Kitchen::getLastFieldOrder() + 1;
