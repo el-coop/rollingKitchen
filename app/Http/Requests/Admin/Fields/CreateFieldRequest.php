@@ -44,8 +44,6 @@ class CreateFieldRequest extends FormRequest {
 	}
 
 	public function commit() {
-
-
 		$field = new Field;
 		$field->form = $this->input('form');
 		$field->name_en = $this->input('name_en');

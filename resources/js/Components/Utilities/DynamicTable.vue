@@ -277,7 +277,7 @@ export default {
                         hideLabel: column.hideLabel || false
                     };
                     if (field.type === 'conditional'){
-                        field.condition = typeof this.object.condition === 'undefined' ? '' : this.object.condition
+                        field.condition = typeof this.object.condition_value === 'undefined' ? [] : this.object.condition_value
                     }
                     if (column.hasOwnProperty('class')){
                         field.class = column.class;
