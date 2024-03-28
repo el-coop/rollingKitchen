@@ -10,7 +10,7 @@ class Field extends Model {
 
     protected $casts = [
         'options' => 'array',
-        'condition_value' => 'json'
+        'condition_value' => 'array'
     ];
 
     static function getRequiredFields(...$models) {

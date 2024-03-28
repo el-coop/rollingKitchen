@@ -18,7 +18,7 @@
             <div class="control">
                 <div class="select is-fullwidth" :class="{'is-danger': error}">
                     <input type="hidden" v-for="(option, index) in condition" :name="`condition_value[${index}]`" :value="index">
-                    <vue-multiselect :hide-selected="true" :options="conditions[value]" :multiple="true" v-model="condition">
+                    <vue-multiselect :hide-selected="true" :options="conditionOptions(value)" :multiple="true" v-model="condition">
                     </vue-multiselect>
                 </div>
                 <p v-if="error" class="help is-danger" v-text="errorText"></p>
@@ -44,10 +44,25 @@ export default {
             conditionalFields.push(option.name);
             conditions[option.name] = option.options;
         }
+        let condition = [];
+        if (Array.isArray(this.field.condition) && this.field.condition.length > 0){
+            let options = Object.values(this.field.options).filter((option) => option.name === this.field.value)[0].options;
+            this.field.condition.map((value ) => parseInt(value)).forEach( (id) => {
+                condition.push(options[id])
+            })
+        }
         return {
             conditions: conditions,
             conditionalFields: conditionalFields,
-            condition: this.field.condition
+            condition:condition
+        }
+    },
+     methods: {
+        conditionOptions(value){
+            if (typeof this.conditions[value] === 'undefined'){
+                return [];
+            }
+            return this.conditions[value];
         }
     }
 }

@@ -12,7 +12,7 @@ return new class extends Migration {
      */
     public function up() {
         Schema::table('fields', function (Blueprint $table) {
-            $table->json('condition_value')->change();
+            $table->json('condition_value')->nullable()->change();
         });
     }
 

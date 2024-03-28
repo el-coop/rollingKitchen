@@ -41,7 +41,6 @@ class EditFieldRequest extends FormRequest {
 	}
 
 	public function commit() {
-//        dd($this->condition_value, json_encode($this->condition_value));
         $this->field->name_en = $this->input('name_en');
 		$this->field->name_nl = $this->input('name_nl');
 		$this->field->type = $this->input('type');
@@ -52,7 +51,7 @@ class EditFieldRequest extends FormRequest {
         $this->field->tooltip_nl = $this->input('tooltip_nl');
         $this->field->tooltip_en = $this->input('tooltip_en');
         $this->field->condition_field = $this->input('condition_field');
-        $this->field->condition_value = ['a','b'];
+        $this->field->condition_value = $this->input('condition_value');
 		if ($this->field->type == 'checkbox') {
 			$this->field->options = $this->input('options');
 		}
