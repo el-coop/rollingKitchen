@@ -41,7 +41,7 @@ class EditFieldRequest extends FormRequest {
 	}
 
 	public function commit() {
-		$this->field->name_en = $this->input('name_en');
+        $this->field->name_en = $this->input('name_en');
 		$this->field->name_nl = $this->input('name_nl');
 		$this->field->type = $this->input('type');
 		$this->field->status = $this->input('status');

@@ -1,5 +1,5 @@
 <template>
-    <span :data-tooltip="text">
+    <span class="has-tooltip-multiline" :data-tooltip="text">
     <font-awesome-icon icon="info-circle" ></font-awesome-icon>
     </span>
 </template>
