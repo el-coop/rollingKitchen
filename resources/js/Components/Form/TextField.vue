@@ -22,12 +22,7 @@ import FieldMixin from './FieldMixin';
 
 export default {
     name: "TextField",
-    setup(){
-    },
-    data(){
-        return {
-            conditionValue: ''
-        }
+    setup() {
     },
     mixins: [FieldMixin],
     computed: {
@@ -35,6 +30,6 @@ export default {
             return this.field.hasOwnProperty('condition_field') && this.field.condition_value.map((value) => parseInt(value)).includes(this.formValues[this.field.condition_field]);
         }
     },
-    inject: ['formValues']
+    inject: ['formValues'],
 }
 </script>
