@@ -1,7 +1,7 @@
 <template>
     <div>
         <template v-for="(field,key) in renderFields">
-            <component v-if="hide.indexOf(field.name) === -1"
+            <component v-model="data[field.name]" v-if="hide.indexOf(field.name) === -1"
                        :error="field.error || null"
                        :is="`${field.type}-field`"
                        :field="field" :key="key">
@@ -43,12 +43,17 @@ export default {
     data() {
         return {
             renderFields: [],
-            loading: false
+            loading: false,
+            data: {}
         }
     },
     async created() {
         if (this.fields) {
-            return this.renderFields = this.fields;
+            this.renderFields = this.fields;
+            for (let field of this.renderFields) {
+                this.data[field.name] = field.value;
+            }
+            return;
         }
 
         try {
@@ -56,10 +61,18 @@ export default {
             const response = await axios.get(this.url);
 
             this.renderFields = response.data;
+            for (let field of this.renderFields) {
+                this.data[field.name] = field.value;
+            }
         } catch (error) {
             this.$toast.error(this.$translations.tryLater, this.$translations.operationFiled);
         }
         this.loading = false;
+    },
+    provide() {
+        return {
+            formValues: this.data
+        }
     }
 }
 </script>

@@ -92,7 +92,8 @@ class UpdateTest extends TestCase {
 			'worker' => [
 				'data'
 			],
-            'liability' => 'on'
+            'liability' => 'on',
+            'type' => '0'
 		])->assertSessionHas('toast');
 
 		$this->assertDatabaseHas('users', [
@@ -129,8 +130,10 @@ class UpdateTest extends TestCase {
 				'data'
 			],
 			'review' => true,
-            'liability' => 'on'
-		])->assertSessionHas('toast');
+            'liability' => 'on',
+            'type' => '0'
+
+        ])->assertSessionHas('toast');
 
 		$this->assertDatabaseHas('users', [
 			'user_id' => $this->worker->user_id,
@@ -205,8 +208,10 @@ class UpdateTest extends TestCase {
 				'data'
 			],
 			'review' => true,
-            'liability' => 'on'
-		])->assertSessionHas('toast');
+            'liability' => 'on',
+            'type' => '0'
+
+        ])->assertSessionHas('toast');
 
 		$this->assertDatabaseHas('users', [
 			'user_id' => $this->worker->user_id,
@@ -242,8 +247,10 @@ class UpdateTest extends TestCase {
 			'language' => 'en',
 			'worker' => [
 				'data'
-			]
-		])->assertSessionHas('toast');
+			],
+            'type' => '0'
+
+        ])->assertSessionHas('toast');
 
 		$this->assertDatabaseHas('users', [
 			'user_id' => $this->worker->user_id,

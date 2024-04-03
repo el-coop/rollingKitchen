@@ -32,6 +32,7 @@ class UpdateWorkerRequest extends FormRequest {
 			'email' => 'required|email|unique:users,email,' . $this->worker->user->id,
 			'language' => 'required|in:en,nl',
 			'worker' => 'required|array',
+            'type' => 'required|in:0,1,2'
 		]);
 		if ($this->input('review') || $this->worker->submitted) {
 			$requiredFieldsRules = Field::getRequiredFields(Worker::class);
@@ -43,7 +44,7 @@ class UpdateWorkerRequest extends FormRequest {
 
 	public function withValidator($validator) {
 		$validator->after(function ($validator) {
-			if ($this->input('review') && !$this->worker->photos()->count()) {
+			if ($this->input('type') !== '1' && $this->input('review') && !$this->worker->photos()->count()) {
 				$validator->errors()->add('photos', __('validation.required', ['attribute ' => 'photos ']));
 			}
 		});
@@ -53,6 +54,7 @@ class UpdateWorkerRequest extends FormRequest {
 		$this->worker->user->name = $this->input('name');
 		$this->worker->user->email = $this->input('email');
 		$this->worker->user->language = $this->input('language');
+        $this->worker->type = $this->input('type');
 		$this->worker->user->save();
 
 
