@@ -17,8 +17,10 @@
             <label class="label" v-text="field.label[1]"></label>
             <div class="control">
                 <div class="select is-fullwidth" :class="{'is-danger': error}">
-                    <input type="hidden" v-for="(option, index) in condition" :name="`condition_value[${index}]`" :value="index">
-                    <vue-multiselect :hide-selected="true" :options="conditionOptions(value)" :multiple="true" v-model="condition">
+                    <input type="hidden" v-for="(option, index) in condition" :name="`condition_value[${index}]`"
+                           :value="getValue(value, option)">
+                    <vue-multiselect :hide-selected="true" :options="conditionOptions(value)"
+                                     :multiple="true" v-model="condition">
                     </vue-multiselect>
                 </div>
                 <p v-if="error" class="help is-danger" v-text="errorText"></p>
@@ -45,25 +47,31 @@ export default {
             conditions[option.name] = option.options;
         }
         let condition = [];
-        if (Array.isArray(this.field.condition) && this.field.condition.length > 0){
+        if (Array.isArray(this.field.condition) && this.field.condition.length > 0) {
             let options = Object.values(this.field.options).filter((option) => option.name === this.field.value)[0].options;
-            this.field.condition.map((value ) => parseInt(value)).forEach( (id) => {
+            this.field.condition.map((value) => parseInt(value)).forEach((id) => {
                 condition.push(options[id])
             })
         }
         return {
             conditions: conditions,
             conditionalFields: conditionalFields,
-            condition:condition
+            condition: condition
         }
     },
-     methods: {
-        conditionOptions(value){
-            if (typeof this.conditions[value] === 'undefined'){
+    methods: {
+        conditionOptions(value) {
+            if (typeof this.conditions[value] === 'undefined') {
                 return [];
             }
+            console.log(value);
+            console.log(this.conditions[value]);
             return this.conditions[value];
+        },
+        getValue(value, option) {
+             return this.conditions[value].indexOf(option);
         }
+
     }
 }
 </script>
