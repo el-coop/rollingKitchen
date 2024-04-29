@@ -1,7 +1,7 @@
 <template>
     <div>
         <template v-for="(field,key) in renderFields">
-            <component v-model="data[field.name]" v-if="hide.indexOf(field.name) === -1"
+            <component @update:modelValue="formChanged" v-model="data[field.name]" v-if="hide.indexOf(field.name) === -1"
                        :error="field.error || null"
                        :is="`${field.type}-field`"
                        :field="field" :key="key">
@@ -72,6 +72,17 @@ export default {
     provide() {
         return {
             formValues: this.data
+        }
+    },
+    methods: {
+        formChanged(){
+            this.$emit('update:data', this.data);
+        },
+
+        updateData(data){
+            for (const [key, value] of Object.entries(data)){
+                this.data[key] = value;
+            }
         }
     }
 }
