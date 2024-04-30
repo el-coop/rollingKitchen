@@ -5,8 +5,8 @@
 @section('content')
 	<div>
 		@component('components.datatable')
-
-			@slot('filters',$filters)
+            @slot('deleteButton', true)
+            @slot('filters',$filters)
 			@slot('editWidth',1000)
 			<template #default="{object, onUpdate}">
 				<template v-if="object">
