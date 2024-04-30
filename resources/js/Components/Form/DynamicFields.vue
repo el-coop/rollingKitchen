@@ -1,7 +1,8 @@
 <template>
     <div>
         <template v-for="(field,key) in renderFields">
-            <component @update:modelValue="formChanged" v-model="data[field.name]" v-if="hide.indexOf(field.name) === -1"
+            <component @update:modelValue="(e) => formChanged(e, field.name)" v-model="data[field.name]"
+                       v-if="hide.indexOf(field.name) === -1"
                        :error="field.error || null"
                        :is="`${field.type}-field`"
                        :field="field" :key="key">
@@ -39,6 +40,12 @@ export default {
                 return [];
             }
         },
+        extraData: {
+            type: Object,
+            default() {
+                return {}
+            }
+        }
     },
     data() {
         return {
@@ -52,6 +59,11 @@ export default {
             this.renderFields = this.fields;
             for (let field of this.renderFields) {
                 this.data[field.name] = field.value;
+            }
+            if (Object.keys(this.extraData).length != 0) {
+                for (let field of this.extraData) {
+                    this.data[field.name] = field.value;
+                }
             }
             return;
         }
@@ -75,14 +87,14 @@ export default {
         }
     },
     methods: {
-        formChanged(){
-            this.$emit('update:data', this.data);
+        formChanged(value, name) {
+            console.log(value, name);
+            this.$emit('update:data', value, name);
         },
 
-        updateData(data){
-            for (const [key, value] of Object.entries(data)){
-                this.data[key] = value;
-            }
+        updateData(value, name) {
+            console.log(value, name);
+            this.data[name] = value;
         }
     }
 }
