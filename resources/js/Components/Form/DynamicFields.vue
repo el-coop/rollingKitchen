@@ -88,12 +88,10 @@ export default {
     },
     methods: {
         formChanged(value, name) {
-            console.log(value, name);
             this.$emit('update:data', value, name);
         },
 
         updateData(value, name) {
-            console.log(value, name);
             this.data[name] = value;
         }
     }
