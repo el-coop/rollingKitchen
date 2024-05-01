@@ -34,6 +34,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 	Route::group(['prefix' => 'invoices'], function () {
 
 		Route::get('/', 'ApplicationInvoiceController@index');
+        Route::delete('/delete/{invoice}', 'ApplicationInvoiceController@destroy');
 
 		Route::group(['prefix' => 'payments'], function () {
 			Route::post('/{invoice}', 'ApplicationInvoiceController@addPayment');

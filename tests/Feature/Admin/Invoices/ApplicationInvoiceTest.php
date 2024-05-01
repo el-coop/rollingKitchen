@@ -1350,5 +1350,35 @@ class ApplicationInvoiceTest extends TestCase {
         Queue::assertNothingPushed();
     }
 
+    public function test_guest_cant_delete_invoice() {
+        $this->delete(action('Admin\ApplicationInvoiceController@destroy', $this->invoices->first()))->assertRedirect(action('Auth\LoginController@login'));
+    }
+
+    public function test_kitchen_cant_delete_invoice() {
+        $this->actingAs($this->kitchen)->delete(action('Admin\ApplicationInvoiceController@destroy', $this->invoices->first()))->assertForbidden();
+    }
+
+    public function test_accountant_cant_delete_invoice() {
+        $this->actingAs($this->accountant)->delete(action('Admin\ApplicationInvoiceController@destroy', $this->invoices->first()))->assertForbidden();
+    }
+
+    public function test_worker_cant_delete_invoice() {
+        $this->actingAs($this->worker)->delete(action('Admin\ApplicationInvoiceController@destroy', $this->invoices->first()))->assertForbidden();
+    }
+
+    public function test_admin_can_delete_invoice() {
+        $invoice = $this->invoices->first();
+        $this->actingAs($this->admin)->delete(action('Admin\ApplicationInvoiceController@destroy', $invoice))->assertSuccessful();
+        $this->assertDatabaseMissing('invoices', ['id' => $invoice->id]);
+
+    }
+
+    public function test_developer_can_delete_invoice() {
+        $invoice = $this->invoices->first();
+        $this->actingAs($this->developer)->delete(action('Admin\ApplicationInvoiceController@destroy', $invoice))->assertSuccessful();
+        $this->assertDatabaseMissing('invoices', ['id' => $invoice->id]);
+
+    }
+
 
 }

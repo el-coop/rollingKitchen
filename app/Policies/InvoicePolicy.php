@@ -56,8 +56,8 @@ class InvoicePolicy {
 	 * @return mixed
 	 */
 	public function delete(User $user, Invoice $invoice) {
-		//
-	}
+        return $user->user_type == Admin::class;
+    }
 
 	/**
 	 * Determine whether the user can restore the invoice.
