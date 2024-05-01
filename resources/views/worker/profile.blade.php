@@ -3,7 +3,7 @@
 		<div class="column">
 			@method('patch')
 			@csrf
-			<dynamic-fields :fields="{{ $worker->fulldata->map(function($item) use($errors){
+			<dynamic-fields @update:data="(value, name) => this.$refs.protectedFields.updateData(value, name)" :fields="{{ $worker->fulldata->map(function($item) use($errors){
 					$fieldName = str_replace(']','',str_replace('[','.',$item['name']));
 
 					$item['value'] = old($fieldName, $item['value']);
@@ -25,9 +25,16 @@
 			@if($errors->has('photos'))
 				<p class="help is-danger">{{$errors->first('photos')}}</p>
 			@endif
-			<dynamic-fields :fields="{{ $rightSideFields->map(function ($field) use ($worker, $errors) {
+			<dynamic-fields ref="protectedFields"  :fields="{{ $rightSideFields->map(function ($field) use ($worker, $errors) {
 					$item = $worker->fullData->firstWhere('name', $field);
 
+					$fieldName = str_replace(']','',str_replace('[','.',$item['name']));
+
+					$item['value'] = old($fieldName, $item['value']);
+					$item['error'] = $errors->has($fieldName) ? $errors->get($fieldName): null;
+					return $item;
+				}) }}"
+                            :extra-data="{{ $worker->fulldata->map(function($item) use($errors){
 					$fieldName = str_replace(']','',str_replace('[','.',$item['name']));
 
 					$item['value'] = old($fieldName, $item['value']);
