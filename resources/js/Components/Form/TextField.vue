@@ -5,7 +5,7 @@
         </label>
         <div class="control" :class="{'has-icons-left': field.icon || false}">
             <input class="input" :class="{'is-danger': error}" :type="field.subType || 'text'" v-model="value"
-                   @keypress.enter.prevent
+                   @enter.prevent
                    :required="field.required || false"
                    :name="field.name" :step="field.step || 'any'" :disabled="field.readonly || conditioned"
                    :placeholder="field.placeholder || ''">
@@ -22,8 +22,6 @@ import FieldMixin from './FieldMixin';
 
 export default {
     name: "TextField",
-    setup() {
-    },
     mixins: [FieldMixin],
     computed: {
         conditioned() {
