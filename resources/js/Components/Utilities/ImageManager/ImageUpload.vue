@@ -78,6 +78,7 @@
 			},
 
 			updateFiles(newFile, oldFile) {
+                console.log(newFile, oldFile);
 				if (!newFile || !oldFile) {
 					return;
 				}
@@ -92,7 +93,6 @@
 					this.$refs.upload.remove(newFile);
 				}
 			},
-
 		}
 
 	}
