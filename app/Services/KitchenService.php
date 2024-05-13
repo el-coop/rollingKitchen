@@ -13,9 +13,9 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class KitchenService implements FromCollection, WithHeadings {
-    
+
     use  Exportable;
-    
+
     public function headings(): array {
         $options = KitchenExportColumn::options();
         if (request()->get('all', false)) {
@@ -25,8 +25,8 @@ class KitchenService implements FromCollection, WithHeadings {
             return $options[$column->column];
         })->toArray();
     }
-    
-    
+
+
     public function collection() {
         $kitchens = Kitchen::whereHas('applications', function ($query) {
             $query->where([['status', '=', 'accepted'], ['year', '=', app('settings')->get('registration_year')]]);
@@ -42,7 +42,7 @@ class KitchenService implements FromCollection, WithHeadings {
         }
         return $data;
     }
-    
+
     /**
      * @param $fields
      * @param $kitchen
@@ -70,6 +70,13 @@ class KitchenService implements FromCollection, WithHeadings {
                         $result->push($application->$column);
                     }
                     break;
+                case 'product':
+                    $productText = '';
+                    $products = $kitchen->getCurrentApplication()->products;
+                    foreach ($products as $product) {
+                        $productText .= "$product->name" . ": $product->price € \n ";
+                    }
+                    $result->push($productText);
                 default:
                     $result->push($kitchen->user->$column);
                     break;

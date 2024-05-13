@@ -18,7 +18,9 @@ class KitchenExportColumn extends Model {
 			'application.terrace_length' => __('kitchen/dimensions.terraceLength'),
 			'application.terrace_width' => __('kitchen/dimensions.terraceWidth'),
 			'application.year' => __('kitchen/kitchen.application') . ' ' .  __('global.year'),
-		]);
+            'product' => __('kitchen/products.menu')
+
+        ]);
 		Field::where('form', Application::class)->get()->each(function ($applicationColumn) use ($options){
 			$options->put('application.' . $applicationColumn->id, $applicationColumn->name_nl);
 		});
