@@ -6,6 +6,7 @@ use App\Jobs\SendApplicationInvoice;
 use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\Application;
+use App\Models\Developer;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\InvoicePayment;
@@ -35,9 +36,12 @@ class ApplicationInvoiceTest extends TestCase {
     private $payment;
     private $worker;
     private $draftInvoice;
+    private $developer;
 
     public function setUp(): void {
         parent::setUp();
+        $this->developer = User::factory()->make();
+        Developer::factory()->create()->user()->save($this->developer);
         $this->user = User::factory()->make();
         Admin::factory()->create()->user()->save($this->user);
         $this->worker = User::factory()->make();
@@ -1368,7 +1372,7 @@ class ApplicationInvoiceTest extends TestCase {
 
     public function test_admin_can_delete_invoice() {
         $invoice = $this->invoices->first();
-        $this->actingAs($this->admin)->delete(action('Admin\ApplicationInvoiceController@destroy', $invoice))->assertSuccessful();
+        $this->actingAs($this->user)->delete(action('Admin\ApplicationInvoiceController@destroy', $invoice))->assertSuccessful();
         $this->assertDatabaseMissing('invoices', ['id' => $invoice->id]);
 
     }
