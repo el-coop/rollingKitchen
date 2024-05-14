@@ -82,11 +82,10 @@
 					return;
 				}
 				if (newFile.error && !oldFile.error) {
-                    console.log('here', newFile.error);
 					this.$toast.error(this.$translations.tryLater, this.$translations.operationFiled);
 				}
 				if (newFile.success && !oldFile.success) {
-                    console.log('there', newFile.success);
+                    console.log('there', newFile, oldFile);
                     if (typeof newFile.response === "string") {
 						this.$toast.error(this.$translations.tryLater, this.$translations.operationFiled);
 					}
