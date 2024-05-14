@@ -49,6 +49,7 @@ export default {
 
     methods: {
         uploaded(imageData) {
+            console.log('uploaded', imageData);
             this.images.push(imageData);
             this.$emit('image-uploaded', imageData);
         },

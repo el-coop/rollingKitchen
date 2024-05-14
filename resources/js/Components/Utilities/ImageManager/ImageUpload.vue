@@ -82,10 +82,12 @@
 					return;
 				}
 				if (newFile.error && !oldFile.error) {
+                    console.log('here', newFile.error);
 					this.$toast.error(this.$translations.tryLater, this.$translations.operationFiled);
 				}
 				if (newFile.success && !oldFile.success) {
-					if (typeof newFile.response === "string") {
+                    console.log('there', newFile.success);
+                    if (typeof newFile.response === "string") {
 						this.$toast.error(this.$translations.tryLater, this.$translations.operationFiled);
 					}
 					this.$emit('uploaded', newFile.response);
