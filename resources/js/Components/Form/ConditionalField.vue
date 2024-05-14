@@ -64,8 +64,6 @@ export default {
             if (typeof this.conditions[value] === 'undefined') {
                 return [];
             }
-            console.log(value);
-            console.log(this.conditions[value]);
             return this.conditions[value];
         },
         getValue(value, option) {
