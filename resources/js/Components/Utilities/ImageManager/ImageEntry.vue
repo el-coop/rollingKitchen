@@ -40,8 +40,11 @@
 				deleting: false
 			}
 		},
+        mounted() {
+            console.log(this.image);
+        },
 
-		methods: {
+        methods: {
 			async deleteImage() {
 				this.deleting = true;
 				try {
