@@ -2,7 +2,7 @@
 	<div class="card">
 		<div v-for="(photo, index) in dataPhotos" :key="index" v-show="active == index" class="card-image">
 			<figure class="image is-5by3">
-				<a v-if="photo.file.indexOf('.pdf') > 1"
+				<a v-if="Array.isArray(photo.file) && photo.file.indexOf('.pdf') > 1"
 				   :href="photo.url" target="_blank"
 				   class="not-image is-flex has-content-justified-center has-items-aligned-center">
 					<h4 class="title is-4" v-text="`${$translations.download} PDF`">
