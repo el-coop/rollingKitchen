@@ -78,6 +78,7 @@
 			},
 
 			updateFiles(newFile, oldFile) {
+                console.log(newFile.response);
 				if (!newFile || !oldFile) {
 					return;
 				}
