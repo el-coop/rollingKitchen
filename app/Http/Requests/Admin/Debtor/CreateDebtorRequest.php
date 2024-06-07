@@ -14,7 +14,7 @@ class CreateDebtorRequest extends FormRequest {
 	public function authorize() {
 		return $this->user()->can('create', Debtor::class);
 	}
-	
+
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -31,20 +31,20 @@ class CreateDebtorRequest extends FormRequest {
 			'kitchen.3' => 'required',
 			'kitchen.4' => 'required',
 			'kitchen.5' => 'required',
-		
+
 		];
 	}
-	
+
 	public function commit() {
 		$debtor = new Debtor;
-		
+
 		$debtor->name = $this->input('name');
 		$debtor->email = $this->input('email');
 		$debtor->language = $this->input('language');
 		$debtor->data = $this->input('kitchen');
-		
+
 		$debtor->save();
-		
+
 		return $debtor;
 	}
 }

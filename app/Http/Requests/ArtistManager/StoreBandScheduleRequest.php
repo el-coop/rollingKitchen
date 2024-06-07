@@ -64,7 +64,7 @@ class StoreBandScheduleRequest extends FormRequest {
 				$schedule->date_time = Carbon::createFromFormat('d/m/Y H:i', $dateTime);
 				$schedule->stage_id = $show['stage'];
 				$schedule->payment = $show['payment'];
-				$schedule->end_time = Carbon::createFromFormat('d/m/Y H:i', $dateTime)->hours($endTime[0])->minutes($endTime[1]);
+				$schedule->end_time = Carbon::createFromFormat('d/m/Y H:i', $dateTime)->hours((int)$endTime[0])->minutes((int)$endTime[1]);
 				$schedule->approved = 'pending';
 				$newSchedules->push($schedule);
 			}

@@ -40,7 +40,7 @@ class UpdateBandRequest extends FormRequest {
 		}
 		return $rules->toArray();
 	}
-	
+
 	public function withValidator($validator) {
 		$validator->after(function ($validator) {
 			if ($this->input('review') && !$this->band->bandSongs->count()) {
@@ -57,7 +57,7 @@ class UpdateBandRequest extends FormRequest {
 		if ($this->input('review') && !$this->band->submitted) {
 			$this->band->submitted = true;
 		}
-		$this->band->data = array_filter($this->input('band'));
+		$this->band->data = json_encode($this->input('band'));
 		$this->band->payment_method = $this->input('paymentMethod');
 		if ($this->input('paymentMethod') == 'individual' && !$this->band->admin()->exists()){
 			$this->addAdmin();

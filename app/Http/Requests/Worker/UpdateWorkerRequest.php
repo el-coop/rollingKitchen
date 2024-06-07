@@ -58,7 +58,7 @@ class UpdateWorkerRequest extends FormRequest {
 		$this->worker->user->save();
 
 
-		$this->worker->data = array_filter($this->input('worker'));
+		$this->worker->data = json_encode($this->input('worker'));
 		if ($this->input('review') && !$this->worker->submitted) {
 			$this->worker->submitted = true;
 			event(new WorkerProfileFilled($this->worker));

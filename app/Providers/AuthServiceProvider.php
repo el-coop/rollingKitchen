@@ -90,14 +90,13 @@ class AuthServiceProvider extends ServiceProvider {
 		BandMemberPhoto::class => BandMemberPhotoPolicy::class,
 		BandAdminPhoto::class => BandAdminPhotoPolicy::class
 	];
-	
+
 	/**
 	 * Register any authentication / authorization services.
 	 *
 	 * @return void
 	 */
 	public function boot() {
-		$this->registerPolicies();
 		Gate::define('update-settings', function ($user) {
 			return $user->user_type == Admin::class || $user->user_type == Developer::class;
 		});
