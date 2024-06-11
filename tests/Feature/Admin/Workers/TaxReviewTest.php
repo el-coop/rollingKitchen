@@ -68,6 +68,7 @@ class TaxReviewTest extends TestCase {
 	}
 
 	public function test_admin_can_upload_tax_review() {
+        $this->withoutExceptionHandling();
 		Event::fake();
 		Storage::fake('local');
 		Crypt::shouldReceive('getKey')->twice()->shouldReceive('encrypt')->times(3)->andReturn('');

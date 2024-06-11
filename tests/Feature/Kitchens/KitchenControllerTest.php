@@ -932,7 +932,7 @@ class KitchenControllerTest extends TestCase {
             'length' => 1,
             'width' => 1,
             'review' => true
-        ])->assertSessionHasErrors(['services' =>'The services field must contain entries for: ' . "$mandatoryService->id" . '.']);
+        ])->assertSessionHasErrors(['services' => 'validation.required_array_keys']);
     }
 }
 

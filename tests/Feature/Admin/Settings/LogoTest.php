@@ -57,6 +57,7 @@ class LogoTest extends TestCase {
     }
 
     public function test_admin_can_upload_logo() {
+        $this->withoutExceptionHandling();
         $logo = UploadedFile::fake()->image('test.png');
         $this->actingAs($this->admin->user)->post(action('Admin\LogoController@store'), [
             'photo' => $logo,

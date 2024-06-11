@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateDebtorRequest extends FormRequest {
 	private $debtor;
-
+	
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
@@ -16,7 +16,7 @@ class UpdateDebtorRequest extends FormRequest {
 		$this->debtor = $this->route('debtor');
 		return $this->user()->can('update', $this->debtor);
 	}
-
+	
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -35,16 +35,16 @@ class UpdateDebtorRequest extends FormRequest {
 			'kitchen.5' => 'required',
 		];
 	}
-
+	
 	public function commit() {
 		$this->debtor->name = $this->input('name');
 		$this->debtor->email = $this->input('email');
 		$this->debtor->language = $this->input('language');
-		$this->debtor->data = json_encode($this->input('kitchen'));
-
+		$this->debtor->data = $this->input('kitchen');
+		
 		$this->debtor->save();
-
+		
 		return $this->debtor;
-
+		
 	}
 }

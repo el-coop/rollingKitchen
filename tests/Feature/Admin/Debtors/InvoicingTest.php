@@ -310,7 +310,7 @@ class InvoicingTest extends TestCase {
 
         Queue::fake();
 
-        $this->debtor->data = json_encode([]);
+        $this->debtor->data = [];
         $this->debtor->save();
 
         $this->actingAs($this->user)->post(action('Admin\DebtorInvoiceController@store', $this->debtor), [
@@ -601,7 +601,7 @@ class InvoicingTest extends TestCase {
 
         Queue::fake();
         $invoice = $this->invoices->first();
-        $this->debtor->data = json_encode([]);;
+        $this->debtor->data = [];
         $this->debtor->save();
 
         $this->actingAs($this->user)->patch(action('Admin\DebtorInvoiceController@update', [

@@ -10,7 +10,7 @@ class HoursOverflow implements Rule {
 	protected $startTime;
 	protected $totalHours;
 	protected $maxHours;
-
+	
 	/**
 	 * Create a new rule instance.
 	 *
@@ -19,9 +19,9 @@ class HoursOverflow implements Rule {
 	public function __construct($startTime, $totalHours, $maxHours) {
 		$this->startTime = $startTime;
 		$this->totalHours = $totalHours;
-		$this->maxHours = CarbonInterval::hour($maxHours);
+		$this->maxHours = $this->calculateMaxHours($maxHours);
 	}
-
+	
 	/**
 	 * Determine if the validation rule passes.
 	 *
@@ -37,10 +37,10 @@ class HoursOverflow implements Rule {
 			$endTime->addDay();
 		}
 		$workHours = $startTime->diffAsCarbonInterval($endTime);
-        $this->totalHours = $this->totalHours->add($workHours);
-        return $this->maxHours->greaterThanOrEqualTo($this->totalHours);
+		$this->totalHours = $this->totalHours->add($workHours);
+		return $this->totalHours->compare($this->maxHours) < 1;
 	}
-
+	
 	/**
 	 * Get the validation error message.
 	 *
@@ -48,5 +48,12 @@ class HoursOverflow implements Rule {
 	 */
 	public function message() {
 		return __('admin/shifts.hoursOverflow');
+	}
+	
+	private function calculateMaxHours($maxHoursInt) {
+		$maxHours = new Carbon('today');
+		$startOfDay = $maxHours->clone();
+		$maxHours->addHours($maxHoursInt)->addSecond();
+		return $maxHours->diffAsCarbonInterval($startOfDay);
 	}
 }

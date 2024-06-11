@@ -15,7 +15,7 @@ class CreateKitchenRequest extends FormRequest {
 	public function authorize() {
 		return true;
 	}
-
+	
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -29,18 +29,18 @@ class CreateKitchenRequest extends FormRequest {
 			'language' => 'required|in:en,nl'
 		];
 	}
-
+	
 	public function commit() {
 		$user = new User;
 		$kitchen = new Kitchen;
-
+		
 		$user->name = $this->input('name');
 		$user->email = $this->input('email');
 		$user->password = bcrypt($this->input('password'));
 		$user->language = $this->input('language');
 		$kitchen->status = 'new';
-		$kitchen->data = json_encode([]);
-
+		$kitchen->data = [];
+		
 		$kitchen->save();
 		$kitchen->user()->save($user);
 		return $kitchen;

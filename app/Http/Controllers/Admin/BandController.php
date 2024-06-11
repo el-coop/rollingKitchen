@@ -97,7 +97,7 @@ class BandController extends Controller {
 		$budget = app('settings')->get('schedule_budget');
 		$initBudget = BandSchedule::sum('payment');
 		$startDay = app('settings')->get('schedule_start_day');
-		$days = floor(Carbon::parse($startDay)->diffInDays(Carbon::parse(app('settings')->get('schedule_end_day'))) + 1);
+		$days = Carbon::parse($startDay)->diffInDays(Carbon::parse(app('settings')->get('schedule_end_day'))) + 1;
 		$startHour = app('settings')->get('schedule_start_hour');
 		$endHour = app('settings')->get('schedule_end_hour');
 		return view('admin.bands.schedule', compact('bands', 'stages', 'schedules', 'budget', 'initBudget', 'startDay', 'startHour', 'days', 'endHour'));
