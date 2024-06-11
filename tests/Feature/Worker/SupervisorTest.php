@@ -416,7 +416,6 @@ class SupervisorTest extends TestCase {
     }
 
     public function test_supervisor_can_add_approved_worker_to_shift() {
-        $this->withoutExceptionHandling();
         $this->worker->user->approved = true;
         $this->worker->user->save();
         $this->actingAs($this->supervisor)->post(action('Worker\SupervisorController@addWorkerToShift', $this->shift), [
@@ -462,7 +461,6 @@ class SupervisorTest extends TestCase {
     }
 
     public function test_admin_can_add_approved_worker_to_shift() {
-        $this->withoutExceptionHandling();
         $this->worker->user->approved = true;
         $this->worker->user->save();
         $this->actingAs($this->admin)->post(action('Worker\SupervisorController@addWorkerToShift', $this->shift), [
@@ -630,7 +628,6 @@ class SupervisorTest extends TestCase {
     }
 
     public function test_supervisor_can_update_shift_worker() {
-        $this->withoutExceptionHandling();
         $this->shiftWorker->user->approved = true;
         $this->shiftWorker->user->save();
         $shiftWorker = ShiftWorker::where('shift_id', $this->shift->id)->first();
@@ -677,7 +674,6 @@ class SupervisorTest extends TestCase {
     }
 
     public function test_admin_can_update_shift_worker() {
-        $this->withoutExceptionHandling();
         $this->shiftWorker->user->approved = true;
         $this->shiftWorker->user->save();
         $shiftWorker = ShiftWorker::where('shift_id', $this->shift->id)->first();
