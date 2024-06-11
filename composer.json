@@ -10,11 +10,11 @@
     "require": {
         "php": "^8.1",
         "consoletvs/invoices": "^1.8.1",
-        "doctrine/dbal": "^3.1.0",
-        "dompdf/dompdf": "^1.0 ",
+        "dompdf/dompdf": "^2.0 ",
         "elcoop/valuestore": "1.0",
+        "fakerphp/faker": "^1.23",
         "intervention/image": "^2.5",
-        "laravel/framework": "^9.0",
+        "laravel/framework": "^11.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^4.0",
         "maatwebsite/excel": "^3.1",
@@ -25,12 +25,11 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",
-        "beyondcode/laravel-dump-server": "^1.8",
-        "spatie/laravel-ignition": "^1.6",
-        "fzaninotto/faker": "^1.9",
+        "beyondcode/laravel-dump-server": "^2.0",
+        "spatie/laravel-ignition": "^2.0",
         "mockery/mockery": "^1.5",
-        "nunomaduro/collision": "^6.3",
-        "phpunit/phpunit": "^9.5"
+        "nunomaduro/collision": "^8.1",
+        "phpunit/phpunit": "^10.0"
     },
     "autoload": {
         "classmap": [
@@ -70,6 +69,5 @@
         "sort-packages": true,
         "optimize-autoloader": true
     },
-    "minimum-stability": "dev",
     "prefer-stable": true
 }

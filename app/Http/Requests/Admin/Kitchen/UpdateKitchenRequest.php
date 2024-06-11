@@ -40,7 +40,7 @@ class UpdateKitchenRequest extends FormRequest {
 		$this->kitchen->status = $this->input('status');
         $this->kitchen->note = $this->note;
 
-        $this->kitchen->data = $this->input('kitchen');
+        $this->kitchen->data = json_encode($this->input('kitchen'));
 
 		$this->kitchen->user->save();
 		$this->kitchen->save();

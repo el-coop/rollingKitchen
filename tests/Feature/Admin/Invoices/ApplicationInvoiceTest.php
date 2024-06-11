@@ -536,7 +536,7 @@ class ApplicationInvoiceTest extends TestCase {
 
         Queue::fake();
 
-        $this->kitchen->user->data = [];
+        $this->kitchen->user->data = json_encode([]);;
         $this->kitchen->user->save();
 
         $this->actingAs($this->user)->post(action('Admin\ApplicationInvoiceController@store', $this->application), [
@@ -953,7 +953,7 @@ class ApplicationInvoiceTest extends TestCase {
         Queue::fake();
         $invoice = $this->invoices->first();
 
-        $this->kitchen->user->data = [];
+        $this->kitchen->user->data = json_encode([]);;
         $this->kitchen->user->save();
 
 
