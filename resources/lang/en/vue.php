@@ -85,4 +85,5 @@ return [
     'excludingVAT' => 'ex VAT',
     'number' => 'Number',
     'services' => 'Services',
+    'stagingMin' => '*The staging fee is always at least the deposit, regardless of your final turnover.'
 ];

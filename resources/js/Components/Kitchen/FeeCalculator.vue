@@ -62,6 +62,7 @@
                 <label class="label"
                        v-text="$translations.total + ': €' + formatEstimation(revenueTotal) + ' ' +$translations.excludingVAT"/>
             </div>
+            <div class="is-flex is-justify-content-end" v-text="$translations.stagingMin"></div>
         </div>
         <div class="is-flex is-justify-content-end">
             <div>
@@ -116,7 +117,11 @@ export default {
             }
         },
         revenueTotal() {
-            return this.overTwenty + this.tenToTwenty + this.toTen;
+            let total = this.overTwenty + this.tenToTwenty + this.toTen;
+            if (total < 1000){
+                return 1000;
+            }
+            return total;
         },
         total() {
             return this.revenueTotal + this.serviceTotal;
