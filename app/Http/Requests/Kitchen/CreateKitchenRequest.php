@@ -39,7 +39,7 @@ class CreateKitchenRequest extends FormRequest {
 		$user->password = bcrypt($this->input('password'));
 		$user->language = $this->input('language');
 		$kitchen->status = 'new';
-		$kitchen->data = json_encode([]);
+		$kitchen->data = [];
 
 		$kitchen->save();
 		$kitchen->user()->save($user);

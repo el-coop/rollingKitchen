@@ -34,7 +34,7 @@ class UpdateApplicationRequest extends FormRequest {
 	public function commit() {
 		$this->application->status = $this->input('status');
 		$this->application->year = $this->input('year', $this->application->year);
-		$this->application->data = json_encode($this->input('application'));
+		$this->application->data = $this->input('application');
 
 		$this->application->save();
 

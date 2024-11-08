@@ -108,12 +108,12 @@ class UpdateKitchenRequest extends FormRequest {
         $this->kitchen->user->save();
 
 
-        $this->kitchen->data = json_encode($this->input('kitchen'));
+        $this->kitchen->data = $this->input('kitchen');
         $this->kitchen->save();
 
         if ($this->user()->can('update', $this->application)) {
 
-            $this->application->data = json_encode($this->input('application'));
+            $this->application->data = $this->input('application');
             $this->application->length = $this->input('length');
             $this->application->width = $this->input('width');
             $this->application->terrace_length = $this->input('terrace_length');

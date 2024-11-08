@@ -54,7 +54,7 @@ class UpdateBandMemberRequest extends FormRequest {
 		$this->bandMember->user->name = $this->input('name');
 		$this->bandMember->user->email = $this->input('email');
 		$this->bandMember->user->language = $this->input('language');
-		$this->bandMember->data = json_encode($this->input('bandmember'));
+		$this->bandMember->data = $this->input('bandmember');
 		if ($this->input('review') && !$this->bandMember->submitted) {
 			$this->bandMember->submitted = true;
 			event(new BandMemberProfileFilled($this->bandMember));

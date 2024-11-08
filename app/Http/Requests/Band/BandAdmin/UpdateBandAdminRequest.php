@@ -59,7 +59,7 @@ class UpdateBandAdminRequest extends FormRequest {
 
 	public function commit() {
 		$this->bandAdmin->name = $this->input('adminName');
-		$this->bandAdmin->data = json_encode($this->input('bandmember'));
+		$this->bandAdmin->data = $this->input('bandmember');
 		$this->bandAdmin->payment = $this->input('payment');
 		if ($this->input('review') && !$this->bandAdmin->submitted) {
 			$this->bandAdmin->submitted = true;
