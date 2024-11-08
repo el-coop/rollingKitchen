@@ -40,7 +40,7 @@ class UpdateDebtorRequest extends FormRequest {
 		$this->debtor->name = $this->input('name');
 		$this->debtor->email = $this->input('email');
 		$this->debtor->language = $this->input('language');
-		$this->debtor->data = json_encode($this->input('kitchen'));
+		$this->debtor->data = $this->input('kitchen');
 
 		$this->debtor->save();
 

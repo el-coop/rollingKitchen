@@ -57,7 +57,7 @@ class UpdateBandRequest extends FormRequest {
 		if ($this->input('review') && !$this->band->submitted) {
 			$this->band->submitted = true;
 		}
-		$this->band->data = json_encode($this->input('band'));
+		$this->band->data = $this->input('band');
 		$this->band->payment_method = $this->input('paymentMethod');
 		if ($this->input('paymentMethod') == 'individual' && !$this->band->admin()->exists()){
 			$this->addAdmin();

@@ -51,7 +51,7 @@ class UpdateWorkerRequest extends FormRequest {
         $this->worker->approved = $this->filled('approved');
         $this->worker->paid = $this->filled('paid');
 
-		$this->worker->data = json_encode($this->input('worker'));
+		$this->worker->data = $this->input('worker');
 
 		$this->worker->user->save();
 		$this->worker->save();
