@@ -4,6 +4,7 @@ namespace App\Http\Requests\Admin\Worker;
 
 use App\Models\Field;
 use App\Models\Worker;
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateWorkerRequest extends FormRequest {
@@ -49,6 +50,10 @@ class UpdateWorkerRequest extends FormRequest {
 		$this->worker->user->language = $this->input('language');
 		$this->worker->supervisor = $this->filled('supervisor');
         $this->worker->approved = $this->filled('approved');
+        if ($this->filled('approved')){
+            $this->worker->submitted = true;
+            $this->worker->last_submitted = Carbon::today()->year;
+        }
         $this->worker->paid = $this->filled('paid');
 
 		$this->worker->data = $this->input('worker');
@@ -64,7 +69,8 @@ class UpdateWorkerRequest extends FormRequest {
 			'name' => $this->input('name'),
 			'workplacesList' => $this->worker->workplacesList,
 			'completed' => count($this->worker->data),
-			'approved' => $this->worker->approved
+			'approved' => $this->worker->approved,
+            'last_submitted' => $this->worker->last_submitted
 
 		];
 	}
