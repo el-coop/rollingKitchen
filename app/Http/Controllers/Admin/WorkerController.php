@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\Admin\Worker\DisapproveWorkersRequest;
+use App\Http\Requests\Admin\Worker\SendUpdateInformationRequest;
 use App\Http\Requests\Admin\Worker\StoreTaxReviewRequest;
 use App\Http\Requests\Admin\Worker\CreateWorkerRequest;
 use App\Http\Requests\Admin\Worker\DestroyWorkerRequest;
@@ -30,7 +31,9 @@ class WorkerController extends Controller {
         $buttons = [
             view('admin.workers.disapproveAllButton')
         ];
-        return view('admin.datatableWithNew', compact('title', 'createTitle', 'buttons', 'fieldType', 'formattersData'));
+        $extraSlotView = 'admin.workers.updateInformationButton';
+
+        return view('admin.datatableWithNew', compact('title', 'createTitle', 'buttons', 'fieldType', 'formattersData', 'extraSlotView'));
 
     }
 
@@ -146,5 +149,9 @@ class WorkerController extends Controller {
         return [
             'success' => true
         ];
+    }
+
+    public function sendUpdateInformationEmail(SendUpdateInformationRequest $request, Worker $worker) {
+        return $request->commit();
     }
 }

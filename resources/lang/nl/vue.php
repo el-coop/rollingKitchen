@@ -85,6 +85,8 @@ return [
     'excludingVAT' => 'ex BTW',
     'number' => 'Nummer',
     'services' => 'Services',
-    'stagingMin' => '*Het stageld bedraagt altijd minimaal de aanbetaling, ongeacht je uiteindelijke omzet.'
+    'stagingMin' => '*Het stageld bedraagt altijd minimaal de aanbetaling, ongeacht je uiteindelijke omzet.',
+    'sendUpdateEmailButton' => 'Stuur update-informatie per e-mail',
+    'emailSent' => 'E-mail verzonden'
 
 ];

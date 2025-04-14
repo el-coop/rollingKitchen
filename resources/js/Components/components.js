@@ -60,6 +60,7 @@ export default function(app){
     app.component('CheckboxPopupField', require('./Form/CheckboxPopupField').default);
     app.component('CheckedInfoForm', require('./Form/CheckedInfoForm').default);
     app.component('ConditionalField', require('./Form/ConditionalField').default);
+    app.component('SendWorkerUpdateInfoEmail', require('./Admin/SendWorkerUpdateInfoEmail').default)
 
 }
 
