@@ -7,15 +7,13 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class UpdateInformationNotification extends Notification
-{
+class UpdateInformationNotification extends Notification {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct()
-    {
+    public function __construct() {
         //
     }
 
@@ -24,18 +22,16 @@ class UpdateInformationNotification extends Notification
      *
      * @return array<int, string>
      */
-    public function via(object $notifiable): array
-    {
+    public function via(object $notifiable): array {
         return ['mail'];
     }
 
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable): MailMessage
-    {
+    public function toMail(object $notifiable): MailMessage {
         return (new MailMessage)
-                    ->line(__('admin/workers.updateEmailBody',[], $notifiable->lan));
+            ->line(__('admin/workers.updateEmailBody', [], $notifiable->lan));
     }
 
     /**
@@ -43,8 +39,7 @@ class UpdateInformationNotification extends Notification
      *
      * @return array<string, mixed>
      */
-    public function toArray(object $notifiable): array
-    {
+    public function toArray(object $notifiable): array {
         return [
             //
         ];

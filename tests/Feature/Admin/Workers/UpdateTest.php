@@ -8,6 +8,7 @@ use App\Models\Kitchen;
 use App\Models\User;
 use App\Models\Worker;
 use App\Models\Workplace;
+use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -104,12 +105,15 @@ class UpdateTest extends TestCase {
             'email' => 'test@best.com',
             'language' => 'en',
             'user_type' => Worker::class,
+
         ]);
 
         $this->assertDatabaseHas('workers', [
             'supervisor' => 0,
             'type' => 1,
             'approved' => 1,
+            'last_submitted' => Carbon::now()->year,
+            'submitted' => true
         ]);
         $worker = Worker::find($this->worker->id);
         $this->assertEquals(collect(['data' => 'bata',

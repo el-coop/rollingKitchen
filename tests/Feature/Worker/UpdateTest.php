@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Worker;
 use App\Models\WorkerPhoto;
 use App\Notifications\Worker\ProfileFilledNotification;
+use Carbon\Carbon;
 use Event;
 use Notification;
 use Tests\TestCase;
@@ -145,7 +146,8 @@ class UpdateTest extends TestCase {
 
 		$this->assertDatabaseHas('workers', [
 			'id' => $this->worker->user_id,
-			'submitted' => true
+			'submitted' => true,
+            'last_submitted' => Carbon::now()->year,
 		]);
         $worker = Worker::find($this->worker->user->id);
         $this->assertEquals(collect(['data']), $worker->data);
