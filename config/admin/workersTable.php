@@ -62,16 +62,16 @@ return [
         ],
         'callback' => 'numToBoolTag'
     ], [
-        'name' => 'submitted',
+        'name' => 'last_submitted',
         'title' => 'admin/workers.submitted',
-        'callback' => 'boolean',
+        'callback' => 'submitted',
         'filter' => [
             'yes' => 'global.yes',
             'no' => 'global.no'
         ],
         'filterDefinitions' => [
-            'yes' => ['>', 0],
-            'no' => ['=', 0],
+            'yes' => ['=', \Carbon\Carbon::now()->year],
+            'no' => ['!=', \Carbon\Carbon::now()->year],
         ],
     ], [
         'name' => 'approved',

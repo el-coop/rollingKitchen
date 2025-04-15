@@ -117,6 +117,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
 		Route::patch('/update/{worker}', 'WorkerController@nonAjaxUpdate');
 		Route::delete('/delete/{worker}', 'WorkerController@destroy');
 		Route::get('/{worker}', 'WorkerController@show');
+        Route::post('/updateInformationEmail/{worker}', 'WorkerController@sendUpdateInformationEmail');
 
 
 	});
