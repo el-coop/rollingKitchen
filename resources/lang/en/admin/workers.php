@@ -23,5 +23,7 @@ return [
 	'shiftPayment' => 'Shift Payment',
 	'totalPayment' => 'Total Payment',
     'submitted' => 'Submitted',
-    'updateEmailBody' => 'Great that you are coming to work at the Rolling Kitchens Weekend again this year! If you receive this email, you already have a Rolling Kitchens account. Check your details, fill in any changes and press confirm. Make sure your details are correct and complete, so we can pay you as soon as possible after the Rolling Kitchens'
+    'updateEmailBody' => 'Great that you are coming to work at the Rolling Kitchens Weekend again this year! If you receive this email, you already have a Rolling Kitchens account. Check your details, fill in any changes and press confirm. Make sure your details are correct and complete, so we can pay you as soon as possible after the Rolling Kitchens',
+    'firstName' => 'First name(s)',
+    'surname' => 'Surname'
 ];

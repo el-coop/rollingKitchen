@@ -33,7 +33,9 @@ class UpdateWorkerRequest extends FormRequest {
 			'email' => 'required|email|unique:users,email,' . $this->worker->user->id,
 			'language' => 'required|in:en,nl',
 			'worker' => 'required|array',
-            'type' => 'required|in:0,1,2'
+            'type' => 'required|in:0,1,2',
+            'first_name' => 'required',
+            'surname' => 'required'
 		]);
 		if ($this->input('review') || $this->worker->submitted) {
 			$requiredFieldsRules = Field::getRequiredFields(Worker::class);
@@ -57,8 +59,8 @@ class UpdateWorkerRequest extends FormRequest {
 		$this->worker->user->language = $this->input('language');
         $this->worker->type = $this->input('type');
 		$this->worker->user->save();
-
-
+        $this->worker->first_name = $this->input('first_name');
+        $this->worker->surname = $this->input('surname');
 		$this->worker->data = $this->input('worker');
 		if ($this->input('review') && !$this->worker->submitted) {
 			$this->worker->submitted = true;

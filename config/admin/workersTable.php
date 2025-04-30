@@ -22,6 +22,14 @@ return [
         'table' => 'users',
         'title' => 'global.name',
         'sortField' => 'name',
+    ],[
+        'name' => 'first_name',
+        'title' => 'admin/workers.firstName',
+        'sortField' => 'first_name',
+    ],[
+        'name' => 'surname',
+        'title' => 'admin/workers.surname',
+        'sortField' => 'first_name',
     ], [
         'name' => 'workplacesList',
         'raw' => 'GROUP_CONCAT(workplaces.name) as workplacesList',

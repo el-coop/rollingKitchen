@@ -23,6 +23,8 @@ return [
 	'shiftPayment' => 'Betaling shift',
 	'totalPayment' => 'Betaling totaal',
     'submitted' => 'Ingediend',
-    'updateEmailBody' => 'Leuk dat je dit jaar weer komt werken op Het Weekend van de Rollende Keukens! Als je dit mailtje krijgt heb je al een Rollende Keukens account. Controleer je gegevens, vul eventuele wijzigingen in en druk op bevestigen. Zorg dat je gegevens kloppen en compleet zijn, dan kunnen we je na de Rollende Keukens z.s.m. uitbetalen.'
+    'updateEmailBody' => 'Leuk dat je dit jaar weer komt werken op Het Weekend van de Rollende Keukens! Als je dit mailtje krijgt heb je al een Rollende Keukens account. Controleer je gegevens, vul eventuele wijzigingen in en druk op bevestigen. Zorg dat je gegevens kloppen en compleet zijn, dan kunnen we je na de Rollende Keukens z.s.m. uitbetalen.',
+    'firstName' => 'Voornaam(en)',
+    'surname' => 'Achternaam'
 
 ];

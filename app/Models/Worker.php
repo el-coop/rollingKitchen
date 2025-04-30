@@ -53,6 +53,16 @@ class Worker extends Model {
                 'label' => __('global.name'),
                 'type' => 'text',
                 'value' => $this->user->name ?? '',
+            ],[
+                'name' => 'first_name',
+                'label' => __('admin/workers.firstName'),
+                'type' => 'text',
+                'value' => $this->first_name ?? '',
+            ],[
+                'name' => 'surname',
+                'label' => __('admin/workers.surname'),
+                'type' => 'text',
+                'value' => $this->surname ?? '',
             ], [
                 'name' => 'email',
                 'label' => __('global.email'),
