@@ -52,7 +52,6 @@ class CreateWorkerRequest extends FormRequest {
 		$worker->data = [];
 		$worker->save();
 		$worker->user()->save($user);
-
 		$worker->workplaces()->attach($this->input('workplaces'));
 
 		Password::broker()->sendResetLink(

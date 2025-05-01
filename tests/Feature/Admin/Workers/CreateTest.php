@@ -96,8 +96,9 @@ class CreateTest extends TestCase {
 			'email' => 'test@best.com',
 			'type' => 0,
 			'language' => 'en',
-			'supervisor' => false,
-			'workplaces' => $workplaces->toArray()
+			'workplaces' => $workplaces->toArray(),
+            'first_name' => 'first name',
+            'surname' => 'surname'
 		])->assertSuccessful()->decodeResponseJson();
 
 		$this->assertDatabaseHas('users', [
@@ -107,10 +108,11 @@ class CreateTest extends TestCase {
 			'language' => 'en',
 			'user_type' => Worker::class
 		]);
-
 		$this->assertDatabaseHas('workers', [
 			'supervisor' => 0,
 			'type' => 0,
+            'first_name' => 'first name',
+            'surname' => 'surname'
 		]);
 		foreach ($workplaces as $workplace) {
 			$this->assertDatabaseHas('worker_workplace', [
