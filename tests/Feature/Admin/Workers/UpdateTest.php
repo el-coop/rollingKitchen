@@ -97,6 +97,8 @@ class UpdateTest extends TestCase {
             ],
             'approved' => true,
             'workplaces' => $workplaces->toArray(),
+            'first_name' => 'first name',
+            'surname' => 'surname'
         ])->assertSuccessful();
 
         $this->assertDatabaseHas('users', [
@@ -113,7 +115,9 @@ class UpdateTest extends TestCase {
             'type' => 1,
             'approved' => 1,
             'last_submitted' => Carbon::now()->year,
-            'submitted' => true
+            'submitted' => true,
+            'first_name' => 'first name',
+            'surname' => 'surname'
         ]);
         $worker = Worker::find($this->worker->id);
         $this->assertEquals(collect(['data' => 'bata',
@@ -179,6 +183,8 @@ class UpdateTest extends TestCase {
             ],
             'approved' => true,
             'workplaces' => $workplaces->toArray(),
+            'first_name' => 'first name',
+            'surname' => 'surname'
         ])->assertRedirect();
 
         $this->assertDatabaseHas('users', [
@@ -193,6 +199,8 @@ class UpdateTest extends TestCase {
             'supervisor' => 0,
             'type' => 1,
             'approved' => 1,
+            'first_name' => 'first name',
+            'surname' => 'surname'
         ]);
         $worker = Worker::find($this->worker->id);
         $this->assertEquals(collect(['data' => 'bata',

@@ -93,6 +93,8 @@ class UpdateTest extends TestCase {
 			'worker' => [
 				'data'
 			],
+            'first_name' => 'first name',
+            'surname' => 'surname',
             'liability' => 'on',
             'type' => '0'
 		])->assertSessionHas('toast');
@@ -108,7 +110,9 @@ class UpdateTest extends TestCase {
 		$this->assertDatabaseHas('workers', [
 			'id' => $this->worker->user_id,
 			'submitted' => false,
-            'liability' => true
+            'liability' => true,
+            'first_name' => 'first name',
+            'surname' => 'surname'
 		]);
         $worker = Worker::find($this->worker->user->id);
         $this->assertEquals(collect(['data']), $worker->data);
@@ -132,7 +136,9 @@ class UpdateTest extends TestCase {
 			],
 			'review' => true,
             'liability' => 'on',
-            'type' => '0'
+            'type' => '0',
+            'first_name' => 'first name',
+            'surname' => 'surname'
 
         ])->assertSessionHas('toast');
 
@@ -148,6 +154,8 @@ class UpdateTest extends TestCase {
 			'id' => $this->worker->user_id,
 			'submitted' => true,
             'last_submitted' => Carbon::now()->year,
+            'first_name' => 'first name',
+            'surname' => 'surname'
 		]);
         $worker = Worker::find($this->worker->user->id);
         $this->assertEquals(collect(['data']), $worker->data);
@@ -211,7 +219,9 @@ class UpdateTest extends TestCase {
 			],
 			'review' => true,
             'liability' => 'on',
-            'type' => '0'
+            'type' => '0',
+            'first_name' => 'first name',
+            'surname' => 'surname'
 
         ])->assertSessionHas('toast');
 
@@ -225,7 +235,9 @@ class UpdateTest extends TestCase {
 
 		$this->assertDatabaseHas('workers', [
 			'id' => $this->worker->user_id,
-			'submitted' => true
+			'submitted' => true,
+            'first_name' => 'first name',
+            'surname' => 'surname'
 		]);
         $worker = Worker::find($this->worker->user->id);
         $this->assertEquals(collect(['data']), $worker->data);
@@ -250,7 +262,9 @@ class UpdateTest extends TestCase {
 			'worker' => [
 				'data'
 			],
-            'type' => '0'
+            'type' => '0',
+            'first_name' => 'first name',
+            'surname' => 'surname'
 
         ])->assertSessionHas('toast');
 
@@ -264,7 +278,9 @@ class UpdateTest extends TestCase {
 
 		$this->assertDatabaseHas('workers', [
 			'id' => $this->worker->user_id,
-            'liability' => false
+            'liability' => false,
+            'first_name' => 'first name',
+            'surname' => 'surname'
         ]);
 		$worker = Worker::find($this->worker->user->id);
 		$this->assertEquals(collect(['data']), $worker->data);

@@ -37,7 +37,9 @@ class UpdateWorkerRequest extends FormRequest {
             'paid' => 'boolean',
 			'worker' => 'required|array',
 			'workplaces' => 'required|array',
-			'workplaces.*' => 'required|exists:workplaces,id'
+			'workplaces.*' => 'required|exists:workplaces,id',
+            'first_name' => 'required',
+            'surname' => 'required'
 		];
 
 	}
@@ -54,6 +56,8 @@ class UpdateWorkerRequest extends FormRequest {
             $this->worker->submitted = true;
             $this->worker->last_submitted = Carbon::today()->year;
         }
+        $this->worker->first_name = $this->input('first_name');
+        $this->worker->surname = $this->input('surname');
         $this->worker->paid = $this->filled('paid');
 
 		$this->worker->data = $this->input('worker');

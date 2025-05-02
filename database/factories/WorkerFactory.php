@@ -18,7 +18,9 @@ class WorkerFactory extends Factory {
             'type' => 0,
             'supervisor' => false,
             'approved' => false,
-            'data' => []
+            'data' => [],
+            'first_name' => $this->faker->firstName,
+            'surname' => $this->faker->lastName
         ];
     }
 }
