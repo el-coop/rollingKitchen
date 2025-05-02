@@ -16,8 +16,16 @@ class ChangeExtraNameFromJsonToDedicatedColumns extends Seeder {
         $first_name = Field::where('name_en', 'First name(s)')->where('form', Worker::class)->get()->first()->id;
         $surname = Field::where('name_en', 'Surname')->where('form', Worker::class)->get()->first()->id;
         foreach ($workers as $worker){
-            $worker->first_name = $worker->data["$first_name"];
-            $worker->surname = $worker->data["$surname"];
+            $name = '';
+            if(isset($worker->data["$first_name"])){
+                $name = $worker->data["$first_name"];
+            }
+            $worker->first_name = $name;
+            $lastname = '';
+            if(isset($worker->data["$surname"])){
+                $lastname = $worker->data["$surname"];
+            }
+            $worker->surname = $lastname;
             $worker->save();
         }
     }
