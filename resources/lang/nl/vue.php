@@ -87,6 +87,7 @@ return [
     'services' => 'Services',
     'stagingMin' => '*Het stageld bedraagt altijd minimaal de aanbetaling, ongeacht je uiteindelijke omzet.',
     'sendUpdateEmailButton' => 'Stuur update-informatie per e-mail',
-    'emailSent' => 'E-mail verzonden'
-
+    'emailSent' => 'E-mail verzonden',
+    'contentTooBig' => 'Bestand te groot om te uploaden',
+    'hasToBeAnImage' => 'Bestand moet een afbeelding zijn'
 ];

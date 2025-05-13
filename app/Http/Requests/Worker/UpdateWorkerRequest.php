@@ -17,9 +17,8 @@ class UpdateWorkerRequest extends FormRequest {
 	 * @return bool
 	 */
 	public function authorize() {
-
-		$this->worker = $this->route('worker');
-		return $this->user()->can('view', $this->worker);
+        $this->worker = $this->route('worker');
+        return $this->user()->can('view', $this->worker);
 	}
 
 	/**
@@ -41,7 +40,7 @@ class UpdateWorkerRequest extends FormRequest {
 			$requiredFieldsRules = Field::getRequiredFields(Worker::class);
 			$protectedFieldsRules = Field::getProtectedFields(Worker::class);
 			$rules = $rules->merge($requiredFieldsRules)->merge($protectedFieldsRules)->merge(['liability' => 'accepted']);
-		}
+        }
 		return $rules->toArray();
 	}
 
@@ -62,7 +61,7 @@ class UpdateWorkerRequest extends FormRequest {
         $this->worker->first_name = $this->input('first_name');
         $this->worker->surname = $this->input('surname');
 		$this->worker->data = $this->input('worker');
-		if ($this->input('review') && !$this->worker->submitted) {
+		if ($this->has('review') && !$this->worker->submitted) {
 			$this->worker->submitted = true;
             $this->worker->last_submitted = Carbon::today()->year;
 			event(new WorkerProfileFilled($this->worker));

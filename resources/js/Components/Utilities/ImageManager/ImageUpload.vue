@@ -4,7 +4,7 @@
 			<label class="file-label">
 				<UploadComponent name="photo" :multiple="true" :drop="true" v-model="files"
 								  ref="upload" :post-action="url" :accept="accept" :data="data"
-								  @input-file="updateFiles"/>
+								  @input-file="updateFiles" @input-filter="inputFilter"/>
 				<span class="file-cta">
 					<span class="file-icon">
 						<font-awesome-icon icon="file-upload"></font-awesome-icon>
@@ -78,20 +78,33 @@
 			},
 
 			updateFiles(newFile, oldFile) {
-				if (!newFile || !oldFile) {
+
+                if (!newFile || !oldFile) {
 					return;
 				}
 				if (newFile.error && !oldFile.error) {
-					this.$toast.error(this.$translations.tryLater, this.$translations.operationFiled);
+                    if (newFile.xhr.status === 413){
+                        this.$toast.error(this.$translations.contentTooBig);
+                    } else {
+                        this.$toast.error(this.$translations.tryLater, this.$translations.operationFiled);
+                    }
 				}
 				if (newFile.success && !oldFile.success) {
                     if (typeof newFile.response === "string") {
-						this.$toast.error(this.$translations.tryLater, this.$translations.operationFiled);
+                        this.$toast.error(this.$translations.tryLater, this.$translations.operationFiled);
 					}
 					this.$emit('uploaded', newFile.response);
 					this.$refs.upload.remove(newFile);
 				}
 			},
+            inputFilter(newFile, oldFile, prevent) {
+                if (newFile && !oldFile) {
+                    if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(newFile.name)) {
+                        this.$toast.error(this.$translations.hasToBeAnImage);
+                        return prevent()
+                    }
+                }
+            }
 		}
 
 	}

@@ -87,6 +87,8 @@ return [
     'services' => 'Services',
     'stagingMin' => '*The staging fee is always at least the deposit, regardless of your final turnover.',
     'sendUpdateEmailButton' => 'Send Update Information Email',
-    'emailSent' => 'Email Sent'
+    'emailSent' => 'Email Sent',
+    'contentTooBig' => 'File to large to upload',
+    'hasToBeAnImage' => 'File has to be an image'
 
 ];
