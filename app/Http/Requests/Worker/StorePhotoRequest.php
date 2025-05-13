@@ -35,7 +35,7 @@ class StorePhotoRequest extends FormRequest {
 	}
 
 	public function commit() {
-		$path = $this->processPhoto();
+        $path = $this->processPhoto();
 		$photo = new WorkerPhoto();
 		$photo->file = basename($path);
 		$this->worker->photos()->save($photo);

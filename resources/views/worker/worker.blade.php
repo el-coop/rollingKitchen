@@ -3,6 +3,11 @@
 @section('title',$worker->user->name)
 
 @section('content')
+    @if($worker->last_submitted != \Carbon\Carbon::now()->year)
+        <div class="notification is-warning is-light" >
+            @lang('worker/worker.checkInfoMessage')
+        </div>
+    @endif
 	<tabs class="mb-1">
 		<tab label="@lang('worker/worker.profile')">@include('worker.profile')</tab>
 		@if($futureShifts->count())
