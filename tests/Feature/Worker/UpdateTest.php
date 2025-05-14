@@ -157,6 +157,11 @@ class UpdateTest extends TestCase {
             'first_name' => 'first name',
             'surname' => 'surname'
 		]);
+        $this->assertDatabaseHas('worker_applications', [
+            'year' => Carbon::now()->year,
+            'worker_id' => $this->worker->user_id,
+
+        ]);
         $worker = Worker::find($this->worker->user->id);
         $this->assertEquals(collect(['data']), $worker->data);
 

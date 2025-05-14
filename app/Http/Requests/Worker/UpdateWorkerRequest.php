@@ -5,6 +5,7 @@ namespace App\Http\Requests\Worker;
 use App\Events\Worker\WorkerProfileFilled;
 use App\Models\Field;
 use App\Models\Worker;
+use App\Models\WorkerApplication;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -62,9 +63,15 @@ class UpdateWorkerRequest extends FormRequest {
         $this->worker->surname = $this->input('surname');
 		$this->worker->data = $this->input('worker');
 		if ($this->has('review') && !$this->worker->submitted) {
+            $year = Carbon::today()->year;
 			$this->worker->submitted = true;
-            $this->worker->last_submitted = Carbon::today()->year;
+            $this->worker->last_submitted = $year;
 			event(new WorkerProfileFilled($this->worker));
+            if (!$this->worker->applications()->where('year', $year)->exists()){
+                $workerApp = new WorkerApplication();
+                $workerApp->year = $year;
+                $this->worker->applications()->save($workerApp);
+            }
 		}
 		$this->worker->liability = $this->filled('liability');
 		$this->worker->save();

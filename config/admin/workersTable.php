@@ -9,7 +9,8 @@ return [
         ['users', 'users.user_id', 'workers.id'],
         ['worker_workplace', 'workers.id', 'worker_workplace.worker_id'],
         ['workplaces', 'worker_workplace.workplace_id', 'workplaces.id'],
-        ['worker_photos', 'worker_photos.worker_id', 'workers.id']
+        ['worker_photos', 'worker_photos.worker_id', 'workers.id'],
+        ['worker_applications', 'worker_applications.worker_id', 'workers.id']
     ],
 
 
@@ -32,7 +33,7 @@ return [
         'sortField' => 'first_name',
     ], [
         'name' => 'year',
-        'raw' => '(last_submitted) as year',
+        'raw' => '(worker_applications.year) as year',
         'table' => 'workers',
         'title' => 'global.year',
         'sortField' => 'last_submitted',

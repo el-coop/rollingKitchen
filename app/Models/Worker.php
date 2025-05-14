@@ -210,5 +210,9 @@ class Worker extends Model {
     public function getPhotoListAttribute() {
         return $this->photos;
     }
+
+    public function applications(): \Illuminate\Database\Eloquent\Relations\HasMany {
+        return $this->hasMany(WorkerApplication::class);
+    }
 }
 
