@@ -96,6 +96,7 @@ class UpdateTest extends TestCase {
                 'data' => 'bata',
             ],
             'approved' => true,
+            'submitted' => true,
             'workplaces' => $workplaces->toArray(),
             'first_name' => 'first name',
             'surname' => 'surname'
@@ -107,6 +108,11 @@ class UpdateTest extends TestCase {
             'email' => 'test@best.com',
             'language' => 'en',
             'user_type' => Worker::class,
+        ]);
+
+        $this->assertDatabaseHas('worker_applications', [
+            'year' => Carbon::now()->year,
+            'worker_id' => $this->worker->id,
 
         ]);
 
