@@ -22,7 +22,7 @@
 					<img src="{{ asset('storage/images/logo.png') }}">
 				</div>
 			</navbar>
-			<div class="container is-fluid">
+			<div class="container is-fluid scrollable">
 				@yield('content')
 			</div>
 		</main>
