@@ -13,14 +13,11 @@ class AddWorkerAppToSubmittedWorkers extends Seeder {
      * Run the database seeds.
      */
     public function run(): void {
-        $submittedWorkers = Worker::whereNotNull('last_submitted')->get();
         $year = Carbon::now()->year;
-        foreach ($submittedWorkers as $worker){
-            if (!$worker->applications()->where('year', $year)->exists()){
-                $workerApp = new WorkerApplication();
-                $workerApp->year = $year;
-                $worker->applications()->save($workerApp);
-            }
+        $unSubmittedWorkers = Worker::where('last_submitted', '!=', $year)->get();
+        foreach ($unSubmittedWorkers as $worker) {
+            $worker->applications()->delete();
         }
+
     }
 }
