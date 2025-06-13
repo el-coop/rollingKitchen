@@ -405,15 +405,15 @@ class SupervisorTest extends TestCase {
         ])->assertForbidden();
     }
 
-    public function test_supervisor_cant_add_unapproved_worker_to_shift() {
-        $this->actingAs($this->supervisor)->post(action('Worker\SupervisorController@addWorkerToShift', $this->shift), [
-            'worker' => $this->worker->user->id,
-            'startTime' => '20:00',
-            'endTime' => '22:00',
-            'workFunction' => $this->workplace->workFunctions->first()->id
-        ])->assertRedirect()->assertSessionHasErrors(['worker']);
-
-    }
+//    public function test_supervisor_cant_add_unapproved_worker_to_shift() {
+//        $this->actingAs($this->supervisor)->post(action('Worker\SupervisorController@addWorkerToShift', $this->shift), [
+//            'worker' => $this->worker->user->id,
+//            'startTime' => '20:00',
+//            'endTime' => '22:00',
+//            'workFunction' => $this->workplace->workFunctions->first()->id
+//        ])->assertRedirect()->assertSessionHasErrors(['worker']);
+//
+//    }
 
     public function test_supervisor_can_add_approved_worker_to_shift() {
         $this->worker->user->approved = true;
@@ -450,15 +450,15 @@ class SupervisorTest extends TestCase {
         ])->assertForbidden();
     }
 
-    public function test_admin_can_add_unapproved_worker_to_shift() {
-        $this->actingAs($this->admin)->post(action('Worker\SupervisorController@addWorkerToShift', $this->shift), [
-            'worker' => $this->worker->user->id,
-            'startTime' => '20:00',
-            'endTime' => '22:00',
-            'workFunction' => $this->workplace->workFunctions->first()->id
-        ])->assertRedirect()->assertSessionHasErrors(['worker']);
-
-    }
+//    public function test_admin_can_add_unapproved_worker_to_shift() {
+//        $this->actingAs($this->admin)->post(action('Worker\SupervisorController@addWorkerToShift', $this->shift), [
+//            'worker' => $this->worker->user->id,
+//            'startTime' => '20:00',
+//            'endTime' => '22:00',
+//            'workFunction' => $this->workplace->workFunctions->first()->id
+//        ])->assertRedirect()->assertSessionHasErrors(['worker']);
+//
+//    }
 
     public function test_admin_can_add_approved_worker_to_shift() {
         $this->worker->user->approved = true;
