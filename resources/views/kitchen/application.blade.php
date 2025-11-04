@@ -10,7 +10,4 @@
 	return $item;
 }) }}" :hide="['year','status']"></dynamic-fields>
     </div>
-    <div class="column">
-        @include('kitchen.application.products')
-    </div>
 </div>
