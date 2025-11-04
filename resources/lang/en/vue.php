@@ -89,6 +89,10 @@ return [
     'sendUpdateEmailButton' => 'Send Update Information Email',
     'emailSent' => 'Email Sent',
     'contentTooBig' => 'File to large to upload',
-    'hasToBeAnImage' => 'File has to be an image'
+    'hasToBeAnImage' => 'File has to be an image',
+    'totalServices' => 'Total services',
+    'totalStaging' => 'Total staging fee',
+    'totalRegistration' => 'Total registration fee (services + staging fee)',
+
 
 ];

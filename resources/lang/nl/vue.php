@@ -89,5 +89,9 @@ return [
     'sendUpdateEmailButton' => 'Stuur update-informatie per e-mail',
     'emailSent' => 'E-mail verzonden',
     'contentTooBig' => 'Bestand te groot om te uploaden',
-    'hasToBeAnImage' => 'Bestand moet een afbeelding zijn'
+    'hasToBeAnImage' => 'Bestand moet een afbeelding zijn',
+    'totalServices' => 'Totaal services',
+    'totalStaging' => 'Totaal stageld',
+    'totalRegistration' => 'Total inschrijfgeld (services + stageld)',
+
 ];

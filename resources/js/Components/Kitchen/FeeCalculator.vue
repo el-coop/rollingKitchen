@@ -24,7 +24,7 @@
             </div>
             <div class="is-flex is-justify-content-end">
                 <label
-                    v-text="$translations.total + ': €' + formatEstimation(serviceTotal) + ' ' +$translations.excludingVAT"
+                    v-text="$translations.totalServices + ': €' + formatEstimation(serviceTotal) + ' ' +$translations.excludingVAT"
                     class="label"></label>
             </div>
         </div>
@@ -60,15 +60,15 @@
             </div>
             <div class="is-flex is-justify-content-end">
                 <label class="label"
-                       v-text="$translations.total + ': €' + formatEstimation(revenueTotal) + ' ' +$translations.excludingVAT"/>
+                       v-text="$translations.totalStaging + ': €' + formatEstimation(revenueTotal) + ' ' +$translations.excludingVAT"/>
             </div>
             <div class="is-flex is-justify-content-end" v-text="$translations.stagingMin"></div>
         </div>
         <div class="is-flex is-justify-content-end">
             <div>
                 <div class="is-size-4"
-                     v-text="$translations.total + ': €' + formatEstimation(total) + ' ' +$translations.excludingVAT"/>
-                <div v-text="$translations.percentOfRevenue + ': ' + formatEstimation(percentageOfRevenue)"/>
+                     v-text="$translations.totalRegistration + ': €' + formatEstimation(total) + ' ' +$translations.excludingVAT"/>
+                <div v-text="'% '+ $translations.totalStaging + ': ' + formatEstimation(percentageOfRevenue) + ' ' +$translations.excludingVAT"/>
             </div>
         </div>
     </div>

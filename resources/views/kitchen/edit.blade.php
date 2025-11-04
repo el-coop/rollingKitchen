@@ -11,6 +11,7 @@
         <tabs :pagination-buttons="true" class="mb-1">
             <tab label="@lang('kitchen/kitchen.businessInformation')">@include('kitchen.kitchen')</tab>
             <tab label="@lang('kitchen/kitchen.kitchenInformation')">@include('kitchen.application')</tab>
+            <tab label="@lang('kitchen/products.menu')">@include('kitchen.application.products')</tab>
             <tab label="@lang('kitchen/kitchen.services')">@include('kitchen.services')</tab>
             @if(!$pastApplications->isEmpty())
                 <tab
