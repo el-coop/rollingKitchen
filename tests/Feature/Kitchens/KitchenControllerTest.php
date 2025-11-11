@@ -934,5 +934,46 @@ class KitchenControllerTest extends TestCase {
             'review' => true
         ])->assertSessionHasErrors(['services' =>'The services field must contain entries for: ' . "$mandatoryService->id" . '.']);
     }
+
+
+    public function test_kitchen_can_upload_sketch_to_own_application() {
+        $application = Application::factory()->make([
+            'year' => intval($this->settings->get('registration_year')),
+            'status' => 'new',
+        ]);
+        $this->user->user->applications()->save($application);
+        $file = UploadedFile::fake()->image('photo.jpg');
+        $this->actingAs($this->user)->post(action('Kitchen\KitchenController@storeApplicationSketch', $application), [
+            'photo' => $file
+        ])->assertJson([
+            'application_id' => $application->id,
+            'file' => $file->hashName()
+        ]);
+        Storage::disk('local')->assertExists("public/photos/{$file->hashName()}");
+    }
+
+    public function test_kitchen_cant_upload_sketch_to_other_application() {
+        $application = Application::factory()->make([
+            'year' => intval($this->settings->get('registration_year')),
+            'status' => 'new',
+        ]);
+        $this->user->user->applications()->save($application);
+        $file = UploadedFile::fake()->image('photo.jpg');
+        $this->actingAs($this->user1)->post(action('Kitchen\KitchenController@storeApplicationSketch', $application), [
+            'photo' => $file
+        ])->assertForbidden();
+    }
+
+    public function test_guest_cant_upload_sketch_to_application() {
+        $application = Application::factory()->make([
+            'year' => intval($this->settings->get('registration_year')),
+            'status' => 'new',
+        ]);
+        $this->user->user->applications()->save($application);
+        $file = UploadedFile::fake()->image('photo.jpg');
+        $this->post(action('Kitchen\KitchenController@storeApplicationSketch', $application), [
+            'photo' => $file
+        ])->assertRedirect(action('Auth\LoginController@showLoginForm'));
+    }
 }
 

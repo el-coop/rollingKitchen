@@ -40,3 +40,18 @@
     error: {{ $errors->has('terrace_width') ? collect($errors->get('terrace_width')) : 'null'}},
 }]">
 </dynamic-fields>
+<div class="field mt-2">
+    <label class="label">@lang('kitchen/dimensions.sketch')</label>
+    @if(!$application->sketches()->exists())
+        <div class="m-2">
+            <label>@lang('kitchen/dimensions.sketchExample')</label>
+            <figure class="image is-128x128">
+                <img src="{{ asset('/images/sketch.HEIC')}}">
+            </figure>
+        </div>
+    @endif
+    <image-manager url="{{ action('Kitchen\KitchenController@storeApplicationSketch', $application) }}" :data="{
+			_token: '{{csrf_token()}}'
+		}" :init-images="{{ $application->sketchs }}" delete-url="/applications/{{ $application->id }}/photo">
+    </image-manager>
+</div>

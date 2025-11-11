@@ -85,4 +85,8 @@ class ApplicationProductController extends Controller {
 			'success' => true
 		];
 	}
+
+    public function storePhoto() {
+        
+    }
 }

@@ -122,4 +122,8 @@ class Application extends Model {
 		return $this->products()->where('category', 'menu')->exists();
 
 	}
+
+    public function sketches(): \Illuminate\Database\Eloquent\Relations\HasMany {
+        return $this->hasMany(ApplicationSketch::class);
+    }
 }

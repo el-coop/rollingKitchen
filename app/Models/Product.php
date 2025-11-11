@@ -11,4 +11,8 @@ class Product extends Model {
     public function application() {
 		return $this->belongsTo(Application::class);
 	}
+
+    public function photos(): \Illuminate\Database\Eloquent\Relations\HasMany {
+        return $this->hasMany(ProductPhoto::class);
+    }
 }
