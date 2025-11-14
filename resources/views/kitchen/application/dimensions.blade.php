@@ -52,6 +52,6 @@
     @endif
     <image-manager url="{{ action('Kitchen\KitchenController@storeApplicationSketch', $application) }}" :data="{
 			_token: '{{csrf_token()}}'
-		}" :init-images="{{ $application->sketchs }}" delete-url="/applications/{{ $application->id }}/photo">
+		}" :init-images="{{ $application->sketches }}" delete-url="/kitchen/applications/{{ $application->id }}/photo">
     </image-manager>
 </div>

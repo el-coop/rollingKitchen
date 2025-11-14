@@ -57,8 +57,8 @@ export default {
             const index = this.images.findIndex((item) => {
                 return item.id == image.id;
             });
-            this.$emit('image-deleted', image);
             this.images.splice(index, 1);
+            this.$emit('image-deleted', image);
         }
     }
 }

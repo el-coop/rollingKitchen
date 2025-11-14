@@ -7,7 +7,7 @@
             <a class="button is-light"
                href="{{ action('Admin\FieldController@index', $fieldType) }}">@lang('admin/kitchens.fields')</a>
         @endisset
-        <button class="button is-light" @click="actions.newObjectForm">@lang('vue.add')</button>
+        <button class="button is-light" type="button" @click="actions.newObjectForm">@lang('vue.add')</button>
         @isset($buttons)
             @foreach($buttons as $button)
                 {!! $button !!}

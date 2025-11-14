@@ -159,8 +159,8 @@ class KitchenController extends Controller {
         return $request->commit();
     }
 
-    public function destroyApplicationSketch(Application $application, ApplicationSketch $sketch) {
-        $sketch->delete();
+    public function destroyApplicationSketch(Application $application, ApplicationSketch $applicationSketch) {
+        $applicationSketch->delete();
         return [
             'success' => true
         ];
