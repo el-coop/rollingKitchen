@@ -1,9 +1,18 @@
-@foreach(['menu','other'] as $category)
-	<div class="field">
-		<p class="title is-4">
-			@lang("kitchen/products.{$category}"):
-		</p>
-		<dynamic-table :columns="[{
+<div>
+    <p class="title is-4">
+        @lang('kitchen/products.menu'):
+    </p>
+    @component('kitchen.application.applicationMenuTable', [
+    'menuTable' => $application->menuTable,
+    'application' => $application,
+    ])
+    @endcomponent
+</div>
+<div class="field">
+    <p class="title is-4">
+        @lang("kitchen/products.other"):
+    </p>
+    <dynamic-table :columns="[{
 	name: 'name',
 	label: '@lang('admin/applications.product')'
 },{
@@ -14,16 +23,14 @@
 	icon: 'euro-sign',
 	callbackOptions: {prefix: '€'},
 	callback: 'localNumber|prefix'
-}]" :init-fields="{{ $application->products->where('category',$category)->values() }}"
-					   @can('update',$application) action="/kitchen/applications/{{$application->id}}/products"
-					   @endcan
-					   :extra-data="{category: '{{$category}}'}">
-		</dynamic-table>
-	</div>
-	@if($errors->has($category))
-		<p class="help is-danger">{{$errors->first($category)}}</p>
-	@endif
-	@if(! $loop->last)
-		<hr>
-	@endif
-@endforeach
+}]" :init-fields="{{ $application->products->where('category','other')->values() }}"
+                   @can('update',$application) action="/kitchen/applications/{{$application->id}}/product"
+                   @endcan
+                   :extra-data="{category: 'other'}">
+    </dynamic-table>
+</div>
+@if($errors->has('other'))
+    <p class="help is-danger">{{$errors->first('other')}}</p>
+@endif
+<hr>
+

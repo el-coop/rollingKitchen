@@ -15,6 +15,7 @@
 import TextField from './TextField';
 import SelectField from './SelectField';
 import TextareaField from './TextareatField';
+import HiddenField from "./HiddenField.vue";
 
 export default {
     name: "DynamicFields",
@@ -22,6 +23,7 @@ export default {
         TextField,
         TextareaField,
         SelectField,
+        HiddenField
     },
     props: {
         url: {

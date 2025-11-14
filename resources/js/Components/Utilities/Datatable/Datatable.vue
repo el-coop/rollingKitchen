@@ -47,7 +47,7 @@
                     </div>
                 </div>
             </div>
-            <div class="filter">
+            <div v-if="!withoutFilters" class="filter">
                 <DatatableFilter :table-fields="fields" @filter="filter" :filter-text="labels.filter"
                                  :filters-text="labels.filters" :clear-text="labels.clear"
                                  :init-filters="initFilters"/>
@@ -139,7 +139,17 @@ export default {
         exportButton: {
             type: Boolean,
             default: true
+        },
+        withoutFilters: {
+            type: Boolean,
+            default: false
+        },
+
+        deleteUrl: {
+            type: String,
+            default: ''
         }
+
     },
 
     data() {
@@ -263,7 +273,9 @@ export default {
     },
     computed: {
         deleteAction: function () {
-            return window.location.pathname + '/delete/';
+            if(this.deleteUrl === '' )
+                return window.location.pathname + '/delete/';
+            return this.deleteUrl + '/';
         },
 
     }

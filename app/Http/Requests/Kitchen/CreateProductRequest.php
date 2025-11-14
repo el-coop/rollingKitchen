@@ -15,7 +15,7 @@ class CreateProductRequest extends FormRequest {
 		$this->application = $this->route('application');
 		return $this->user()->can('update', $this->application);
 	}
-	
+
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -28,15 +28,14 @@ class CreateProductRequest extends FormRequest {
 			'category' => 'required|in:menu,other'
 		];
 	}
-	
+
 	public function commit() {
 		$product = new Product;
 		$product->name = $this->input('name');
 		$product->price = $this->input('price');
 		$product->category = $this->input('category');
-		
+
 		$this->application->products()->save($product);
-		
 		return $product;
 	}
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Application;
 use App\Models\Band;
 use App\Models\Workplace;
 use App\Services\DatatableService;
@@ -13,7 +14,6 @@ class DatatableController extends Controller {
 
     public function list(Request $request, DatatableService $datatableService) {
         $query = $datatableService->query();
-
         return DB::query()->fromSub($query, '_')->paginate($request->input('per_page'));
     }
 
@@ -34,7 +34,11 @@ class DatatableController extends Controller {
     public function bandMemberList(Request $request, Band $band) {
         $dataTableService = new DatatableService($request, $band->{$request->input('attribute')});
         return $this->list($request, $dataTableService);
+    }
 
+    public function menuList(Request $request, Application $application) {
+        $datatableService = new DatatableService($request, $application->{$request->input('attribute')});
+        return $this->list($request, $datatableService);
     }
 
 }

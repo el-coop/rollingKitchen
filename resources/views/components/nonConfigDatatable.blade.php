@@ -27,7 +27,16 @@
 		   @endif
 		   @isset($deleteButtonTxt)
 		   delete-btn="{{$deleteButtonTxt}}"
-		@endisset
+		   @endisset
+           @isset($withoutFilters)
+               :without-filters="true"
+           @endisset
+           @isset($deleteUrl)
+               delete-url="{{$deleteUrl}}"
+           @endisset
+           @isset($ref)
+               ref="{{$ref}}"
+           @endisset
 >
 	@isset($buttons)
 		<template #buttons="{actions}">{{$buttons}}</template>

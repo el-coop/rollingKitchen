@@ -41,7 +41,6 @@ class DatatableService implements FromCollection, WithHeadings {
             $tableName = (new $this->queryConfig['model'])->getTable();
         }
 
-
         $this->addWhere($query, $this->queryConfig);
         $this->addWhereYear($query, $this->queryConfig);
         $this->addJoins($query, $this->queryConfig);
