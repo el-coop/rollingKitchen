@@ -93,5 +93,6 @@ return [
     'totalServices' => 'Totaal services',
     'totalStaging' => 'Totaal stageld',
     'totalRegistration' => 'Total inschrijfgeld (services + stageld)',
+    'yourRevenue' => 'van je omzet ex BTW'
 
 ];

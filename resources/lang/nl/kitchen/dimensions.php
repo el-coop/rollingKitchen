@@ -2,9 +2,9 @@
 
 return [
 	'dimensions' => 'Afmetingen',
-	'length' => 'Lengte keuken',
-	'width' => 'Breedte keuken',
-	'terraceLength' => 'Lengte Terras',
+	'length' => 'Lengte wagen',
+	'width' => 'Breedte wagen',
+	'terraceLength' => 'Lengte terras',
 	'terraceWidth' => 'Breedte terras',
 	'terraceSeats' => 'Aantal plaatsen',
 	'inMeters' => 'In meters',

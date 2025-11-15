@@ -3,7 +3,7 @@
 return [
 	'product' => 'Product',
 	'price' => 'Price',
-	'menu' => 'Menu',
-	'other' => 'Other',
+	'menuTab' => 'Menu',
+	'other' => 'Drinks (non-alcoholic)',
 	'menuError' => 'The menu must have at least one item.'
 ];
