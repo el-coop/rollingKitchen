@@ -82,6 +82,8 @@ class KitchenController extends Controller {
         $services = Service::orderByRaw("LENGTH(name_{$locale}) desc")->get();
         $countableServices = $services->where('category', '!=', 'socket')->where('type', 0);
         $checkableServices = $services->where('category', '!=', 'socket')->where('type', 1);
+        $scaleableServices = $services->where('category', '!=', 'socket')->where('type', 2);
+        $equivalentServices = $services->where('category', '!=', 'socket')->where('type', 3);
         $sockets = $services->where('category', 'socket')->sortBy('price');
 
         $termsFile = Pdf::where("terms_and_conditions_{$locale}", true)->first();
@@ -92,7 +94,19 @@ class KitchenController extends Controller {
             $message = app('settings')->get("application_success_text_{$locale}");
         }
 
-        return view('kitchen.edit', compact('termsFile', 'kitchen', 'application', 'application', 'message', 'pastApplications', 'sockets', 'countableServices', 'checkableServices', 'pdfs'));
+        return view('kitchen.edit', compact('termsFile',
+            'kitchen',
+            'application',
+            'application',
+            'message',
+            'pastApplications',
+            'sockets',
+            'countableServices',
+            'checkableServices',
+            'scaleableServices',
+            'equivalentServices',
+            'pdfs'
+        ));
     }
 
     /**

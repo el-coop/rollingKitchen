@@ -25,8 +25,9 @@ class CreateServiceRequest extends FormRequest {
 			'name_nl' => 'required|min:2|unique:services',
 			'name_en' => 'required|min:2|unique:services',
 			'category' => 'required|in:safety,electrical,misc,socket',
-			'type' => 'required|in:0,1',
+			'type' => 'required|in:0,1,2,3',
 			'price' => 'required|numeric',
+            'conditions' => 'required_if:type,2,3|array'
 		];
 	}
 
@@ -39,6 +40,9 @@ class CreateServiceRequest extends FormRequest {
 		$service->type = $this->input('type');
 		$service->price = $this->input('price');
         $service->mandatory = $this->has('mandatory');
+        if ($this->input('type') == 2 || $this->input('type') == 3){
+            $service->conditions = $this->input('conditions');
+        }
 		$service->save();
 
 

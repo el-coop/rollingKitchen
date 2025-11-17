@@ -172,12 +172,18 @@ class Kitchen extends Model {
         $decimalPoint = App::getLocale() == 'nl' ? ',' : '.';
         $thousandSeparator = App::getLocale() == 'nl' ? '.' : ',';
         return $this->getCurrentApplication()->services->map(function($service) use ($decimalPoint, $thousandSeparator) {
+            $price = $service->price;
+            if ($service->type == 3){
+                $price = $service->applicationEquivalentPrice($this->getCurrentApplication());
+            }
             return [
                 'service' => $service->{'name_' . App::getLocale()},
-                'price' => $service->price,
+                'price' => $price,
                 'amount' => $service->pivot->quantity,
-                'total' => $service->price * $service->pivot->quantity,
+                'total' => $price * $service->pivot->quantity,
                 'id' => $service->id,
+                'type' => $service->type,
+                'conditions' => $service->conditions
             ];
         });
     }

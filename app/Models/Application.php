@@ -79,7 +79,6 @@ class Application extends Model {
 	}
 
 	public function hasService(Service $service) {
-
 		return !!$this->services->contains(function ($applicationService) use ($service) {
 			return $applicationService->id == $service->id && $applicationService->pivot->quantity > 0;
 		});

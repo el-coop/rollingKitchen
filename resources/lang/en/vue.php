@@ -93,6 +93,7 @@ return [
     'totalServices' => 'Total services',
     'totalStaging' => 'Total staging fee',
     'totalRegistration' => 'Total registration fee (services + staging fee)',
-
-
+    'price' => 'Price',
+    'name_nl' => 'Dutch Name',
+    'limit' => 'Limit'
 ];

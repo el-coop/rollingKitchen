@@ -15,7 +15,12 @@ class Service extends Model {
         });
     }
 
+    protected $casts = [
+        'conditions' => 'array'
+    ];
+
     public function getFullDataAttribute() {
+
         $fullData = collect([[
             'name' => 'name_nl',
             'label' => __('admin/fields.name_nl'),
@@ -38,20 +43,23 @@ class Service extends Model {
             ],
             'value' => $this->category,
         ], [
-            'name' => 'type',
-            'label' => __('admin/fields.type'),
-            'type' => 'select',
-            'options' => [
-                __('admin/services.amount'),
-                __('admin/services.select'),
-            ],
-            'value' => $this->type,
-        ], [
             'name' => 'price',
             'label' => __('admin/applications.price'),
             'type' => 'text',
             'subType' => 'number',
             'value' => $this->price,
+        ], [
+            'name' => 'type',
+            'label' => __('admin/fields.type'),
+            'type' => 'serviceType',
+            'options' => [
+                __('admin/services.amount'),
+                __('admin/services.select'),
+                __('admin/services.scale'),
+                __('admin/services.equivalent'),
+            ],
+            'value' => $this->type,
+            'subValue' => $this->conditions
         ], [
             'name' => 'mandatory',
             'type' => 'checkbox',
@@ -64,7 +72,11 @@ class Service extends Model {
     }
 
     public function applications() {
-        return $this->belongsToMany(Application::class)->withPivot('quantity')->withTimestamps();
+        return $this->belongsToMany(Application::class)->withPivot('quantity', 'equivalent_price')->withTimestamps();
+    }
+
+    public function applicationEquivalentPrice(Application $application) {
+        return (float)$this->applications()->where('application_id', $application->id)->first()->pivot->equivalent_price;
     }
 
 }
