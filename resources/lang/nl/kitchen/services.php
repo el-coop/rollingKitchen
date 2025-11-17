@@ -8,4 +8,6 @@ return [
 	'none' => 'Geen',
 	'sockets' => 'Stroomaansluiting',
 	'trash' => 'Bijdrage afvalverwerking',
+    'scale' => 'Schaal',
+    'equivalent' => 'Equivalenten'
 ];

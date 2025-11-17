@@ -96,5 +96,6 @@ return [
     'yourRevenue' => 'van je omzet ex BTW',
     'price' => 'Prijs',
     'name_nl' => 'Nederlandse naam',
-    'limit' => 'Limit'
+    'limit' => 'Limit',
+    'condition' => 'Voorwaarden'
 ];

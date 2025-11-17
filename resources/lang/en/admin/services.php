@@ -10,6 +10,7 @@ return [
 	'download_application_services' => 'Download Application Services',
 	'kitchenServices' => 'kitchenServices',
 	'createService' => 'Create service',
-    'mandatory' => 'Mandatory'
-
+    'mandatory' => 'Mandatory',
+    'scale' => 'Scale',
+    'equivalent' => 'Equivalents'
 ];

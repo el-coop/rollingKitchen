@@ -33,7 +33,7 @@ export default {
             return {
                 name: 'scale',
                 type: 'condition',
-                label: 'scale',
+                label: this.$translations.condition,
                 value: this.field.subValue === null ? [] : this.field.subValue,
                 serviceType: this.value
             }

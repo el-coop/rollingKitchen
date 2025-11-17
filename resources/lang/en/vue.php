@@ -97,5 +97,6 @@ return [
     'price' => 'Price',
     'name_nl' => 'Dutch Name',
     'limit' => 'Limit',
+    'condition' => 'Conditions'
 
 ];
