@@ -41,7 +41,7 @@ class Product extends Model {
                 'value' => 'menu'
             ],
             [
-                'name' => 'photos',
+                'name' => 'photosJson',
                 'noTable' => true,
                 'visible' => false,
                 'value' => $this->photos
