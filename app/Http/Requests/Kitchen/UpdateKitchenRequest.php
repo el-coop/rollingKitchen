@@ -135,14 +135,25 @@ class UpdateKitchenRequest extends FormRequest {
                 $services->put($this->input('socket'), 1);
             }
 
-            $services = $services->mapWithKeys(function($quantity, $service) {
-                return [$service => [
-                    'quantity' => $quantity,
-                ]];
-            })->filter(function($item) {
+            $serviceModels = Service::whereIn('id', $services->keys())->get()->keyBy('id');
+            $services = $services->mapWithKeys(function ($value, $serviceId) use ($serviceModels) {
+                $service = $serviceModels[$serviceId] ?? null;
+                if ($service && $service->type == 3)     {
+                    return [
+                        $serviceId => [
+                            'quantity'          => 1,
+                            'equivalent_price'  => $value,
+                        ]
+                    ];
+                }
+                return [
+                    $serviceId => [
+                        'quantity' => $value,
+                    ]
+                ];
+            })->filter(function ($item) {
                 return $item['quantity'] > 0;
             });
-
             $this->application->services()->sync($services);
 
         }

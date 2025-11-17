@@ -93,5 +93,8 @@ return [
     'totalServices' => 'Totaal services',
     'totalStaging' => 'Totaal stageld',
     'totalRegistration' => 'Total inschrijfgeld (services + stageld)',
+    'price' => 'Prijs',
+    'name_nl' => 'Nederlandse naam',
+    'limit' => 'Limit'
 
 ];
