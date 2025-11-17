@@ -73,19 +73,21 @@
         name: 'ConditionField',
         mixins: [FieldMixin],
         data() {
+            let conditions = [{
+                _id: Date.now() + Math.random(),
+                name_en: '',
+                name_nl: '',
+                price: '',
+                limit: ''
+            }];
+            if (this.field.value.length > 0){
+                conditions = this.field.value.map(s => ({
+                    ...s,
+                    _id: s._id ?? (Date.now() + Math.random()) // add only if missing
+                }))
+            }
             return {
-                conditions: this.field.value.length !== 0
-                    ? this.field.value.map(s => ({
-                        ...s,
-                        _id: s._id ?? (Date.now() + Math.random()) // add only if missing
-                    }))
-                    : [{
-                        _id: Date.now() + Math.random(),
-                        name_en: '',
-                        name_nl: '',
-                        price: '',
-                        limit: ''
-                    }]
+                conditions: conditions
             }
         },
         methods: {
