@@ -83,13 +83,12 @@
                        v-text="$translations.totalStaging + ': €' + formatEstimation(revenueTotal) + ' ' +$translations.excludingVAT"/>
             </div>
             <div class="is-flex is-justify-content-end" v-text="$translations.stagingMin"></div>
+            <div class="is-flex is-justify-content-end" v-text="$translations.totalStaging + '  is %' + formatEstimation(percentageOfRevenue) + ' ' + $translations.yourRevenue"></div>
         </div>
         <div class="is-flex is-justify-content-end">
             <div>
                 <div class="is-size-4"
                      v-text="$translations.totalRegistration + ': €' + formatEstimation(total) + ' ' +$translations.excludingVAT"/>
-                <div
-                    v-text="'% '+ $translations.totalStaging + ': ' + formatEstimation(percentageOfRevenue) + ' ' +$translations.excludingVAT"/>
             </div>
         </div>
     </div>
@@ -140,8 +139,8 @@ export default {
         },
         revenueTotal() {
             let total = this.overTwenty + this.tenToTwenty + this.toTen;
-            if (total < 1000) {
-                return 1000;
+            if (total < 1500){
+                return 1500;
             }
             return total;
         },
@@ -152,7 +151,7 @@ export default {
             if (this.estimate === 0) {
                 return 0
             }
-            return (this.total / this.estimate) * 100;
+            return (this.total / this.estimateExcluding) * 100;
         },
         serviceTotal() {
             let total = 0;
