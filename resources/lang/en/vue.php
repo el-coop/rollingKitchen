@@ -74,13 +74,13 @@ return [
     'areTheyProtected' => 'Are they protected?',
     'checkInfo' => 'A new registration year has been opened, please check your data to make sure everything is correct',
     'infoChecked' => 'Data checked',
-    'revenueIncluding' => 'Revenue incl. VAT',
+    'revenueIncluding' => 'Turnover incl. VAT',
     'firstTen' => '15% over the first € 10.000',
     'tenToTwenty' => '20 % over the second € 10.000',
-    'overTwenty' => '25% over revenue > € 20.000',
+    'overTwenty' => '25% over turnover > € 20.000',
     'level' => 'Scale',
-    'revenueExcluding' => 'Revenue ex. VAT',
-    'percentOfRevenue' => '% Of Revenue',
+    'revenueExcluding' => 'turnover ex. VAT',
+    'percentOfRevenue' => '% Of Turnover',
     'stagingFee' => 'Staging fee',
     'excludingVAT' => 'ex VAT',
     'number' => 'Number',
@@ -93,6 +93,8 @@ return [
     'totalServices' => 'Total services',
     'totalStaging' => 'Total staging fee',
     'totalRegistration' => 'Total registration fee (services + staging fee)',
-
-
+    'yourRevenue' => 'of your turnover ex VAT'
+    'price' => 'Price',
+    'name_nl' => 'Dutch Name',
+    'limit' => 'Limit'
 ];

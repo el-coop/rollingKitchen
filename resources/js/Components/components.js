@@ -61,6 +61,8 @@ export default function(app){
     app.component('CheckedInfoForm', require('./Form/CheckedInfoForm').default);
     app.component('ConditionalField', require('./Form/ConditionalField').default);
     app.component('SendWorkerUpdateInfoEmail', require('./Admin/SendWorkerUpdateInfoEmail').default)
+    app.component('ServiceTypeField', require('./Form/ServiceTypeField.vue').default);
+
 
 }
 

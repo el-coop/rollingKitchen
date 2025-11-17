@@ -14,8 +14,28 @@
                     </thead>
                     <tbody>
                     <tr v-for="service in this.services" :key="service.id">
-                        <td v-text="service.service"></td>
-                        <td v-text="'€' + formatEstimation(service.price)"></td>
+                        <td>
+                            {{ service.service }}
+                            <div v-if="service.type === 2">
+                                <div
+                                    v-for="(condition, index) in service.conditions"
+                                    v-text="condition['name_' + lang]"
+                                    class="has-text-danger is-size-7"
+                                    :key="index">
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            {{ '€' + formatEstimation(service.price) }}
+                            <div v-if="service.type === 2">
+                                <div
+                                    v-for="(condition, index) in service.conditions"
+                                    v-text="'€' + formatEstimation(condition.price)"
+                                    class="has-text-danger is-size-7"
+                                    :key="index">
+                                </div>
+                            </div>
+                        </td>
                         <td v-text="service.amount" class="is-hidden-phone"></td>
                         <td v-text="'€' + formatEstimation(service.total)"></td>
                     </tr>
@@ -63,12 +83,12 @@
                        v-text="$translations.totalStaging + ': €' + formatEstimation(revenueTotal) + ' ' +$translations.excludingVAT"/>
             </div>
             <div class="is-flex is-justify-content-end" v-text="$translations.stagingMin"></div>
+            <div class="is-flex is-justify-content-end" v-text="$translations.totalStaging + '  is %' + formatEstimation(percentageOfRevenue) + ' ' + $translations.yourRevenue"></div>
         </div>
         <div class="is-flex is-justify-content-end">
             <div>
                 <div class="is-size-4"
                      v-text="$translations.totalRegistration + ': €' + formatEstimation(total) + ' ' +$translations.excludingVAT"/>
-                <div v-text="'% '+ $translations.totalStaging + ': ' + formatEstimation(percentageOfRevenue) + ' ' +$translations.excludingVAT"/>
             </div>
         </div>
     </div>
@@ -87,6 +107,7 @@ export default {
         return {
             estimate: 0,
             services: this.initServices,
+            lang: 'nl'
         }
     },
     computed: {
@@ -118,8 +139,8 @@ export default {
         },
         revenueTotal() {
             let total = this.overTwenty + this.tenToTwenty + this.toTen;
-            if (total < 1000){
-                return 1000;
+            if (total < 1500){
+                return 1500;
             }
             return total;
         },
@@ -130,13 +151,34 @@ export default {
             if (this.estimate === 0) {
                 return 0
             }
-            return (this.total / this.estimate) * 100;
+            return (this.total / this.estimateExcluding) * 100;
         },
         serviceTotal() {
             let total = 0;
-            this.services.forEach(function (service) {
+            this.services.forEach((service) => {
                 total += service.total;
-            })
+                if (service.type === 2) {
+                    let sortedConditions = [...service.conditions]
+                        .sort((a, b) => parseFloat(a.limit) - parseFloat(b.limit));
+                    let extra = 0;
+                    let upperLimit = sortedConditions[sortedConditions.length - 1];
+                    let lowestLimit = parseFloat(sortedConditions[0].limit);
+                    if (this.estimate < lowestLimit) {
+                        extra = 0;
+                    } else if (this.estimate > parseFloat(upperLimit.limit)) {
+                        extra = upperLimit.price;
+                    } else {
+                        for (const condition of sortedConditions) {
+                            if (this.estimate >= parseFloat(condition.limit)) {
+                                extra = condition.price;
+                                break;
+                            }
+                        }
+                    }
+                    total += parseFloat(extra);
+                }
+            });
+
             return total;
         }
     },
@@ -152,6 +194,10 @@ export default {
             if (this.services.some(service => service.id === changedService.id)) {
                 if (e.target.type === 'checkbox') {
                     this.services = this.services.filter(service => service.id !== changedService.id);
+                } else if (e.target.type === 'radio'){
+                    let index = this.services.findIndex(service => service.id === changedService.id);
+                    this.services[index].price = e.target.value;
+                    this.services[index].total = parseFloat(e.target.value);
                 } else {
                     if (e.target.value < 1) {
                         this.services = this.services.filter(service => service.id !== changedService.id);
@@ -162,15 +208,22 @@ export default {
                     }
                 }
             } else {
+                let price = parseFloat(changedService.price);
+                if (e.target.type === 'radio') {
+                    price =  e.target.value;
+                }
                 this.services.push({
                     service: changedService['name_' + document.documentElement.lang],
                     amount: 1,
-                    price: parseFloat(changedService.price),
-                    total: parseFloat(changedService.price),
+                    price: price,
+                    total: parseFloat(price),
                     id: changedService.id
                 })
             }
         }
+    },
+    mounted() {
+        this.lang = document.documentElement.lang || 'nl';
     }
 }
 </script>
