@@ -14,7 +14,7 @@ class UpdateProductRequest extends FormRequest {
 		$application = $this->route('application');
 		return $this->user()->can('update', $application);
 	}
-	
+
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -26,16 +26,16 @@ class UpdateProductRequest extends FormRequest {
 			'price' => 'required|numeric',
 		];
 	}
-	
+
 	public function commit() {
 		$product = $this->route('product');
-		
-		
+
+
 		$product->name = $this->input('name');
 		$product->price = $this->input('price');
-		
+
 		$product->save();
-		
+
 		return $product;
 	}
 }

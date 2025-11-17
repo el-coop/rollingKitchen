@@ -5,9 +5,11 @@ namespace Tests\Feature\Kitchens;
 
 use App\Models\Admin;
 use App\Models\Application;
+use App\Models\ApplicationSketch;
 use App\Models\Kitchen;
 use App\Models\Photo;
 use App\Models\Product;
+use App\Models\ProductPhoto;
 use App\Models\Service;
 use App\Models\User;
 use App\Models\Pdf;
@@ -402,9 +404,12 @@ class KitchenControllerTest extends TestCase {
             'status' => 'new',
         ]);
         $this->user->user->applications()->save($application);
-
-        $application->products()->save(Product::factory()->make([
+        $product = Product::factory()->make([
             'category' => 'menu'
+        ]);
+        $application->products()->save($product);
+        $product->photos()->save(ProductPhoto::factory()->make([
+            'file' => 'test'
         ]));
 
         $this->actingAs($this->user)->patch(action('Kitchen\KitchenController@update', $this->user->user), [
@@ -566,8 +571,12 @@ class KitchenControllerTest extends TestCase {
 
         $this->user->user->applications()->save($application);
 
-        $application->products()->save(Product::factory()->make([
+        $product = Product::factory()->make([
             'category' => 'menu'
+        ]);
+        $application->products()->save($product);
+        $product->photos()->save(ProductPhoto::factory()->make([
+            'file' => 'test'
         ]));
 
         $this->actingAs($this->user)->patch(action('Kitchen\KitchenController@update', $this->user->user), [
@@ -933,6 +942,106 @@ class KitchenControllerTest extends TestCase {
             'width' => 1,
             'review' => true
         ])->assertSessionHasErrors(['services' =>'The services field must contain entries for: ' . "$mandatoryService->id" . '.']);
+    }
+
+
+    public function test_kitchen_can_upload_sketch_to_own_application() {
+        $application = Application::factory()->make([
+            'year' => intval($this->settings->get('registration_year')),
+            'status' => 'new',
+        ]);
+        $this->user->user->applications()->save($application);
+        $file = UploadedFile::fake()->image('photo.jpg');
+        $this->actingAs($this->user)->post(action('Kitchen\KitchenController@storeApplicationSketch', $application), [
+            'photo' => $file
+        ])->assertJson([
+            'application_id' => $application->id,
+            'file' => $file->hashName()
+        ]);
+        Storage::disk('local')->assertExists("public/photos/{$file->hashName()}");
+    }
+
+    public function test_different_kitchen_cant_upload_sketch_to_application() {
+        $application = Application::factory()->make([
+            'year' => intval($this->settings->get('registration_year')),
+            'status' => 'new',
+        ]);
+        $this->user->user->applications()->save($application);
+        $file = UploadedFile::fake()->image('photo.jpg');
+        $this->actingAs($this->user1)->post(action('Kitchen\KitchenController@storeApplicationSketch', $application), [
+            'photo' => $file
+        ])->assertForbidden();
+    }
+
+    public function test_guest_cant_upload_sketch_to_application() {
+        $application = Application::factory()->make([
+            'year' => intval($this->settings->get('registration_year')),
+            'status' => 'new',
+        ]);
+        $this->user->user->applications()->save($application);
+        $file = UploadedFile::fake()->image('photo.jpg');
+        $this->post(action('Kitchen\KitchenController@storeApplicationSketch', $application), [
+            'photo' => $file
+        ])->assertRedirect(action('Auth\LoginController@showLoginForm'));
+    }
+
+    public function test_kitchen_can_delete_sketch() {
+        $application = Application::factory()->make([
+            'year' => intval($this->settings->get('registration_year')),
+            'status' => 'new',
+        ]);
+        $this->user->user->applications()->save($application);
+        $file = UploadedFile::fake()->image('photo.jpg');
+        $file->store('public/photos');
+        $photo = ApplicationSketch::factory()->create([
+            'application_id' => $application->id,
+            'file' => $file->hashName(),
+        ]);
+        $this->actingAs($this->user)->delete(action('Kitchen\KitchenController@destroyApplicationSketch',[
+            'application' => $application,
+            'applicationSketch' => $photo
+        ]))->assertSuccessful()->assertJson([
+            'success' => true
+        ]);
+
+        Storage::disk('local')->assertMissing("public/photos/{$file->hashName()}");
+    }
+
+
+    public function test_different_kitchen_cant_delete_sketch() {
+        $application = Application::factory()->make([
+            'year' => intval($this->settings->get('registration_year')),
+            'status' => 'new',
+        ]);
+        $this->user->user->applications()->save($application);
+        $file = UploadedFile::fake()->image('photo.jpg');
+        $file->store('public/photos');
+        $photo = ApplicationSketch::factory()->create([
+            'application_id' => $application->id,
+            'file' => $file->hashName(),
+        ]);
+        $this->actingAs($this->user1)->delete(action('Kitchen\KitchenController@destroyApplicationSketch',[
+            'application' => $application,
+            'applicationSketch' => $photo
+        ]))->assertForbidden();
+    }
+
+    public function test_guest_cant_delete_sketch() {
+        $application = Application::factory()->make([
+            'year' => intval($this->settings->get('registration_year')),
+            'status' => 'new',
+        ]);
+        $this->user->user->applications()->save($application);
+        $file = UploadedFile::fake()->image('photo.jpg');
+        $file->store('public/photos');
+        $photo = ApplicationSketch::factory()->create([
+            'application_id' => $application->id,
+            'file' => $file->hashName(),
+        ]);
+        $this->delete(action('Kitchen\KitchenController@destroyApplicationSketch',[
+            'application' => $application,
+            'applicationSketch' => $photo
+        ]))->assertRedirect(action('Auth\LoginController@showLoginForm'));
     }
 }
 

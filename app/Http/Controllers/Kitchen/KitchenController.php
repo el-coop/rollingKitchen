@@ -6,9 +6,11 @@ use App;
 use App\Http\Requests\Kitchen\CreateKitchenRequest;
 use App\Http\Requests\Kitchen\DestroyKitchenRequest;
 use App\Http\Requests\Kitchen\Photo\UploadPhotoRequest;
+use App\Http\Requests\Kitchen\Photo\UploadSketchRequest;
 use App\Http\Requests\Kitchen\UpdateKitchenRequest;
 use App\Http\Requests\Kitchen\UsePastApplicationRequest;
 use App\Models\Application;
+use App\Models\ApplicationSketch;
 use App\Models\Kitchen;
 use App\Models\Pdf;
 use App\Models\Photo;
@@ -165,5 +167,16 @@ class KitchenController extends Controller {
             'title' => '',
             'message' => __('vue.updateSuccess', [], $request->input('language'))
         ]);
+    }
+
+    public function storeApplicationSketch(UploadSketchRequest $request, Application $application ) {
+        return $request->commit();
+    }
+
+    public function destroyApplicationSketch(Application $application, ApplicationSketch $applicationSketch) {
+        $applicationSketch->delete();
+        return [
+            'success' => true
+        ];
     }
 }

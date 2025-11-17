@@ -9,4 +9,8 @@ return [
 	'terraceSeats' => 'Aantal plaatsen',
 	'inMeters' => 'In meters',
 	'terraceSeatsPlaceholder' => 'Banken, statafels, picknickbanken, etc.',
+    'sketch' => 'Upload hier een schets van de opzet van je keuken op de Rollende Keukens',
+    'sketchExample' => 'Voobeeld schets'
+
+
 ];

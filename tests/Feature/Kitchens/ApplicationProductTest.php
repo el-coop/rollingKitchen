@@ -7,6 +7,7 @@ use App\Models\Admin;
 use App\Models\Application;
 use App\Models\Kitchen;
 use App\Models\Product;
+use App\Models\ProductPhoto;
 use App\Models\User;
 use App\Models\Worker;
 use ElCoop\Valuestore\Valuestore;
@@ -14,7 +15,8 @@ use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-
+use Image;
+use Illuminate\Http\UploadedFile;
 class ApplicationProductTest extends TestCase {
 	use RefreshDatabase;
 
@@ -29,9 +31,9 @@ class ApplicationProductTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		Storage::fake('local');
-		Storage::disk('local')->put('test.valuestore.json', '');
-		$path = Storage::path('test.valuestore.json');
+        Storage::fake('local');
+        Storage::disk('local')->put('test.valuestore.json', '');
+        $path = Storage::path('test.valuestore.json');
 		$this->app->singleton('settings', function ($app) use ($path) {
 			return new Valuestore($path);
 		});
@@ -64,35 +66,35 @@ class ApplicationProductTest extends TestCase {
 	}
 
 	public function test_a_guest_cant_create_product() {
-		$this->post(action('Kitchen\ApplicationProductController@create', $this->application), [
+		$this->post(action('Kitchen\ApplicationProductController@store', $this->application), [
 			'name' => 'test',
 			'price' => 2.5
 		])->assertRedirect(action('Auth\LoginController@login'));
 	}
 
 	public function test_a_different_worker_cant_create_product() {
-		$this->actingAs($this->worker)->post(action('Kitchen\ApplicationProductController@create', $this->application), [
+		$this->actingAs($this->worker)->post(action('Kitchen\ApplicationProductController@store', $this->application), [
 			'name' => 'test',
 			'price' => 2.5
 		])->assertForbidden();
 	}
 
 	public function test_a_different_kitchen_cant_create_product() {
-		$this->actingAs($this->kitchen2)->post(action('Kitchen\ApplicationProductController@create', $this->application), [
+		$this->actingAs($this->kitchen2)->post(action('Kitchen\ApplicationProductController@store', $this->application), [
 			'name' => 'test',
 			'price' => 2.5
 		])->assertForbidden();
 	}
 
 	public function test_a_account_kitchen_cant_create_product() {
-		$this->actingAs($this->accountant)->post(action('Kitchen\ApplicationProductController@create', $this->application), [
+		$this->actingAs($this->accountant)->post(action('Kitchen\ApplicationProductController@store', $this->application), [
 			'name' => 'test',
 			'price' => 2.5
 		])->assertForbidden();
 	}
 
 	public function test_admin_can_create_product() {
-		$this->actingAs($this->admin)->post(action('Kitchen\ApplicationProductController@create', $this->application), [
+		$this->actingAs($this->admin)->post(action('Kitchen\ApplicationProductController@store', $this->application), [
 			'name' => 'test',
 			'price' => 2.5,
 			'category' => 'menu'
@@ -109,7 +111,7 @@ class ApplicationProductTest extends TestCase {
 	public function test_kitchen_can_create_product_on_open_application() {
 		$this->application->status = 'new';
 		$this->application->save();
-		$this->actingAs($this->kitchen)->post(action('Kitchen\ApplicationProductController@create', $this->application), [
+		$this->actingAs($this->kitchen)->post(action('Kitchen\ApplicationProductController@store', $this->application), [
 			'name' => 'test',
 			'price' => 2.5,
 			'category' => 'menu'
@@ -124,7 +126,7 @@ class ApplicationProductTest extends TestCase {
 	}
 
 	public function test_worker_cant_create_product_on_submitted_application() {
-		$this->actingAs($this->worker)->post(action('Kitchen\ApplicationProductController@create', $this->application), [
+		$this->actingAs($this->worker)->post(action('Kitchen\ApplicationProductController@store', $this->application), [
 			'name' => 'test',
 			'price' => 2.5,
 			'category' => 'drinks'
@@ -139,7 +141,7 @@ class ApplicationProductTest extends TestCase {
 	}
 
 	public function test_accountant_cant_create_product_on_submitted_application() {
-		$this->actingAs($this->accountant)->post(action('Kitchen\ApplicationProductController@create', $this->application), [
+		$this->actingAs($this->accountant)->post(action('Kitchen\ApplicationProductController@store', $this->application), [
 			'name' => 'test',
 			'price' => 2.5,
 			'category' => 'drinks'
@@ -154,7 +156,7 @@ class ApplicationProductTest extends TestCase {
 	}
 
 	public function test_kitchen_cant_create_product_on_submitted_application() {
-		$this->actingAs($this->kitchen)->post(action('Kitchen\ApplicationProductController@create', $this->application), [
+		$this->actingAs($this->kitchen)->post(action('Kitchen\ApplicationProductController@store', $this->application), [
 			'name' => 'test',
 			'price' => 2.5,
 			'category' => 'drinks'
@@ -169,7 +171,7 @@ class ApplicationProductTest extends TestCase {
 	}
 
 	public function test_product_name_price_validation() {
-		$this->actingAs($this->admin)->post(action('Kitchen\ApplicationProductController@create', $this->application), [
+		$this->actingAs($this->admin)->post(action('Kitchen\ApplicationProductController@store', $this->application), [
 			'name' => '',
 			'price' => 'blaa',
 			'category' => 'dr'
@@ -311,4 +313,107 @@ class ApplicationProductTest extends TestCase {
 			'id' => $this->product->id,
 		]);
 	}
+
+    public function test_kitchen_can_upload_product_photo() {
+        $this->application->status = 'new';
+        $this->application->year = 2018;
+        $this->application->save();
+        $file = UploadedFile::fake()->image('photo.jpg');
+        $this->actingAs($this->kitchen)->post(action('Kitchen\ApplicationProductController@storePhoto', [
+            'application' => $this->application,
+            'product' => $this->product,
+            ]),[
+            'photo' => $file
+        ])->assertJson([
+            'product_id' => $this->product->id,
+            'file' => $file->hashName()
+        ]);
+        Storage::disk('local')->assertExists("public/photos/{$file->hashName()}");
+    }
+
+    public function test_different_kitchen_cant_upload_product_photo() {
+        $this->application->status = 'new';
+        $this->application->year = 2018;
+        $this->application->save();
+        $file = UploadedFile::fake()->image('photo.jpg');
+        $this->actingAs($this->kitchen2)->post(action('Kitchen\ApplicationProductController@storePhoto', [
+            'application' => $this->application,
+            'product' => $this->product,
+        ]),[
+            'photo' => $file
+        ])->assertForbidden();
+    }
+
+    public function test_guest_cant_upload_product_photo() {
+        $this->application->status = 'new';
+        $this->application->year = 2018;
+        $this->application->save();
+        $file = UploadedFile::fake()->image('photo.jpg');
+        $this->post(action('Kitchen\ApplicationProductController@storePhoto', [
+            'application' => $this->application,
+            'product' => $this->product,
+        ]),[
+            'photo' => $file
+        ])->assertRedirect(action('Auth\LoginController@showLoginForm'));
+    }
+
+    public function test_kitchen_can_delete_product_photo() {
+        $this->application->status = 'new';
+        $this->application->year = 2018;
+        $this->application->save();
+        $file = UploadedFile::fake()->image('photo.jpg');
+        $file->store('public/photos');
+        $photo = ProductPhoto::factory()->create([
+            'product_id' => $this->product->id,
+            'file' => $file->hashName(),
+        ]);
+
+        $this->actingAs($this->kitchen)->delete(action('Kitchen\ApplicationProductController@destroyPhoto', [
+            'application' => $this->application,
+            'product' => $this->product,
+            'productPhoto' => $photo
+        ]))->assertSuccessful()->assertJson([
+            'success' => true
+        ]);
+
+        Storage::disk('local')->assertMissing("public/photos/{$file->hashName()}");
+    }
+
+    public function test_different_kitchen_cant_delete_product_photo() {
+        $this->application->status = 'new';
+        $this->application->year = 2018;
+        $this->application->save();
+        $file = UploadedFile::fake()->image('photo.jpg');
+        $file->store('public/photos');
+        $photo = ProductPhoto::factory()->create([
+            'product_id' => $this->product->id,
+            'file' => $file->hashName(),
+        ]);
+
+        $this->actingAs($this->kitchen2)->delete(action('Kitchen\ApplicationProductController@destroyPhoto', [
+            'application' => $this->application,
+            'product' => $this->product,
+            'productPhoto' => $photo
+        ]))->assertForbidden();
+
+    }
+
+    public function test_guest_cant_delete_product_photo() {
+        $this->application->status = 'new';
+        $this->application->year = 2018;
+        $this->application->save();
+        $file = UploadedFile::fake()->image('photo.jpg');
+        $file->store('public/photos');
+        $photo = ProductPhoto::factory()->create([
+            'product_id' => $this->product->id,
+            'file' => $file->hashName(),
+        ]);
+
+        $this->delete(action('Kitchen\ApplicationProductController@destroyPhoto', [
+            'application' => $this->application,
+            'product' => $this->product,
+            'productPhoto' => $photo
+        ]))->assertRedirect(action('Auth\LoginController@showLoginForm'));
+
+    }
 }
