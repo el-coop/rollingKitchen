@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('application_sketches', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('application_id')->unsigned();
+            $table->increments('id');
+            $table->unsignedInteger('application_id')->unsigned();
             $table->string('file');
             $table->timestamps();
 
