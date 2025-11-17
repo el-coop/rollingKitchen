@@ -12,7 +12,7 @@ class CreateApplicationsTable extends Migration {
 	 */
 	public function up() {
 		Schema::create('applications', function (Blueprint $table) {
-			$table->bigIncrements('id');
+			$table->increments('id');
 			$table->bigInteger('kitchen_id')->unsigned();
 			$table->integer('number')->nullable();
 			$table->string('status');
@@ -23,14 +23,14 @@ class CreateApplicationsTable extends Migration {
 			$table->double('terrace_length')->nullable();
 			$table->double('terrace_width')->nullable();
 			$table->timestamps();
-			
+
 			$table->foreign('kitchen_id')
 				->references('id')->on('kitchens')
 				->onDelete('cascade');
 			$table->unique(['kitchen_id', 'year']);
 		});
 	}
-	
+
 	/**
 	 * Reverse the migrations.
 	 *

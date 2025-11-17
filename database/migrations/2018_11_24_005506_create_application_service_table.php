@@ -13,11 +13,11 @@ class CreateApplicationServiceTable extends Migration {
 	public function up() {
 		Schema::create('application_service', function (Blueprint $table) {
 			$table->bigIncrements('id');
-			$table->bigInteger('application_id')->unsigned();
+			$table->unsignedInteger('application_id')->unsigned();
 			$table->bigInteger('service_id')->unsigned();
 			$table->integer('quantity')->unsigned();
 			$table->timestamps();
-			
+
 			$table->foreign('application_id')
 				->references('id')->on('applications')
 				->onDelete('cascade');
@@ -26,7 +26,7 @@ class CreateApplicationServiceTable extends Migration {
 				->onDelete('cascade');
 		});
 	}
-	
+
 	/**
 	 * Reverse the migrations.
 	 *

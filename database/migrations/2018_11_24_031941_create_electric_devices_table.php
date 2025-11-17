@@ -13,17 +13,17 @@ class CreateElectricDevicesTable extends Migration {
 	public function up() {
 		Schema::create('electric_devices', function (Blueprint $table) {
 			$table->bigIncrements('id');
-			$table->bigInteger('application_id')->unsigned();
+			$table->unsignedInteger('application_id')->unsigned();
 			$table->string('name');
 			$table->integer('watts');
 			$table->timestamps();
-			
+
 			$table->foreign('application_id')
 				->references('id')->on('applications')
 				->onDelete('cascade');
 		});
 	}
-	
+
 	/**
 	 * Reverse the migrations.
 	 *
