@@ -93,7 +93,7 @@ return [
     'totalServices' => 'Totaal services',
     'totalStaging' => 'Totaal stageld',
     'totalRegistration' => 'Total inschrijfgeld (services + stageld)',
-    'yourRevenue' => 'van je omzet ex BTW'
+    'yourRevenue' => 'van je omzet ex BTW',
     'price' => 'Prijs',
     'name_nl' => 'Nederlandse naam',
     'limit' => 'Limit'
