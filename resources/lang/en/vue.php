@@ -94,6 +94,7 @@ return [
     'totalStaging' => 'Total staging fee',
     'totalRegistration' => 'Total registration fee (services + staging fee)',
     'yourRevenue' => 'of your turnover ex VAT'
-
-
+    'price' => 'Price',
+    'name_nl' => 'Dutch Name',
+    'limit' => 'Limit'
 ];

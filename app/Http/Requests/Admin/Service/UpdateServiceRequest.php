@@ -28,9 +28,10 @@ class UpdateServiceRequest extends FormRequest {
 			'name_nl' => 'required|min:2|unique:services,name_nl,' . $this->service->id,
 			'name_en' => 'required|min:2|unique:services,name_en,' . $this->service->id,
 			'category' => 'required|in:safety,electrical,misc,socket',
-			'type' => 'required|in:0,1',
+            'type' => 'required|in:0,1,2,3',
 			'price' => 'required|numeric',
-		];
+            'conditions' => 'required_if:type,2,3|array',
+        ];
 	}
 
 	public function commit() {
@@ -41,7 +42,9 @@ class UpdateServiceRequest extends FormRequest {
 		$this->service->type = $this->input('type');
 		$this->service->price = $this->input('price');
         $this->service->mandatory = $this->has('mandatory');
-
+        if ($this->input('type') == 2 || $this->input('type') == 3){
+            $this->service->conditions = $this->input('conditions');
+        }
 
         $this->service->save();
 
