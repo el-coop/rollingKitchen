@@ -96,5 +96,7 @@ return [
     'yourRevenue' => 'of your turnover ex VAT',
     'price' => 'Price',
     'name_nl' => 'Dutch Name',
-    'limit' => 'Limit'
+    'limit' => 'Limit',
+    'condition' => 'Conditions'
+
 ];

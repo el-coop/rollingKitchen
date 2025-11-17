@@ -1,6 +1,6 @@
 <div>
     <p class="title is-4">
-        @lang('kitchen/products.menu'):
+        @lang('kitchen/products.menuHeader'):
     </p>
     @component('kitchen.application.applicationMenuTable', [
     'menuTable' => $application->menuTable,
