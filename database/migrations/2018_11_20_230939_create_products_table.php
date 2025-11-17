@@ -18,13 +18,13 @@ class CreateProductsTable extends Migration {
 			$table->decimal('price');
 			$table->string('category');
 			$table->timestamps();
-			
+
 			$table->foreign('application_id')
 				->references('id')->on('applications')
 				->onDelete('cascade');
 		});
 	}
-	
+
 	/**
 	 * Reverse the migrations.
 	 *

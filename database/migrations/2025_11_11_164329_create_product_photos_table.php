@@ -10,8 +10,8 @@ return new class extends Migration {
      */
     public function up(): void {
         Schema::create('product_photos', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('product_id')->unsigned();
+            $table->bigIncrements('id'); // match products PK style
+            $table->unsignedBigInteger('product_id'); // MUST be this
             $table->string('file');
             $table->timestamps();
 

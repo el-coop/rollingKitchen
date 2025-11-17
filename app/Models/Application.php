@@ -151,7 +151,7 @@ class Application extends Model {
                     'sortField' => 'price',''
                 ],
                 [
-                    'name' => 'photos',
+                    'name' => 'photosJson',
                         'raw' => "COALESCE(
             (
                 SELECT JSON_ARRAYAGG(
@@ -166,7 +166,7 @@ class Application extends Model {
                 WHERE pp.product_id = products.id
             ),
             JSON_ARRAY()
-        ) as photos",
+        ) as photosJson",
                     'visible' => false,
                 ]
             ]
