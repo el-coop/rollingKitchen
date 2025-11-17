@@ -63,6 +63,8 @@ class UpdateKitchenRequest extends FormRequest {
                 'width' => 'required|numeric|min:1',
                 'terrace_length' => 'numeric|nullable|min:0',
                 'terrace_width' => 'numeric|nullable|min:0',
+                'backstage_length' => 'numeric|nullable|min:0',
+                'backstage_width' => 'numeric|nullable|min:0',
             ]);
             if (!$this->kitchen->photos()->count()) {
                 $rules = $rules->merge([
@@ -118,6 +120,8 @@ class UpdateKitchenRequest extends FormRequest {
             $this->application->width = $this->input('width');
             $this->application->terrace_length = $this->input('terrace_length');
             $this->application->terrace_width = $this->input('terrace_width');
+            $this->application->backstage_length = $this->input('backstage_length');
+            $this->application->backstage_width = $this->input('backstage_width');
             if ($this->input('review')) {
                 if ($this->application->status == 'new') {
                     event(new ApplicationSubmitted($this->application));

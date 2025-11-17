@@ -10,5 +10,7 @@ return [
 	'inMeters' => 'In meters',
 	'terraceSeatsPlaceholder' => 'benches, standing tables, picnic benches, etc',
     'sketch' => 'Upload a sketch of your kitchen layout for the Rollende Keukens here',
-    'sketchExample' => 'Example sketch'
+    'sketchExample' => 'Example sketch',
+    'backstageWidth' => ' Width of the backstage',
+    'backstageLength' => 'Length of the backstage'
 ];

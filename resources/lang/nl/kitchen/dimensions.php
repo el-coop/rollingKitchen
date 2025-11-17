@@ -10,7 +10,9 @@ return [
 	'inMeters' => 'In meters',
 	'terraceSeatsPlaceholder' => 'Banken, statafels, picknickbanken, etc.',
     'sketch' => 'Upload hier een schets van de opzet van je keuken op de Rollende Keukens',
-    'sketchExample' => 'Voobeeld schets'
+    'sketchExample' => 'Voobeeld schets',
+    'backstageWidth' => 'Breedte backstage',
+    'backstageLength' => 'Lengte backstage'
 
 
 ];

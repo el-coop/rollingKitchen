@@ -38,6 +38,27 @@
 	step: 0.1,
 	placeholder: '@lang('kitchen/dimensions.inMeters')',
     error: {{ $errors->has('terrace_width') ? collect($errors->get('terrace_width')) : 'null'}},
+},{
+    name: 'backstage_length',
+	label : '@lang('kitchen/dimensions.backstageLength')',
+	value: '{{ old('backstage_length', $application->backstage_length) }}',
+	readonly: {{ ! $application->isOpen() ? 'true' : 'false'}},
+	type: 'text',
+	subType: 'number',
+	step: 0.1,
+	placeholder: '@lang('kitchen/dimensions.inMeters')',
+    error: {{ $errors->has('backstage_length') ? collect($errors->get('backstage_length')) : 'null'}},
+
+},{
+    name: 'backstage_width',
+	label : '@lang('kitchen/dimensions.backstageWidth')',
+	value: '{{ old('backstage_width', $application->backstage_width) }}',
+	readonly: {{ ! $application->isOpen() ? 'true' : 'false'}},
+	type: 'text',
+	subType: 'number',
+	step: 0.1,
+	placeholder: '@lang('kitchen/dimensions.inMeters')',
+    error: {{ $errors->has('backstage_width') ? collect($errors->get('backstage_width')) : 'null'}},
 }]">
 </dynamic-fields>
 <div class="field mt-2">
