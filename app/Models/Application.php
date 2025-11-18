@@ -118,8 +118,7 @@ class Application extends Model {
     }
 
     public function hasMenu() {
-        return $this->products()->where('category', 'menu')->whereHas('photos')->exists();
-
+        return $this->products()->where('category', 'menu')->exists();
     }
 
     public function sketches(): \Illuminate\Database\Eloquent\Relations\HasMany {

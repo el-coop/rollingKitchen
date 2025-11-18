@@ -9,7 +9,6 @@ use App\Models\ApplicationSketch;
 use App\Models\Kitchen;
 use App\Models\Photo;
 use App\Models\Product;
-use App\Models\ProductPhoto;
 use App\Models\Service;
 use App\Models\User;
 use App\Models\Pdf;
@@ -408,9 +407,6 @@ class KitchenControllerTest extends TestCase {
             'category' => 'menu'
         ]);
         $application->products()->save($product);
-        $product->photos()->save(ProductPhoto::factory()->make([
-            'file' => 'test'
-        ]));
 
         $this->actingAs($this->user)->patch(action('Kitchen\KitchenController@update', $this->user->user), [
             'name' => 'test',
@@ -575,9 +571,6 @@ class KitchenControllerTest extends TestCase {
             'category' => 'menu'
         ]);
         $application->products()->save($product);
-        $product->photos()->save(ProductPhoto::factory()->make([
-            'file' => 'test'
-        ]));
 
         $this->actingAs($this->user)->patch(action('Kitchen\KitchenController@update', $this->user->user), [
             'name' => 'test',
