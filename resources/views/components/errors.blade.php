@@ -1,4 +1,6 @@
 @if($errors->any())
-	<toast message="@lang('vue.pleaseCorrect')" title="@lang('vue.formErrors')"
-		   type="error"></toast>
+    @foreach($errors->all() as $error)
+        <toast message="{{$error}}"
+               type="error"></toast>
+    @endforeach
 @endif
