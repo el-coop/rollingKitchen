@@ -38,25 +38,30 @@ class UploadSketchRequest extends FormRequest {
 
     protected function processPhoto() {
         $photo = $this->file('photo');
-        $image = Image::make($photo);
-        $width = $image->width();
-        $height = $image->height();
-        if ($height > 500 || $width > 800) {
-            $proportion = $height / $width;
-            if ($proportion > 1) {
-                $image->resize(round(500 / $proportion), 500);
-            } else {
-                $image->resize(800, round(800 * $proportion));
-            }
-        }
-        $mime = $image->mime();
-        $mime = str_replace('image/', '.', $mime);
         $hash = $photo->hashName();
-        if ($mime != '.jpeg' || $mime != '.jpeg') {
-            $hash = str_replace($mime, '.jpeg', $photo->hashName());
-        }
         $path = 'public/photos/' . $hash;
-        Storage::put($path, (string)$image->encode('jpeg'));
+
+        if ($photo->extension() !== 'pdf') {
+            $image = Image::make($photo);
+            $width = $image->width();
+            $height = $image->height();
+            if ($height > 500 || $width > 500) {
+                $proportion = $height / $width;
+                if ($proportion > 1) {
+                    $image->resize(round(500 / $proportion), 500);
+                } else {
+                    $image->resize(500, round(500 * $proportion));
+                }
+            }
+            $mime = $image->mime();
+            $mime = str_replace('image/', '.', $mime);
+            if ($mime != '.jpeg' || $mime != '.jpeg') {
+                $path = str_replace($mime, '.jpeg', $path);
+            }
+            Storage::put($path, encrypt((string)$image->encode('jpeg')));
+        } else {
+            Storage::put($path, encrypt($photo->get()));
+        }
         return $path;
     }
 }
