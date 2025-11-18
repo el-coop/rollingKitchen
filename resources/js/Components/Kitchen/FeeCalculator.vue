@@ -151,7 +151,7 @@ export default {
             if (this.estimate === 0) {
                 return 0
             }
-            return (this.total / this.estimateExcluding) * 100;
+            return (this.revenueTotal / this.estimateExcluding) * 100;
         },
         serviceTotal() {
             let total = 0;
