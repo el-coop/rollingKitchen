@@ -14,7 +14,7 @@
     <template #default="{object, onUpdate}">
         <template v-if="object">
             <div class="title is-7 has-text-centered">
-                <span class="is-size-3" v-text="object.name || '@lang('admin/workers.createWorker')'"></span>
+                <span class="is-size-3" v-text="object.name || '@lang('kitchen/products.createDish')'"></span>
             </div>
             <dynamic-form :url="'applications/{{$application->id}}/products/menu' + (object.id ? `/${object.id}` : '')"
                           :on-data-update="onUpdate"

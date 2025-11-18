@@ -6,7 +6,8 @@ return [
     'menuTab' => 'Menu',
     'menuDescription' => 'Menu: Beschrijf in detail de gerechten op jouw menu',
 	'other' => 'Dranken (non-alcoholisch)',
-	'menuError' => 'Menu moet minimaal één gerecht bevatten, met minimaal één foto.',
-    'menuHeader' => 'Gerechten: Beschrijf in detail de gerechten op jouw menu'
+	'menuError' => 'Menu moet minimaal één gerecht bevatten.',
+    'menuHeader' => 'Gerechten: Beschrijf in detail de gerechten op jouw menu',
+    'createDish' => 'Gerecht toevoegen'
 
 ];
