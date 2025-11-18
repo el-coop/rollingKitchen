@@ -33,7 +33,6 @@ class UpdateKitchenRequest extends FormRequest {
      */
     public function rules() {
 
-
         $this->application = $this->kitchen->getCurrentApplication();
         $rules = collect([
             'name' => 'required|min:2|unique:users,name,' . $this->kitchen->user->id,
@@ -48,7 +47,7 @@ class UpdateKitchenRequest extends FormRequest {
             foreach ($services as $service){
                 $mandatoryServices .= "$service,";
             }
-
+            $applicationRequired = Field::where('form', Application::class)->exists() ? 'required|' : '';
             $mandatoryServices = trim($mandatoryServices,',');
             $rules = $rules->merge([
                 'kitchen.1' => 'required|min:2',
@@ -56,7 +55,7 @@ class UpdateKitchenRequest extends FormRequest {
                 'kitchen.3' => 'required|min:2',
                 'kitchen.4' => 'required|min:2',
                 'kitchen.5' => 'required|min:2',
-                'application' => 'required|array',
+                'application' => "$applicationRequired" . 'array',
                 'services' => "array" . ($services->count() ? $mandatoryServices : ''),
                 'socket' => 'required|numeric',
                 'length' => 'required|numeric|min:1',
