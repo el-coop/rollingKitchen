@@ -815,8 +815,8 @@ class KitchenControllerTest extends TestCase {
         $photo = $this->user->user->photos->first();
         $path = $photo->file;
         $processedImage = Image::make(Storage::disk('local')->get('public/photos/' . $path));
-        $this->assertEquals(800, $processedImage->width());
-        $this->assertEquals(400, $processedImage->height());
+        $this->assertEquals(500, $processedImage->width());
+        $this->assertEquals(250, $processedImage->height());
         $this->assertEquals('image/jpeg', $processedImage->mime());
     }
 

@@ -88,7 +88,7 @@
                     <input type="radio" value="{{$condition['price']}}" id="services_{{$service->id}}"
                            @if(! $application->isOpen())  onclick="return false;" @endif
                            name="services[{{$service->id}}]"
-                           {{$service->applicationEquivalentPrice($application) == $condition['price'] ? 'checked' : '' }}
+                           {{$application->hasService($service) && $service->applicationEquivalentPrice($application) == $condition['price'] ? 'checked' : '' }}
                            {{$service->mandatory ? 'required' : ''}}
                            @change="(e) => this.$refs.calculator.updateService(e, {{json_encode($service)}})"
                     >
