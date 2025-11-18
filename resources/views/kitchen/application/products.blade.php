@@ -24,7 +24,7 @@
 	callbackOptions: {prefix: '€'},
 	callback: 'localNumber|prefix'
 }]" :init-fields="{{ $application->products->where('category','other')->values() }}"
-                   @can('update',$application) action="/kitchen/applications/{{$application->id}}/product"
+                   @can('update',$application) action="/kitchen/applications/{{$application->id}}/products"
                    @endcan
                    :extra-data="{category: 'other'}">
     </dynamic-table>
