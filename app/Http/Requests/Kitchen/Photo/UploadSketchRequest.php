@@ -45,12 +45,12 @@ class UploadSketchRequest extends FormRequest {
             $image = Image::make($photo);
             $width = $image->width();
             $height = $image->height();
-            if ($height > 800 || $width > 500) {
+            if ($height > 500 || $width > 500) {
                 $proportion = $height / $width;
                 if ($proportion > 1) {
                     $image->resize(round(500 / $proportion), 500);
                 } else {
-                    $image->resize(800, round(800 * $proportion));
+                    $image->resize(500, round(500 * $proportion));
                 }
             }
             $mime = $image->mime();
