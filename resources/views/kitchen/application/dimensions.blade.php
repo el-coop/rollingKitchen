@@ -64,10 +64,10 @@
 <div class="field mt-2">
     <label class="label">@lang('kitchen/dimensions.sketch')</label>
     @if(!$application->sketches()->exists())
-        <div class="m-2">
+        <div class="m-2 is-block">
             <label>@lang('kitchen/dimensions.sketchExample')</label>
-            <figure class="image is-128x128">
-                <img src="{{ asset('/images/sketch.HEIC')}}">
+            <figure class="image">
+                <img class="sketch-image"  src="{{ asset('/images/sketch.jpg')}}">
             </figure>
         </div>
     @endif
