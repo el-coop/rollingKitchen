@@ -38,7 +38,7 @@ Route::group(['middleware' => ['auth', 'userType:' . \App\Models\Admin::class]],
 });
 Route::get('supervisorDatatable/{workplace}/list', 'DatatableController@supervisorList')->middleware(['auth', 'supervisor', 'can:update,workplace']);
 Route::get('artistManager/bands/list', 'DatatableController@artistManagerList')->middleware(['auth', 'userType:' . \App\Models\ArtistManager::class]);
-Route::get('kitchen/{application}/menu/list', 'DatatableController@menuList')->middleware(['auth', 'userType:' . \App\Models\Kitchen::class]);
+Route::get('kitchen/{application}/menu/list', 'DatatableController@menuList')->middleware(['auth', 'userType:' . \App\Models\Kitchen::class . '|'  . \App\Models\Admin::class]);
 
 foreach (\File::allFiles(__DIR__ . "/web") as $routeFile) {
 	include $routeFile;
