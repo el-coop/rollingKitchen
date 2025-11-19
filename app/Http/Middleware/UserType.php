@@ -25,8 +25,5 @@ class UserType {
         }
 
         return $next($request);
-
-        return $next($request);
-
 	}
 }
