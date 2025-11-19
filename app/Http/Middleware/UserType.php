@@ -18,7 +18,7 @@ class UserType {
             return $next($request);
         }
         $allowedTypes = explode('|', $userType);
-        if (! in_array($request->user()->user_type, $allowedTypes, true)) {
+        if (!in_array($request->user()->user_type, $allowedTypes)) {
             abort(403, 'Access denied');
         }
 
