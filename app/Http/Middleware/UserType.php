@@ -14,14 +14,14 @@ class UserType {
 	 * @return mixed
 	 */
 	public function handle($request, Closure $next, $userType) {
-		if ($request->user()->user_type == Developer::class){
-			return $next($request);
-		}
+        if ($request->user()->user_type === Developer::class) {
+            return $next($request);
+        }
+        $allowedTypes = explode('|', $userType);
+        if (!in_array($request->user()->user_type, $allowedTypes)) {
+            abort(403, 'Access denied');
+        }
 
-		 if ($request->user()->user_type != $userType) {
-			return abort(403, 'Access denied');
-		}
-		return $next($request);
-
+        return $next($request);
 	}
 }

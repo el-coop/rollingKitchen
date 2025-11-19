@@ -111,7 +111,7 @@ class ApplicationProductTest extends TestCase {
 	public function test_kitchen_can_create_product_on_open_application() {
 		$this->application->status = 'new';
 		$this->application->save();
-		$this->actingAs($this->kitchen)->post(action('Kitchen\ApplicationProductController@store', $this->application), [
+		$this->actingAs($this->kitchen)->post("/kitchen/applications/" . $this->application->id ."/products/menu", [
 			'name' => 'test',
 			'price' => 2.5,
 			'category' => 'menu'
@@ -230,7 +230,7 @@ class ApplicationProductTest extends TestCase {
 	public function test_kitchen_can_edit_product_on_open_application() {
 		$this->application->status = 'new';
 		$this->application->save();
-		$this->actingAs($this->kitchen)->patch(action('Kitchen\ApplicationProductController@update', ['application' => $this->application, 'product' => $this->product]), [
+		$this->actingAs($this->kitchen)->patch("/kitchen/applications/" . $this->application->id ."/products/menu/" . $this->product->id, [
 			'name' => 'test',
 			'price' => 0.01
 		])->assertSuccessful();
@@ -299,7 +299,7 @@ class ApplicationProductTest extends TestCase {
 	public function test_kitchen_can_delete_product_on_open_application() {
 		$this->application->status = 'new';
 		$this->application->save();
-		$this->actingAs($this->kitchen)->delete(action('Kitchen\ApplicationProductController@destroy', ['application' => $this->application, 'product' => $this->product]))->assertSuccessful();
+		$this->actingAs($this->kitchen)->delete("/kitchen/applications/" . $this->application->id ."/products/menu/" . $this->product->id)->assertSuccessful();
 
 		$this->assertDatabaseMissing('products', [
 			'id' => $this->product->id,
@@ -319,10 +319,7 @@ class ApplicationProductTest extends TestCase {
         $this->application->year = 2018;
         $this->application->save();
         $file = UploadedFile::fake()->image('photo.jpg');
-        $this->actingAs($this->kitchen)->post(action('Kitchen\ApplicationProductController@storePhoto', [
-            'application' => $this->application,
-            'product' => $this->product,
-            ]),[
+        $this->actingAs($this->kitchen)->post("/kitchen/applications/" . $this->application->id ."/products/menu/" . $this->product->id . '/photo' ,[
             'photo' => $file
         ])->assertJson([
             'product_id' => $this->product->id,
@@ -336,10 +333,7 @@ class ApplicationProductTest extends TestCase {
         $this->application->year = 2018;
         $this->application->save();
         $file = UploadedFile::fake()->image('photo.jpg');
-        $this->actingAs($this->kitchen2)->post(action('Kitchen\ApplicationProductController@storePhoto', [
-            'application' => $this->application,
-            'product' => $this->product,
-        ]),[
+        $this->actingAs($this->kitchen2)->post("/kitchen/applications/" . $this->application->id ."/products/menu/" . $this->product->id . '/photo',[
             'photo' => $file
         ])->assertForbidden();
     }
@@ -349,10 +343,7 @@ class ApplicationProductTest extends TestCase {
         $this->application->year = 2018;
         $this->application->save();
         $file = UploadedFile::fake()->image('photo.jpg');
-        $this->post(action('Kitchen\ApplicationProductController@storePhoto', [
-            'application' => $this->application,
-            'product' => $this->product,
-        ]),[
+        $this->post("/kitchen/applications/" . $this->application->id ."/products/menu/" . $this->product->id . '/photo',[
             'photo' => $file
         ])->assertRedirect(action('Auth\LoginController@showLoginForm'));
     }
@@ -368,11 +359,7 @@ class ApplicationProductTest extends TestCase {
             'file' => $file->hashName(),
         ]);
 
-        $this->actingAs($this->kitchen)->delete(action('Kitchen\ApplicationProductController@destroyPhoto', [
-            'application' => $this->application,
-            'product' => $this->product,
-            'productPhoto' => $photo
-        ]))->assertSuccessful()->assertJson([
+        $this->actingAs($this->kitchen)->delete("/kitchen/applications/" . $this->application->id ."/products/menu/" . $this->product->id . "/photo/" . $photo->id)->assertSuccessful()->assertJson([
             'success' => true
         ]);
 
@@ -390,11 +377,7 @@ class ApplicationProductTest extends TestCase {
             'file' => $file->hashName(),
         ]);
 
-        $this->actingAs($this->kitchen2)->delete(action('Kitchen\ApplicationProductController@destroyPhoto', [
-            'application' => $this->application,
-            'product' => $this->product,
-            'productPhoto' => $photo
-        ]))->assertForbidden();
+        $this->actingAs($this->kitchen2)->delete("/kitchen/applications/" . $this->application->id ."/products/menu/" . $this->product->id . "/photo/" . $photo->id)->assertForbidden();
 
     }
 
@@ -409,11 +392,7 @@ class ApplicationProductTest extends TestCase {
             'file' => $file->hashName(),
         ]);
 
-        $this->delete(action('Kitchen\ApplicationProductController@destroyPhoto', [
-            'application' => $this->application,
-            'product' => $this->product,
-            'productPhoto' => $photo
-        ]))->assertRedirect(action('Auth\LoginController@showLoginForm'));
+        $this->delete("/kitchen/applications/" . $this->application->id ."/products/menu/" . $this->product->id . "/photo/" . $photo->id)->assertRedirect(action('Auth\LoginController@showLoginForm'));
 
     }
 }
