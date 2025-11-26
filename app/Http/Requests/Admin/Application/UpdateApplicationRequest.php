@@ -24,10 +24,12 @@ class UpdateApplicationRequest extends FormRequest {
 	 * @return array
 	 */
 	public function rules() {
+        $applicationRule = Application::fields()->isEmpty() ? 'array' : 'required|array';
+        $maxYear = max(date('Y'), app('settings')->get('registration_year'));
 		return [
 			'status' => 'required|in:accepted,pending,rejected,reopened,backup',
-			'year' => 'digits:4|integer|min:2014|max:' . (date('Y')),
-			'application' => 'required|array'
+			'year' => 'digits:4|integer|min:2014|max:' . $maxYear,
+			'application' => $applicationRule
 		];
 	}
 
