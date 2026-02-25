@@ -66,7 +66,7 @@ class Application extends Model {
     }
 
     public function services() {
-        return $this->belongsToMany(Service::class)->withPivot('quantity')->withTimestamps();
+        return $this->belongsToMany(Service::class)->withPivot('quantity', 'equivalent_price')->withTimestamps();
     }
 
     public function invoices() {
