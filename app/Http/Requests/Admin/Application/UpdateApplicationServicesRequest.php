@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin\Application;
 
+use App\Models\Service;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateApplicationServicesRequest extends FormRequest {
@@ -33,10 +34,19 @@ class UpdateApplicationServicesRequest extends FormRequest {
 
 	public function commit() {
 		$services = collect($this->input('services'));
+
 		$services = $services->mapWithKeys(function ($quantity, $service) {
-			return [$service => [
-				'quantity' => $quantity,
-			]];
+            $service = Service::find($service);
+            if ($service->conditions !== null){
+                return [$service->id => [
+                    'quantity' => 1,
+                    'equivalent_price' => $quantity, // The selected price (base or condition)
+                ]];
+            } else {
+                return [$service->id => [
+                    'quantity' => $quantity,
+                ]];
+            }
 		})->filter(function ($item) {
 			return $item['quantity'] > 0;
 		});

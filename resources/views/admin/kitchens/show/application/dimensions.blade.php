@@ -32,3 +32,6 @@
     step: 0.1,
 }]" button-class="is-info" url="{{ action('Admin\ApplicationController@updateDimensions', $application) }}">
 </dynamic-form>
+<div class="mt-2">
+    <carousel ref="carousel" :photos="{{$application->sketches}}"></carousel>
+</div>
