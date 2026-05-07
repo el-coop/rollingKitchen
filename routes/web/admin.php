@@ -130,6 +130,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userType:' . \App\M
         Route::get('/edit/{shift}', 'ShiftController@edit');
         Route::patch('/edit/{shift}', 'ShiftController@update');
         Route::delete('/delete/{shift}', 'ShiftController@destroy');
+        Route::post('/duplicate/{shift}', 'ShiftController@duplicate');
     });
 
     Route::group(['prefix' => 'workplaces'], function () {

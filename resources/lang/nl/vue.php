@@ -97,5 +97,6 @@ return [
     'price' => 'Prijs',
     'name_nl' => 'Nederlandse naam',
     'limit' => 'Limit',
-    'condition' => 'Voorwaarden'
+    'condition' => 'Voorwaarden',
+    'duplicate' => 'Kopiëren',
 ];
