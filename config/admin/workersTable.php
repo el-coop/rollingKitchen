@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Field;
+
 return [
     'model' => \App\Models\Worker::class,
     'where' => [['user_type', \App\Models\Worker::class]],
@@ -31,13 +32,18 @@ return [
         'title' => 'admin/workers.surname',
         'sortField' => 'first_name',
     ], [
+        'name' => 'email',
+        'table' => 'users',
+        'title' => 'global.email',
+        'sortField' => 'email',
+    ], [
         'name' => 'year',
         'raw' => '(worker_applications.year) as year',
         'table' => 'workers',
         'title' => 'global.year',
         'sortField' => 'last_submitted',
         'filterFields' => ['worker_applications.year'],
-        'filter' => function(){
+        'filter' => function () {
             return \App\Models\WorkerApplication::all()->pluck('year', 'year');
         },
     ], [
