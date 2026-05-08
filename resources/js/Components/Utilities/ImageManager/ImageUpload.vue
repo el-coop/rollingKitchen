@@ -12,7 +12,8 @@
 					<span class="file-label has-text-centered" v-text="$translations.uploadPhotos">
 					</span>
 				</span>
-				<span class="file-name" v-for="file in files">
+                <span class=" is-size-7 has-text-danger">No PDF</span>
+                <span class="file-name" v-for="file in files">
 					<span class="uploading" v-if="file.active"><button
 							class="button is-light is-loading is-fullwidth"></button></span>
 					<span class="level is-mobile h-100 has-items-aligned-center">
