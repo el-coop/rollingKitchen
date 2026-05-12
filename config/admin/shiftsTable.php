@@ -4,8 +4,8 @@ return [
 	'joins' => [
 		['workplaces', 'workplaces.id', 'shifts.workplace_id'],
 	],
-	
-	
+
+
 	'fields' => [[
 		'name' => 'shifts.id',
 		'title' => 'id',
@@ -33,6 +33,11 @@ return [
 			'1' => 'global.yes',
 			'0' => 'global.no'
 		]
-	]],
+	], [
+        'name' => '__slot:duplicate',
+        'title' => '',
+        'filter' => false,
+        'noTable' => true,
+    ]],
 
 ];

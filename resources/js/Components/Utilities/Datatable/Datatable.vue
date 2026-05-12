@@ -32,6 +32,13 @@
 
                             </DatatableDeleteForm>
                         </template>
+                        <template #duplicate="props">
+                            <DuplicateShiftForm
+                                :shift-id="props.rowData.id"
+                                :key="`duplicate${props.rowData.id}`"
+                                @success="duplicateObject">
+                            </DuplicateShiftForm>
+                        </template>
                     </Vuetable>
                 </div>
                 <div class="level">
@@ -68,6 +75,7 @@ import DatatableFormatters from './DatatableFormatters';
 import DatatableRowDisplay from "./DatatableRowDisplay";
 import AjaxForm from '../../Form/AjaxForm';
 import DatatableDeleteForm from '../../Form/DatatableDeleteForm';
+import DuplicateShiftForm from "../../Form/Shift/DuplicateShiftForm";
 import {nextTick} from "vue";
 
 
@@ -81,7 +89,8 @@ export default {
         VuetablePaginationInfo,
         VuetablePagination,
         AjaxForm,
-        DatatableDeleteForm
+        DatatableDeleteForm,
+        DuplicateShiftForm
     },
     props: {
         deleteBtn: {
@@ -269,6 +278,13 @@ export default {
         },
         refresh() {
             this.$refs.table.refresh()
+        },
+        duplicateObject(data) {
+            let currentData = this.$refs.table.tableData;
+            currentData.push(data);
+            this.$refs.table.setData(currentData);
+            this.object = data;
+            this.rowDisplayOpen = true;
         }
     },
     computed: {

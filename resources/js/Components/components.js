@@ -62,6 +62,7 @@ export default function(app){
     app.component('ConditionalField', require('./Form/ConditionalField').default);
     app.component('SendWorkerUpdateInfoEmail', require('./Admin/SendWorkerUpdateInfoEmail').default)
     app.component('ServiceTypeField', require('./Form/ServiceTypeField.vue').default);
+    app.component('DuplicateShiftForm', require('./Form/Shift/DuplicateShiftForm').default);
 
 
 }
