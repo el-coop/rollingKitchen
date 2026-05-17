@@ -33,6 +33,7 @@
                 <label class="label"
                        v-text="$translations.totalStaging + ': €' + localNumber(stagingFeeTotal) + ' ' + $translations.excludingVAT"/>
             </div>
+            <input type="hidden" name="revenue" :value="hasStagingFee ? stagingFeeEstimateExcluding.toFixed(2) : ''">
             <template v-if="hasStagingFee">
                 <input type="hidden" :name="`${field.name}[${values.length}][quantity]`" value="1">
                 <input type="hidden" :name="`${field.name}[${values.length}][item]`" value="stagingFee">

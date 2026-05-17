@@ -100,6 +100,7 @@ class UpdateInvoiceRequest extends FormRequest {
         $this->invoice->amount = $total;
         $this->invoice->extra_amount = $this->extra_amount;
         $this->invoice->extra_name = $this->extra_name;
+        $this->invoice->revenue = $this->input('revenue') ?: null;
         $this->invoice->note = $this->note;
 
         $this->invoice->save();

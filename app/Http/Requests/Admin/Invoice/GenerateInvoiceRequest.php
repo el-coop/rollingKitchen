@@ -100,6 +100,7 @@ class GenerateInvoiceRequest extends FormRequest {
         }
         $invoice->extra_name = $this->extra_name;
         $invoice->extra_amount = $this->extra_amount;
+        $invoice->revenue = $this->input('revenue') ?: null;
         $invoice->note = $this->note;
         $invoice->amount = $total;
         $invoice->save();
