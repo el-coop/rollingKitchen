@@ -63,9 +63,11 @@ class InvoiceService {
 
         foreach ($items as $item) {
             if (is_array($item)) {
-                $invoice->addItem($item['item'], $item['unitPrice'], $item['quantity'], $item['tax'] ?? 0);
+                $name = $item['item'] === 'stagingFee' ? __('vue.stagingFee', [], $this->language) : $item['item'];
+                $invoice->addItem($name, $item['unitPrice'], $item['quantity'], $item['tax'] ?? 0);
             } else {
-                $invoice->addItem($item->name, $item->unit_price, $item->quantity, $item->tax ?? 0);
+                $name = $item->name === 'stagingFee' ? __('vue.stagingFee', [], $this->language) : $item->name;
+                $invoice->addItem($name, $item->unit_price, $item->quantity, $item->tax ?? 0);
             }
         }
         return $invoice;

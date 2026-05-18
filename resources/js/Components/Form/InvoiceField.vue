@@ -1,5 +1,45 @@
 <template>
     <div class="field">
+        <div class="box" v-if="!(field.individualTax || false)">
+            <label class="label" v-text="$translations.stagingFee"/>
+            <label class="label" v-text="$translations.revenueIncluding"/>
+            <input type="number" min="0" class="input" v-model="stagingRevenue">
+            <div v-text="$translations.revenueExcluding + ' €' + localNumber(stagingFeeEstimateExcluding)"/>
+            <div class="table-container">
+                <table class="table is-fullwidth">
+                    <thead>
+                    <tr>
+                        <th v-text="`${$translations.level} ${$translations.revenueExcluding}`"/>
+                        <th v-text="$translations.amount"/>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td v-text="$translations.firstTen"/>
+                        <td v-text="'€' + localNumber(stagingFeeToTen)"/>
+                    </tr>
+                    <tr>
+                        <td v-text="$translations.tenToTwenty"/>
+                        <td v-text="'€' + localNumber(stagingFeeTenToTwenty)"/>
+                    </tr>
+                    <tr>
+                        <td v-text="$translations.overTwenty"/>
+                        <td v-text="'€' + localNumber(stagingFeeOverTwenty)"/>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="is-flex is-justify-content-end">
+                <label class="label"
+                       v-text="$translations.totalStaging + ': €' + localNumber(stagingFeeTotal) + ' ' + $translations.excludingVAT"/>
+            </div>
+            <input type="hidden" name="revenue" :value="hasStagingFee ? stagingFeeEstimateExcluding.toFixed(2) : ''">
+            <template v-if="hasStagingFee">
+                <input type="hidden" :name="`${field.name}[${values.length}][quantity]`" value="1">
+                <input type="hidden" :name="`${field.name}[${values.length}][item]`" value="stagingFee">
+                <input type="hidden" :name="`${field.name}[${values.length}][unitPrice]`" :value="stagingFeeTotal.toFixed(2)">
+            </template>
+        </div>
         <div class="box">
             <h5 class="title is-5" v-text="field.label"></h5>
             <div class="columns is-mobile">
@@ -49,7 +89,7 @@
             <div class="columns is-mobile">
                 <div class="column" :class="headerClass(header)" v-for="header in headers">
                     <span v-if="header === 'item'" v-text="$translations.total"></span>
-                    <span v-if="header === 'total'" v-text="localNumber(totalSum * (1 + tax/100) + extra_amount)"></span>
+                    <span v-if="header === 'total'" v-text="localNumber(totalSum * (1 + tax/100) + extra_amount + stagingFeeTotal)"></span>
                 </div>
                 <div class="column is-2"></div>
             </div>
@@ -82,6 +122,20 @@ export default {
             }];
         }
 
+        let stagingRevenue = 0;
+        const stagingIndex = values.findIndex(v => v.item === 'stagingFee');
+        if (stagingIndex !== -1) {
+            const fee = parseFloat(values[stagingIndex].unitPrice);
+            if (fee <= 1500) {
+                stagingRevenue = Math.round(10000 * 1.09);
+            } else if (fee <= 3500) {
+                stagingRevenue = Math.round((10000 + (fee - 1500) / 0.20) * 1.09);
+            } else {
+                stagingRevenue = Math.round((20000 + (fee - 3500) / 0.25) * 1.09);
+            }
+            values.splice(stagingIndex, 1);
+        }
+
         const headers = ['quantity', 'unitPrice', 'item', 'total'];
         let tax = 21;
 
@@ -94,6 +148,7 @@ export default {
             headers: headers,
             sum: [0],
             tax,
+            stagingRevenue,
             extra_name: this.field.extra_name,
             extra_amount: this.field.extra_amount === null ? 0 : parseFloat(this.field.extra_amount)
         }
@@ -134,6 +189,45 @@ export default {
             return this.sum.reduce((total, num) => {
                 return parseFloat(total) + parseFloat(num);
             });
+        },
+        stagingFeeEstimateExcluding() {
+            return this.stagingRevenue / 1.09;
+        },
+        stagingFeeToTen() {
+            if (this.stagingFeeEstimateExcluding < 10000) {
+                return this.stagingFeeEstimateExcluding * 0.15;
+            } else {
+                return 1500;
+            }
+        },
+        stagingFeeTenToTwenty() {
+            if (this.stagingFeeEstimateExcluding <= 10000) {
+                return 0;
+            } else if (this.stagingFeeEstimateExcluding < 20000) {
+                return (this.stagingFeeEstimateExcluding - 10000) * 0.2;
+            } else {
+                return 2000;
+            }
+        },
+        stagingFeeOverTwenty() {
+            if (this.stagingFeeEstimateExcluding <= 20000) {
+                return 0;
+            } else {
+                return (this.stagingFeeEstimateExcluding - 20000) * 0.25;
+            }
+        },
+        stagingFeeTotal() {
+            if (this.stagingRevenue <= 0) {
+                return 0;
+            }
+            let total = this.stagingFeeToTen + this.stagingFeeTenToTwenty + this.stagingFeeOverTwenty;
+            if (total < 1500) {
+                return 1500;
+            }
+            return total;
+        },
+        hasStagingFee() {
+            return this.stagingRevenue > 0;
         }
     }
 }
