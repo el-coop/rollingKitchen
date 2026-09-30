@@ -14,6 +14,7 @@
 	placeholder: '@lang('kitchen/dimensions.inMeters')',
 	subType: 'number',
     step: 0.1,
+@if($application->terrace_length || $application->terrace_width)
 },{
 	'name' : 'terrace_length',
 	'label' : '@lang('kitchen/dimensions.terraceLength')',
@@ -30,8 +31,17 @@
 	placeholder: '@lang('kitchen/dimensions.inMeters')',
 	subType: 'number',
     step: 0.1,
+@endif
 }]" button-class="is-info" url="{{ action('Admin\ApplicationController@updateDimensions', $application) }}">
 </dynamic-form>
+<dynamic-fields class="mt-2" :fields="{{ collect([[
+	'name' => 'description',
+	'label' => __('kitchen/dimensions.description'),
+	'value' => $application->description,
+	'readonly' => true,
+	'type' => 'textarea',
+]]) }}">
+</dynamic-fields>
 <div class="mt-2">
     <carousel ref="carousel" :photos="{{$application->sketches}}"></carousel>
 </div>

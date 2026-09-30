@@ -12,6 +12,7 @@ return [
 	'kitchenInformation' => 'Informatie keuken',
 	'services' => 'Services',
 	'pastApplications' => 'Aanmeldingen voorgaande jaren',
+	'story' => 'Wat is jouw verhaal?',
 	'photoValidation' => 'Foto upload, of één van de volgende velden: website/facebook/instagram, vereist',
 	'pdfsTitle' => 'Belangrijke bestanden',
     'exportAllData' => 'Exporteer alle gegevens',

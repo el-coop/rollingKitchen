@@ -30,6 +30,7 @@ class KitchenControllerTest extends TestCase {
     protected $settings;
     private $user;
     private $user1;
+    private $thirtyWords = 'one two three four five six seven eight nine ten one two three four five six seven eight nine ten one two three four five six seven eight nine ten';
 
     public function setUp(): void {
         parent::setUp();
@@ -432,6 +433,9 @@ class KitchenControllerTest extends TestCase {
             'socket' => $socket->id,
             'length' => 1,
             'width' => 1,
+            'story' => 'test story',
+            'description' => $this->thirtyWords,
+            'sells_drinks' => 1,
             'review' => true
         ])->assertRedirect()->assertSessionHas('toast', [
             'type' => 'success',
@@ -596,6 +600,9 @@ class KitchenControllerTest extends TestCase {
             'socket' => $socket->id,
             'length' => 1,
             'width' => 1,
+            'story' => 'test story',
+            'description' => $this->thirtyWords,
+            'sells_drinks' => 1,
             'review' => true
         ])->assertRedirect()->assertSessionHas('toast', [
             'type' => 'success',
@@ -1035,6 +1042,236 @@ class KitchenControllerTest extends TestCase {
             'application' => $application,
             'applicationSketch' => $photo
         ]))->assertRedirect(action('Auth\LoginController@showLoginForm'));
+    }
+
+    public function test_kitchen_cant_submit_application_without_story_and_description() {
+        $application = $this->createSubmittableApplication();
+
+        $this->submitFormOne([
+            'story' => '',
+            'description' => '',
+        ])->assertSessionHasErrors(['story', 'description']);
+
+        $this->assertDatabaseHas('applications', [
+            'id' => $application->id,
+            'status' => 'new',
+        ]);
+    }
+
+    public function test_kitchen_cant_submit_application_with_description_under_thirty_words() {
+        $application = $this->createSubmittableApplication();
+
+        $this->submitFormOne([
+            'description' => 'one two three four five six seven eight nine ten one two three four five six seven eight nine ten one two three four five six seven eight nine',
+        ])->assertSessionHasErrors(['description' => __('kitchen/dimensions.descriptionWordCount')]);
+
+        $this->assertDatabaseHas('applications', [
+            'id' => $application->id,
+            'status' => 'new',
+        ]);
+    }
+
+    public function test_kitchen_can_submit_application_without_photos_or_links() {
+        $admin = User::factory()->make();
+        Admin::factory()->create()->user()->save($admin);
+        Notification::fake();
+        $application = $this->createSubmittableApplication();
+
+        $this->submitFormOne()->assertSessionHasNoErrors()->assertSessionHas('fireworks');
+
+        $this->assertDatabaseHas('applications', [
+            'id' => $application->id,
+            'status' => 'pending',
+            'story' => 'test story',
+            'description' => $this->thirtyWords,
+        ]);
+    }
+
+    public function test_kitchen_can_save_story_and_description_without_submitting() {
+        $application = $this->createSubmittableApplication();
+
+        $this->submitFormOne([
+            'description' => 'short for now',
+            'review' => false,
+        ])->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas('applications', [
+            'id' => $application->id,
+            'status' => 'new',
+            'story' => 'test story',
+            'description' => 'short for now',
+        ]);
+    }
+
+    public function test_kitchen_can_submit_application_that_sells_drinks() {
+        $admin = User::factory()->make();
+        Admin::factory()->create()->user()->save($admin);
+        Notification::fake();
+        $application = $this->createSubmittableApplication();
+
+        $this->submitFormOne([
+            'sells_drinks' => 1,
+        ])->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas('applications', [
+            'id' => $application->id,
+            'status' => 'pending',
+            'sells_drinks' => true,
+        ]);
+    }
+
+    public function test_kitchen_can_submit_application_that_doesnt_sell_drinks() {
+        $admin = User::factory()->make();
+        Admin::factory()->create()->user()->save($admin);
+        Notification::fake();
+        $application = $this->createSubmittableApplication();
+
+        $this->submitFormOne([
+            'sells_drinks' => 0,
+        ])->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas('applications', [
+            'id' => $application->id,
+            'status' => 'pending',
+            'sells_drinks' => false,
+        ]);
+    }
+
+    public function test_kitchen_answering_no_drinks_deletes_drinks_but_keeps_menu() {
+        $application = $this->createSubmittableApplication();
+        $drink = Product::factory()->make([
+            'category' => 'other'
+        ]);
+        $application->products()->save($drink);
+
+        $this->submitFormOne([
+            'sells_drinks' => 0,
+            'review' => false,
+        ])->assertSessionHasNoErrors();
+
+        $this->assertDatabaseMissing('products', [
+            'id' => $drink->id,
+        ]);
+        $this->assertDatabaseHas('products', [
+            'application_id' => $application->id,
+            'category' => 'menu',
+        ]);
+    }
+
+    public function test_kitchen_answering_yes_drinks_keeps_drinks() {
+        $application = $this->createSubmittableApplication();
+        $drink = Product::factory()->make([
+            'category' => 'other'
+        ]);
+        $application->products()->save($drink);
+
+        $this->submitFormOne([
+            'sells_drinks' => 1,
+            'review' => false,
+        ])->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas('products', [
+            'id' => $drink->id,
+        ]);
+    }
+
+    public function test_kitchen_not_answering_drinks_keeps_drinks() {
+        $application = $this->createSubmittableApplication();
+        $drink = Product::factory()->make([
+            'category' => 'other'
+        ]);
+        $application->products()->save($drink);
+
+        $this->submitFormOne([
+            'sells_drinks' => null,
+            'review' => false,
+        ])->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas('products', [
+            'id' => $drink->id,
+        ]);
+    }
+
+    public function test_kitchen_cant_submit_application_without_drinks_answer() {
+        $application = $this->createSubmittableApplication();
+
+        $this->submitFormOne([
+            'sells_drinks' => null,
+        ])->assertSessionHasErrors(['sells_drinks' => __('kitchen/products.drinksRequired')]);
+
+        $this->assertDatabaseHas('applications', [
+            'id' => $application->id,
+            'status' => 'new',
+            'sells_drinks' => null,
+        ]);
+    }
+
+    public function test_kitchen_can_save_application_without_drinks_answer() {
+        $application = $this->createSubmittableApplication();
+
+        $this->submitFormOne([
+            'sells_drinks' => null,
+            'review' => false,
+        ])->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas('applications', [
+            'id' => $application->id,
+            'status' => 'new',
+            'sells_drinks' => null,
+        ]);
+    }
+
+    public function test_kitchen_sees_drinks_question_on_menu() {
+        $this->settings->put('application_drinks_popup_en', 'drinks popup text');
+        $this->settings->put('application_drinks_popup_nl', 'drinks popup text');
+        $application = $this->createSubmittableApplication();
+
+        $this->actingAs($this->user)->get(action('Kitchen\KitchenController@edit', $this->user->user))
+            ->assertSuccessful()
+            ->assertSee('drinks popup text')
+            ->assertSee('yes-no-tooltip-field', false)
+            ->assertSee('&quot;name&quot;:&quot;sells_drinks&quot;', false)
+            ->assertDontSee("/kitchen/applications/{$application->id}/devices", false);
+    }
+
+    private function createSubmittableApplication() {
+        $application = Application::factory()->make([
+            'year' => $this->settings->get('registration_year'),
+            'status' => 'new',
+        ]);
+        $this->user->user->applications()->save($application);
+        $application->products()->save(Product::factory()->make([
+            'category' => 'menu'
+        ]));
+        return $application;
+    }
+
+    private function submitFormOne($data = []) {
+        $socket = Service::factory()->create([
+            'category' => 'socket'
+        ]);
+
+        return $this->actingAs($this->user)->patch(action('Kitchen\KitchenController@update', $this->user->user), array_merge([
+            'name' => 'test',
+            'email' => 'test@best.rest',
+            'language' => 'en',
+            'kitchen' => [
+                1 => 'test',
+                2 => 'test',
+                3 => 'test',
+                4 => 'test',
+                5 => 'test',
+            ],
+            'application' => [],
+            'services' => [],
+            'socket' => $socket->id,
+            'length' => 1,
+            'width' => 1,
+            'story' => 'test story',
+            'description' => $this->thirtyWords,
+            'sells_drinks' => 1,
+            'review' => true
+        ], $data));
     }
 }
 

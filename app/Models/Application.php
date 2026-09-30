@@ -22,7 +22,8 @@ class Application extends Model {
     }
 
     protected $casts = [
-        'data' => 'array'
+        'data' => 'array',
+        'sells_drinks' => 'boolean'
     ];
 
 

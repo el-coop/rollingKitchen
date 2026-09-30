@@ -60,19 +60,10 @@ class UpdateKitchenRequest extends FormRequest {
                 'socket' => 'required|numeric',
                 'length' => 'required|numeric|min:1',
                 'width' => 'required|numeric|min:1',
-                'terrace_length' => 'numeric|nullable|min:0',
-                'terrace_width' => 'numeric|nullable|min:0',
-                'backstage_length' => 'numeric|nullable|min:0',
-                'backstage_width' => 'numeric|nullable|min:0',
+                'story' => 'required|string',
+                'description' => 'required|string',
+                'sells_drinks' => 'required|boolean',
             ]);
-            if (!$this->kitchen->photos()->count()) {
-                $rules = $rules->merge([
-                    'kitchen.6' => 'required_without_all:kitchen.7,kitchen.11',
-                    'kitchen.7' => 'required_without_all:kitchen.6,kitchen.11',
-                    'kitchen.11' => 'required_without_all:kitchen.6,kitchen.7',
-
-                ]);
-            }
 
             if (Pdf::where("terms_and_conditions_{$this->kitchen->user->language}", true)->exists()) {
                 $rules = $rules->merge([
@@ -91,15 +82,20 @@ class UpdateKitchenRequest extends FormRequest {
             if ($this->input('review') && !$this->application->hasMenu()) {
                 $validator->errors()->add('menu', __('kitchen/products.menuError'));
             }
+            if ($this->input('review') && $this->filled('description') && $this->descriptionWordCount() < 30) {
+                $validator->errors()->add('description', __('kitchen/dimensions.descriptionWordCount'));
+            }
         });
     }
 
     public function messages() {
         return [
-            'kitchen.6.required_without_all' => __('kitchen/kitchen.photoValidation'),
-            'kitchen.7.required_without_all' => __('kitchen/kitchen.photoValidation'),
-            'kitchen.11.required_without_all' => __('kitchen/kitchen.photoValidation'),
+            'sells_drinks.required' => __('kitchen/products.drinksRequired'),
         ];
+    }
+
+    private function descriptionWordCount() {
+        return count(preg_split('/\s+/u', trim($this->input('description')), -1, PREG_SPLIT_NO_EMPTY));
     }
 
     public function commit() {
@@ -117,10 +113,9 @@ class UpdateKitchenRequest extends FormRequest {
             $this->application->data = $this->input('application');
             $this->application->length = $this->input('length');
             $this->application->width = $this->input('width');
-            $this->application->terrace_length = $this->input('terrace_length');
-            $this->application->terrace_width = $this->input('terrace_width');
-            $this->application->backstage_length = $this->input('backstage_length');
-            $this->application->backstage_width = $this->input('backstage_width');
+            $this->application->story = $this->input('story');
+            $this->application->description = $this->input('description');
+            $this->application->sells_drinks = $this->input('sells_drinks');
             if ($this->input('review')) {
                 if ($this->application->status == 'new') {
                     event(new ApplicationSubmitted($this->application));
@@ -131,6 +126,12 @@ class UpdateKitchenRequest extends FormRequest {
                 $this->session()->flash('fireworks', true);
             }
             $this->application->save();
+
+            if ($this->application->sells_drinks === false) {
+                $this->application->products()->where('category', 'other')->get()->each(function ($product) {
+                    $product->delete();
+                });
+            }
 
             $services = collect($this->input('services'));
 

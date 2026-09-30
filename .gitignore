@@ -17,3 +17,4 @@ yarn-error.log
 /public/mix-manifest.json
 /database/settings.json
 CLAUDE.md
+/.claude/

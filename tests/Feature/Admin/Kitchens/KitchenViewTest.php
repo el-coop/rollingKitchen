@@ -5,6 +5,7 @@ namespace Tests\Feature\Admin\Kitchens;
 use App\Models\Accountant;
 use App\Models\Admin;
 use App\Models\Application;
+use App\Models\ElectricDevice;
 use App\Models\Kitchen;
 use App\Models\Product;
 use App\Models\User;
@@ -65,5 +66,38 @@ class KitchenViewTest extends TestCase {
 		$this->actingAs($this->admin)->get(action('Admin\KitchenController@show', $this->kitchen))
 			->assertSuccessful()
 			->assertViewHas('kitchen', $this->kitchen);
+	}
+
+	public function test_admin_can_view_form_one_answers() {
+		$this->application->story = 'Our grandmother started this kitchen';
+		$this->application->description = 'A green wagon with a wood fired oven';
+		$this->application->sells_drinks = true;
+		$this->application->save();
+
+		$this->actingAs($this->admin)->get(action('Admin\KitchenController@show', $this->kitchen))
+			->assertSuccessful()
+			->assertSee('Our grandmother started this kitchen')
+			->assertSee('A green wagon with a wood fired oven')
+			->assertSee("&quot;name&quot;:&quot;sells_drinks_{$this->application->id}&quot;", false)
+			->assertSee('&quot;value&quot;:true,&quot;disabled&quot;:true', false)
+			->assertDontSee(__('kitchen/services.electricity'));
+	}
+
+	public function test_admin_sees_drinks_of_unanswered_application() {
+		$this->application->products()->save(Product::factory()->make([
+			'category' => 'other'
+		]));
+
+		$this->actingAs($this->admin)->get(action('Admin\KitchenController@show', $this->kitchen))
+			->assertSuccessful()
+			->assertSee('&quot;alwaysShowContent&quot;:true', false);
+	}
+
+	public function test_admin_sees_electricity_only_when_application_has_devices() {
+		$this->application->electricDevices()->save(ElectricDevice::factory()->make());
+
+		$this->actingAs($this->admin)->get(action('Admin\KitchenController@show', $this->kitchen))
+			->assertSuccessful()
+			->assertSee(__('kitchen/services.electricity'));
 	}
 }

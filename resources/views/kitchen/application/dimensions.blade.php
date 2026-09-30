@@ -18,48 +18,17 @@
 	step: 0.1,
 	placeholder: '@lang('kitchen/dimensions.inMeters')',
 	error: {{ $errors->has('width') ? collect($errors->get('width')) : 'null'}},
-},{
-	name : 'terrace_length',
-	label : '@lang('kitchen/dimensions.terraceLength')',
-	value: '{{ old('terrace_length', $application->terrace_length) }}',
-	readonly: {{ ! $application->isOpen() ? 'true' : 'false'}},
-	type: 'text',
-	subType: 'number',
-	step: 0.1,
-	placeholder: '@lang('kitchen/dimensions.inMeters')',
-    error: {{ $errors->has('terrace_length') ? collect($errors->get('terrace_length')) :  'null'}},
-},{
-	name : 'terrace_width',
-	label : '@lang('kitchen/dimensions.terraceWidth')',
-	value: '{{ old('terrace_width', $application->terrace_width) }}',
-	readonly: {{ ! $application->isOpen() ? 'true' : 'false'}},
-	type: 'text',
-	subType: 'number',
-	step: 0.1,
-	placeholder: '@lang('kitchen/dimensions.inMeters')',
-    error: {{ $errors->has('terrace_width') ? collect($errors->get('terrace_width')) : 'null'}},
-},{
-    name: 'backstage_length',
-	label : '@lang('kitchen/dimensions.backstageLength')',
-	value: '{{ old('backstage_length', $application->backstage_length) }}',
-	readonly: {{ ! $application->isOpen() ? 'true' : 'false'}},
-	type: 'text',
-	subType: 'number',
-	step: 0.1,
-	placeholder: '@lang('kitchen/dimensions.inMeters')',
-    error: {{ $errors->has('backstage_length') ? collect($errors->get('backstage_length')) : 'null'}},
-
-},{
-    name: 'backstage_width',
-	label : '@lang('kitchen/dimensions.backstageWidth')',
-	value: '{{ old('backstage_width', $application->backstage_width) }}',
-	readonly: {{ ! $application->isOpen() ? 'true' : 'false'}},
-	type: 'text',
-	subType: 'number',
-	step: 0.1,
-	placeholder: '@lang('kitchen/dimensions.inMeters')',
-    error: {{ $errors->has('backstage_width') ? collect($errors->get('backstage_width')) : 'null'}},
 }]">
+</dynamic-fields>
+<dynamic-fields :fields="{{ collect([[
+	'name' => 'description',
+	'label' => __('kitchen/dimensions.description'),
+	'value' => old('description', $application->description),
+	'readonly' => !$application->isOpen(),
+	'type' => 'textarea',
+	'placeholder' => __('kitchen/dimensions.descriptionPlaceholder'),
+	'error' => $errors->has('description') ? $errors->get('description') : null,
+]]) }}">
 </dynamic-fields>
 <div class="field mt-2">
     <label class="label">@lang('kitchen/dimensions.sketch')</label>

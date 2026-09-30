@@ -14,7 +14,7 @@ return $item;
 			<label class="label"></label>
 			<select-chooser>
 				<select-view label="@lang('admin/applications.products')">
-					@component('kitchen.application.products', compact('application'))
+					@component('kitchen.application.products', ['application' => $application, 'readonly' => true])
 					@endcomponent
 				</select-view>
 				<select-view label="@lang('kitchen/dimensions.dimensions')">

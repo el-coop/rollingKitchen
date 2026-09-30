@@ -7,6 +7,7 @@ return [
     'menuDescription' => 'Menu: Beschrijf in detail de gerechten op jouw menu',
 	'other' => 'Dranken (non-alcoholisch)',
 	'menuError' => 'Menu moet minimaal één gerecht bevatten.',
+	'drinksRequired' => 'Geef aan of je dranken wilt verkopen',
     'menuHeader' => 'Gerechten: Beschrijf in detail de gerechten op jouw menu',
     'createDish' => 'Gerecht toevoegen'
 
