@@ -58,6 +58,7 @@ export default function(app){
     app.component('HelpField', require('./Form/HelpField').default);
     app.component('MultiselectField', require('./Form/MultiselectField').default);
     app.component('CheckboxPopupField', require('./Form/CheckboxPopupField').default);
+    app.component('YesNoTooltipField', require('./Form/YesNoTooltipField').default);
     app.component('CheckedInfoForm', require('./Form/CheckedInfoForm').default);
     app.component('ConditionalField', require('./Form/ConditionalField').default);
     app.component('SendWorkerUpdateInfoEmail', require('./Admin/SendWorkerUpdateInfoEmail').default)

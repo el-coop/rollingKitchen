@@ -10,21 +10,33 @@
 		<div class="tile is-child box">
 			<label class="label"></label>
 			<select-chooser>
-				<select-view label="@lang('admin/applications.products')">
-					@component('kitchen.application.products', compact('application'))
-					@endcomponent
+				<select-view label="@lang('kitchen/kitchen.businessInformation')">
+					<hr>
+					<dynamic-fields :fields="{{ collect([[
+						'name' => 'story',
+						'label' => __('kitchen/kitchen.story'),
+						'value' => $application->story,
+						'readonly' => true,
+						'type' => 'textarea',
+					]]) }}"></dynamic-fields>
 				</select-view>
-				<select-view label="@lang('kitchen/dimensions.dimensions')">
+				<select-view label="@lang('kitchen/kitchen.kitchenInformation')">
 					<hr>
 					@component('admin.kitchens.show.application.dimensions', compact('application'))
 					@endcomponent
 				</select-view>
-				<select-view label="@lang('kitchen/services.electricity')">
-					@include('admin.kitchens.show.application.electricity')
+				<select-view label="@lang('kitchen/products.menuTab')">
+					@component('kitchen.application.products', ['application' => $application, 'readonly' => true])
+					@endcomponent
 				</select-view>
 				<select-view label="@lang('admin/services.services')">
 					@include('admin.kitchens.show.application.services')
 				</select-view>
+				@if($application->electricDevices->count())
+					<select-view label="@lang('kitchen/services.electricity')">
+						@include('admin.kitchens.show.application.electricity')
+					</select-view>
+				@endif
 				<select-view label="@lang('admin/invoices.invoices')">
 					@include('admin.kitchens.show.application.invoices')
 				</select-view>

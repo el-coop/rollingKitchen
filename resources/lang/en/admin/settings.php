@@ -137,6 +137,8 @@ return [
     'terms_and_conditions_nl' => 'Terms and conditions NL',
     'terms_and_conditions_en' => 'Terms and conditions EN',
 
+    'application_drinks_popup_en' => 'Drinks Popup Text EN',
+    'application_drinks_popup_nl' => 'Drinks Popup Text NL',
     'application_calculator_model_text_en' => 'Calculator Module Text EN',
     'application_calculator_model_text_nl' => 'Calculator Module Text NL'
 

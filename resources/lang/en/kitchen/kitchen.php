@@ -12,6 +12,7 @@ return [
 	'kitchenInformation' => 'Kitchen Information',
 	'services' => 'Services',
 	'pastApplications' => 'Past Applications',
+	'story' => "What's your story?",
 	'photoValidation' => 'You must upload photos or fill at least on of the following: website/facebook/instagram',
 	'pdfsTitle' => 'Files for your consideration',
     'usePastApplication' => "Use Past Application",

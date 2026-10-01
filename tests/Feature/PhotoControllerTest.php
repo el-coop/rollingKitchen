@@ -65,6 +65,7 @@ class PhotoControllerTest extends TestCase {
 		]);
 
 		Storage::fake('local');
+		Storage::put('public/photos/demo.jpg', '');
 	}
 
 	public function test_anyone_can_get_kitchen_image() {

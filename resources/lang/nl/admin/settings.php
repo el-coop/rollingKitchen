@@ -140,6 +140,8 @@ return [
     'terms_and_conditions_nl' => 'Algemene voorwaarden NL',
     'terms_and_conditions_en' => 'Algemene voorwaarden EN',
 
+    'application_drinks_popup_en' => 'Dranken Popup Tekst EN',
+    'application_drinks_popup_nl' => 'Dranken Popup Tekst NL',
     'application_calculator_model_text_en' => 'Rekenmodule tekst EN',
     'application_calculator_model_text_nl' => 'Rekenmodule tekst NL'
 
