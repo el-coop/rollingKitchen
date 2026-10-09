@@ -7,15 +7,19 @@ use App\Events\Band\ShowDeleted;
 use App\Events\Band\ShowUpdated;
 use App\Events\BandMember\BandMemberProfileFilled;
 use App\Events\Kitchen\ApplicationResubmitted;
+use App\Events\Kitchen\ApplicationSelected;
 use App\Events\Kitchen\ApplicationSubmitted;
+use App\Events\Kitchen\ExtraInfoSubmitted;
 use App\Events\Worker\WorkerProfileFilled;
 use App\Events\Worker\TaxReviewUploaded;
 use App\Listeners\Admin\SendApplicationSubmittedNotification;
 use App\Listeners\Admin\SendAppplicationResubmittedNotification;
+use App\Listeners\Admin\SendExtraInfoSubmittedNotification;
 use App\Listeners\Band\SendShowCreatedNotification;
 use App\Listeners\Band\SendShowDeletedNotification;
 use App\Listeners\Band\SendShowUpdatedNotification;
 use App\Listeners\BandMember\SendBandMemberProfileFilledNotification;
+use App\Listeners\Kitchen\SendApplicationSelectedNotification;
 use App\Listeners\Kitchen\SendApplicationSubmittedNotification as KitchenApplicationSubmittedNotification;
 use App\Listeners\Worker\SendProfileFilledNotification;
 use App\Listeners\Worker\SendTaxReviewNotification;
@@ -37,6 +41,12 @@ class EventServiceProvider extends ServiceProvider {
         ],
         ApplicationResubmitted::class => [
             SendAppplicationResubmittedNotification::class
+        ],
+        ApplicationSelected::class => [
+            SendApplicationSelectedNotification::class
+        ],
+        ExtraInfoSubmitted::class => [
+            SendExtraInfoSubmittedNotification::class
         ],
         TaxReviewUploaded::class => [
             SendTaxReviewNotification::class

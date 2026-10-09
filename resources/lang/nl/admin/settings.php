@@ -143,6 +143,14 @@ return [
     'application_drinks_popup_en' => 'Dranken Popup Tekst EN',
     'application_drinks_popup_nl' => 'Dranken Popup Tekst NL',
     'application_calculator_model_text_en' => 'Rekenmodule tekst EN',
-    'application_calculator_model_text_nl' => 'Rekenmodule tekst NL'
+    'application_calculator_model_text_nl' => 'Rekenmodule tekst NL',
+    'application_selected_subject_nl' => 'Geselecteerd e-mail onderwerp NL',
+    'application_selected_subject_en' => 'Geselecteerd e-mail onderwerp EN',
+    'application_selected_email_nl' => 'Geselecteerd e-mail tekst NL',
+    'application_selected_email_en' => 'Geselecteerd e-mail tekst EN',
+    'application_extra_info_text_nl' => 'Extra informatie instructies NL',
+    'application_extra_info_text_en' => 'Extra informatie instructies EN',
+    'application_extra_info_menu_text_nl' => 'Extra informatie menu tekst NL',
+    'application_extra_info_menu_text_en' => 'Extra informatie menu tekst EN'
 
 ];

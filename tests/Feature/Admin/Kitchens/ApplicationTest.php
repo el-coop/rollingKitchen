@@ -11,6 +11,8 @@ use App\Models\Kitchen;
 use App\Models\Service;
 use App\Models\User;
 use App\Models\Worker;
+use App\Notifications\Kitchen\ApplicationSelectedNotification;
+use Notification;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -217,6 +219,44 @@ class ApplicationTest extends TestCase {
             'test' => 'best',
             'rest' => 'quest'
         ]), $updatedAplication->data);
+	}
+
+	public function test_admin_can_select_application_and_kitchen_gets_notified() {
+		Notification::fake();
+		$application = $this->applications->random();
+		$application->status = 'pending';
+		$application->save();
+
+		$this->actingAs($this->admin->user)
+			->patch(action('Admin\ApplicationController@update', $application), [
+				'status' => 'selected',
+				'application' => [
+					'test' => 'best'
+				]
+			])->assertSuccessful()->assertJsonFragment(['status' => 'selected']);
+
+		$this->assertDatabaseHas('applications', [
+			'id' => $application->id,
+			'status' => 'selected',
+		]);
+		Notification::assertSentTo($application->kitchen->user, ApplicationSelectedNotification::class);
+	}
+
+	public function test_kitchen_doesnt_get_notified_again_when_selected_application_is_updated() {
+		Notification::fake();
+		$application = $this->applications->random();
+		$application->status = 'selected';
+		$application->save();
+
+		$this->actingAs($this->admin->user)
+			->patch(action('Admin\ApplicationController@update', $application), [
+				'status' => 'selected',
+				'application' => [
+					'test' => 'best'
+				]
+			])->assertSuccessful();
+
+		Notification::assertNothingSent();
 	}
 
 	public function test_admin_can_update_application_dimensions() {

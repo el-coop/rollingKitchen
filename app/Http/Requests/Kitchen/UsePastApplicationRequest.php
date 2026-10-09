@@ -41,6 +41,8 @@ class UsePastApplicationRequest extends FormRequest {
         $products->each(function ($product) {
             $replicate = $product->replicate();
             $replicate->application_id = $this->application->id;
+            $replicate->vegan = false;
+            $replicate->religious_note = null;
             $replicate->save();
         });
         $electricDevices = $pastApplication->electricDevices;

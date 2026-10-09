@@ -8,6 +8,21 @@
         @csrf
         @method('patch')
         <input name="review" type="hidden" value="0" ref="review">
+        @if($application->showsExtraInfo())
+        <toggle-chooser>
+            <select-view label="@lang('kitchen/extraInfo.title')">
+                <tabs :pagination-buttons="true" class="mb-1">
+                    <tab label="@lang('kitchen/extraInfo.dimensionsTab')">@include('kitchen.extraInfo.dimensions')</tab>
+                    <tab label="@lang('kitchen/extraInfo.equipmentTab')">@include('kitchen.extraInfo.equipment')</tab>
+                    <tab label="@lang('kitchen/extraInfo.menuTab')">@include('kitchen.extraInfo.menu')</tab>
+                    <tab label="@lang('kitchen/extraInfo.otherTab')">@include('kitchen.extraInfo.other')</tab>
+                    <template #buttons>
+                        @include('kitchen.buttons')
+                    </template>
+                </tabs>
+            </select-view>
+            <select-view label="@lang('kitchen/kitchen.application')">
+        @endif
         <tabs :pagination-buttons="true" class="mb-1">
             <tab label="@lang('kitchen/kitchen.businessInformation')">@include('kitchen.kitchen')</tab>
             <tab label="@lang('kitchen/kitchen.kitchenInformation')">@include('kitchen.application')</tab>
@@ -19,16 +34,13 @@
             @endif
             <tab label="@lang('kitchen/kitchen.calculator')">@include('kitchen.calculator')</tab>
             <template #buttons>
-                <button class="button is-link">
-                    @lang('global.save')
-                </button>
-                <confirmation-submit button-class="is-danger" label="{{__('global.delete')}} {{__('global.account')}}"
-                                     title="@lang('kitchen/kitchen.deleteConfirmTitle')"
-                                     subtitle="@lang('kitchen/kitchen.deleteConfirmSubtitle')"
-                                     yes-text="@lang('global.yes')"
-                                     no-text="@lang('global.no')" name="_method" value="delete"></confirmation-submit>
+                @include('kitchen.buttons')
             </template>
         </tabs>
+        @if($application->showsExtraInfo())
+            </select-view>
+        </toggle-chooser>
+        @endif
     </form>
 {{--    @if($pastApplications->count())--}}
 {{--        <div class="box mb-1">--}}

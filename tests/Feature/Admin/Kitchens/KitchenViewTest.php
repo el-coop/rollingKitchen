@@ -93,6 +93,34 @@ class KitchenViewTest extends TestCase {
 			->assertSee('&quot;alwaysShowContent&quot;:true', false);
 	}
 
+	public function test_admin_can_view_extra_info_answers() {
+		$this->application->status = 'selected';
+		$this->application->outside_serving = true;
+		$this->application->other_details = 'We bring our own generator';
+		$this->application->save();
+		$this->application->products()->save(Product::factory()->make([
+			'category' => 'menu',
+			'religious_note' => 'halal chicken'
+		]));
+
+		$this->actingAs($this->admin)->get(action('Admin\KitchenController@show', $this->kitchen))
+			->assertSuccessful()
+			->assertSee(__('kitchen/extraInfo.title'))
+			->assertSee("&quot;name&quot;:&quot;outside_serving_{$this->application->id}&quot;", false)
+			->assertSee('We bring our own generator')
+			->assertSee('halal chicken')
+			->assertDontSee('id="reviewExtraButton"', false);
+	}
+
+	public function test_admin_doesnt_see_extra_info_of_unselected_application() {
+		$this->application->status = 'pending';
+		$this->application->save();
+
+		$this->actingAs($this->admin)->get(action('Admin\KitchenController@show', $this->kitchen))
+			->assertSuccessful()
+			->assertDontSee(__('kitchen/extraInfo.title'));
+	}
+
 	public function test_admin_sees_electricity_only_when_application_has_devices() {
 		$this->application->electricDevices()->save(ElectricDevice::factory()->make());
 

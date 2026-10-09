@@ -45,12 +45,11 @@ Route::group(['prefix' => 'kitchen', 'namespace' => 'Kitchen'], function () {
             Route::post('/{product}/photo', 'ApplicationProductController@storePhoto');
             Route::delete('/{product}/photo/{productPhoto}', 'ApplicationProductController@destoryPhoto');
         });
-        Route::group(['prefix' => 'devices'], function () {
-            Route::post('/', 'ApplicationDeviceController@create');
-            Route::patch('/{device}', 'ApplicationDeviceController@update');
-            Route::delete('/{device}', 'ApplicationDeviceController@destroy');
-        });
-
+    });
+    Route::group(['prefix' => 'applications/{application}/devices', 'middleware' => ['auth', 'can:updateExtraInfo,application']], function () {
+        Route::post('/', 'ApplicationDeviceController@create');
+        Route::patch('/{device}', 'ApplicationDeviceController@update');
+        Route::delete('/{device}', 'ApplicationDeviceController@destroy');
     });
 
 

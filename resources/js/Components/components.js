@@ -32,6 +32,7 @@ export default function(app){
     app.component('Carousel', require('./Utilities/Carousel').default);
     app.component('SelectChooser', require('./Utilities/SelectChooser/SelectChooser').default);
     app.component('SelectView', require('./Utilities/SelectChooser/SelectView').default);
+    app.component('ToggleChooser', require('./Utilities/SelectChooser/ToggleChooser').default);
     app.component('DynamicTable', require('./Utilities/DynamicTable').default);
     app.component('StepsForm', require('./Utilities/StepsForm/StepsForm').default);
     app.component('FromStep', require('./Utilities/StepsForm/FormStep').default);

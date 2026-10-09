@@ -140,7 +140,15 @@ return [
     'application_drinks_popup_en' => 'Drinks Popup Text EN',
     'application_drinks_popup_nl' => 'Drinks Popup Text NL',
     'application_calculator_model_text_en' => 'Calculator Module Text EN',
-    'application_calculator_model_text_nl' => 'Calculator Module Text NL'
+    'application_calculator_model_text_nl' => 'Calculator Module Text NL',
+    'application_selected_subject_nl' => 'Selected email subject NL',
+    'application_selected_subject_en' => 'Selected email subject EN',
+    'application_selected_email_nl' => 'Selected email body NL',
+    'application_selected_email_en' => 'Selected email body EN',
+    'application_extra_info_text_nl' => 'Additional information instructions NL',
+    'application_extra_info_text_en' => 'Additional information instructions EN',
+    'application_extra_info_menu_text_nl' => 'Additional information menu text NL',
+    'application_extra_info_menu_text_en' => 'Additional information menu text EN'
 
 
 ];

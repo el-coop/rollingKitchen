@@ -52,6 +52,13 @@ class ApplicationPolicy {
         return $user->user_type == Admin::class;
     }
 
+    public function updateExtraInfo(User $user, Application $application) {
+        if ($user->user_type == Kitchen::class && $user->user_id == $application->kitchen_id && $application->isExtraInfoOpen()) {
+            return true;
+        }
+        return $user->user_type == Admin::class;
+    }
+
     /**
      * Determine whether the user can delete the application.
      *

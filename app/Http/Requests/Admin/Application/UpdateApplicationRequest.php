@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin\Application;
 
+use App\Events\Kitchen\ApplicationSelected;
 use App\Models\Application;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -27,18 +28,23 @@ class UpdateApplicationRequest extends FormRequest {
         $applicationRule = Application::fields()->isEmpty() ? 'array' : 'required|array';
         $maxYear = max(date('Y'), app('settings')->get('registration_year'));
 		return [
-			'status' => 'required|in:accepted,pending,rejected,reopened,backup',
+			'status' => 'required|in:accepted,pending,selected,rejected,reopened,backup',
 			'year' => 'digits:4|integer|min:2014|max:' . $maxYear,
 			'application' => $applicationRule
 		];
 	}
 
 	public function commit() {
+		$wasSelected = $this->application->status == 'selected';
 		$this->application->status = $this->input('status');
 		$this->application->year = $this->input('year', $this->application->year);
 		$this->application->data = $this->input('application');
 
 		$this->application->save();
+
+		if (!$wasSelected && $this->application->status == 'selected') {
+			event(new ApplicationSelected($this->application));
+		}
 
 
 		return [

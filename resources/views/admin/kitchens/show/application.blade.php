@@ -37,6 +37,11 @@
 						@include('admin.kitchens.show.application.electricity')
 					</select-view>
 				@endif
+				@if($application->showsExtraInfo())
+					<select-view label="@lang('kitchen/extraInfo.title')">
+						@include('admin.kitchens.show.application.extraInfo')
+					</select-view>
+				@endif
 				<select-view label="@lang('admin/invoices.invoices')">
 					@include('admin.kitchens.show.application.invoices')
 				</select-view>

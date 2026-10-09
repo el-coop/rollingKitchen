@@ -33,6 +33,7 @@ return [
             'sortField' => 'status',
 			'filter' => [
 				'pending' => 'vue.pending',
+				'selected' => 'vue.selected',
 				'accepted' => 'vue.accepted',
 				'reopened' => 'vue.reopened',
 				'rejected' => 'vue.rejected',

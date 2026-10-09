@@ -23,6 +23,7 @@ return [
 	'textarea' => 'Tekstveld',
 	'saveOrder' => 'Opslaan',
 	'pending' => 'Pending',
+	'selected' => 'Geselecteerd',
 	'reopened' => 'Heropened',
 	'accepted' => 'Toegewezen',
 	'rejected' => 'Afgewezen',
