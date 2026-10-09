@@ -17,7 +17,7 @@
         <confirmation-submit label="@lang('kitchen/extraInfo.submit')"
                              title="@lang('kitchen/extraInfo.submitConfirmTitle')"
                              subtitle="@lang('kitchen/extraInfo.submitConfirmSubtitle')" yes-text="@lang('global.yes')"
-                             no-text="@lang('global.no')" name="review_extra" value="1"
+                             no-text="@lang('global.no')" name="review" value="1"
                              id="reviewExtraButton"></confirmation-submit>
     </div>
 @endif

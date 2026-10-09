@@ -66,13 +66,24 @@ class ExtraInfoTest extends TestCase {
     }
 
     public function test_guest_cant_update_extra_info() {
-        $this->patch(action('Kitchen\KitchenController@update', $this->user->user), $this->extraInfo())
+        $this->patch(action('Kitchen\KitchenController@updateExtraInfo', $this->application), $this->extraInfo())
             ->assertRedirect(action('Auth\LoginController@login'));
     }
 
     public function test_other_kitchen_cant_update_extra_info() {
-        $this->actingAs($this->user1)->patch(action('Kitchen\KitchenController@update', $this->user->user), $this->extraInfo())
+        $this->actingAs($this->user1)->patch(action('Kitchen\KitchenController@updateExtraInfo', $this->application), $this->extraInfo())
             ->assertForbidden();
+    }
+
+    public function test_admin_can_update_extra_info() {
+        $this->actingAs($this->admin)->patch(action('Kitchen\KitchenController@updateExtraInfo', $this->application), [
+            'open_flame' => 1,
+        ])->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas('applications', [
+            'id' => $this->application->id,
+            'open_flame' => true,
+        ]);
     }
 
     public function test_kitchen_sees_extra_info_tabs_on_selected_application() {
@@ -81,6 +92,7 @@ class ExtraInfoTest extends TestCase {
             ->assertSee('extra info instructions')
             ->assertSee('menu intro')
             ->assertSee('<toggle-chooser>', false)
+            ->assertSee(action('Kitchen\KitchenController@updateExtraInfo', $this->application), false)
             ->assertSee('&quot;name&quot;:&quot;outside_serving&quot;', false)
             ->assertSee("religious_notes[{$this->dish->id}]", false)
             ->assertSee("/kitchen/applications/{$this->application->id}/devices", false)
@@ -186,7 +198,7 @@ class ExtraInfoTest extends TestCase {
 
     public function test_kitchen_cant_submit_extra_info_without_answers() {
         $this->saveExtraInfo([
-            'review_extra' => 1,
+            'review' => 1,
         ])->assertSessionHasErrors([
             'outside_serving',
             'path_distance',
@@ -266,7 +278,7 @@ class ExtraInfoTest extends TestCase {
         $this->application->status = 'pending';
         $this->application->save();
 
-        $this->saveExtraInfo($this->extraInfo())->assertSessionHasNoErrors();
+        $this->saveExtraInfo($this->extraInfo())->assertForbidden();
 
         $this->assertDatabaseHas('applications', [
             'id' => $this->application->id,
@@ -308,20 +320,11 @@ class ExtraInfoTest extends TestCase {
     }
 
     private function saveExtraInfo($data) {
-        return $this->actingAs($this->user)->patch(action('Kitchen\KitchenController@update', $this->user->user), array_merge([
-            'name' => 'test kitchen',
-            'email' => 'test@best.com',
-            'language' => 'en',
-            'kitchen' => [1 => 'test'],
-        ], $data));
+        return $this->actingAs($this->user)->patch(action('Kitchen\KitchenController@updateExtraInfo', $this->application), $data);
     }
 
     private function extraInfo() {
         return [
-            'name' => 'test kitchen',
-            'email' => 'test@best.com',
-            'language' => 'en',
-            'kitchen' => [1 => 'test'],
             'outside_serving' => 1,
             'outside_serving_depth' => 2.5,
             'path_distance' => 4,
@@ -337,7 +340,7 @@ class ExtraInfoTest extends TestCase {
             'vegan_dishes' => 1,
             'vegan_products' => [$this->secondDish->id],
             'other_details' => 'nothing else',
-            'review_extra' => 1,
+            'review' => 1,
         ];
     }
 }
