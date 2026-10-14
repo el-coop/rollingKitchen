@@ -172,11 +172,27 @@ class SettingsTest extends TestCase {
 	public function test_existing_settings_are_not_overwritten_by_defaults() {
 		$this->app->settings->put('application_drinks_fee', 1200);
 		$this->app->settings->put('application_selected_subject_nl', 'Eigen onderwerp');
+		$this->app->settings->put('invoices_notes_nl', '');
+		$this->app->settings->put('invoices_notes_en', null);
+		$this->app->settings->put('application_waste_processing_fee', '290');
+		$before = $this->app->settings->all();
+
 		$this->app->getProvider(SettingsServiceProvider::class)->addMissingDefaults();
 
-		$this->assertEquals(1200, $this->app->settings->get('application_drinks_fee'));
-		$this->assertEquals('Eigen onderwerp', $this->app->settings->get('application_selected_subject_nl'));
-		$this->assertEquals(2019, $this->app->settings->get('registration_year'));
+		$after = $this->app->settings->all();
+		$this->assertEquals($before, array_intersect_key($after, $before));
+		$this->assertEquals(array_diff_key(config('settingsDefaults'), $before), array_diff_key($after, $before));
+	}
+
+	public function test_defaults_dont_change_complete_settings() {
+		$complete = config('settingsDefaults');
+		$complete['application_selected_subject_nl'] = 'Eigen onderwerp';
+		Storage::disk('local')->put('test.valuestore.json', json_encode($complete));
+		$file = Storage::disk('local')->get('test.valuestore.json');
+
+		$this->app->getProvider(SettingsServiceProvider::class)->addMissingDefaults();
+
+		$this->assertEquals($file, Storage::disk('local')->get('test.valuestore.json'));
 	}
 
 	public function test_admin_sees_added_default_settings() {
