@@ -51,6 +51,7 @@ class SettingsTest extends TestCase {
 		$settings->put('general_login_text_nl', $faker->text);
 		$settings->put('registration_year', 2019);
 		$settings->put('schedule_budget', 0);
+		$settings->put('application_drinks_fee', 1000);
 	}
 
 	public function test_guest_cant_see_page() {
@@ -135,6 +136,7 @@ class SettingsTest extends TestCase {
 			'general_login_text_nl' => 'logintestnl',
 			'registration_year' => '2019',
 			'schedule_budget' => '100',
+			'application_drinks_fee' => '1200',
 		];
 		$this->actingAs($this->admin->user)->patch(action('Admin\SettingsController@update'), $settings)->assertRedirect();
 		$settings['general_registration_status'] = false;
@@ -146,5 +148,14 @@ class SettingsTest extends TestCase {
 		]);
 		$accountant = User::where('user_type', Accountant::class)->first();
 		$this->assertTrue(Hash::check('123456', $accountant->password));
+	}
+
+	public function test_admin_cant_update_settings_with_invalid_drinks_fee() {
+		$this->actingAs($this->admin->user)->patch(action('Admin\SettingsController@update'), [
+			'accountant_email' => 'test@test.com',
+			'schedule_budget' => '100',
+			'application_drinks_fee' => 'abc',
+		])->assertRedirect()->assertSessionHasErrors('application_drinks_fee');
+		$this->assertEquals(1000, $this->app->settings->get('application_drinks_fee'));
 	}
 }

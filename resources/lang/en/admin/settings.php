@@ -139,6 +139,7 @@ return [
 
     'application_drinks_popup_en' => 'Drinks Popup Text EN',
     'application_drinks_popup_nl' => 'Drinks Popup Text NL',
+    'application_drinks_fee' => 'Juice Serving Pass (SSP) fee ex VAT',
     'application_calculator_model_text_en' => 'Calculator Module Text EN',
     'application_calculator_model_text_nl' => 'Calculator Module Text NL',
     'application_selected_subject_nl' => 'Selected email subject NL',

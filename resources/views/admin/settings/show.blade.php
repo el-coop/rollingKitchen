@@ -31,6 +31,7 @@
 												</label>
 												@break
 												@case('schedule_budget')
+												@case('application_drinks_fee')
 												<input type="number" name="{{$key}}" class="input"
 													   value="{{$setting}}" step="0.01" required>
 												@break

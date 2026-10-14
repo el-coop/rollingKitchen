@@ -131,6 +131,7 @@ class SettingsSeeder extends Seeder {
         $this->settingsFakeNoOverwrite('application_calculator_model_text_en', $faker->paragraph);
         $this->settingsFakeNoOverwrite('application_drinks_popup_nl', 'Wil je naast je gerechten ook (non-alcoholische) dranken verkopen? Daarvoor betaal je een eenmalige toeslag, de SapSchenkpas (€ 1.000 ex BTW).');
         $this->settingsFakeNoOverwrite('application_drinks_popup_en', 'Would you like to sell (non-alcoholic) drinks alongside your dishes? This comes with a one-off fee, the Juice Serving Pass (€ 1,000 ex VAT).');
+        $this->settingsFakeNoOverwrite('application_drinks_fee', 1000);
 
         $this->settingsFakeNoOverwrite('application_selected_subject_nl', 'Je bent geselecteerd voor Rollende Keukens');
         $this->settingsFakeNoOverwrite('application_selected_subject_en', 'You have been selected for Rollende Keukens');

@@ -85,6 +85,12 @@
             <div class="is-flex is-justify-content-end" v-text="$translations.stagingMin"></div>
             <div class="is-flex is-justify-content-end" v-text="$translations.totalStaging + '  is %' + formatEstimation(percentageOfRevenue) + ' ' + $translations.yourRevenue"></div>
         </div>
+        <div class="box" v-if="sellsDrinks">
+            <div class="is-flex is-justify-content-end">
+                <label class="label"
+                       v-text="$translations.drinksFee + ': €' + formatEstimation(drinksTotal) + ' ' + $translations.excludingVAT"/>
+            </div>
+        </div>
         <div class="is-flex is-justify-content-end">
             <div>
                 <div class="is-size-4"
@@ -101,12 +107,21 @@ export default {
         initServices: {
             type: Array,
             required: true
+        },
+        initSellsDrinks: {
+            type: Boolean,
+            default: false
+        },
+        drinksFee: {
+            type: Number,
+            default: 0
         }
     },
     data() {
         return {
             estimate: 0,
             services: this.initServices,
+            sellsDrinks: this.initSellsDrinks,
             lang: 'nl'
         }
     },
@@ -144,8 +159,11 @@ export default {
             }
             return total;
         },
+        drinksTotal() {
+            return this.sellsDrinks ? this.drinksFee : 0;
+        },
         total() {
-            return this.revenueTotal + this.serviceTotal;
+            return this.revenueTotal + this.serviceTotal + this.drinksTotal;
         },
         percentageOfRevenue() {
             if (this.estimate === 0) {
@@ -163,13 +181,13 @@ export default {
                     let extra = 0;
                     let upperLimit = sortedConditions[sortedConditions.length - 1];
                     let lowestLimit = parseFloat(sortedConditions[0].limit);
-                    if (this.estimate < lowestLimit) {
+                    if (this.estimateExcluding < lowestLimit) {
                         extra = 0;
-                    } else if (this.estimate > parseFloat(upperLimit.limit)) {
+                    } else if (this.estimateExcluding > parseFloat(upperLimit.limit)) {
                         extra = upperLimit.price;
                     } else {
                         for (const condition of sortedConditions) {
-                            if (this.estimate >= parseFloat(condition.limit)) {
+                            if (this.estimateExcluding >= parseFloat(condition.limit)) {
                                 extra = condition.price;
                                 break;
                             }
@@ -189,6 +207,11 @@ export default {
                 maximumFractionDigits: 2
             }).format(value);
             return num;
+        },
+        updateSellsDrinks(e) {
+            if (e.target.name === 'sells_drinks') {
+                this.sellsDrinks = e.target.value === '1';
+            }
         },
         updateService(e, changedService) {
             if (this.services.some(service => service.id === changedService.id)) {

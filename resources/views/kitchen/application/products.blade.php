@@ -9,7 +9,7 @@
     @endcomponent
 </div>
 <div class="field">
-    <yes-no-tooltip-field :field="{{ collect([
+    <yes-no-tooltip-field @unless($readonly ?? false) @change="(e) => this.$refs.calculator.updateSellsDrinks(e)" @endunless :field="{{ collect([
         'name' => ($readonly ?? false) ? "sells_drinks_{$application->id}" : 'sells_drinks',
         'label' => __('kitchen/products.other') . ':',
         'value' => ($readonly ?? false) ? $application->sells_drinks : old('sells_drinks', $application->sells_drinks),

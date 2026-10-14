@@ -142,6 +142,7 @@ return [
 
     'application_drinks_popup_en' => 'Dranken Popup Tekst EN',
     'application_drinks_popup_nl' => 'Dranken Popup Tekst NL',
+    'application_drinks_fee' => 'SapSchenkpas (SSP) bedrag ex BTW',
     'application_calculator_model_text_en' => 'Rekenmodule tekst EN',
     'application_calculator_model_text_nl' => 'Rekenmodule tekst NL',
     'application_selected_subject_nl' => 'Geselecteerd e-mail onderwerp NL',
