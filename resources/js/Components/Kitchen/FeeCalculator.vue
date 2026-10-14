@@ -179,20 +179,11 @@ export default {
                     let sortedConditions = [...service.conditions]
                         .sort((a, b) => parseFloat(a.limit) - parseFloat(b.limit));
                     let extra = 0;
-                    let upperLimit = sortedConditions[sortedConditions.length - 1];
-                    let lowestLimit = parseFloat(sortedConditions[0].limit);
-                    if (this.estimateExcluding < lowestLimit) {
-                        extra = 0;
-                    } else if (this.estimateExcluding > parseFloat(upperLimit.limit)) {
-                        extra = upperLimit.price;
-                    } else {
-                        for (const condition of sortedConditions) {
-                            if (this.estimateExcluding >= parseFloat(condition.limit)) {
-                                extra = condition.price;
-                                break;
-                            }
+                    sortedConditions.forEach((condition) => {
+                        if (this.estimateExcluding >= parseFloat(condition.limit)) {
+                            extra = condition.price;
                         }
-                    }
+                    });
                     total += parseFloat(extra);
                 }
             });
