@@ -7,6 +7,7 @@ use App\Models\Admin;
 use App\Models\Kitchen;
 use App\Models\User;
 use App\Models\Worker;
+use App\Providers\SettingsServiceProvider;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
@@ -157,5 +158,33 @@ class SettingsTest extends TestCase {
 			'application_drinks_fee' => 'abc',
 		])->assertRedirect()->assertSessionHasErrors('application_drinks_fee');
 		$this->assertEquals(1000, $this->app->settings->get('application_drinks_fee'));
+	}
+
+	public function test_missing_settings_get_their_defaults() {
+		Storage::disk('local')->put('test.valuestore.json', '');
+		$this->app->getProvider(SettingsServiceProvider::class)->addMissingDefaults();
+
+		foreach (config('settingsDefaults') as $key => $value) {
+			$this->assertEquals($value, $this->app->settings->get($key));
+		}
+	}
+
+	public function test_existing_settings_are_not_overwritten_by_defaults() {
+		$this->app->settings->put('application_drinks_fee', 1200);
+		$this->app->settings->put('application_selected_subject_nl', 'Eigen onderwerp');
+		$this->app->getProvider(SettingsServiceProvider::class)->addMissingDefaults();
+
+		$this->assertEquals(1200, $this->app->settings->get('application_drinks_fee'));
+		$this->assertEquals('Eigen onderwerp', $this->app->settings->get('application_selected_subject_nl'));
+		$this->assertEquals(2019, $this->app->settings->get('registration_year'));
+	}
+
+	public function test_admin_sees_added_default_settings() {
+		$this->app->getProvider(SettingsServiceProvider::class)->addMissingDefaults();
+
+		$this->actingAs($this->admin->user)->get(action('Admin\SettingsController@show'))
+			->assertStatus(200)
+			->assertSee('name="application_selected_subject_nl"', false)
+			->assertSee(config('settingsDefaults.application_selected_subject_nl'));
 	}
 }
