@@ -14,7 +14,7 @@ class UpdateDeviceRequest extends FormRequest
     public function authorize()
     {
 		$application = $this->route('application');
-		return $this->user()->can('update', $application);
+        return $this->user()->can('updateExtraInfo', $application);
     }
 
     /**

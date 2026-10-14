@@ -13,7 +13,7 @@ class CreateDeviceRequest extends FormRequest {
 	 */
 	public function authorize() {
 		$this->application = $this->route('application');
-		return $this->user()->can('update', $this->application);
+		return $this->user()->can('updateExtraInfo', $this->application);
 	}
 	
 	/**

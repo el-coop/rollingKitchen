@@ -4,6 +4,29 @@
 
 @section('content')
     @include('kitchen.message')
+    @if($application->showsExtraInfo())
+    <toggle-chooser>
+        <select-view label="@lang('kitchen/extraInfo.title')">
+            <form method="post" action="{{ action('Kitchen\KitchenController@updateExtraInfo', $application) }}">
+                @csrf
+                @method('patch')
+                <tabs :pagination-buttons="true" class="mb-1">
+                    <tab label="@lang('kitchen/extraInfo.dimensionsTab')">@include('kitchen.extraInfo.dimensions')</tab>
+                    <tab label="@lang('kitchen/extraInfo.equipmentTab')">@include('kitchen.extraInfo.equipment')</tab>
+                    <tab label="@lang('kitchen/extraInfo.menuTab')">@include('kitchen.extraInfo.menu')</tab>
+                    <tab label="@lang('kitchen/extraInfo.otherTab')">@include('kitchen.extraInfo.other')</tab>
+                    @if($application->isExtraInfoOpen())
+                        <template #buttons>
+                            <button class="button is-link">
+                                @lang('global.save')
+                            </button>
+                        </template>
+                    @endif
+                </tabs>
+            </form>
+        </select-view>
+        <select-view label="@lang('kitchen/kitchen.application')">
+    @endif
     <form method="post" action="{{ action('Kitchen\KitchenController@update', $kitchen) }}" ref="form">
         @csrf
         @method('patch')
@@ -30,6 +53,10 @@
             </template>
         </tabs>
     </form>
+    @if($application->showsExtraInfo())
+        </select-view>
+    </toggle-chooser>
+    @endif
 {{--    @if($pastApplications->count())--}}
 {{--        <div class="box mb-1">--}}
 {{--            @include('kitchen.usePastApplication')--}}

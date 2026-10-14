@@ -28,6 +28,11 @@ return $item;
 				<select-view label="@lang('admin/services.services')">
 					@include('kitchen.application.pastServices')
 				</select-view>
+				@if($application->showsExtraInfo())
+					<select-view label="@lang('kitchen/extraInfo.title')">
+						@include('admin.kitchens.show.application.extraInfo')
+					</select-view>
+				@endif
 			</select-chooser>
 		</div>
 	</div>

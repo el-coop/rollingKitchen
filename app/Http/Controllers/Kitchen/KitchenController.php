@@ -7,6 +7,7 @@ use App\Http\Requests\Kitchen\CreateKitchenRequest;
 use App\Http\Requests\Kitchen\DestroyKitchenRequest;
 use App\Http\Requests\Kitchen\Photo\UploadPhotoRequest;
 use App\Http\Requests\Kitchen\Photo\UploadSketchRequest;
+use App\Http\Requests\Kitchen\UpdateExtraInfoRequest;
 use App\Http\Requests\Kitchen\UpdateKitchenRequest;
 use App\Http\Requests\Kitchen\UsePastApplicationRequest;
 use App\Models\Application;
@@ -95,6 +96,9 @@ class KitchenController extends Controller {
         if (!$application->isOpen()) {
             $message = app('settings')->get("application_success_text_{$locale}");
         }
+        if ($application->isExtraInfoOpen()) {
+            $message = app('settings')->get("application_extra_info_text_{$locale}");
+        }
 
         return view('kitchen.edit', compact('termsFile',
             'kitchen',
@@ -158,6 +162,15 @@ class KitchenController extends Controller {
 
     public function redirectTo() {
         return Auth::user()->user->homePage();
+    }
+
+    public function updateExtraInfo(UpdateExtraInfoRequest $request, Application $application) {
+        $request->commit();
+        return back()->with('toast', [
+            'type' => 'success',
+            'title' => '',
+            'message' => __('vue.updateSuccess')
+        ]);
     }
 
     public function usePastApplication(UsePastApplicationRequest $request, Application $application) {

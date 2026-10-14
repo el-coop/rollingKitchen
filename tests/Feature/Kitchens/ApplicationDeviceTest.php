@@ -107,8 +107,8 @@ class ApplicationDeviceTest extends TestCase {
 	}
 
 
-	public function test_kitchen_can_create_device_in_open_application() {
-		$this->application->status = 'new';
+	public function test_kitchen_can_create_device_in_selected_application() {
+		$this->application->status = 'selected';
 		$this->application->save();
 		$this->actingAs($this->kitchen)->post(action('Kitchen\ApplicationDeviceController@create', $this->application), [
 			'name' => 'test',
@@ -120,6 +120,15 @@ class ApplicationDeviceTest extends TestCase {
 			'name' => 'test',
 			'watts' => 3,
 		]);
+	}
+
+	public function test_kitchen_cant_create_device_in_open_application() {
+		$this->application->status = 'new';
+		$this->application->save();
+		$this->actingAs($this->kitchen)->post(action('Kitchen\ApplicationDeviceController@create', $this->application), [
+			'name' => 'test',
+			'watts' => 3,
+		])->assertForbidden();
 	}
 
 	public function test_kitchen_cant_create_device_in_submitted_application() {
@@ -186,8 +195,8 @@ class ApplicationDeviceTest extends TestCase {
 		]);
 	}
 
-	public function test_kitchen_can_edit_device_on_open_application() {
-		$this->application->status = 'new';
+	public function test_kitchen_can_edit_device_on_selected_application() {
+		$this->application->status = 'selected';
 		$this->application->save();
 		$this->actingAs($this->kitchen)->patch(action('Kitchen\ApplicationDeviceController@update', ['application' => $this->application, 'device' => $this->device]), [
 			'name' => 'test',
@@ -258,8 +267,8 @@ class ApplicationDeviceTest extends TestCase {
 		]);
 	}
 
-	public function test_kitchen_can_delete_device_on_open_application() {
-		$this->application->status = 'new';
+	public function test_kitchen_can_delete_device_on_selected_application() {
+		$this->application->status = 'selected';
 		$this->application->save();
 		$this->actingAs($this->kitchen)->delete(action('Kitchen\ApplicationDeviceController@destroy', ['application' => $this->application, 'device' => $this->device]))->assertSuccessful();
 

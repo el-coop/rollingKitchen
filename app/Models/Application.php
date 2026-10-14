@@ -23,7 +23,18 @@ class Application extends Model {
 
     protected $casts = [
         'data' => 'array',
-        'sells_drinks' => 'boolean'
+        'sells_drinks' => 'boolean',
+        'outside_serving' => 'boolean',
+        'own_terrace_furniture' => 'boolean',
+        'needs_backstage' => 'boolean',
+        'cooks_in_backstage' => 'boolean',
+        'open_flame' => 'boolean',
+        'uses_gas' => 'boolean',
+        'uses_electric_devices' => 'boolean',
+        'deep_fryer' => 'boolean',
+        'religious_dishes' => 'boolean',
+        'vegan_dishes' => 'boolean',
+        'extra_info_submitted_at' => 'datetime'
     ];
 
 
@@ -54,6 +65,7 @@ class Application extends Model {
                 'options' => [
 
                     'pending' => __('vue.pending'),
+                    'selected' => __('vue.selected'),
                     'accepted' => __('vue.accepted'),
                     'reopened' => __('vue.reopened'),
                     'rejected' => __('vue.rejected'),
@@ -97,6 +109,14 @@ class Application extends Model {
     public function isOpen() {
         $settings = app('settings');
         return ($this->status == 'new' || $this->status == 'reopened') && $this->year == $settings->get('registration_year') && $settings->get('general_registration_status');
+    }
+
+    public function isExtraInfoOpen() {
+        return $this->status == 'selected' && $this->year == app('settings')->get('registration_year');
+    }
+
+    public function showsExtraInfo() {
+        return $this->status == 'selected' || $this->extra_info_submitted_at != null;
     }
 
     public function setNumber() {

@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model {
     use HasFactory;
 
+    protected $casts = [
+        'vegan' => 'boolean'
+    ];
+
     protected $appends = [
       'photosJson'
     ];

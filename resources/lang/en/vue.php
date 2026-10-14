@@ -23,6 +23,7 @@ return [
     'textarea' => 'Textarea',
     'saveOrder' => 'Save Order',
     'pending' => 'Pending',
+    'selected' => 'Selected',
     'reopened' => 'Reopened',
     'accepted' => 'Accepted',
     'rejected' => 'Rejected',
