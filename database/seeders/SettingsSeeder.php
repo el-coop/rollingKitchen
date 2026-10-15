@@ -14,132 +14,38 @@ class SettingsSeeder extends Seeder {
      */
     public function run(Faker $faker) {
         $this->settingsFakeNoOverwrite('registration_year', false);
-        $this->settingsFakeNoOverwrite('general_registration_status', false);
-        $this->settingsFakeNoOverwrite('general_registration_text_nl', 'Klik op aanmelden als je in 2017 niet hebt meegedaan aan Het Weekend van de Rollende keukens.');
-        $this->settingsFakeNoOverwrite('general_registration_text_en', 'Click register if you did not participate in Het Weekend van de Rollende Keukens in 2018');
         $this->settingsFakeNoOverwrite('general_registration_closed_text_nl', 'Het is helaas niet langer mogelijk om je aan te melden voor de Rolende Keukens 2019.');
         $this->settingsFakeNoOverwrite('general_registration_closed_text_en', 'Unfortunately it is no longer possible to register for the Rollende Keukens 2019.');
-        $this->settingsFakeNoOverwrite('general_login_text_nl', 'Klik op inloggen als je in 2017 ook al hebt meegedaan aan Het Weekend van de Rollende Keukens.');
-        $this->settingsFakeNoOverwrite('general_login_text_en', 'Click login if you participated in Het Weekend van de Rollende Keukens in 2018');
 
         $this->settingsFakeNoOverwrite('application_text_nl', $faker->paragraph);
         $this->settingsFakeNoOverwrite('application_text_en', $faker->paragraph);
         $this->settingsFakeNoOverwrite('application_success_text_nl', $faker->paragraph);
         $this->settingsFakeNoOverwrite('application_success_text_en', $faker->paragraph);
-        $this->settingsFakeNoOverwrite('application_success_modal_nl', $faker->paragraph);
-        $this->settingsFakeNoOverwrite('application_success_modal_en', $faker->paragraph);
         $this->settingsFakeNoOverwrite('application_success_email_nl', $faker->paragraph);
         $this->settingsFakeNoOverwrite('application_success_email_en', $faker->paragraph);
 
         $this->settingsFakeNoOverwrite('invoices_business_details', $faker->text);
-        $this->settingsFakeNoOverwrite('invoices_default_subject_nl', $faker->paragraph);
-        $this->settingsFakeNoOverwrite('invoices_default_subject_en', $faker->paragraph);
-        $this->settingsFakeNoOverwrite('invoices_default_email_nl', $faker->text);
-        $this->settingsFakeNoOverwrite('invoices_default_email_en', $faker->text);
-        $this->settingsFakeNoOverwrite('invoices_default_resend_subject_nl', $faker->paragraph);
-        $this->settingsFakeNoOverwrite('invoices_default_resend_subject_en', $faker->paragraph);
-        $this->settingsFakeNoOverwrite('invoices_default_resend_email_nl', $faker->text);
-        $this->settingsFakeNoOverwrite('invoices_default_resend_email_en', $faker->text);
-        $this->settingsFakeNoOverwrite('invoices_notes_nl', $faker->text);
-        $this->settingsFakeNoOverwrite('invoices_notes_en', $faker->text);
         $this->settingsFakeNoOverwrite('invoices_footer_nl', $faker->text);
         $this->settingsFakeNoOverwrite('invoices_footer_en', $faker->text);
-
-        $this->settingsFakeNoOverwrite('workers_user_created_subject_nl', $faker->sentence);
-        $this->settingsFakeNoOverwrite('workers_user_created_subject_en', $faker->sentence);
-        $this->settingsFakeNoOverwrite('workers_user_created_nl', $faker->paragraph);
-        $this->settingsFakeNoOverwrite('workers_user_created_en', $faker->paragraph);
-        $this->settingsFakeNoOverwrite('workers_tax_review_uploaded_subject_nl', $faker->sentence);
-        $this->settingsFakeNoOverwrite('workers_tax_review_uploaded_subject_en', $faker->sentence);
-        $this->settingsFakeNoOverwrite('workers_tax_review_uploaded_en', $faker->paragraph);
-        $this->settingsFakeNoOverwrite('workers_tax_review_uploaded_nl', $faker->paragraph);
-
-        $this->settingsFakeNoOverwrite('workers_profile_filled_subject_nl', $faker->sentence);
-        $this->settingsFakeNoOverwrite('workers_profile_filled_subject_en', $faker->sentence);
-        $this->settingsFakeNoOverwrite('workers_profile_filled_nl', $faker->paragraph);
-        $this->settingsFakeNoOverwrite('workers_profile_filled_en', $faker->paragraph);
 
         $this->settingsFakeNoOverwrite('workers_liability_popup_en', $faker->paragraph);
         $this->settingsFakeNoOverwrite('workers_liability_popup_nl', $faker->paragraph);
 
-        $this->settingsFakeNoOverwrite('artist_managers_user_created_subject_nl', $faker->sentence);
-        $this->settingsFakeNoOverwrite('artist_managers_user_created_subject_en', $faker->sentence);
-        $this->settingsFakeNoOverwrite('artist_managers_user_created_nl', $faker->paragraph);
-        $this->settingsFakeNoOverwrite('artist_managers_user_created_en', $faker->paragraph);
-
-        $this->settingsFakeNoOverwrite('bands_user_created_subject_nl', $faker->sentence);
-        $this->settingsFakeNoOverwrite('bands_user_created_subject_en', $faker->sentence);
-        $this->settingsFakeNoOverwrite('bands_user_created_nl', $faker->paragraph);
-        $this->settingsFakeNoOverwrite('bands_user_created_en', $faker->paragraph);
         $this->settingsFakeNoOverwrite('bands_text_en', $faker->paragraph);
         $this->settingsFakeNoOverwrite('bands_text_nl', $faker->paragraph);
-        $this->settingsFakeNoOverwrite('bands_confirmation_subject_nl', $faker->sentence);
-        $this->settingsFakeNoOverwrite('bands_confirmation_subject_en', $faker->sentence);
-        $this->settingsFakeNoOverwrite('bands_confirmation_text_nl', $faker->sentence);
-        $this->settingsFakeNoOverwrite('bands_confirmation_text_en', $faker->sentence);
-
-
-        $this->settingsFakeNoOverwrite('band_members_user_created_subject_nl', $faker->sentence);
-        $this->settingsFakeNoOverwrite('band_members_user_created_subject_en', $faker->sentence);
-        $this->settingsFakeNoOverwrite('band_members_user_created_nl', $faker->paragraph);
-        $this->settingsFakeNoOverwrite('band_members_user_created_en', $faker->paragraph);
-
-
-        $this->settingsFakeNoOverwrite('band_members_profile_filled_subject_nl', $faker->sentence);
-        $this->settingsFakeNoOverwrite('band_members_profile_filled_subject_en', $faker->sentence);
-        $this->settingsFakeNoOverwrite('band_members_profile_filled_nl', $faker->paragraph);
-        $this->settingsFakeNoOverwrite('band_members_profile_filled_en', $faker->paragraph);
-
-        $this->settingsFakeNoOverwrite('band_members_privacy_statement_nl', $faker->paragraph);
-        $this->settingsFakeNoOverwrite('band_members_privacy_statement_en', $faker->paragraph);
-
-        $this->settingsFakeNoOverwrite('workers_privacy_statement_nl', $faker->paragraph);
-        $this->settingsFakeNoOverwrite('workers_privacy_statement_en', $faker->paragraph);
 
         $this->settingsFakeNoOverwrite('accountant_email', $faker->email);
         $this->settingsFakeNoOverwrite('accountant_password', '');
 
-        $this->settingsFakeNoOverwrite('schedule_budget', 100);
         $this->settingsFakeNoOverwrite('schedule_start_day', \Carbon\Carbon::now()->addMonths(3));
         $this->settingsFakeNoOverwrite('schedule_end_day', \Carbon\Carbon::now()->addMonths(3)->addWeek());
-        $this->settingsFakeNoOverwrite('schedule_start_hour', 13);
-        $this->settingsFakeNoOverwrite('schedule_end_hour', 24);
 
-        $this->settingsFakeNoOverwrite('schedule_created_subject_nl', $faker->sentence);
-        $this->settingsFakeNoOverwrite('schedule_created_subject_en', $faker->sentence);
-        $this->settingsFakeNoOverwrite('schedule_created_nl', $faker->paragraph);
-        $this->settingsFakeNoOverwrite('schedule_created_en', $faker->paragraph);
-
-        $this->settingsFakeNoOverwrite('schedule_changed_subject_nl', $faker->sentence);
-        $this->settingsFakeNoOverwrite('schedule_changed_subject_en', $faker->sentence);
-        $this->settingsFakeNoOverwrite('schedule_stage_changed_nl', $faker->paragraph);
-        $this->settingsFakeNoOverwrite('schedule_stage_changed_en', $faker->paragraph);
-        $this->settingsFakeNoOverwrite('schedule_payment_changed_nl', $faker->paragraph);
-        $this->settingsFakeNoOverwrite('schedule_payment_changed_en', $faker->paragraph);
-
-        $this->settingsFakeNoOverwrite('schedule_deleted_subject_nl', $faker->sentence);
-        $this->settingsFakeNoOverwrite('schedule_deleted_subject_en', $faker->sentence);
         $this->settingsFakeNoOverwrite('schedule_deleted_nl', $faker->paragraph);
         $this->settingsFakeNoOverwrite('schedule_deleted_en', $faker->paragraph);
 
-        $this->settingsFakeNoOverwrite('kitchen_user_created_subject_nl', $faker->sentence);
-        $this->settingsFakeNoOverwrite('kitchen_user_created_subject_en', $faker->sentence);
-        $this->settingsFakeNoOverwrite('kitchen_user_created_nl', $faker->paragraph);
-        $this->settingsFakeNoOverwrite('kitchen_user_created_en', $faker->paragraph);
-
-        $this->settingsFakeNoOverwrite('application_calculator_model_text_nl', $faker->paragraph);
-        $this->settingsFakeNoOverwrite('application_calculator_model_text_en', $faker->paragraph);
-        $this->settingsFakeNoOverwrite('application_drinks_popup_nl', 'Wil je naast je gerechten ook (non-alcoholische) dranken verkopen? Daarvoor betaal je een eenmalige toeslag, de SapSchenkpas (€ 1.000 ex BTW).');
-        $this->settingsFakeNoOverwrite('application_drinks_popup_en', 'Would you like to sell (non-alcoholic) drinks alongside your dishes? This comes with a one-off fee, the Juice Serving Pass (€ 1,000 ex VAT).');
-
-        $this->settingsFakeNoOverwrite('application_selected_subject_nl', 'Je bent geselecteerd voor Rollende Keukens');
-        $this->settingsFakeNoOverwrite('application_selected_subject_en', 'You have been selected for Rollende Keukens');
-        $this->settingsFakeNoOverwrite('application_selected_email_nl', 'Je aanmelding is geselecteerd. Om je deelname definitief te maken hebben we nog wat extra informatie van je nodig. Log in en vul het formulier "Extra informatie" in.');
-        $this->settingsFakeNoOverwrite('application_selected_email_en', 'Your application has been selected. To finalise your participation we need some additional information from you. Please log in and fill in the "Additional information" form.');
-        $this->settingsFakeNoOverwrite('application_extra_info_text_nl', 'Je aanmelding is geselecteerd. Vul hieronder de extra informatie in en dien deze in.');
-        $this->settingsFakeNoOverwrite('application_extra_info_text_en', 'Your application has been selected. Please fill in and submit the additional information below.');
-        $this->settingsFakeNoOverwrite('application_extra_info_menu_text_nl', 'Alle keukens moeten beschikken over een allergenenlijst van hun menu. In de praktijk merken we echter dat er daarnaast steeds vaker vragen zijn over voeding die is bereid volgens bepaalde religieuze voorschriften en over veganistische voeding. Daarom stellen we hierover enkele aanvullende vragen, zodat we onze bezoekers hierover goed en duidelijk kunnen informeren.');
-        $this->settingsFakeNoOverwrite('application_extra_info_menu_text_en', 'All kitchens are required to have an allergen list for their menu. In practice, however, we have noticed that we are increasingly receiving questions about food prepared according to certain religious dietary requirements, as well as vegan food. That is why we are asking a few additional questions about these topics, so that we can provide our visitors with clear and accurate information.');
+        foreach (config('settingsDefaults') as $key => $value) {
+            $this->settingsFakeNoOverwrite($key, $value);
+        }
 
     }
 

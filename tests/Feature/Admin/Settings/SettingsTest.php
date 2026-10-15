@@ -7,6 +7,7 @@ use App\Models\Admin;
 use App\Models\Kitchen;
 use App\Models\User;
 use App\Models\Worker;
+use App\Providers\SettingsServiceProvider;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
@@ -51,6 +52,7 @@ class SettingsTest extends TestCase {
 		$settings->put('general_login_text_nl', $faker->text);
 		$settings->put('registration_year', 2019);
 		$settings->put('schedule_budget', 0);
+		$settings->put('application_drinks_fee', 1000);
 	}
 
 	public function test_guest_cant_see_page() {
@@ -135,6 +137,7 @@ class SettingsTest extends TestCase {
 			'general_login_text_nl' => 'logintestnl',
 			'registration_year' => '2019',
 			'schedule_budget' => '100',
+			'application_drinks_fee' => '1200',
 		];
 		$this->actingAs($this->admin->user)->patch(action('Admin\SettingsController@update'), $settings)->assertRedirect();
 		$settings['general_registration_status'] = false;
@@ -146,5 +149,58 @@ class SettingsTest extends TestCase {
 		]);
 		$accountant = User::where('user_type', Accountant::class)->first();
 		$this->assertTrue(Hash::check('123456', $accountant->password));
+	}
+
+	public function test_admin_cant_update_settings_with_invalid_drinks_fee() {
+		$this->actingAs($this->admin->user)->patch(action('Admin\SettingsController@update'), [
+			'accountant_email' => 'test@test.com',
+			'schedule_budget' => '100',
+			'application_drinks_fee' => 'abc',
+		])->assertRedirect()->assertSessionHasErrors('application_drinks_fee');
+		$this->assertEquals(1000, $this->app->settings->get('application_drinks_fee'));
+	}
+
+	public function test_missing_settings_get_their_defaults() {
+		Storage::disk('local')->put('test.valuestore.json', '');
+		$this->app->getProvider(SettingsServiceProvider::class)->addMissingDefaults();
+
+		foreach (config('settingsDefaults') as $key => $value) {
+			$this->assertEquals($value, $this->app->settings->get($key));
+		}
+	}
+
+	public function test_existing_settings_are_not_overwritten_by_defaults() {
+		$this->app->settings->put('application_drinks_fee', 1200);
+		$this->app->settings->put('application_selected_subject_nl', 'Eigen onderwerp');
+		$this->app->settings->put('invoices_notes_nl', '');
+		$this->app->settings->put('invoices_notes_en', null);
+		$this->app->settings->put('application_waste_processing_fee', '290');
+		$before = $this->app->settings->all();
+
+		$this->app->getProvider(SettingsServiceProvider::class)->addMissingDefaults();
+
+		$after = $this->app->settings->all();
+		$this->assertEquals($before, array_intersect_key($after, $before));
+		$this->assertEquals(array_diff_key(config('settingsDefaults'), $before), array_diff_key($after, $before));
+	}
+
+	public function test_defaults_dont_change_complete_settings() {
+		$complete = config('settingsDefaults');
+		$complete['application_selected_subject_nl'] = 'Eigen onderwerp';
+		Storage::disk('local')->put('test.valuestore.json', json_encode($complete));
+		$file = Storage::disk('local')->get('test.valuestore.json');
+
+		$this->app->getProvider(SettingsServiceProvider::class)->addMissingDefaults();
+
+		$this->assertEquals($file, Storage::disk('local')->get('test.valuestore.json'));
+	}
+
+	public function test_admin_sees_added_default_settings() {
+		$this->app->getProvider(SettingsServiceProvider::class)->addMissingDefaults();
+
+		$this->actingAs($this->admin->user)->get(action('Admin\SettingsController@show'))
+			->assertStatus(200)
+			->assertSee('name="application_selected_subject_nl"', false)
+			->assertSee(config('settingsDefaults.application_selected_subject_nl'));
 	}
 }

@@ -1234,6 +1234,28 @@ class KitchenControllerTest extends TestCase {
             ->assertDontSee("/kitchen/applications/{$application->id}/devices", false);
     }
 
+    public function test_kitchen_calculator_gets_drinks_fee() {
+        $this->settings->put('application_drinks_fee', 1000);
+        $application = $this->createSubmittableApplication();
+        $application->sells_drinks = true;
+        $application->save();
+
+        $this->actingAs($this->user)->get(action('Kitchen\KitchenController@edit', $this->user->user))
+            ->assertSuccessful()
+            ->assertSee(':init-sells-drinks="true"', false)
+            ->assertSee(':drinks-fee="1000"', false)
+            ->assertSee('this.$refs.calculator.updateSellsDrinks(e)', false);
+    }
+
+    public function test_kitchen_calculator_without_drinks_gets_no_drinks() {
+        $this->settings->put('application_drinks_fee', 1000);
+        $this->createSubmittableApplication();
+
+        $this->actingAs($this->user)->get(action('Kitchen\KitchenController@edit', $this->user->user))
+            ->assertSuccessful()
+            ->assertSee(':init-sells-drinks="false"', false);
+    }
+
     private function createSubmittableApplication() {
         $application = Application::factory()->make([
             'year' => $this->settings->get('registration_year'),
