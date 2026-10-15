@@ -140,6 +140,11 @@ class UpdateKitchenRequest extends FormRequest {
             }
 
             $serviceModels = Service::whereIn('id', $services->keys())->get()->keyBy('id');
+            $attachedServices = $this->application->services()->pluck('services.id');
+            $services = $services->filter(function ($value, $serviceId) use ($serviceModels, $attachedServices) {
+                $service = $serviceModels[$serviceId] ?? null;
+                return !$service || !$service->discontinued || $attachedServices->contains($serviceId);
+            });
             $services = $services->mapWithKeys(function ($value, $serviceId) use ($serviceModels) {
                 $service = $serviceModels[$serviceId] ?? null;
                 if ($service && $service->type == 3)     {

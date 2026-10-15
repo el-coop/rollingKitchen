@@ -10,6 +10,8 @@ return [
 	'download_application_services' => 'Download Services Totalen',
 	'kitchenServices' => 'keukenServices',
 	'createService' => 'Service toevoegen',
+	'hidden' => 'Verborgen',
+	'hiddenMandatory' => 'Een verplichte service kan niet verborgen worden.',
     'mandatory' => 'Verplicht'
 
 ];

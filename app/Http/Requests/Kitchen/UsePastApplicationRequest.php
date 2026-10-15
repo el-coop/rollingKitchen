@@ -52,7 +52,7 @@ class UsePastApplicationRequest extends FormRequest {
             $replicate->application_id = $this->application->id;
             $replicate->save();
         });
-        $services = $pastApplication->services;
+        $services = $pastApplication->services->where('discontinued', false);
         $services = collect($services->mapWithKeys(function ($service) {
             return [$service->id => ['quantity' => "{$service->pivot->quantity}"]];
         }));

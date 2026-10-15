@@ -114,6 +114,28 @@ class UsePastApplicationTest extends TestCase {
         ]);
     }
 
+    public function test_kitchen_use_past_application_skips_hidden_services() {
+        $hiddenService = Service::factory()->create(['discontinued' => true]);
+        $this->pastApplication->services()->attach($hiddenService, ['quantity' => 1]);
+
+        $this->actingAs($this->kitchen)->patch(action('Kitchen\KitchenController@usePastApplication', $this->application), [
+            'pastApplication' => $this->pastApplication->id
+        ])->assertRedirect();
+
+        $this->assertDatabaseHas('application_service', [
+            'service_id' => $this->service->id,
+            'application_id' => $this->application->id,
+        ]);
+        $this->assertDatabaseMissing('application_service', [
+            'service_id' => $hiddenService->id,
+            'application_id' => $this->application->id,
+        ]);
+        $this->assertDatabaseHas('application_service', [
+            'service_id' => $hiddenService->id,
+            'application_id' => $this->pastApplication->id,
+        ]);
+    }
+
     public function test_other_kitchen_cant_use_past_application() {
         $this->actingAs($this->kitchen2)->patch(action('Kitchen\KitchenController@usePastApplication', $this->application), [
             'pastApplication' => $this->pastApplication->id
