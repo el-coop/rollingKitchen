@@ -212,6 +212,125 @@ class TableTest extends TestCase {
 		]);
 	}
 
+	public function test_service_edit_form_shows_if_service_is_hidden() {
+		$service = $this->services->random();
+		$hiddenService = Service::factory()->create(['discontinued' => true]);
+
+		$this->actingAs($this->admin->user)->get(action('Admin\ServiceController@edit', $service))
+			->assertSuccessful()->assertJsonFragment([
+				'name' => 'discontinued',
+				'value' => 0,
+			]);
+		$this->actingAs($this->admin->user)->get(action('Admin\ServiceController@edit', $hiddenService))
+			->assertSuccessful()->assertJsonFragment([
+				'name' => 'discontinued',
+				'value' => 1,
+			]);
+	}
+
+	public function test_admin_can_hide_service() {
+		$service = $this->services->random();
+
+		$this->actingAs($this->admin->user)
+			->patch(action('Admin\ServiceController@update', $service), [
+				'name_nl' => $service->name_nl,
+				'name_en' => $service->name_en,
+				'category' => $service->category,
+				'type' => $service->type,
+				'price' => $service->price,
+				'discontinued' => 0,
+			])->assertSuccessful()->assertJsonFragment(['discontinued' => true]);
+
+		$this->assertDatabaseHas('services', [
+			'id' => $service->id,
+			'discontinued' => true,
+		]);
+	}
+
+	public function test_admin_can_unhide_service() {
+		$service = Service::factory()->create(['discontinued' => true]);
+
+		$this->actingAs($this->admin->user)
+			->patch(action('Admin\ServiceController@update', $service), [
+				'name_nl' => $service->name_nl,
+				'name_en' => $service->name_en,
+				'category' => $service->category,
+				'type' => $service->type,
+				'price' => $service->price,
+			])->assertSuccessful();
+
+		$this->assertDatabaseHas('services', [
+			'id' => $service->id,
+			'discontinued' => false,
+		]);
+	}
+
+	public function test_update_service_cant_be_hidden_and_mandatory() {
+		$service = $this->services->random();
+
+		$this->actingAs($this->admin->user)
+			->patch(action('Admin\ServiceController@update', $service), [
+				'name_nl' => $service->name_nl,
+				'name_en' => $service->name_en,
+				'category' => $service->category,
+				'type' => $service->type,
+				'price' => $service->price,
+				'mandatory' => 0,
+				'discontinued' => 0,
+			])->assertRedirect()->assertSessionHasErrors(['discontinued']);
+
+		$this->assertDatabaseHas('services', [
+			'id' => $service->id,
+			'discontinued' => false,
+		]);
+	}
+
+	public function test_admin_can_create_hidden_service() {
+
+		$this->actingAs($this->admin->user)
+			->post(action('Admin\ServiceController@create'), [
+				'name_nl' => 'testnaam',
+				'name_en' => 'testname',
+				'category' => 'safety',
+				'type' => 0,
+				'price' => '25.00',
+				'discontinued' => 0,
+			])->assertSuccessful();
+
+		$this->assertDatabaseHas('services', [
+			'name_nl' => 'testnaam',
+			'discontinued' => true,
+		]);
+	}
+
+	public function test_create_service_cant_be_hidden_and_mandatory() {
+
+		$this->actingAs($this->admin->user)
+			->post(action('Admin\ServiceController@create'), [
+				'name_nl' => 'testnaam',
+				'name_en' => 'testname',
+				'category' => 'safety',
+				'type' => 0,
+				'price' => '25.00',
+				'mandatory' => 0,
+				'discontinued' => 0,
+			])->assertRedirect()->assertSessionHasErrors(['discontinued']);
+
+		$this->assertDatabaseMissing('services', [
+			'name_nl' => 'testnaam',
+		]);
+	}
+
+	public function test_datatable_filters_hidden_services() {
+		$hiddenService = Service::factory()->create(['discontinued' => true]);
+
+		$response = $this->actingAs($this->admin->user)
+			->get(action('DatatableController@list', ['table' => 'admin.servicesTable', 'per_page' => 20, 'filter' => '{"discontinued":"yes"}']));
+
+		$response->assertJsonFragment(['id' => $hiddenService->id]);
+		$this->assertCount(1, $response->json()['data']);
+	}
+
 	public function test_guest_cant_create_service() {
 
 		$this->post(action('Admin\ServiceController@create'), [

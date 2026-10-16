@@ -53,7 +53,7 @@ class KitchenController extends Controller {
 
         $kitchen->load('photos', 'user', 'applications', 'applications.products', 'applications.invoices.payments', 'applications.electricDevices', 'applications.services');
         $indexLink = Kitchen::indexPage();
-        $services = Service::orderByRaw("LENGTH(name_{$locale}) desc")->get();
+        $services = Service::where('discontinued', false)->orderByRaw("LENGTH(name_{$locale}) desc")->get();
         return view('admin.kitchens.show', compact('kitchen', 'indexLink', 'services'));
     }
 

@@ -31,7 +31,14 @@ class UpdateServiceRequest extends FormRequest {
             'type' => 'required|in:0,1,2,3',
 			'price' => 'required|numeric',
             'conditions' => 'required_if:type,2,3|array',
+			'discontinued' => 'prohibits:mandatory',
         ];
+	}
+
+	public function messages() {
+		return [
+			'discontinued.prohibits' => __('admin/services.hiddenMandatory')
+		];
 	}
 
 	public function commit() {
@@ -42,6 +49,7 @@ class UpdateServiceRequest extends FormRequest {
 		$this->service->type = $this->input('type');
 		$this->service->price = $this->input('price');
         $this->service->mandatory = $this->has('mandatory');
+		$this->service->discontinued = $this->has('discontinued');
         if ($this->input('type') == 2 || $this->input('type') == 3){
             $this->service->conditions = $this->input('conditions');
         }
@@ -55,6 +63,7 @@ class UpdateServiceRequest extends FormRequest {
 			'name_en' => $this->input('name_en'),
 			'category' => $this->input('category'),
 			'price' => $this->input('price'),
+			'discontinued' => $this->has('discontinued'),
             'mandatory' => $this->has('mandatory')
 
         ];

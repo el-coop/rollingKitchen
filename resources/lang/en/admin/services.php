@@ -10,6 +10,8 @@ return [
 	'download_application_services' => 'Download Application Services',
 	'kitchenServices' => 'kitchenServices',
 	'createService' => 'Create service',
+	'hidden' => 'Hidden',
+	'hiddenMandatory' => 'A mandatory service cannot be hidden.',
     'mandatory' => 'Mandatory',
     'scale' => 'Scale',
     'equivalent' => 'Equivalents'

@@ -245,6 +245,37 @@ class ApplicationInvoiceTest extends TestCase {
                 ]]);
     }
 
+    public function test_admin_new_invoice_form_doesnt_offer_hidden_services() {
+        $language = $this->kitchen->language;
+        $service = Service::factory()->create();
+        $hiddenService = Service::factory()->create(['discontinued' => true]);
+
+        $response = $this->actingAs($this->user)->get(action('Admin\ApplicationInvoiceController@create', $this->application))
+            ->assertSuccessful();
+
+        $options = collect(collect($response->json())->firstWhere('name', 'items')['options'])->pluck('item');
+        $this->assertContains($service->{"name_{$language}"}, $options);
+        $this->assertNotContains($hiddenService->{"name_{$language}"}, $options);
+    }
+
+    public function test_admin_new_invoice_form_keeps_ordered_hidden_service_as_outstanding_item() {
+        $language = $this->kitchen->language;
+        $this->invoices->each->delete();
+        $hiddenService = Service::factory()->create(['discontinued' => true]);
+        $this->application->services()->attach($hiddenService, ['quantity' => 2]);
+
+        $response = $this->actingAs($this->user)->get(action('Admin\ApplicationInvoiceController@create', $this->application))
+            ->assertSuccessful();
+
+        $items = collect($response->json())->firstWhere('name', 'items');
+        $this->assertContains([
+            'quantity' => 2,
+            'item' => $hiddenService->{"name_{$language}"},
+            'unitPrice' => $hiddenService->fresh()->price,
+        ], $items['value']);
+        $this->assertNotContains($hiddenService->{"name_{$language}"}, collect($items['options'])->pluck('item'));
+    }
+
     public function test_guest_cant_create_new_invoice() {
         Queue::fake();
 

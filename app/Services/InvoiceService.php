@@ -74,7 +74,7 @@ class InvoiceService {
     }
 
     public function getOptions() {
-        $result = Service::all()->map(function($service) {
+        $result = Service::where('discontinued', false)->get()->map(function($service) {
             return [
                 'item' => $service->{"name_{$this->language}"},
                 'unitPrice' => $service->price

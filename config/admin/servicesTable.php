@@ -36,6 +36,18 @@ return [
         'title' => 'admin/services.mandatory',
         'filter' => false,
         'callback' => 'numToBoolTag'
+    ], [
+        'name' => 'discontinued',
+        'title' => 'admin/services.hidden',
+        'filter' => [
+            'yes' => 'global.yes',
+            'no' => 'global.no'
+        ],
+        'filterDefinitions' => [
+            'yes' => ['>', 0],
+            'no' => ['=', 0],
+        ],
+        'callback' => 'numToBoolTag'
     ]]
 
 ];

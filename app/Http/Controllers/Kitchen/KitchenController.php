@@ -82,7 +82,9 @@ class KitchenController extends Controller {
         } else {
             $pdfs = Pdf::where('visibility', 1)->orderBy('order')->get();
         }
-        $services = Service::orderByRaw("LENGTH(name_{$locale}) desc")->get();
+        $services = Service::where('discontinued', false)
+            ->orWhereIn('id', $application->services->pluck('id'))
+            ->orderByRaw("LENGTH(name_{$locale}) desc")->get();
         $countableServices = $services->where('category', '!=', 'socket')->where('type', 0);
         $checkableServices = $services->where('category', '!=', 'socket')->where('type', 1);
         $scaleableServices = $services->where('category', '!=', 'socket')->where('type', 2);

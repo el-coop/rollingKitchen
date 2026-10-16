@@ -67,6 +67,13 @@ class Service extends Model {
             'options' => [[
                 'name' => __('admin/services.mandatory'),
             ]]
+        ], [
+            'name' => 'discontinued',
+            'type' => 'checkbox',
+            'value' => $this->discontinued,
+            'options' => [[
+                'name' => __('admin/services.hidden'),
+            ]]
         ]]);
         return $fullData;
     }

@@ -387,6 +387,98 @@ class KitchenControllerTest extends TestCase {
 
     }
 
+    public function test_kitchen_edit_page_doesnt_offer_hidden_service() {
+        $service = Service::factory()->create(['category' => 'misc', 'type' => 0]);
+        $hiddenService = Service::factory()->create(['category' => 'misc', 'type' => 0, 'discontinued' => true]);
+
+        $this->actingAs($this->user)->get(action('Kitchen\KitchenController@edit', $this->user->user))
+            ->assertSuccessful()
+            ->assertViewHas('countableServices', function ($countableServices) use ($service, $hiddenService) {
+                return $countableServices->contains('id', $service->id)
+                    && !$countableServices->contains('id', $hiddenService->id);
+            });
+    }
+
+    public function test_kitchen_edit_page_shows_hidden_service_already_ordered() {
+        $hiddenService = Service::factory()->create(['category' => 'misc', 'type' => 0, 'discontinued' => true]);
+        $application = Application::factory()->make([
+            'year' => $this->settings->get('registration_year'),
+            'status' => 'new',
+        ]);
+        $this->user->user->applications()->save($application);
+        $application->services()->attach($hiddenService, ['quantity' => 2]);
+
+        $this->actingAs($this->user)->get(action('Kitchen\KitchenController@edit', $this->user->user))
+            ->assertSuccessful()
+            ->assertViewHas('countableServices', function ($countableServices) use ($hiddenService) {
+                return $countableServices->contains('id', $hiddenService->id);
+            });
+    }
+
+    public function test_kitchen_cant_order_hidden_service() {
+        $hiddenService = Service::factory()->create(['discontinued' => true]);
+        $application = Application::factory()->make([
+            'year' => $this->settings->get('registration_year'),
+            'status' => 'new',
+        ]);
+        $this->user->user->applications()->save($application);
+
+        $this->actingAs($this->user)->patch(action('Kitchen\KitchenController@update', $this->user->user), [
+            'name' => 'test',
+            'email' => 'test@best.rest',
+            'language' => 'nl',
+            'kitchen' => [
+                'data' => 'test'
+            ],
+            'application' => [
+                'data' => 'test'
+            ],
+            'services' => [
+                $hiddenService->id => 3,
+            ],
+            'length' => 1,
+            'width' => 1,
+        ])->assertRedirect()->assertSessionHasNoErrors();
+
+        $this->assertDatabaseMissing('application_service', [
+            'application_id' => $application->id,
+            'service_id' => $hiddenService->id,
+        ]);
+    }
+
+    public function test_kitchen_keeps_hidden_service_already_ordered_on_save() {
+        $hiddenService = Service::factory()->create(['discontinued' => true]);
+        $application = Application::factory()->make([
+            'year' => $this->settings->get('registration_year'),
+            'status' => 'new',
+        ]);
+        $this->user->user->applications()->save($application);
+        $application->services()->attach($hiddenService, ['quantity' => 2]);
+
+        $this->actingAs($this->user)->patch(action('Kitchen\KitchenController@update', $this->user->user), [
+            'name' => 'test',
+            'email' => 'test@best.rest',
+            'language' => 'nl',
+            'kitchen' => [
+                'data' => 'test'
+            ],
+            'application' => [
+                'data' => 'test'
+            ],
+            'services' => [
+                $hiddenService->id => 2,
+            ],
+            'length' => 1,
+            'width' => 1,
+        ])->assertRedirect()->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas('application_service', [
+            'application_id' => $application->id,
+            'service_id' => $hiddenService->id,
+            'quantity' => 2
+        ]);
+    }
+
     public function test_kitchen_can_submit_unsubmitted_application() {
         $admin = User::factory()->make();
         Admin::factory()->create()->user()->save($admin);

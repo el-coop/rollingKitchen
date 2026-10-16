@@ -27,7 +27,14 @@ class CreateServiceRequest extends FormRequest {
 			'category' => 'required|in:safety,electrical,misc,socket',
 			'type' => 'required|in:0,1,2,3',
 			'price' => 'required|numeric',
+			'discontinued' => 'prohibits:mandatory',
             'conditions' => 'required_if:type,2,3|array'
+		];
+	}
+
+	public function messages() {
+		return [
+			'discontinued.prohibits' => __('admin/services.hiddenMandatory')
 		];
 	}
 
@@ -40,6 +47,7 @@ class CreateServiceRequest extends FormRequest {
 		$service->type = $this->input('type');
 		$service->price = $this->input('price');
         $service->mandatory = $this->has('mandatory');
+		$service->discontinued = $this->has('discontinued');
         if ($this->input('type') == 2 || $this->input('type') == 3){
             $service->conditions = $this->input('conditions');
         }
@@ -52,6 +60,7 @@ class CreateServiceRequest extends FormRequest {
 			'name_en' => $this->input('name_en'),
 			'category' => $this->input('category'),
 			'price' => $this->input('price'),
+			'discontinued' => $this->has('discontinued'),
             'mandatory' => $this->has('mandatory')
 		];
 	}
