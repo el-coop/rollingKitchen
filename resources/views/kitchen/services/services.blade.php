@@ -1,4 +1,7 @@
 <p class="title is-4">@lang('kitchen/kitchen.services')</p>
+@php
+    $restoring = session()->hasOldInput();
+@endphp
 @foreach($countableServices as $service)
     <div class="field has-addons are-labels">
         <div class="control">
@@ -7,7 +10,7 @@
                    @change="(e) => this.$refs.calculator.updateService(e, {{json_encode($service)}})"
                    name="services[{{$service->id}}]"
                    min="{{$service->mandatory ? '1' : '0'}}"
-                   value="{{ $application->hasService($service) ? $application->serviceQuantity($service) : '0' }}">
+                   value="{{ $restoring ? old("services.{$service->id}", 0) : ($application->hasService($service) ? $application->serviceQuantity($service) : '0') }}">
         </div>
         <div class="control">
             <a class="button is-static">
@@ -24,7 +27,7 @@
                 <input type="checkbox" value="1" id="services_{{$service->id}}"
                        @if(! $application->isOpen())  onclick="return false;" @endif
                        name="services[{{$service->id}}]"
-                       {{ $application->hasService($service) || $service->mandatory == 1 ? 'checked' : '' }}
+                       {{ ($restoring ? old("services.{$service->id}") : $application->hasService($service) || $service->mandatory == 1) ? 'checked' : '' }}
                        {{$service->mandatory ? 'required' : ''}}
                        @change="(e) => this.$refs.calculator.updateService(e, {{json_encode($service)}})"
                 >
@@ -45,7 +48,7 @@
                 <input type="checkbox" value="1" id="services_{{$service->id}}"
                        @if(! $application->isOpen())  onclick="return false;" @endif
                        name="services[{{$service->id}}]"
-                       {{ $application->hasService($service) || $service->mandatory == 1 ? 'checked' : '' }}
+                       {{ ($restoring ? old("services.{$service->id}") : $application->hasService($service) || $service->mandatory == 1) ? 'checked' : '' }}
                        {{$service->mandatory ? 'required' : ''}}
                        @change="(e) => this.$refs.calculator.updateService(e, {{json_encode($service)}})"
                 >
@@ -73,8 +76,8 @@
                 <input type="radio" value="{{$service->price}}" id="services_{{$service->id}}"
                        @if(! $application->isOpen())  onclick="return false;" @endif
                        name="services[{{$service->id}}]"
-                       {{ ($application->hasService($service) && $service->applicationEquivalentPrice($application) == $service->price )
-                        || ($service->mandatory && !$application->hasService($service)) == 1 ? 'checked' : '' }}
+                       {{ ($restoring ? old("services.{$service->id}") == $service->price : ($application->hasService($service) && $service->applicationEquivalentPrice($application) == $service->price )
+                        || ($service->mandatory && !$application->hasService($service)) == 1) ? 'checked' : '' }}
                        {{$service->mandatory ? 'required' : ''}}
                        @change="(e) => this.$refs.calculator.updateService(e, {{json_encode($service)}})"
                 >
@@ -88,7 +91,7 @@
                     <input type="radio" value="{{$condition['price']}}" id="services_{{$service->id}}"
                            @if(! $application->isOpen())  onclick="return false;" @endif
                            name="services[{{$service->id}}]"
-                           {{$application->hasService($service) && $service->applicationEquivalentPrice($application) == $condition['price'] ? 'checked' : '' }}
+                           {{ ($restoring ? old("services.{$service->id}") == $condition['price'] : $application->hasService($service) && $service->applicationEquivalentPrice($application) == $condition['price']) ? 'checked' : '' }}
                            {{$service->mandatory ? 'required' : ''}}
                            @change="(e) => this.$refs.calculator.updateService(e, {{json_encode($service)}})"
                     >

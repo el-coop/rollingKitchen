@@ -5,7 +5,7 @@
 			<input type="radio"
 				   @if(! $application->isOpen())  onclick="return false;" @endif
 				   value="0"
-				   name="socket" {{ $application->services->contains	('category','socket') ? '' : 'checked' }}>
+				   name="socket" {{ (session()->hasOldInput() ? old('socket') == '0' : ! $application->services->contains	('category','socket')) ? 'checked' : '' }}>
 		</label>
 	</div>
 	<div class="control">
@@ -21,7 +21,7 @@
 				<input type="radio"
 					   @if(! $application->isOpen())  onclick="return false;" @endif
 					   name="socket"
-					   value="{{ $socket->id }}" {{ $application->hasService($socket) ? 'checked' : '' }}>
+					   value="{{ $socket->id }}" {{ (session()->hasOldInput() ? old('socket') == $socket->id : $application->hasService($socket)) ? 'checked' : '' }}>
 			</label>
 		</div>
 		<div class="control">

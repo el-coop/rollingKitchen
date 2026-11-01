@@ -1348,6 +1348,79 @@ class KitchenControllerTest extends TestCase {
             ->assertSee(':init-sells-drinks="false"', false);
     }
 
+    public function test_kitchen_keeps_chosen_services_after_failed_submit() {
+        $application = $this->createSubmittableApplication();
+        $countable = Service::factory()->create(['type' => 0, 'category' => 'misc']);
+        $checkable = Service::factory()->create(['type' => 1, 'category' => 'misc']);
+        $equivalent = $this->createEquivalentService();
+        $socket = Service::factory()->create(['category' => 'socket']);
+
+        $response = $this->followingRedirects()->from(action('Kitchen\KitchenController@edit', $this->user->user))->submitFormOne([
+            'services' => [
+                $countable->id => 3,
+                $checkable->id => 1,
+                $equivalent->id => 75,
+            ],
+            'socket' => $socket->id,
+            'length' => '',
+        ]);
+
+        $this->assertDatabaseMissing('application_service', [
+            'application_id' => $application->id,
+            'service_id' => $equivalent->id
+        ]);
+        $xpath = $this->xpath($response->getContent());
+        $this->assertEquals(['75'], $this->checkedValues($xpath, "services[{$equivalent->id}]"));
+        $this->assertEquals(['1'], $this->checkedValues($xpath, "services[{$checkable->id}]"));
+        $this->assertEquals(["{$socket->id}"], $this->checkedValues($xpath, 'socket'));
+        $this->assertMatchesRegularExpression("/name=\"services\[{$countable->id}\]\"\s+min=\"0\"\s+value=\"3\"/", $response->getContent());
+        $response->assertSee('&quot;price&quot;:75', false);
+        $this->assertCalculatorShowsConditionName($response);
+    }
+
+    public function test_kitchen_sees_saved_services_without_failed_submit() {
+        $application = $this->createSubmittableApplication();
+        $equivalent = $this->createEquivalentService();
+        $application->services()->attach($equivalent->id, ['quantity' => 1, 'equivalent_price' => 75]);
+
+        $response = $this->actingAs($this->user)->get(action('Kitchen\KitchenController@edit', $this->user->user))
+            ->assertSuccessful();
+
+        $this->assertEquals(['75'], $this->checkedValues($this->xpath($response->getContent()), "services[{$equivalent->id}]"));
+        $this->assertCalculatorShowsConditionName($response);
+    }
+
+    private function assertCalculatorShowsConditionName($response) {
+        $this->assertMatchesRegularExpression('/&quot;service&quot;:&quot;(Waterafvoer gedeeld|Shared water drainage)&quot;/', $response->getContent());
+    }
+
+    private function createEquivalentService() {
+        return Service::factory()->create([
+            'type' => 3,
+            'category' => 'misc',
+            'price' => 125,
+            'conditions' => [[
+                'name_nl' => 'Waterafvoer gedeeld',
+                'name_en' => 'Shared water drainage',
+                'price' => 75
+            ]]
+        ]);
+    }
+
+    private function xpath($html) {
+        $document = new \DOMDocument;
+        libxml_use_internal_errors(true);
+        $document->loadHTML($html);
+        libxml_clear_errors();
+        return new \DOMXPath($document);
+    }
+
+    private function checkedValues($xpath, $name) {
+        return collect($xpath->query("//input[@name='{$name}'][@checked]"))->map(function ($input) {
+            return $input->getAttribute('value');
+        })->values()->all();
+    }
+
     private function createSubmittableApplication() {
         $application = Application::factory()->make([
             'year' => $this->settings->get('registration_year'),

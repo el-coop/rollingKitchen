@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
 
 class Service extends Model {
     use HasFactory;
@@ -84,6 +85,11 @@ class Service extends Model {
 
     public function applicationEquivalentPrice(Application $application) {
         return (float)$this->applications()->where('application_id', $application->id)->first()->pivot->equivalent_price;
+    }
+
+    public function equivalentName($price) {
+        $condition = collect($this->conditions)->firstWhere('price', $price);
+        return $condition ? $condition['name_' . App::getLocale()] : $this->{'name_' . App::getLocale()};
     }
 
 }
