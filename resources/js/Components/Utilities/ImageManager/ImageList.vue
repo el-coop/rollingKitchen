@@ -1,7 +1,7 @@
 <template>
 	<div class="list">
 		<image-entry v-for="image in images" :image="image" :key="image.id" :delete-url="deleteUrl"
-					 @deleted="deleteImage"></image-entry>
+					 :pdf-number="pdfNumber(image)" @deleted="deleteImage"></image-entry>
 	</div>
 </template>
 
@@ -31,6 +31,12 @@
 		methods: {
 			deleteImage(image) {
 				this.$emit('deleted', image);
+			},
+
+			pdfNumber(image) {
+				return this.images.filter((item) => {
+					return item.is_pdf;
+				}).indexOf(image) + 1;
 			}
 		}
 	}

@@ -23,7 +23,7 @@ class UploadSketchRequest extends FormRequest {
      */
     public function rules() {
         return [
-            'photo' => 'required|image|clamav'
+            'photo' => 'required|mimes:jpeg,png,bmp,gif,webp,pdf|max:10240|clamav'
         ];
     }
 

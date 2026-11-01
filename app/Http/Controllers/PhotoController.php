@@ -78,6 +78,13 @@ class PhotoController extends Controller {
         $encryptedContents = Storage::get("public/photos/{$photo->file}");
         $decryptedContents = Crypt::decrypt($encryptedContents);
 
+        if ($photo->is_pdf) {
+            $number = $photo->application->sketches()->orderBy('id')->get()->filter->is_pdf->pluck('id')->search($photo->id) + 1;
+            return response()->make($decryptedContents, 200, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => "inline; filename=\"kitchen-sketch-pdf-{$number}.pdf\""
+            ]);
+        }
         if (pathinfo($photo->file, PATHINFO_EXTENSION)) {
             return response()->streamDownload(function () use ($decryptedContents) {
                 echo $decryptedContents;

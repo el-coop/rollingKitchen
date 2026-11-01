@@ -1053,6 +1053,57 @@ class KitchenControllerTest extends TestCase {
         Storage::disk('local')->assertExists("public/photos/{$file->hashName()}");
     }
 
+    public function test_kitchen_can_upload_pdf_sketch_to_own_application() {
+        $application = $this->createSubmittableApplication();
+        $file = UploadedFile::fake()->createWithContent('plan.pdf', '%PDF-1.4 test');
+        $this->actingAs($this->user)->post(action('Kitchen\KitchenController@storeApplicationSketch', $application), [
+            'photo' => $file
+        ])->assertJson([
+            'application_id' => $application->id,
+            'file' => $file->hashName(),
+            'is_pdf' => true
+        ]);
+        $this->assertEquals('%PDF-1.4 test', decrypt(Storage::disk('local')->get("public/photos/{$file->hashName()}")));
+    }
+
+    public function test_kitchen_cant_upload_pdf_sketch_over_10_mb() {
+        $application = $this->createSubmittableApplication();
+        $this->actingAs($this->user)->post(action('Kitchen\KitchenController@storeApplicationSketch', $application), [
+            'photo' => UploadedFile::fake()->create('plan.pdf', 10241, 'application/pdf')
+        ])->assertSessionHasErrors('photo');
+        $this->assertDatabaseMissing('application_sketches', ['application_id' => $application->id]);
+    }
+
+    public function test_kitchen_cant_upload_text_file_as_sketch() {
+        $application = $this->createSubmittableApplication();
+        $this->actingAs($this->user)->post(action('Kitchen\KitchenController@storeApplicationSketch', $application), [
+            'photo' => UploadedFile::fake()->createWithContent('notes.txt', 'just text')
+        ])->assertSessionHasErrors('photo');
+        $this->assertDatabaseMissing('application_sketches', ['application_id' => $application->id]);
+    }
+
+    public function test_kitchen_sees_pdf_sketch_inline() {
+        $application = $this->createSubmittableApplication();
+        Storage::disk('local')->put('public/photos/plan.pdf', encrypt('%PDF-1.4 test'));
+        ApplicationSketch::factory()->create([
+            'application_id' => $application->id,
+            'file' => 'first.pdf'
+        ]);
+        ApplicationSketch::factory()->create([
+            'application_id' => $application->id,
+            'file' => 'photo.jpeg'
+        ]);
+        $sketch = ApplicationSketch::factory()->create([
+            'application_id' => $application->id,
+            'file' => 'plan.pdf'
+        ]);
+        $response = $this->actingAs($this->user)->get(action('PhotoController@applicationSketch', $sketch))
+            ->assertSuccessful()
+            ->assertHeader('Content-Type', 'application/pdf')
+            ->assertHeader('Content-Disposition', 'inline; filename="kitchen-sketch-pdf-2.pdf"');
+        $this->assertEquals('%PDF-1.4 test', $response->getContent());
+    }
+
     public function test_different_kitchen_cant_upload_sketch_to_application() {
         $application = Application::factory()->make([
             'year' => intval($this->settings->get('registration_year')),

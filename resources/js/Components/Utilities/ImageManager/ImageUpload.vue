@@ -12,7 +12,7 @@
 					<span class="file-label has-text-centered" v-text="$translations.uploadPhotos">
 					</span>
 				</span>
-                <span class=" is-size-7 has-text-danger">No PDF</span>
+                <span class=" is-size-7 has-text-danger" v-text="allowPdf ? $translations.photosOrPdf : $translations.photosOnly"></span>
                 <span class="file-name" v-for="file in files">
 					<span class="uploading" v-if="file.active"><button
 							class="button is-light is-loading is-fullwidth"></button></span>
@@ -62,6 +62,10 @@
 				default() {
 					return {};
 				}
+			},
+			allowPdf: {
+				type: Boolean,
+				default: false
 			}
 
 		},
@@ -69,7 +73,7 @@
 		data() {
 			return {
 				files: [],
-				accept: 'img/*',
+				accept: this.allowPdf ? 'image/*,application/pdf' : 'image/*',
 			}
 		},
 
@@ -100,7 +104,8 @@
 			},
             inputFilter(newFile, oldFile, prevent) {
                 if (newFile && !oldFile) {
-                    if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(newFile.name)) {
+                    const allowed = this.allowPdf ? /\.(jpeg|jpe|jpg|gif|png|webp|pdf)$/i : /\.(jpeg|jpe|jpg|gif|png|webp)$/i;
+                    if (!allowed.test(newFile.name)) {
                         this.$toast.error(this.$translations.hasToBeAnImage);
                         return prevent()
                     }
