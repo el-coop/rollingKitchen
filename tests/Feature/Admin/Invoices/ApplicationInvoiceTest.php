@@ -16,8 +16,10 @@ use App\Models\Service;
 use App\Models\User;
 use App\Models\Worker;
 use ConsoleTVs\Invoices\Classes\Invoice as InvoiceFile;
+use ElCoop\Valuestore\Valuestore;
 use Throwable;
 use Queue;
+use Storage;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -198,6 +200,20 @@ class ApplicationInvoiceTest extends TestCase {
                 ],
             ]);
 
+    }
+
+    public function test_admin_new_invoice_form_has_registration_year() {
+        Storage::fake('local');
+        Storage::disk('local')->put('test.valuestore.json', '');
+        $path = Storage::path('test.valuestore.json');
+        $this->app->singleton('settings', function ($app) use ($path) {
+            return new Valuestore($path);
+        });
+        app('settings')->put('registration_year', 2027);
+
+        $this->actingAs($this->user)->get(action('Admin\ApplicationInvoiceController@create', $this->application))
+            ->assertSuccessful()
+            ->assertJsonFragment(['registrationYear' => 2027]);
     }
 
     public function test_admin_loads_new_invoice_form_with_outstanding_items() {

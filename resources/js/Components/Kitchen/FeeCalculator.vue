@@ -63,17 +63,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td v-text="$translations.firstTen"/>
-                        <td v-text="'€' + formatEstimation(toTen)"/>
-                    </tr>
-                    <tr>
-                        <td v-text="$translations.tenToTwenty"/>
-                        <td v-text="'€' + formatEstimation(tenToTwenty)"/>
-                    </tr>
-                    <tr>
-                        <td v-text="$translations.overTwenty"/>
-                        <td v-text="'€' + formatEstimation(overTwenty)"/>
+                    <tr v-for="tier in stagingTiers" :key="tier.label">
+                        <td v-text="$translations[tier.label]"/>
+                        <td v-text="'€' + formatEstimation(tier.amount)"/>
                     </tr>
                     </tbody>
                 </table>
@@ -101,8 +93,11 @@
 </template>
 
 <script>
+import StagingFeeMixin from "../Utilities/StagingFeeMixin";
+
 export default {
     name: "FeeCalculator",
+    mixins: [StagingFeeMixin],
     props: {
         initServices: {
             type: Array,
@@ -115,6 +110,10 @@ export default {
         drinksFee: {
             type: Number,
             default: 0
+        },
+        registrationYear: {
+            type: Number,
+            required: true
         }
     },
     data() {
@@ -129,31 +128,11 @@ export default {
         estimateExcluding() {
             return this.estimate / 1.09;
         },
-        toTen() {
-            if (this.estimateExcluding < 10000) {
-                return this.estimateExcluding * 0.15;
-            } else {
-                return 1500;
-            }
-        },
-        tenToTwenty() {
-            if (this.estimateExcluding <= 10000) {
-                return 0;
-            } else if (this.estimateExcluding < 20000) {
-                return (this.estimateExcluding - 10000) * 0.2;
-            } else {
-                return 2000;
-            }
-        },
-        overTwenty() {
-            if (this.estimateExcluding <= 20000) {
-                return 0;
-            } else {
-                return (this.estimateExcluding - 20000) * 0.25;
-            }
+        stagingTiers() {
+            return this.stagingFeeTiers(this.estimateExcluding, this.registrationYear);
         },
         revenueTotal() {
-            let total = this.overTwenty + this.tenToTwenty + this.toTen;
+            let total = this.stagingTiers.reduce((sum, tier) => sum + tier.amount, 0);
             if (total < 1500){
                 return 1500;
             }

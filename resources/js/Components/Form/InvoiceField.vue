@@ -14,17 +14,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td v-text="$translations.firstTen"/>
-                        <td v-text="'€' + localNumber(stagingFeeToTen)"/>
-                    </tr>
-                    <tr>
-                        <td v-text="$translations.tenToTwenty"/>
-                        <td v-text="'€' + localNumber(stagingFeeTenToTwenty)"/>
-                    </tr>
-                    <tr>
-                        <td v-text="$translations.overTwenty"/>
-                        <td v-text="'€' + localNumber(stagingFeeOverTwenty)"/>
+                    <tr v-for="tier in stagingTiers" :key="tier.label">
+                        <td v-text="$translations[tier.label]"/>
+                        <td v-text="'€' + localNumber(tier.amount)"/>
                     </tr>
                     </tbody>
                 </table>
@@ -103,11 +95,12 @@
 import FieldMixin from './FieldMixin';
 import InvoiceLine from "./Invoice/InvoiceLine";
 import DatatableFormatters from "../Utilities/Datatable/DatatableFormatters";
+import StagingFeeMixin from "../Utilities/StagingFeeMixin";
 
 export default {
     name: "InvoiceField",
     components: {InvoiceLine},
-    mixins: [FieldMixin, DatatableFormatters],
+    mixins: [FieldMixin, DatatableFormatters, StagingFeeMixin],
 
     data() {
         let values;
@@ -126,13 +119,7 @@ export default {
         const stagingIndex = values.findIndex(v => v.item === 'stagingFee');
         if (stagingIndex !== -1) {
             const fee = parseFloat(values[stagingIndex].unitPrice);
-            if (fee <= 1500) {
-                stagingRevenue = Math.round(10000 * 1.09);
-            } else if (fee <= 3500) {
-                stagingRevenue = Math.round((10000 + (fee - 1500) / 0.20) * 1.09);
-            } else {
-                stagingRevenue = Math.round((20000 + (fee - 3500) / 0.25) * 1.09);
-            }
+            stagingRevenue = Math.round(this.stagingRevenueFromFee(fee, this.field.registrationYear) * 1.09);
             values.splice(stagingIndex, 1);
         }
 
@@ -193,34 +180,14 @@ export default {
         stagingFeeEstimateExcluding() {
             return this.stagingRevenue / 1.09;
         },
-        stagingFeeToTen() {
-            if (this.stagingFeeEstimateExcluding < 10000) {
-                return this.stagingFeeEstimateExcluding * 0.15;
-            } else {
-                return 1500;
-            }
-        },
-        stagingFeeTenToTwenty() {
-            if (this.stagingFeeEstimateExcluding <= 10000) {
-                return 0;
-            } else if (this.stagingFeeEstimateExcluding < 20000) {
-                return (this.stagingFeeEstimateExcluding - 10000) * 0.2;
-            } else {
-                return 2000;
-            }
-        },
-        stagingFeeOverTwenty() {
-            if (this.stagingFeeEstimateExcluding <= 20000) {
-                return 0;
-            } else {
-                return (this.stagingFeeEstimateExcluding - 20000) * 0.25;
-            }
+        stagingTiers() {
+            return this.stagingFeeTiers(this.stagingFeeEstimateExcluding, this.field.registrationYear);
         },
         stagingFeeTotal() {
             if (this.stagingRevenue <= 0) {
                 return 0;
             }
-            let total = this.stagingFeeToTen + this.stagingFeeTenToTwenty + this.stagingFeeOverTwenty;
+            let total = this.stagingTiers.reduce((sum, tier) => sum + tier.amount, 0);
             if (total < 1500) {
                 return 1500;
             }

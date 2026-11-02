@@ -156,6 +156,7 @@ class Invoice extends Model {
                 'type' => 'invoice',
                 'value' => $items,
                 'individualTax' => $individualTax,
+                'registrationYear' => (int) app('settings')->get('registration_year'),
                 'options' => $options,
                 'taxOptions' => $taxOptions,
                 'extra_name' => $this->extra_name,
