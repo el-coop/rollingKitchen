@@ -18,6 +18,7 @@ class ApplicationSketch extends Model {
 
     public $appends = [
         'url',
+        'is_pdf',
     ];
 
 
@@ -27,5 +28,9 @@ class ApplicationSketch extends Model {
 
     public function getUrlAttribute() {
         return action('PhotoController@applicationSketch', $this);
+    }
+
+    public function getIsPdfAttribute() {
+        return pathinfo($this->file, PATHINFO_EXTENSION) == 'pdf';
     }
 }

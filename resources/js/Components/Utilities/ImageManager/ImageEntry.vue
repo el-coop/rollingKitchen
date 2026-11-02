@@ -3,7 +3,8 @@
         <div class="level is-mobile">
             <div class="level-left">
                 <div class="level-item">
-                    <span v-if="Array.isArray(image.file) &&  image.file.indexOf('.pdf') > 1">PDF</span>
+                    <a v-if="image.is_pdf" :href="image.url" target="_blank" v-text="`PDF ${pdfNumber}`"></a>
+                    <span v-else-if="Array.isArray(image.file) &&  image.file.indexOf('.pdf') > 1">PDF</span>
                     <img v-else class="image is-max37-max64" :src="image.url">
                 </div>
             </div>
@@ -32,6 +33,10 @@ export default {
         deleteUrl: {
             type: String,
             default: ''
+        },
+        pdfNumber: {
+            type: Number,
+            default: 0
         },
     },
 

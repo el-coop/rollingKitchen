@@ -91,6 +91,8 @@ return [
     'emailSent' => 'E-mail verzonden',
     'contentTooBig' => 'Bestand te groot om te uploaden',
     'hasToBeAnImage' => 'Bestand moet een afbeelding zijn',
+    'photosOrPdf' => "Foto's of PDF (max 10 MB)",
+    'photosOnly' => "Alleen foto's, geen PDF",
     'totalServices' => 'Totaal services',
     'totalStaging' => 'Totaal stageld',
     'totalRegistration' => 'Totaal inschrijfgeld (services + stageld + SSP)',

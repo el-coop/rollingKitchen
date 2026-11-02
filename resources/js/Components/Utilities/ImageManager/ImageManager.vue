@@ -2,7 +2,7 @@
     <div>
         <slot name="display" :images="images"></slot>
         <ImageList :images="images" :delete-url="deleteUrl" @deleted="removeImage"/>
-        <ImageUpload :url="url" :data="data" @uploaded="uploaded"/>
+        <ImageUpload :url="url" :data="data" :allow-pdf="allowPdf" @uploaded="uploaded"/>
     </div>
 </template>
 
@@ -38,6 +38,10 @@ export default {
             default() {
                 return {};
             }
+        },
+        allowPdf: {
+            type: Boolean,
+            default: false
         },
     },
 

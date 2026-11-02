@@ -91,6 +91,8 @@ return [
     'emailSent' => 'Email Sent',
     'contentTooBig' => 'File to large to upload',
     'hasToBeAnImage' => 'File has to be an image',
+    'photosOrPdf' => 'Photos or PDF (max 10 MB)',
+    'photosOnly' => 'Photos only, no PDF',
     'totalServices' => 'Total services',
     'totalStaging' => 'Total staging fee',
     'totalRegistration' => 'Total registration fee (services + staging fee + SSP)',
