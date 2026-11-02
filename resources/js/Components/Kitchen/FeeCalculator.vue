@@ -199,6 +199,10 @@ export default {
             }).format(value);
             return num;
         },
+        equivalentName(service, price) {
+            let condition = (service.conditions || []).find(condition => parseFloat(condition.price) === parseFloat(price));
+            return condition ? condition['name_' + document.documentElement.lang] : service['name_' + document.documentElement.lang];
+        },
         updateSellsDrinks(e) {
             if (e.target.name === 'sells_drinks') {
                 this.sellsDrinks = e.target.value === '1';
@@ -210,6 +214,7 @@ export default {
                     this.services = this.services.filter(service => service.id !== changedService.id);
                 } else if (e.target.type === 'radio'){
                     let index = this.services.findIndex(service => service.id === changedService.id);
+                    this.services[index].service = this.equivalentName(changedService, e.target.value);
                     this.services[index].price = e.target.value;
                     this.services[index].total = parseFloat(e.target.value);
                 } else {
@@ -227,7 +232,7 @@ export default {
                     price =  e.target.value;
                 }
                 this.services.push({
-                    service: changedService['name_' + document.documentElement.lang],
+                    service: e.target.type === 'radio' ? this.equivalentName(changedService, price) : changedService['name_' + document.documentElement.lang],
                     amount: 1,
                     price: price,
                     total: parseFloat(price),

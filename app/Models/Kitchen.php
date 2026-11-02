@@ -177,7 +177,7 @@ class Kitchen extends Model {
                 $price = $service->applicationEquivalentPrice($this->getCurrentApplication());
             }
             return [
-                'service' => $service->{'name_' . App::getLocale()},
+                'service' => $service->type == 3 ? $service->equivalentName($price) : $service->{'name_' . App::getLocale()},
                 'price' => $price,
                 'amount' => $service->pivot->quantity,
                 'total' => $price * $service->pivot->quantity,
@@ -186,6 +186,29 @@ class Kitchen extends Model {
                 'conditions' => $service->conditions
             ];
         });
+    }
+
+    public function servicesCalculationTableFromInput($services, $socket) {
+        $services = collect($services);
+        if ($socket) {
+            $services->put($socket, 1);
+        }
+        return Service::whereIn('id', $services->keys())->get()->map(function($service) use ($services) {
+            $value = $services->get($service->id);
+            $price = $service->type == 3 ? (float) $value : $service->price;
+            $amount = $service->type == 0 ? (int) $value : 1;
+            return [
+                'service' => $service->type == 3 ? $service->equivalentName($price) : $service->{'name_' . App::getLocale()},
+                'price' => $price,
+                'amount' => $amount,
+                'total' => $price * $amount,
+                'id' => $service->id,
+                'type' => $service->type,
+                'conditions' => $service->conditions
+            ];
+        })->filter(function($row) {
+            return $row['amount'] > 0;
+        })->values();
     }
 
     public function getServicesTotalAttribute() {
