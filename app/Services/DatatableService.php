@@ -172,7 +172,7 @@ class DatatableService implements FromCollection, WithHeadings {
     /**
      * @return Collection
      */
-    public function collection() {
+    public function collection(): Collection {
         return $this->query()->get()->map(function ($item) {
             return $this->formatField($item);
         });

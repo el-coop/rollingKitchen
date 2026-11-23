@@ -6,6 +6,7 @@ use App\Models\Application;
 use App\Models\Kitchen;
 use App\Models\Service;
 use App\Models\User;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -19,7 +20,7 @@ class KitchenServicesService implements FromCollection, WithHeadings {
 		return collect([__('admin/applications.number'), __('auth.kitchenName')])->concat($services)->toArray();
 	}
 	
-	public function collection() {
+	public function collection(): Collection {
 		$applicationYear = app('settings')->get('registration_year');
 		$services = Service::all();
 		

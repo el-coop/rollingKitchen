@@ -26,7 +26,7 @@ class BandMemberService implements FromCollection, WithHeadings {
     }
     
     
-    public function collection() {
+    public function collection(): Collection {
         $bands = Band::where('payment_method', 'individual')->whereHas('schedules', function ($query) {
             $query->where('approved', 'accepted');
         })->get();

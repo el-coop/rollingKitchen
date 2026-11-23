@@ -10,6 +10,7 @@ use App\Models\WorkedHoursExportColumn;
 use App\Models\Worker;
 use App\Models\WorkFunction;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -28,7 +29,7 @@ class SetListService implements FromCollection, WithHeadings {
 		];
 	}
 	
-	public function collection() {
+	public function collection(): Collection {
 		return App\Models\BandSong::select('users.name', 'band_songs.title', 'band_songs.composer', 'band_songs.owned', 'band_songs.protected')
 			->join('bands', 'band_id', '=', 'bands.id')
 			->join('users', 'bands.id', '=', 'users.user_id')
