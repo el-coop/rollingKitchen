@@ -42,7 +42,7 @@ class UploadSketchRequest extends FormRequest {
         $path = 'public/photos/' . $hash;
 
         if ($photo->extension() !== 'pdf') {
-            $image = Image::make($photo);
+            $image = Image::decode($photo);
             $width = $image->width();
             $height = $image->height();
             if ($height > 500 || $width > 500) {
@@ -53,12 +53,12 @@ class UploadSketchRequest extends FormRequest {
                     $image->resize(500, round(500 * $proportion));
                 }
             }
-            $mime = $image->mime();
+            $mime = $image->origin()->mediaType();
             $mime = str_replace('image/', '.', $mime);
             if ($mime != '.jpeg' || $mime != '.jpeg') {
                 $path = str_replace($mime, '.jpeg', $path);
             }
-            Storage::put($path, encrypt((string)$image->encode('jpeg')));
+            Storage::put($path, encrypt((string)$image->encodeUsingMediaType('image/jpeg')));
         } else {
             Storage::put($path, encrypt($photo->get()));
         }

@@ -906,10 +906,10 @@ class KitchenControllerTest extends TestCase {
         ]);
         $photo = $this->user->user->photos->first();
         $path = $photo->file;
-        $processedImage = Image::make(Storage::disk('local')->get('public/photos/' . $path));
+        $processedImage = Image::decode(Storage::disk('local')->get('public/photos/' . $path));
         $this->assertEquals(500, $processedImage->width());
         $this->assertEquals(250, $processedImage->height());
-        $this->assertEquals('image/jpeg', $processedImage->mime());
+        $this->assertEquals('image/jpeg', $processedImage->origin()->mediaType());
     }
 
     public function test_kitchen_uploaded_photo_gets_processed_by_height() {
@@ -920,10 +920,10 @@ class KitchenControllerTest extends TestCase {
         ]);
         $photo = $this->user->user->photos->first();
         $path = $photo->file;
-        $processedImage = Image::make(Storage::disk('local')->get('public/photos/' . $path));
+        $processedImage = Image::decode(Storage::disk('local')->get('public/photos/' . $path));
         $this->assertEquals(250, $processedImage->width());
         $this->assertEquals(500, $processedImage->height());
-        $this->assertEquals('image/jpeg', $processedImage->mime());
+        $this->assertEquals('image/jpeg', $processedImage->origin()->mediaType());
     }
 
     public function test_kitchen_can_see_applications_if_exists() {
