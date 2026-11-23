@@ -130,7 +130,7 @@ class WorkedHoursService implements FromCollection, WithHeadings {
                 case 'shift_worker':
                     $shift = $worker->shifts->find($shift);
                     switch ($column) {
-                        case 'workFunction';
+                        case 'workFunction':
                             $result->push($shift->pivot->workFunction->name);
                             break;
                         case 'payment':

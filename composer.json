@@ -14,7 +14,7 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^8.1",
+        "php": "^8.5",
         "consoletvs/invoices": "dev-master",
         "dompdf/dompdf": "^3.1.6 ",
         "elcoop/valuestore": "1.0",
