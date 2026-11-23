@@ -9,6 +9,7 @@ use App\Models\WorkedHoursExportColumn;
 use App\Models\Worker;
 use App\Models\WorkFunction;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -33,7 +34,7 @@ class WorkedHoursService implements FromCollection, WithHeadings {
 
     }
 
-    public function collection() {
+    public function collection(): Collection {
         $shifts = Shift::where('closed', true)
             ->where('date', '>', request()->input('date', Carbon::parse('first day of January')))
             ->with('workers.user')->get();
@@ -129,7 +130,7 @@ class WorkedHoursService implements FromCollection, WithHeadings {
                 case 'shift_worker':
                     $shift = $worker->shifts->find($shift);
                     switch ($column) {
-                        case 'workFunction';
+                        case 'workFunction':
                             $result->push($shift->pivot->workFunction->name);
                             break;
                         case 'payment':

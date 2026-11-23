@@ -8,6 +8,7 @@ use App\Models\Kitchen;
 use App\Models\KitchenExportColumn;
 use App\Models\Service;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -27,7 +28,7 @@ class KitchenService implements FromCollection, WithHeadings {
     }
 
 
-    public function collection() {
+    public function collection(): Collection {
         $kitchens = Kitchen::whereHas('applications', function ($query) {
             $query->where([['status', '=', 'accepted'], ['year', '=', app('settings')->get('registration_year')]]);
         })->get();

@@ -31,7 +31,7 @@ class StorePhotoRequest extends FormRequest {
 
     public function commit() {
         $photo = $this->file('photo');
-        $image = Image::make($photo);
+        $image = Image::decode($photo);
         Storage::put('public/images/logo.png', $image->encode());
         return ['logo updated'];
     }

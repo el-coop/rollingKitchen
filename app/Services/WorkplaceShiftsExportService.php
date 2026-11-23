@@ -8,6 +8,7 @@ use App\Models\Service;
 use App\Models\Shift;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -26,7 +27,7 @@ class WorkplaceShiftsExportService implements FromCollection, WithHeadings {
 		return [__('worker/worker.workplace'), __('admin/shifts.date'), __('worker/supervisor.workFunction'), __('global.name'), __('admin/shifts.startTime'), __('admin/shifts.endTime')];
 	}
 	
-	public function collection() {
+	public function collection(): Collection {
 		$data = collect();
 		foreach ($this->shifts as $shift) {
 			foreach ($shift->shiftWorkers as $worker) {

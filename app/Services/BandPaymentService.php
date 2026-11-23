@@ -7,6 +7,7 @@ use App\Models\Band;
 use App\Models\BandPaymentExportColumn;
 use App\Models\Field;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -23,7 +24,7 @@ class BandPaymentService implements FromCollection, WithHeadings {
 	}
 
 
-	public function collection() {
+	public function collection(): Collection {
 		$bands = Band::whereHas('schedules', function ($query) {
 			$query->where('approved', 'accepted');
 		})->get();

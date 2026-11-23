@@ -40,7 +40,7 @@ class UploadPhotoRequest extends FormRequest {
 
 	protected function processPhoto() {
 		$photo = $this->file('photo');
-		$image = Image::make($photo);
+		$image = Image::decode($photo);
 		$width = $image->width();
 		$height = $image->height();
 		if ($height > 500 || $width > 500) {
@@ -51,14 +51,14 @@ class UploadPhotoRequest extends FormRequest {
 				$image->resize(500, round(500 * $proportion));
 			}
 		}
-		$mime = $image->mime();
+		$mime = $image->origin()->mediaType();
 		$mime = str_replace('image/', '.', $mime);
 		$hash = $photo->hashName();
 		if ($mime != '.jpeg' || $mime != '.jpeg') {
 			$hash = str_replace($mime, '.jpeg', $photo->hashName());
 		}
 		$path = 'public/photos/' . $hash;
-		Storage::put($path, (string)$image->encode('jpeg'));
+		Storage::put($path, (string)$image->encodeUsingMediaType('image/jpeg'));
 		return $path;
 	}
 }
